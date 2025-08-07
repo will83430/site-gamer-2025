@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Corsair One i500</title>
- <link rel="stylesheet" href="../../css/style/style 4.css">
+ <link rel="stylesheet" href="../../../../frontend/public/assets/css/style 4.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
@@ -12,8 +12,8 @@
 <body>
 
   <div class="entete">
-    <img src="../../../../assets/images/gaming.png" alt="Gaming">
-    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+    <img src="../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../top-du-mois.html">Retour à la vitrine</a>
   </div>
 
   <h1>Corsair One i500</h1>
@@ -22,7 +22,7 @@
   <p>Le PC gamer compact le plus puissant de 2025, idéal pour le jeu 4K et la création.</p>
 
   <div class="gallery">
-    <img src="../../../../assets/images/image bloc/Corsair One i500 sty.png" alt="Corsair One i500" class="img-centree">
+    <img src="../../assets/images/Corsair One i500 sty.png" alt="Corsair One i500" class="img-centree">
   </div>
 
   <div class="lightbox" id="lightbox">
@@ -66,7 +66,7 @@
 
   const nomProduit = document.querySelector("h1").textContent.trim();
 
-  fetch("../../../../data/top-du-mois/data/equipements.json")
+  fetch("../../data/equipements.json")
     .then(res => res.json())
     .then(data => {
       const produit = data.find(p => p.nom === nomProduit);
@@ -81,10 +81,10 @@
 </script>
 
   <div class="pied-de-page">
-    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
-    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <img src="../../assets/images/banniere-pied.png" alt="Samouraï">
+    <img src="../../assets/images/logo-blanc.png" style="width:35px;height:35px;" alt="Accueil">
     <a href="../../../public/index.html">Accueil</a>
-    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <img src="../../assets/images/logo-dokk-blanc.png" style="width:35px;height:35px;" alt="Multibloc">
     <a href="../../pages/top-du-mois.html">Équipements</a>
   </div>
   </div>

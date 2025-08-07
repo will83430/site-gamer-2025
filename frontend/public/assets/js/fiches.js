@@ -425,10 +425,6 @@ function displayComparison(products) {
                 features.push(`💰 Prix : ${product.prix}`);
             }
             
-            if (product.description && product.description.includes("🧩")) {
-                features.push(`🧩 ${product.description}`);
-            }
-            
             if (Array.isArray(product.fonctionnalites_avancees) && product.fonctionnalites_avancees.length > 0) {
                 const functionsHTML = product.fonctionnalites_avancees.join('');
                 features.push(`⚙️ Fonctionnalités avancées : ${functionsHTML}`);
