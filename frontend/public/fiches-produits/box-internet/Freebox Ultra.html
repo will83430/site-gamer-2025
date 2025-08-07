@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Freebox Ultra</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Freebox Ultra</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>La box internet la plus rapide et complète de 2025, idéale pour les foyers ultra-connectés.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/Freebox Ultra stylé.png" alt="Freebox Ultra" class="img-centree">
+  </div>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 49,99 € – fibre jusqu’à 8 Gbit/s, WiFi 7, 280 chaînes TV, appels illimités, services SVOD inclus.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Débit descendant : jusqu’à 8 Gbit/s<br>
+    - Débit montant : jusqu’à 8 Gbit/s<br>
+    - WiFi : WiFi 7 avec répéteur inclus<br>
+    - Téléphonie : appels illimités vers fixes et mobiles<br>
+    - Connectivité : Ethernet 2.5G, USB-C, Bluetooth, Wi-Fi 7<br>
+    - Réseau : fibre optique FTTH
+  </p>
+
+  <p>📺 Services TV et multimédia<br>
+    - 280 chaînes incluses<br>
+    - Décodeur TV 4K HDR<br>
+    - Replay, enregistrement, contrôle du direct<br>
+    - Compatible Netflix, Disney+, Prime Video (inclus 3 mois)
+  </p>
+
+  <p>🌐 Fonctionnalités avancées<br>
+    - Interface FreeOS intuitive<br>
+    - Multi-TV et multi-utilisateurs<br>
+    - Contrôle parental et gestion des profils<br>
+    - Accès à OQEE Ciné et Cafeyn
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Idéal pour le gaming en ligne et le streaming 4K<br>
+    - Faible latence et stabilité réseau<br>
+    - Compatible domotique et objets connectés<br>
+    - Abonnement Free Mobile 5G à tarif réduit pour les abonnés
+  </p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

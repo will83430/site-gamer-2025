@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>LG OLED65G5</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>LG OLED65G5</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Le téléviseur OLED le plus performant et lumineux de 2025.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/lg.png" alt="LG OLED65G5" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 2 790 € – dalle OLED Evo, processeur Alpha 11 AI, Dolby Vision, HDMI 2.1, design mural.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+  - Taille : 65 pouces<br>
+  - Technologie : OLED Evo 4K<br>
+  - Processeur : Alpha 11 AI 4K Gen2<br>
+  - Luminosité : jusqu’à 2 412 cd/m²<br>
+  - Connectivité : Wi-Fi 6, Bluetooth 5.3, HDMI 2.1 x4<br>
+  - Design : ultra-fin, montage mural sans espace
+  </p>
+
+  <p>🖥️ Qualité d’image<br>
+  - Résolution : 3840 × 2160 pixels<br>
+  - HDR : Dolby Vision, HDR10, HLG<br>
+  - Modes : Filmmaker, Cinéma, Jeu, Standard, Vif<br>
+  - Colorimétrie : Delta E moyen à 0,79<br>
+  - Température des couleurs : 6493 K
+  </p>
+
+  <p>🎮 Gaming et fluidité<br>
+  - Taux de rafraîchissement : 120 Hz<br>
+  - VRR, ALLM, G-Sync et FreeSync compatibles<br>
+  - Input lag ultra faible<br>
+  - Optimiseur de jeu intégré
+  </p>
+
+  <p>🌐 Fonctionnalités connectées<br>
+  - Système : webOS avec applications multimédia<br>
+  - Assistant vocal : Google Assistant, Alexa<br>
+  - Multi-vues et contrôle domotique<br>
+  - Mode galerie et fond d’écran dynamique
+  </p>
+
+  <p>🎬 Expérience cinéma<br>
+  - Contraste infini<br>
+  - Noirs parfaits<br>
+  - Son immersif avec AI Sound Pro<br>
+  - Compatible Dolby Atmos
+  </p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>DJI Mavic 4 Pro</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Autel EVO Max 5G</h1><div id="badge-top-mois"></div>
+<p>Un drone haut de gamme taillé pour les missions techniques, la cartographie et les inspections en environnement complexe.</p>
+
+<div class="gallery"><img src="../../../../assets/images/image bloc/Autel EVO Max 5G.png" alt="Autel EVO Max 5G" class="img-centree"></div>
+
+<div class="lightbox" id="lightbox"><img id="lightbox-img" src="" alt="Image Zoomée" /></div>
+
+<p>💰 À partir de 2 299 € – caméra thermique + RGB, zoom x16, autonomie 42 min, évitement d’obstacles 3D.</p>
+<p>🧩 Spécifications matérielles<br>- Capteur : 50 MP CMOS + capteur thermique IR<br>- Vidéo : 4K HDR/60fps, zoom hybride x16<br>- Autonomie : jusqu’à 42 min<br>- Portée : 20 km<br>- Poids : 1 050g</p>
+<p>🎥 Fonctions vidéo<br>- Cartographie 3D, suivi dynamique, mode inspection<br>- Vision nocturne, stabilisation 3 axes<br>- Transmission SkyLink 3.0, retour vidéo 2K</p>
+<p>🌐 Fonctionnalités connectées<br>- Application Autel Explorer<br>- Partage cloud sécurisé<br>- Contrôle via tablette, télécommande ou voix</p>
+<p>🎮 Expérience utilisateur<br>- Interface pro avec télémétrie avancée<br>- Accessoires : station de recharge, valise rigide, filtres<br>- Idéal pour pros du BTP, sécurité, agriculture</p>
+
+
+
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

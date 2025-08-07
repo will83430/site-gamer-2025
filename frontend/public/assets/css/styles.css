@@ -1,0 +1,598 @@
+/* ====================================
+   CSS UNIFIÉ - Site Gamer 2025
+   ==================================== */
+
+/* Variables CSS */
+:root {
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+  --secondary-color: #6a00b3;
+  --background-dark: rgba(0, 0, 0, 0.8);
+  --text-light: #fdf8f8;
+  --text-dark: #222;
+  --text-muted: #555;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --transition: 0.3s ease;
+}
+
+/* Reset et base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Manrope", sans-serif;
+  font-size: 1em;
+  background-color: #1f2039;
+  background-image: url("../../../../assets/images/image bloc/un-logo-au-centre.png");
+  background-size: cover;
+  /* Ajuste l'image pour couvrir tout l'écran */
+  background-position: center;
+  /* Centre l'image */
+  background-repeat: no-repeat;
+  /* Empêche la répétition */
+  position: relative;
+}
+
+/* ====================================
+   STYLES COMMUNS
+   ==================================== */
+
+/* En-tête */
+.entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: var(--background-dark);
+  backdrop-filter: blur(10px);
+}
+
+.entete img {
+  max-width: 100%;
+  max-height: 100px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-fit: contain;
+  padding-left: 0px;
+  object-fit: fill;
+}
+
+.lien-entete,
+.lien-top {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.lien-entete:hover,
+.lien-top:hover {
+  color: var(--primary-color);
+}
+
+/* Titres */
+h1 {
+  text-align: center;
+  font-size: 3.5em;
+  color: rgb(166, 180, 252);
+  margin: 40px 0 20px 0;
+  font-family: "Montserrat", sans-serif;
+  text-shadow: 5px 5px 0px rgb(166, 180, 252, 0.2);
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #f9f8ff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Texte et liens */
+p {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin: 20px auto;
+  max-width: 800px;
+  line-height: 1.8;
+}
+
+em {
+  color: #a5b4fc;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.colored-link {
+  color: #a5b4fc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.colored-link:hover {
+  color: #ffd700;
+}
+
+/* Boutons */
+.btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: var(--transition);
+  box-shadow: var(--box-shadow);
+}
+
+.btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-retour {
+  margin: 20px auto;
+  display: block;
+  max-width: 150px;
+}
+
+.btn-comparer {
+  display: block;
+  margin: 30px auto;
+  max-width: 250px;
+  width: 100%;
+}
+
+.cta {
+  display: inline-block;
+  padding: 15px 30px;
+  background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+.cta-container {
+  text-align: center;
+  margin: 40px 0;
+}
+
+/* ====================================
+   PAGE D'ACCUEIL
+   ==================================== */
+
+#date-mois {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #ffd700;
+  margin: 20px 0;
+  font-weight: 600;
+}
+
+.description-principale {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* Vidéos */
+video {
+  display: block;
+  margin: 40px auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  max-width: 100%;
+  height: auto;
+}
+
+/* ====================================
+   PAGE TOP DU MOIS
+   ==================================== */
+
+.intro {
+  max-width: 800px;
+  margin: 20px auto 40px auto;
+  padding: 0 20px;
+}
+
+.categories-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.category-section {
+  margin-bottom: 50px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.category-card {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+.bloc {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  position: relative;
+  transition: var(--transition);
+}
+
+.bloc:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.bloc img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+.overlay-text {
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-align: center;
+  background: white;
+}
+
+/* Badges vedettes */
+.vedette-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #f9e79f;
+  color: var(--secondary-color);
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.85em;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* ====================================
+   PAGE FICHES
+   ==================================== */
+
+.fiches-page {
+  background: url("../../assets/images/banniere-pied.png") no-repeat center
+    center fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+.titre-categorie {
+  background-color: var(--primary-color);
+  padding: 15px 25px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  margin: 20px auto;
+}
+
+.description {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Grille des produits */
+.produits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 20px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.fiche-produit {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  text-align: center;
+  transition: var(--transition);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  width: 240px;
+  margin: 0 auto;
+  min-height: 360px;
+}
+
+.fiche-produit:hover {
+  transform: translateY(-5px);
+}
+
+.fiche-produit img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background-color: #eee;
+  border-radius: var(--border-radius);
+  margin-bottom: 12px;
+}
+
+.overlay-text-produit {
+  padding: 8px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  min-height: 48px;
+}
+
+.info {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  flex-grow: 1;
+}
+
+/* Checkbox personnalisée */
+input[type="checkbox"].produit-checkbox {
+  transform: scale(1.4);
+  accent-color: var(--primary-color);
+  margin-bottom: 12px;
+}
+
+/* Zone de comparaison */
+.zone-comparaison {
+  margin-top: 40px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
+.zone-comparaison.hidden {
+  display: none;
+}
+
+.comparaison-titre {
+  text-align: center;
+  color: var(--text-light);
+  background-color: var(--primary-color);
+  padding: 15px 25px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+}
+
+.comparaison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  justify-content: center;
+}
+
+.fiche-comparaison {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+  padding: 15px;
+  text-align: center;
+  width: 240px;
+  margin: 0 auto;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transition);
+}
+
+.fiche-comparaison:hover {
+  transform: translateY(-5px);
+}
+
+.fiche-comparaison img {
+  height: 160px;
+  object-fit: cover;
+  background-color: #eee;
+  border-radius: var(--border-radius);
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.fiche-comparaison h4 {
+  color: var(--text-dark);
+  margin: 8px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-height: 48px;
+  padding: 8px 0;
+}
+
+.btn-details {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.btn-details:hover {
+  background-color: var(--primary-hover);
+}
+
+/* ====================================
+   PIED DE PAGE
+   ==================================== */
+
+.footer {
+  
+  background-color: rgb(166, 180, 252);
+  backdrop-filter: blur(10px);
+}
+
+.footer-banner {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background-color: white;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: row;         /* aligne les .footer-item horizontalement */
+  justify-content: flex-start; /* commence l’alignement à gauche */
+  align-items: center;         /* aligne les .footer-item verticalement au centre */
+  gap: 40px;                   /* espace entre les .footer-item */
+  margin-top: 20px;
+  width: 100%;
+  flex-wrap: nowrap;           /* empêche le retour à la ligne */
+}
+
+.footer-item {
+  display: flex;
+  flex-direction: row;         /* image à gauche, lien à droite */
+  align-items: center;         /* aligne image et lien verticalement */
+  gap: 10px;
+  white-space: nowrap;         /* empêche le lien de passer à la ligne */
+}
+
+.footer-icon {
+  width: 35px;
+  height: 35px;
+}
+
+.footer-item a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+.footer-item a:hover {
+  color: rgb(77, 0, 128);
+  text-decoration: underline;
+}
+
+/* ====================================
+   ANIMATIONS
+   ==================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* ====================================
+   RESPONSIVE
+   ==================================== */
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+    margin: 20px 0;
+  }
+
+  .entete {
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .fiche-produit,
+  .fiche-comparaison {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  video {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  p {
+    padding: 0 15px;
+    font-size: 1.2em;
+    color: #f9f8ff;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .produits-grid {
+    padding: 10px;
+    gap: 20px;
+  }
+}

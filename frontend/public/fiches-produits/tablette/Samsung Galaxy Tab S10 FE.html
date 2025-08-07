@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Samsung Galaxy S25 Ultra</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Samsung Galaxy Tab S10 FE</h1>
+<div id="badge-top-mois"></div>
+
+<p>Une tablette polyvalente pensée pour la productivité mobile et le divertissement.</p>
+
+<div class="gallery">
+  <img src="../../../../assets/images/image bloc/Galaxy Tab S10 FE.png" alt="Galaxy Tab S10 FE" class="img-centree">
+</div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 699 € – écran 10,9", stylet S Pen inclus, design fin et léger.</p>
+
+<p>🧩 Spécifications matérielles<br>
+  - Processeur : Snapdragon 8 Gen 2<br>
+  - RAM : 8 Go<br>
+  - Stockage : 128 Go / 256 Go<br>
+  - Batterie : jusqu’à 12 heures<br>
+  - Connectivité : Wi-Fi 6E, Bluetooth 5.3, USB-C<br>
+  - Épaisseur : 6,3 mm
+</p>
+
+<p>🖥️ Écran et affichage<br>
+  - Taille : 10,9 pouces<br>
+  - Technologie : AMOLED<br>
+  - Résolution : 2560 × 1600<br>
+  - Luminosité : 1 200 nits<br>
+  - Taux de rafraîchissement : 90 Hz
+</p>
+
+<p>🖊️ Accessoires et interaction<br>
+  - S Pen inclus<br>
+  - Clavier Book Cover en option<br>
+  - Reconnaissance faciale<br>
+  - Système d’exploitation : One UI 7 (Android 15)
+</p>
+
+<p>🌐 Fonctionnalités avancées<br>
+  - Mode DeX pour bureau virtuel<br>
+  - Multifenêtrage intelligent<br>
+  - Synchronisation avec Galaxy Watch et Buds<br>
+  - Enregistrement vidéo 4K
+</p>
+
+<p>🎮 Expérience utilisateur<br>
+  - Idéal pour les étudiants, les pros nomades et les gamers<br>
+  - Compatible avec Xbox Cloud Gaming<br>
+  - Interface fluide et personnalisable
+</p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

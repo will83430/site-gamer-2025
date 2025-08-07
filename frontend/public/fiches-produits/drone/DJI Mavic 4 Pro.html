@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>DJI Mavic 4 Pro</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>DJI Mavic 4 Pro</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Le drone grand public le plus avancé de 2025, idéal pour la photo et la vidéo aérienne.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/DJI Mavic 4 Pro styl.png" alt="DJI Mavic 4 Pro" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 1 799 € – caméra Hasselblad 4/3, vidéo 8K, autonomie 45 min, détection d’obstacles omnidirectionnelle.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Capteur : CMOS 4/3 Hasselblad 20 MP<br>
+    - Vidéo : 8K/30fps, 4K/120fps<br>
+    - Autonomie : jusqu’à 45 min<br>
+    - Portée : 15 km<br>
+    - Poids : 895g
+  </p>
+
+  <p>🎥 Fonctions vidéo<br>
+    - Hyperlapse, ActiveTrack 5.0, Mastershots<br>
+    - Zoom optique x7, mode nuit<br>
+    - Transmission O4 HD, retour vidéo 1080p
+  </p>
+
+  <p>🌐 Fonctionnalités connectées<br>
+    - Application DJI Fly<br>
+    - Partage direct sur réseaux sociaux<br>
+    - Contrôle gestuel et vocal
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Interface intuitive<br>
+    - Accessoires : filtres ND, batteries, sacoche<br>
+    - Idéal pour créateurs, voyageurs, pros
+  </p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

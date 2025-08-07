@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Apple Watch Series 9</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a></a>
+  </div>
+
+  <h1>Apple Watch Series 9</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Montre intelligente ultra fluide avec gestes tactiles, écran lumineux et puce S9 ultra-rapide.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/Apple Watch Series 9 stylé.png" alt="Apple Watch Series 9" class="img-centree">
+  </div>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Zoom" />
+  </div>
+
+  <p>💰 Prix : 449,00 €</p>
+  <p>🧩 Spécifications<br>- Écran : OLED LTPO 2'' toujours activé<br>- Puce : S9 SiP double cœur<br>- Mémoire : 64 Go de stockage<br>- Autonomie : 18 heures / mode économie jusqu’à 36h<br>- Connectivité : Wi-Fi, Bluetooth 5.3, GPS/GNSS, NFC<br>- Capteurs : Cardiofréquencemètre, oxygène sanguin, température, détection de chute<br></p>
+  <p>🌐 Fonctionnalités<br>- Commande par double tap (gestuelle sans toucher l’écran)<br>- Siri local avec accès aux données de santé<br>- App Santé et suivi fitness intégrés<br>- Mode nuit automatique et résistante à l’eau WR50<br></p>
+  <p>🎮 Usage recommandé<br>Idéale pour le suivi quotidien, la santé, le sport et les notifications discrètes avec style.</p>
+
+ <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+
+  <div class="pied-de-page">
+    <img src="../../assets/bannière pour pied d.png" alt="Samouraï">
+    <img src="../../assets/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../pages/index.html">Accueil</a>
+    <img src="../../assets/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../Top du mois.html">Équipements</a>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>
