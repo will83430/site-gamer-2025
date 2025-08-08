@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Apple Watch Series 9</title>
-  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -40,7 +40,7 @@
 
   const nomProduit = document.querySelector("h1").textContent.trim();
 
-  fetch("../../../../data/top-du-mois/data/equipements.json")
+  fetch("../../data/equipements.json")
     .then(res => res.json())
     .then(data => {
       const produit = data.find(p => p.nom === nomProduit);

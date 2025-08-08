@@ -258,9 +258,10 @@ function navigateToCategory(category) {
 }
 
 // ====================================
-// AFFICHAGE DES PRODUITS
+// AJOUT DES LIENS DANS LES FICHES PRODUITS
 // ====================================
 
+// Dans fiches.js - Modifier displayCategoryProducts pour ajouter les liens
 function displayCategoryProducts(category, products) {
     try {
         if (elements.titre) {
@@ -276,7 +277,6 @@ function displayCategoryProducts(category, products) {
                 const productName = product.nom || 'Produit sans nom';
                 const productPrice = product.prix || 'Non disponible';
                 const productDesc = product.description || 'Aucune description';
-                const productLink = product.lien || '#';
                 const productImage = product.image || '';
                 
                 return `
@@ -285,10 +285,7 @@ function displayCategoryProducts(category, products) {
                                class="produit-checkbox" 
                                id="produit-${productId}" 
                                data-id="${productName}">
-                        <a href="${productLink}" 
-                           title="${productDesc}"
-                           target="_blank"
-                           rel="noopener noreferrer">
+                        <div class="product-content" onclick="ficheManager.openFiche(${JSON.stringify(product).replace(/"/g, '&quot;')})">
                             <img src="${productImage}" 
                                  alt="${productName}"
                                  loading="lazy"
@@ -297,9 +294,13 @@ function displayCategoryProducts(category, products) {
                                 ${productName}
                                 ${product.top_du_mois ? `<span class="vedette-badge">⭐</span>` : ""}
                             </div>
-                        </a>
+                        </div>
                         <p class="info">Prix : ${productPrice}</p>
                         <p class="info">${productDesc}</p>
+                        <button class="btn-fiche-complete" 
+                                onclick="ficheManager.openFiche(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                            Voir la fiche
+                        </button>
                     </div>
                 `;
             }).join("");
@@ -309,16 +310,6 @@ function displayCategoryProducts(category, products) {
         console.error('Erreur displayCategoryProducts:', error);
         showError('Erreur lors de l\'affichage des produits');
     }
-}
-
-function displayCategoryNotFound(category) {
-    if (elements.titre) {
-        elements.titre.textContent = "Catégorie introuvable";
-    }
-    if (elements.desc) {
-        elements.desc.textContent = "";
-    }
-    showError(`Aucun produit trouvé pour la catégorie "${category}".`);
 }
 
 // ====================================
@@ -406,9 +397,10 @@ function handleComparisonClick() {
 }
 
 // ====================================
-// AFFICHAGE DE LA COMPARAISON
+// MISE À JOUR DE LA FONCTION displayComparison
 // ====================================
 
+// Dans fiches.js - Remplacer la fonction displayComparison existante
 function displayComparison(products) {
     try {
         const zoneComparaison = elements.zoneComparaison;
@@ -437,10 +429,10 @@ function displayComparison(products) {
                          alt="${product.nom || 'Produit'}"
                          onerror="this.style.display='none';" />
                     ${features.map(feature => `<p class="info">${feature}</p>`).join("")}
-                    <a href="${product.lien || '#'}" 
-                       class="btn-details"
-                       target="_blank"
-                       rel="noopener noreferrer">Voir la fiche complète</a>
+                    <button class="btn-details" 
+                            onclick="ficheManager.openFiche(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                        Voir la fiche complète
+                    </button>
                 </div>
             `;
         }).join("");

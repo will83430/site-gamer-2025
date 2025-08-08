@@ -13,6 +13,148 @@ const CONFIG = {
 };
 
 // ====================================
+// SYSTÈME D'AFFICHAGE DES FICHES COMPLÈTES
+// ====================================
+
+const ficheManager = {
+    // Construit l'URL correcte vers une fiche produit
+    buildFicheUrl(product) {
+        if (!product || !product.nom || !product.categorie) {
+            console.warn('Produit invalide pour buildFicheUrl:', product);
+            return '#';
+        }
+
+        // Mapping des catégories vers leurs dossiers
+        const categoryFolders = {
+            'PC GAMING': 'pc-gaming',
+            'SERVEUR': 'serveur',
+            'PERIPHERIQUES': 'peripheriques',
+            'TABLETTE': 'tablette',
+            'SMARTPHONE': 'smartphone',
+            'MONTRE CONNECTE': 'montre-connecte',
+            'ECRAN TV': 'ecran-tv',
+            'CAMERA': 'camera',
+            'VIDEO PROJECTEUR': 'video-projecteur',
+            'BOX INTERNET': 'box-internet',
+            'CASQUE AUDIO': 'casque-audio',
+            'TABLEAU INTERACTIF': 'tableau-interactif',
+            'CONSOLE': 'console',
+            'CASQUE VR': 'casque-vr',
+            'IMPRIMANTE 3D': 'imprimante-3d',
+            'DRONE': 'drone'
+        };
+
+        const folder = categoryFolders[product.categorie.toUpperCase()];
+        if (!folder) {
+            console.warn('Dossier non trouvé pour la catégorie:', product.categorie);
+            return '#';
+        }
+
+        // Nettoyer le nom du produit pour créer le fichier HTML
+        const fileName = this.sanitizeFileName(product.nom);
+        
+        return `fiches-produits/${folder}/${fileName}.html`;
+    },
+
+    // Nettoie un nom de produit pour en faire un nom de fichier
+    sanitizeFileName(productName) {
+        return productName
+            .replace(/\s+/g, ' ')           // Normaliser les espaces
+            .replace(/[\/\\:*?"<>|]/g, '')  // Supprimer caractères interdits
+            .trim();
+    },
+
+    // Vérifie si une fiche existe (optionnel - pour validation)
+    async checkFicheExists(url) {
+        try {
+            const response = await fetch(url, { method: 'HEAD' });
+            return response.ok;
+        } catch (error) {
+            return false;
+        }
+    },
+
+    // Ouvre une fiche dans une nouvelle fenêtre/onglet
+    openFiche(product, target = '_blank') {
+        const url = this.buildFicheUrl(product);
+        
+        if (url === '#') {
+            console.warn('Fiche non disponible pour ce produit');
+            return;
+        }
+
+        // Ouvrir dans nouvel onglet ou même fenêtre
+        if (target === '_blank') {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+            window.location.href = url;
+        }
+    },
+
+    // Crée un modal pour afficher la fiche (alternative)
+    async showFicheModal(product) {
+        const url = this.buildFicheUrl(product);
+        
+        if (url === '#') {
+            console.warn('Fiche non disponible');
+            return;
+        }
+
+        // Créer le modal
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.style.cssText = `
+            width: 90%;
+            height: 90%;
+            max-width: 1000px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+        `;
+
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '✕';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10001;
+        `;
+
+        closeBtn.onclick = () => document.body.removeChild(modal);
+        modal.onclick = (e) => {
+            if (e.target === modal) document.body.removeChild(modal);
+        };
+
+        modal.appendChild(iframe);
+        modal.appendChild(closeBtn);
+        document.body.appendChild(modal);
+    }
+};
+
+// ====================================
 // UTILITAIRES DE BASE
 // ====================================
 
@@ -306,6 +448,123 @@ if (!document.querySelector('#utils-styles')) {
     `;
     document.head.appendChild(style);
 }
+// ====================================
+// STYLES CSS POUR LES FICHES
+// ====================================
+
+const additionalCSS = `
+.product-content {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.product-content:hover {
+    transform: scale(1.02);
+}
+
+.btn-fiche-complete {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-fiche-complete:hover {
+    background: linear-gradient(45deg, #0056b3, #004494);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.btn-details {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-details:hover {
+    background: linear-gradient(45deg, #0056b3, #004494);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* Styles pour galerie et lightbox */
+.gallery {
+    display: flex;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+
+.img-centree {
+    display: block;
+    margin: 30px auto;
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(166, 180, 252, 0.6);
+}
+`;
+
+// ====================================
+// INITIALISATION
+// ====================================
+
+// Ajouter les styles au chargement
+document.addEventListener('DOMContentLoaded', function() {
+    // Ajouter les styles si pas déjà présents
+    if (!document.querySelector('#fiche-complete-styles')) {
+        const style = document.createElement('style');
+        style.id = 'fiche-complete-styles';
+        style.textContent = additionalCSS;
+        document.head.appendChild(style);
+    }
+});
+
+console.log('✅ Système de fiches complètes initialisé');
 
 // ====================================
 // EXPORT GLOBAL
@@ -316,3 +575,4 @@ window.utils = utils;
 window.dataManager = dataManager;
 window.uiManager = uiManager;
 window.CONFIG = CONFIG;
+window.ficheManager = ficheManager;
