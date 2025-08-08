@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Apple iPad Pro M4</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Apple iPad Pro M4</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>La tablette la plus puissante et élégante de 2025, conçue pour les créateurs et les pros.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/ipad.png" alt="iPad Pro M4" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 1 099 € – puce Apple M4, écran OLED Ultra Retina XDR, design ultra-fin, Apple Pencil Pro compatible.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Processeur : Apple M4<br>
+    - RAM : 8 ou 16 Go selon configuration<br>
+    - Stockage : 256 Go / 512 Go / 1 To / 2 To<br>
+    - Batterie : autonomie jusqu’à 10 heures<br>
+    - Connectivité : Wi-Fi 6E, Bluetooth 5.3, USB-C<br>
+    - Épaisseur : seulement 5,1 mm
+  </p>
+
+  <p>🖥️ Écran et affichage<br>
+    - Taille : 11 ou 13 pouces<br>
+    - Technologie : OLED Ultra Retina XDR<br>
+    - Résolution : 2420 × 1668 (11") / 2752 × 2064 (13")<br>
+    - Luminosité : jusqu’à 1 600 nits en HDR<br>
+    - Taux de rafraîchissement : 120 Hz (ProMotion)
+  </p>
+
+  <p>🖊️ Accessoires et interaction<br>
+    - Apple Pencil Pro : retour haptique, capteur de pression, gestuelle<br>
+    - Magic Keyboard : pavé tactile, touches rétroéclairées<br>
+    - Face ID et caméra TrueDepth<br>
+    - Système d’exploitation : iPadOS 17
+  </p>
+
+  <p>🌐 Fonctionnalités avancées<br>
+    - Multifenêtrage et Stage Manager<br>
+    - Applications pro : Final Cut Pro, Logic Pro, Affinity Photo<br>
+    - Enregistrement vidéo en ProRes<br>
+    - Synchronisation iCloud et AirDrop
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Idéal pour le dessin, le montage vidéo, la musique et le gaming<br>
+    - Compatible avec les jeux Apple Arcade et les apps créatives<br>
+    - Interface fluide et intuitive
+  </p>
+
+<script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+
+  <div class="pied-de-page">
+    <img src="../../assets/bannière pour pied d.png" alt="Samouraï">
+    <img src="../../assets/logo blanc fond mauv.png" alt="Accueil" style="width: 35px; height:35px;">
+    <a href="../index.html">Accueil</a>
+    <img src="../../assets/logo blanc base de dokk.png" alt="Multibloc" style="width: 35px; height:35px;">
+    <a href="../../fiche catégorie/">Retour sélection</a>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Logitech MX Master 4S</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Logitech MX Master 4S</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>La souris haut de gamme la plus précise et polyvalente de 2025, conçue pour les pros et les créateurs.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/logitech-mx-master-4s.png" alt="Logitech MX Master 4S" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 149 € – capteur 8K DPI, défilement MagSpeed, autonomie 90 jours, connectivité multi-appareils.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Capteur : 8 000 DPI avec suivi sur verre<br>
+    - Boutons : 7 personnalisables + molette latérale<br>
+    - Défilement : MagSpeed électromagnétique ultra rapide<br>
+    - Autonomie : jusqu’à 90 jours<br>
+    - Recharge : USB-C rapide (1 min = 3h)<br>
+    - Connectivité : Bluetooth + Logi Bolt
+  </p>
+
+  <p>🖥️ Ergonomie et design<br>
+    - Forme sculptée pour droitier<br>
+    - Repose-pouce intégré<br>
+    - Finition mate premium<br>
+    - Disponible en noir graphite, gris clair et bleu nuit
+  </p>
+
+  <p>🌐 Fonctionnalités avancées<br>
+    - Flow : contrôle multi-PC avec copier-coller entre machines<br>
+    - Appairage avec 3 appareils<br>
+    - Logiciel Logi Options+ pour personnalisation<br>
+    - Compatible Windows, macOS, Linux, ChromeOS
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Idéale pour bureautique, création, productivité<br>
+    - Silencieuse et ultra fluide<br>
+    - Parfaite pour les longues sessions<br>
+    - Récompensée pour son confort et sa précision
+  </p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

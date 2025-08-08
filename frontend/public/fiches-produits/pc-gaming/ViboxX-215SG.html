@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Vibox X-215 SG</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Vibox X-215 SG</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>PC gaming haut de gamme avec éclairage RGB, conçu pour les performances en 4K et la réalité virtuelle.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/Vibox X-215 SG stylé.png" alt="Vibox X-215 SG" class="img-centree">
+  </div>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Zoom" />
+  </div>
+
+  <p>💰 Prix : 1549,99 €</p>
+  <p>🧩 Spécifications<br>- Processeur : Intel Core i9-12900K<br>- RAM : 32 Go DDR5<br>- Stockage : 2 To SSD NVMe<br>- Carte Graphique : NVIDIA GeForce RTX 4080<br>- Connectivité : Wi-Fi 6, Bluetooth 5.2<br>- Boîtier : Tour ATX avec refroidissement liquide RGB<br></p>
+  <p>🌐 Fonctionnalités<br>- Optimisation thermique avancée<br>- Support multi-écrans<br>- Mode streaming haute performance<br>- Compatible VR avec Oculus et HTC Vive<br></p>
+  <p>🎮 Usage recommandé<br>Idéal pour le gaming AAA, le montage vidéo 4K, la modélisation 3D et les expériences immersives multi-écrans.</p>
+
+<script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

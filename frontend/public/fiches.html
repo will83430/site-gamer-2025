@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produits par Catégorie - Exploration du Matériel Numérique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body class="fiches-page">
+  <div class="entete">
+    <img src="assets/images/gaming.png" alt="Gaming" class="logo-gaming">
+    <a href="index.html" class="lien-entete">Accueil</a>
+  </div>
+
+  <main>
+    <button id="btn-retour" class="btn btn-retour">← Retour</button>
+    <h1 id="titre-categorie" class="titre-categorie">Chargement...</h1>
+    <p class="description" id="desc-cat"></p>
+
+    <div id="zone-fiches" class="produits-grid"></div>
+
+    <button id="btn-comparer" class="btn btn-comparer">Comparer les produits sélectionnés</button>
+    
+    <div id="zone-comparaison" class="zone-comparaison hidden">
+      <h2 class="comparaison-titre">Produits Comparés</h2>
+      <div id="comparaison-content" class="comparaison-grid"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+  <img src="assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
+
+  <div class="footer-links">
+   <div class="footer-item">
+      <img src="assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+      <a href="index.html">Accueil</a>
+    </div>
+
+    <div class="footer-item">
+      <img src="assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+      <a href="equipements.html">Équipements</a>
+    </div>
+  </div>
+</footer>
+
+ 
+</body>
+<!-- Dans fiches.html -->
+<script src="assets/js/utils.js"></script>
+<script src="assets/js/fiches.js"></script>
+</html>

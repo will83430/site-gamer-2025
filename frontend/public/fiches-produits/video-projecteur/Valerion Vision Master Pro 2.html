@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Valerion Vision Master Pro 2</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Valerion Vision Master Pro 2</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Le vidéoprojecteur trilaser 4K le plus avancé de 2025, conçu pour le home cinéma et le gaming.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/Valerion Vision Mast.png" alt="Valerion Vision Master Pro 2" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 2 999 € – technologie trilaser, Dolby Vision, HDR10+, Google TV, zoom optique, faible latence.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+  - Technologie : trilaser DLP 4K UHD<br>
+  - Luminosité : pic lumineux très élevé<br>
+  - Contraste : dynamique avec EBL (Enhanced Black Level)<br>
+  - Connectivité : HDMI 2.1, USB-C, Wi-Fi, Bluetooth<br>
+  - Audio : système intégré, télécommande rétroéclairée<br>
+  - Interface : Google TV fluide et complète
+  </p>
+
+  <p>🖥️ Qualité d’image<br>
+  - Résolution : 3840 × 2160 pixels<br>
+  - HDR : compatible HDR10+ et Dolby Vision<br>
+  - Colorimétrie : couverture étendue, calibrage possible<br>
+  - Zoom optique et mise au point automatique<br>
+  - Correction du trapèze avancée
+  </p>
+
+  <p>🎮 Gaming et fluidité<br>
+  - Faible input lag<br>
+  - Compatible avec consoles et PC<br>
+  - Mode jeu dédié<br>
+  - Bonne réactivité en 4K 60 fps
+  </p>
+
+  <p>🌐 Fonctionnalités connectées<br>
+  - Google TV avec Netflix, Prime Video, YouTube<br>
+  - Assistant vocal intégré<br>
+  - Multi-utilisateurs et profils<br>
+  - Contrôle via smartphone
+  </p>
+
+  <p>🎬 Expérience cinéma<br>
+  - Image grand format immersive<br>
+  - Contraste profond et couleurs éclatantes<br>
+  - Silencieux en fonctionnement<br>
+  - Idéal pour films, séries et sport
+  </p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

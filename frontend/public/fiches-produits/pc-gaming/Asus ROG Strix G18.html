@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Asus ROG Strix G18</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Asus ROG Strix G18</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Le PC portable gaming 18 pouces ultime, conçu pour les performances extrêmes et les jeux AAA en 2.5K.</p>
+
+  <div class="gallery">
+    <img src="../../assets/images/Asus ROG Strix G18 2.png" alt="Asus ROG Strix G18" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 2 599 € – Intel Core Ultra 9 275HX, RTX 5070, 32 Go DDR5, SSD 1 To, écran 240 Hz.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Processeur : Intel Core Ultra 9 275HX (36 Mo cache, jusqu’à 5.1 GHz)<br>
+    - Carte graphique : NVIDIA GeForce RTX 5070 Laptop GPU (8 Go GDDR7)<br>
+    - RAM : 32 Go DDR5-5600 (2x16 Go)<br>
+    - Stockage : SSD PCIe Gen4 NVMe de 1 To<br>
+    - Connectivité : Wi-Fi 6E, Bluetooth 5.3, Ethernet RJ45, USB-C 40Gbps<br>
+    - Refroidissement : ROG Intelligent Cooling avec métal liquide
+  </p>
+
+  <p>🎮 Fonctions gaming<br>
+    - Technologies : NVIDIA Advanced Optimus, DLSS 3.5, G-Sync<br>
+    - Audio : Dolby Atmos, Smart Amp<br>
+    - Clavier : rétroéclairé RGB par touche, effet Halo Sync<br>
+    - Système : Windows 11 Pro avec Armoury Crate
+  </p>
+
+  <p>🌐 Fonctionnalités connectées<br>
+    - Ports : 2x USB-A 3.2 Gen2, 2x USB-C (Thunderbolt 4 + DisplayPort), HDMI 2.1, combo audio 3.5mm<br>
+    - Extension : 2 slots M.2, 2 slots SO-DIMM (jusqu’à 64 Go)<br>
+    - Sécurité : webcam FHD, verrou Kensington<br>
+    - Écosystème : compatible ROG accessories, Aura Sync
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Écran : 18” WQXGA IPS (2560 × 1600), 240 Hz, 100% DCI-P3, Dolby Vision<br>
+    - Design : châssis aluminium, ventilation arrière, finitions gaming<br>
+    - Poids : 3.2 kg<br>
+    - Idéal pour les gamers exigeants, streamers et créateurs de contenu
+  </p>
+
+  <script>
+    const g = document.querySelector(".gallery img");
+    const l = document.getElementById("lightbox");
+    const z = document.getElementById("lightbox-img");
+    g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+    l.addEventListener("click", () => l.style.display = "none");
+
+    const nomProduit = document.querySelector("h1").textContent.trim();
+
+    fetch("../../../../data/top-du-mois/data/equipements.json")
+      .then(res => res.json())
+      .then(data => {
+        const produit = data.find(p => p.nom === nomProduit);
+        if (produit?.top_du_mois) {
+          document.getElementById("badge-top-mois").innerHTML = `
+            <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+              ⭐ Ce produit est en vedette ce mois-ci !
+            </div>`;
+        }
+      })
+      .catch(err => console.error("Erreur chargement JSON :", err));
+  </script>
+
+  <div class="pied-de-page">
+    <img src="../../assets/bannière pour pied d.png" alt="Samouraï">
+    <img src="../../assets/logo blanc fond mauv.png" alt="Accueil" style="width: 35px; height:35px;">
+    <a href="../index.html">Accueil</a>
+    <img src="../../assets/logo blanc base de dokk.png" alt="Multibloc" style="width: 35px; height:35px;">
+    <a href="../../fiche catégorie/fiches.html">Retour sélection</a>
+  </div>
+
+</body>
+</html>

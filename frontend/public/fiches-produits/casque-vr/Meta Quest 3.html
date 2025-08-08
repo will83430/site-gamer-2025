@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Meta Quest 3</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Meta Quest 3</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Le casque VR autonome le plus immersif de 2025, idéal pour la réalité virtuelle et mixte.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/Meta Quest 3.png" alt="Meta Quest 3" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 549 € – processeur Snapdragon XR3, écrans 4K+, suivi des mains, réalité mixte couleur.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Processeur : Snapdragon XR3 Gen2<br>
+    - RAM : 12 Go<br>
+    - Stockage : 128 Go / 512 Go<br>
+    - Autonomie : jusqu’à 2h30<br>
+    - Poids : 515g
+  </p>
+
+  <p>🎮 Fonctions VR et MR<br>
+    - Suivi des mains et des yeux<br>
+    - Caméras couleur pour réalité mixte<br>
+    - Audio spatial intégré<br>
+    - Compatible PC VR (Air Link)
+  </p>
+
+  <p>🌐 Fonctionnalités connectées<br>
+    - Store Meta Quest avec des milliers d’apps<br>
+    - Partage d’écran sur TV ou mobile<br>
+    - Contrôle parental et profils multiples
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Confort optimisé pour longues sessions<br>
+    - Réglage IPD facile<br>
+    - Accessoires : Elite Strap, batterie, étui, etc.
+  </p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

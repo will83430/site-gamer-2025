@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>HONOR 200 Pro</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>HONOR 200 Pro</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Smartphone premium avec caméra portrait IA, design élégant et performances photo impressionnantes.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/HONOR 200 Pro stylé.png" alt="HONOR 200 Pro" class="img-centree">
+  </div>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Zoom" />
+  </div>
+
+  <p>💰 Prix : 799,99 €</p>
+  <p>🧩 Spécifications<br>- Écran : OLED 6.78'' 120Hz<br>- Processeur : Snapdragon 8s Gen 3<br>- RAM : 12 Go<br>- Stockage : 512 Go<br>- Batterie : 5200 mAh avec recharge 100W<br>- Appareil photo : Triple capteur - 50MP Sony IMX906 + téléobjectif + ultra grand angle<br></p>
+  <p>🌐 Fonctionnalités<br>- Caméra portrait IA HONOR développée avec Studio Harcourt<br>- Recharge ultra-rapide 100W<br>- Design incurvé premium<br>- Optimisation thermique et autonomie longue durée<br></p>
+  <p>🎮 Usage recommandé<br>Idéal pour la photographie créative, les vidéos 4K, le gaming mobile et les expériences sociales immersives.</p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dell PowerEdge R760</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Dell PowerEdge R760</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Serveur rack 2U hautes performances, idéal pour la virtualisation, l’IA et les infrastructures cloud hybrides.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/Dell PowerEdge R760.png" alt="Dell PowerEdge R760" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 5 499 € – 2 processeurs Intel Xeon Gen5, jusqu’à 8 To de RAM DDR5, stockage NVMe haute densité.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Processeurs : jusqu’à 2 × Intel Xeon Gen5 (jusqu’à 56 cœurs chacun)<br>
+    - RAM : jusqu’à 8 To DDR5 ECC (32 slots DIMM)<br>
+    - Stockage : jusqu’à 24 × SSD NVMe U.2 Gen4/Gen5<br>
+    - Refroidissement : Smart Flow chassis + ventilateurs redondants<br>
+    - Connectivité : 2 × ports 100 GbE, USB 3.2, iDRAC9<br>
+    - Format : rack 2U avec options GPU (jusqu’à 2 double-wide)
+  </p>
+
+  <p>🖥️ Performances et virtualisation<br>
+    - Optimisé pour VMware, Hyper-V, Proxmox<br>
+    - Prise en charge des conteneurs (Docker, Kubernetes)<br>
+    - Sécurité renforcée avec TPM 2.0, Secure Boot et MFA<br>
+    - Gestion centralisée via OpenManage Enterprise
+  </p>
+
+  <p>🌐 Fonctionnalités avancées<br>
+    - Architecture résiliente Zero Trust<br>
+    - BIOS et firmware auto-réparables<br>
+    - Surveillance proactive avec IA embarquée<br>
+    - Compatible cloud hybride, edge computing et IA
+  </p>
+
+  <p>🎮 Cas d’usage<br>
+    - Virtualisation standardisée<br>
+    - Bases de données et analytics<br>
+    - Infrastructure VDI<br>
+    - Intelligence artificielle et machine learning
+  </p>
+
+  <script>
+    const g = document.querySelector(".gallery img");
+    const l = document.getElementById("lightbox");
+    const z = document.getElementById("lightbox-img");
+    g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+    l.addEventListener("click", () => l.style.display = "none");
+
+    const nomProduit = document.querySelector("h1").textContent.trim();
+
+    fetch("../../../../data/top-du-mois/data/equipements.json")
+      .then(res => res.json())
+      .then(data => {
+        const produit = data.find(p => p.nom === nomProduit);
+        if (produit?.top_du_mois) {
+          document.getElementById("badge-top-mois").innerHTML = `
+            <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+              ⭐ Ce produit est en vedette ce mois-ci !
+            </div>`;
+        }
+      })
+      .catch(err => console.error("Erreur chargement JSON :", err));
+  </script>
+
+  <div class="pied-de-page">
+    <img src="../../assets/bannière pour pied d.png" alt="Samouraï">
+    <img src="../../assets/logo blanc fond mauv.png" alt="Accueil" style="width: 35px; height:35px;">
+    <a href="../index.html">Accueil</a>
+    <img src="../../assets/logo blanc base de dokk.png" alt="Multibloc" style="width: 35px; height:35px;">
+    <a href="../../fiche catégorie/fiches.html">Retour sélection</a>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

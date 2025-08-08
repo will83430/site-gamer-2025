@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Garmin Fénix 8</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Garmin Fénix 8</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>La montre connectée la plus complète de 2025, idéale pour le sport, l’aventure et la santé.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/fénix 8.png" alt="Garmin Fénix 8" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 799 € – GPS multi-bandes, autonomie 30j, écran AMOLED, cartographie mondiale, paiement sans contact.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Écran : AMOLED 1,4” tactile<br>
+    - GPS multi-bandes, altimètre, baromètre, boussole<br>
+    - Autonomie : jusqu’à 30 jours<br>
+    - Étanchéité : 10 ATM
+  </p>
+
+  <p>⌚ Fonctions sport et santé<br>
+    - Suivi multisport, VO2max, ECG, SpO2<br>
+    - Analyse du sommeil, stress, récupération<br>
+    - Coach Garmin, plans d’entraînement<br>
+    - Paiement Garmin Pay
+  </p>
+
+  <p>🌐 Fonctionnalités connectées<br>
+    - Notifications smartphone, musique embarquée<br>
+    - Cartographie mondiale, LiveTrack<br>
+    - Boutique Connect IQ pour apps et cadrans
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Interface personnalisable<br>
+    - Bracelet QuickFit, verre saphir<br>
+    - Idéale pour sportifs, aventuriers, voyageurs
+  </p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Corsair One i500</title>
+ <link rel="stylesheet" href="../../../../frontend/public/assets/css/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Corsair One i500</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Le PC gamer compact le plus puissant de 2025, idéal pour le jeu 4K et la création.</p>
+
+  <div class="gallery">
+    <img src="../../assets/images/Corsair One i500 sty.png" alt="Corsair One i500" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 3 499 € – Intel Core i9-14900K, RTX 5090, 64 Go DDR5, SSD 4 To, Wi-Fi 7.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Processeur : Intel Core i9-14900K<br>
+    - Carte graphique : NVIDIA RTX 5090 24 Go<br>
+    - RAM : 64 Go DDR5<br>
+    - Stockage : SSD NVMe 4 To<br>
+    - Connectivité : Wi-Fi 7, Bluetooth 5.4, Ethernet 10G
+  </p>
+
+  <p>🎮 Fonctions gaming<br>
+    - Ray tracing, DLSS 4, Reflex<br>
+    - Refroidissement liquide intégral<br>
+    - RGB personnalisable
+  </p>
+
+  <p>🌐 Fonctionnalités connectées<br>
+    - iCUE pour gestion RGB et monitoring<br>
+    - Streaming 4K, VR Ready<br>
+    - Ports Thunderbolt 4, USB-C, HDMI 2.1
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Format compact, ultra silencieux<br>
+    - Châssis aluminium premium<br>
+    - Idéal pour gamers, streamers, créateurs
+  </p>
+
+  <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+  <div class="pied-de-page">
+    <img src="../../assets/images/banniere-pied.png" alt="Samouraï">
+    <img src="../../assets/images/logo-blanc.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../assets/images/logo-dokk-blanc.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

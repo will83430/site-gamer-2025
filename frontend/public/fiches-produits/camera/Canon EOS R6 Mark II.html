@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Canon EOS R6 Mark II</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Canon EOS R6 Mark II</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Appareil photo hybride plein format ultra rapide, idéal pour les créateurs exigeants en photo et vidéo.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/Canon EOS R6 Mark II.png" alt="Canon EOS R6 Mark II" class="img-centree">
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Image Zoomée" />
+  </div>
+
+  <p>💰 À partir de 2 499 € – capteur 24.2 MP, vidéo 4K 60p, stabilisation 8 stops, autofocus intelligent.</p>
+
+  <p>🧩 Spécifications matérielles<br>
+    - Capteur : CMOS plein format 24.2 MP<br>
+    - Processeur : DIGIC X<br>
+    - Stabilisation : jusqu’à 8 stops (IBIS)<br>
+    - Viseur : OLED 3.69 Mpts, 120 Hz<br>
+    - Écran : LCD tactile orientable 3”<br>
+    - Connectivité : Wi-Fi, Bluetooth, USB-C, micro-HDMI, jack casque et micro
+  </p>
+
+  <p>🎥 Fonctions vidéo<br>
+    - Résolution : 4K 60p oversamplée, Full HD 180p<br>
+    - Formats : MP4, RAW, C-RAW, HEIF<br>
+    - Autofocus : Dual Pixel CMOS AF II avec détection des visages, animaux, véhicules<br>
+    - Stabilisation numérique vidéo + IBIS<br>
+    - Enregistrement sans limite de durée
+  </p>
+
+  <p>🌐 Fonctionnalités connectées<br>
+    - Double slot SD UHS-II<br>
+    - Application Canon Camera Connect<br>
+    - Mise à jour firmware via app<br>
+    - Contrôle à distance via smartphone
+  </p>
+
+  <p>🎮 Expérience utilisateur<br>
+    - Rafale : jusqu’à 40 i/s en obturateur électronique<br>
+    - Ergonomie : boîtier robuste et tropicalisé<br>
+    - Compatibilité : objectifs RF, EF via adaptateur<br>
+    - Idéal pour reportage, mariage, sport, vlog et cinéma
+  </p>
+
+  <script>
+    const g = document.querySelector(".gallery img");
+    const l = document.getElementById("lightbox");
+    const z = document.getElementById("lightbox-img");
+    g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+    l.addEventListener("click", () => l.style.display = "none");
+
+    const nomProduit = document.querySelector("h1").textContent.trim();
+
+    fetch("../../../../data/top-du-mois/data/equipements.json")
+      .then(res => res.json())
+      .then(data => {
+        const produit = data.find(p => p.nom === nomProduit);
+        if (produit?.top_du_mois) {
+          document.getElementById("badge-top-mois").innerHTML = `
+            <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+              ⭐ Ce produit est en vedette ce mois-ci !
+            </div>`;
+        }
+      })
+      .catch(err => console.error("Erreur chargement JSON :", err));
+  </script>
+
+  <div class="pied-de-page">
+    <img src="../../assets/bannière pour pied d.png" alt="Samouraï">
+    <img src="../../assets/logo blanc fond mauv.png" alt="Accueil" style="width: 35px; height:35px;">
+    <a href="../index.html">Accueil</a>
+    <img src="../../assets/logo blanc base de dokk.png" alt="Multibloc" style="width: 35px; height:35px;">
+    <a href="../../fiche catégorie/fiches.html">Retour sélection</a>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>

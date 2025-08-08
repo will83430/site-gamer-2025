@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>PlayStation 5 Slim</title>
+  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a></a>
+  </div>
+
+  <h1>PlayStation 5 Slim</h1>
+  <div id="badge-top-mois"></div>
+
+  <p>Console next-gen compacte, puissante et élégante. Elle réinvente le gaming ultra-performant avec un design plus fin.</p>
+
+  <div class="gallery">
+    <img src="../../../../assets/images/image bloc/PlayStation 5 Slim stylé.png" alt="PlayStation 5 Slim" class="img-centree">
+  </div>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Zoom" />
+  </div>
+
+  <p>💰 Prix : 499,00 €</p>
+  <p>🧩 Spécifications<br>- CPU : AMD Ryzen Zen 2 8 cœurs 3.5 GHz<br>- GPU : RDNA 2 avec ray tracing<br>- RAM : 16 Go GDDR6<br>- Stockage : SSD 1 To NVMe<br>- Résolution : 4K HDR à 120 fps<br>- Connectivité : HDMI 2.1, USB-C, Wi-Fi 6, Bluetooth 5.1<br></p>
+  <p>🌐 Fonctionnalités<br>- Mode Turbo pour performance extrême<br>- Design Slim avec LED bleutées<br>- Interface rapide et fluide<br>- Compatible PS5 Digital et Lecteur Blu-ray en module<br></p>
+  <p>🎮 Usage recommandé<br>Idéale pour les gamers exigeants, les streamers, et les sessions en écran partagé explosif.</p>
+
+ <script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
+
+  const nomProduit = document.querySelector("h1").textContent.trim();
+
+  fetch("../../../../data/top-du-mois/data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
+
+
+  <div class="pied-de-page">
+    <img src="../../../../assets/images/bannière pour pied d.png " alt="Samouraï">
+    <img src="../../../../assets/images/logo blanc fond mauv.png" style="width:35px;height:35px;" alt="Accueil">
+    <a href="../../../public/index.html">Accueil</a>
+    <img src="../../../../assets/images/logo blanc base de dokk.png" style="width:35px;height:35px;" alt="Multibloc">
+    <a href="../../pages/top-du-mois.html">Équipements</a>
+  </div>
+
+</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</html>
