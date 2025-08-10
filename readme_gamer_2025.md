@@ -1,167 +1,236 @@
-# Site Gamer 2025 🎮
+# 🎮 Site de Fiches Produits - Version 2025
 
-Site web dédié à l'exploration des équipements technologiques modernes : informatique, audiovisuel, communication et éducation.
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-## 📋 Vue d'ensemble
+## 📋 Description
 
-Ce projet présente un catalogue de **47 produits** répartis dans **15 catégories** avec :
-
-- Fiches détaillées pour chaque produit
-- Système de navigation par catégories
-- Sélection mensuelle des produits vedettes
-- Interface responsive et moderne
-
-## 🏗️ Structure du projet
-
-```texte
-site-gamer-2025/
-├── frontend/public/
-│   ├── assets/           # CSS, JS, images
-│   ├── data/            # Données JSON
-│   ├── fiches-produits/ # Catalogue par catégorie
-│   ├── index.html       # Page d'accueil
-│   ├── top-du-mois.html # Sélection mensuelle
-│   └── fiches.html      # Navigation produits
-└── README.md
-```
-
-## 🛠️ Technologies
-
-- **Frontend** : HTML5, CSS3, JavaScript Vanilla
-- **Données** : JSON statique
-- **Style** : CSS Grid/Flexbox + animations
-- **Architecture** : Site statique multi-pages
-
-## 🚀 Démarrage rapide
-
-### Option 1 : Ouverture directe
-
-```bash
-# Cloner le dépôt
-git clone [votre-repo]
-cd site-gamer-2025
-
-# Ouvrir dans le navigateur
-open frontend/public/index.html
-```
-
-### Option 2 : Serveur local
-
-```bash
-# Avec Python
-cd frontend/public
-python -m http.server 8000
-
-# Avec Node.js
-npx serve frontend/public
-
-# Accès : http://localhost:8000
-```
-
-## 📱 Catégories disponibles
-
-- **Gaming** : PC Gaming, Consoles, Casques VR
-- **Audio/Vidéo** : Casques audio, Caméras, Vidéoprojecteurs
-- **Mobile** : Smartphones, Tablettes, Montres connectées
-- **Pro/Éducation** : Tableaux interactifs, Imprimantes 3D, Serveurs
-- **Accessoires** : Périphériques, Drones
+Application web interactive permettant de naviguer dans un catalogue de produits organisés par catégories. Le site offre une interface moderne avec navigation fluide, système de comparaison de produits et design responsive.
 
 ## ✨ Fonctionnalités
 
-### Navigation
+### 🎯 Navigation par Catégories
+- **Affichage des catégories** : Interface en grille avec blocs colorés centrés
+- **Navigation sans rechargement** : Utilisation de l'History API pour une expérience fluide
+- **URL dynamiques** : Support des paramètres GET (`?cat=categorie`)
 
-- **Page d'accueil** : Introduction et navigation principale
-- **Top du mois** : Produits vedettes avec badges animés
-- **Fiches produits** : Catalogue filtrable par catégorie
+### 🔍 Gestion des Produits
+- **Affichage par catégorie** : Filtrage automatique des produits
+- **Fiches détaillées** : Informations complètes (prix, description, image)
+- **Badges spéciaux** : Indication des produits "Top du mois" ⭐
+- **Images optimisées** : Gestion des erreurs avec placeholders SVG
 
-### Système de fiches
+### ⚖️ Système de Comparaison
+- **Sélection multiple** : Checkboxes pour choisir les produits
+- **Compteur dynamique** : Affichage en temps réel du nombre de produits sélectionnés
+- **Comparaison détaillée** : Vue côte à côte des caractéristiques
+- **Fonctionnalités avancées** : Support des listes de fonctionnalités
 
-- Comparaison de produits (sélection multiple)
-- Images avec lightbox
-- Informations détaillées (prix, specs, fonctionnalités)
-- Liens vers fiches complètes
+### 🎨 Interface Utilisateur
+- **Design moderne** : Animations et transitions fluides
+- **Responsive** : Adaptation automatique mobile/desktop
+- **Messages informatifs** : Gestion d'erreurs avec style
+- **Loader animé** : Indicateur de chargement
 
-### Interface utilisateur
+## 🏗️ Structure du Projet
 
-- Design responsive (mobile/desktop)
-- Animations CSS fluides
-- Gestion d'erreurs robuste
-- Chargement optimisé des données
-
-## 📁 Fichiers clés
-
-| Fichier | Description |
-|---------|-------------|
-| `data/equipements.json` | Base de données des produits |
-| `assets/js/utils.js` | Utilitaires partagés |
-| `assets/js/fiches.js` | Logique des fiches produits |
-| `assets/css/styles.css` | Styles principaux |
-
-## 🔧 Développement
-
-### Structure des données
-
-```json
-{
-  "nom": "Nom du produit",
-  "categorie": "CATEGORIE",
-  "prix": "À partir de X €",
-  "description": "Description courte",
-  "top_du_mois": true/false,
-  "image": "chemin/vers/image.png",
-  "lien": "chemin/vers/fiche.html"
-}
+```text
+site-gamer-2025/
+├── frontend/
+│   └── public/
+│       ├── assets/
+│       │   ├── images/
+│       │   │   └── bannière pour pied d.png
+│       │   ├── categories/
+│       │   │   └── [images-categories].jpg
+│       │   └── js/
+│       │       └── fiches.js
+│       ├── data/
+│       │   └── top-du-mois/
+│       │       └── data/
+│       │           └── equipements.json
+│       └── pages/
+│           └── fiches.html
+├── README.md
+└── .gitignore
 ```
 
-### Ajout d'un produit
+## 🚀 Installation et Lancement
 
-1. Ajouter l'entrée dans `data/equipements.json`
-2. Créer la fiche HTML dans le dossier catégorie approprié
-3. Ajouter l'image dans `assets/images/`
+### Prérequis
+- Navigateur web moderne (Chrome, Firefox, Safari, Edge)
+- Serveur web local (optionnel pour développement)
 
-### Fonctionnalités JavaScript
+### Installation
 
-- **Cache des données** : Chargement unique du JSON
-- **Gestion d'erreurs** : Fallbacks et messages utilisateur
-- **Optimisations** : Debouncing, lazy loading
-- **Utils** : Fonctions réutilisables (formatage, navigation)
+1. **Cloner le repository**
 
-## 📱 Responsive
+   ```bash
+   git clone https://github.com/votre-username/site-gamer-2025.git
+   cd site-gamer-2025
+   ```
 
-Le site s'adapte automatiquement :
+2. **Lancer le site**
+   - **Option 1 - Serveur local :**
 
-- **Desktop** : Grilles multi-colonnes
-- **Tablette** : Colonnes réduites
-- **Mobile** : Vue en colonne unique
+     ```bash
+     # Avec Python
+     python -m http.server 8000
 
-## 🎨 Personnalisation
+     # Avec Node.js
+     npx serve
+     ```
 
-### Couleurs (CSS Variables)
+   - **Option 2 - Ouverture directe :**
+     Ouvrir `frontend/public/pages/fiches.html` dans le navigateur
 
+3. **Accéder au site**
+
+   ```text
+   http://localhost:8000/frontend/public/pages/fiches.html
+   ```
+
+## 📊 Format des Données
+
+Le fichier `equipements.json` doit suivre cette structure :
+
+```json
+[
+  {
+    "nom": "Nom du produit",
+    "categorie": "Catégorie",
+    "prix": "Prix",
+    "description": "Description du produit",
+    "image": "URL de l'image",
+    "lien": "URL de la fiche complète",
+    "top_du_mois": true,
+    "fonctionnalites_avancees": ["Fonctionnalité 1", "Fonctionnalité 2"]
+  }
+]
+```
+
+## 🎨 Personnalisation CSS
+
+### Variables principales
 ```css
 :root {
   --primary-color: #007bff;
-  --secondary-color: #6a00b3;
-  --background-dark: rgba(0, 0, 0, 0.8);
-  --text-light: #fdf8f8;
+  --secondary-color: lightblue;
+  --text-color: #242424;
+  --background-color: #1f2039;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 ```
 
-### Thème
+### Classes utiles
+- `.category-selector` : Style des blocs de catégories
+- `.fiche-produit` : Style des cartes produits
+- `.produit-checkbox` : Style des checkboxes de sélection
+- `.btn-comparer` : Style du bouton de comparaison
 
-- Arrière-plan : Dégradé violet/bleu
-- Typographie : Manrope + Montserrat
-- Animations : Transitions fluides 0.3s
+## 🔧 Configuration
 
-## 📜 Licence
+### Modifier les chemins
+Dans `fiches.js`, adapter la configuration :
 
-CC0 1.0 Universal - Domaine public
+```javascript
+const CONFIG = {
+  JSON_PATH: 'chemin/vers/equipements.json',
+  CATEGORY_IMAGE_PATH: 'chemin/vers/images/categories/',
+  // ...
+};
+```
 
-## 🛟 Support
+### Ajouter de nouvelles catégories
+1. Ajouter les produits dans `equipements.json`
+2. Placer l'image de catégorie dans `assets/categories/`
+3. Respecter le format : `nom-categorie.jpg`
 
-Pour le développement local, ouvrir la console navigateur pour les logs détaillés :
+## 🐛 Résolution de Problèmes
 
-- ✅ Messages de succès
-- ⚠️ Avertissements
-- ❌ Erreurs avec détails
+### Problèmes courants
+
+**Images ne s'affichent pas**
+- Vérifier les chemins dans `CONFIG.CATEGORY_IMAGE_PATH`
+- S'assurer que les images existent dans le dossier
+
+**Données non chargées**
+- Vérifier le chemin `CONFIG.JSON_PATH`
+- Contrôler la validité du JSON avec un validateur
+
+**Navigation ne fonctionne pas**
+- Vérifier que JavaScript est activé
+- Contrôler la console pour les erreurs
+
+### Mode debug
+Ouvrir les outils de développement (F12) et vérifier :
+- Console pour les erreurs JavaScript
+- Network pour les requêtes de fichiers
+- Application > Local Storage pour le cache
+
+## 🔒 Sécurité
+
+- ✅ Protection XSS avec `sanitizeId()`
+- ✅ Validation des données d'entrée
+- ✅ Liens externes sécurisés (`rel="noopener noreferrer"`)
+- ✅ Gestion d'erreurs pour éviter les crashes
+
+## 📱 Compatibilité
+
+### Navigateurs supportés
+
+- ✅ Chrome 80+
+- ✅ Firefox 75+
+- ✅ Safari 13+
+- ✅ Edge 80+
+
+### Résolutions testées
+
+- 📱 Mobile : 320px - 768px
+- 💻 Tablette : 768px - 1024px
+- 🖥️ Desktop : 1024px+
+
+## 🚧 Roadmap
+
+### Version 2.1
+- [ ] Système de favoris
+- [ ] Recherche textuelle
+- [ ] Filtres par prix
+- [ ] Mode sombre/clair
+
+### Version 2.2
+- [ ] Panier d'achat
+- [ ] Notifications push
+- [ ] PWA (Progressive Web App)
+- [ ] Offline support
+
+## 🤝 Contribution
+
+1. **Fork** le projet
+2. **Créer** une branche pour votre fonctionnalité (`git checkout -b feature/AmazingFeature`)
+3. **Commit** vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** vers la branche (`git push origin feature/AmazingFeature`)
+5. **Ouvrir** une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 👥 Auteurs
+
+- **Votre Nom** - *Développeur principal* - [VotreGitHub](https://github.com/votre-username)
+
+## 🙏 Remerciements
+
+- **Manrope Font** - Police utilisée pour l'interface
+- **MDN Web Docs** - Documentation et bonnes pratiques
+- **Community** - Retours et suggestions d'amélioration
+
+---
+
+<div align="center">
   
+**⭐ N'hésitez pas à mettre une étoile si ce projet vous a aidé ! ⭐**
+
+</div>

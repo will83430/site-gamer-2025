@@ -104,7 +104,7 @@
     "image": "assets/images/logitech-mx-master-4s.png",
     "lien": "/frontend/src/pages/fiches/Logitech MX Master 4S.html",
     "description": "Souris ergonomique ultra précise pour bureautique et gaming.",
-    "top_du_mois": false,
+    "top_du_mois": true,
     "prix": "À partir de 149 €",
     "fonctionnalites_avancees": [
       "Spécifications matérielles\n    - Capteur : 8 000 DPI avec suivi sur verre\n    - Boutons : 7 personnalisables + molette latérale\n    - Défilement : MagSpeed électromagnétique ultra rapide\n    - Autonomie : jusqu’à 90 jours\n    - Recharge : USB-C rapide (1 min = 3h)\n    - Connectivité : Bluetooth + Logi Bolt"
@@ -174,7 +174,7 @@
     "image": "assets/images/Samsung Galaxy S25 U.png",
     "lien": "/frontend/src/pages/fiches/Samsung Galaxy S25 Ultra.html",
     "description": "Smartphone haut de gamme avec zoom x100 et écran AMOLED 120Hz.",
-    "top_du_mois": false,
+    "top_du_mois": true,
     "prix": "À partir de 1 199 €",
     "fonctionnalites_avancees": [
       "Spécifications matérielles\n    - Processeur : Snapdragon 8 Elite\n    - RAM : 12 ou 16 Go\n    - Stockage : 256 Go / 512 Go / 1 To\n    - Batterie : 5 000 mAh — autonomie jusqu’à 2 jours\n    - Refroidissement : chambre à vapeur optimisée\n    - Connectivité : Wi-Fi 7, Bluetooth 5.4, USB-C"
