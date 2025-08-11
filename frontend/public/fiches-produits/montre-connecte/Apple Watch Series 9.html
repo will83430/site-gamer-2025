@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>HONOR 200 Pro</title>
+  <title>Apple Watch Series 9</title>
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,24 +14,24 @@
     <a href="../../top-du-mois.html">Retour à la vitrine</a>
   </div>
 
-  <h1>HONOR 200 Pro</h1>
+  <h1>Apple Watch Series 9</h1>
   <div id="badge-top-mois"></div>
 
-  <p>Smartphone premium avec caméra portrait IA, design élégant et performances photo impressionnantes.</p>
+  <p>Montre intelligente ultra fluide avec gestes tactiles, écran lumineux et puce S9 ultra-rapide.</p>
 
   <div class="gallery">
-    <img src="../../assets/images/HONOR 200 Pro stylé.png" alt="HONOR 200 Pro" class="img-centree">
+    <img src="../../assets/images/Apple Watch Series 9 stylé.png" alt="Apple Watch Series 9" class="img-centree">
   </div>
   <div class="lightbox" id="lightbox">
     <img id="lightbox-img" src="" alt="Zoom" />
   </div>
 
-  <p>💰 Prix : 799,99 €</p>
-  <p>🧩 Spécifications<br>- Écran : OLED 6.78'' 120Hz<br>- Processeur : Snapdragon 8s Gen 3<br>- RAM : 12 Go<br>- Stockage : 512 Go<br>- Batterie : 5200 mAh avec recharge 100W<br>- Appareil photo : Triple capteur - 50MP Sony IMX906 + téléobjectif + ultra grand angle<br></p>
-  <p>🌐 Fonctionnalités<br>- Caméra portrait IA HONOR développée avec Studio Harcourt<br>- Recharge ultra-rapide 100W<br>- Design incurvé premium<br>- Optimisation thermique et autonomie longue durée<br></p>
-  <p>🎮 Usage recommandé<br>Idéal pour la photographie créative, les vidéos 4K, le gaming mobile et les expériences sociales immersives.</p>
+  <p>💰 Prix : 449,00 €</p>
+  <p>🧩 Spécifications<br>- Écran : OLED LTPO 2'' toujours activé<br>- Puce : S9 SiP double cœur<br>- Mémoire : 64 Go de stockage<br>- Autonomie : 18 heures / mode économie jusqu’à 36h<br>- Connectivité : Wi-Fi, Bluetooth 5.3, GPS/GNSS, NFC<br>- Capteurs : Cardiofréquencemètre, oxygène sanguin, température, détection de chute<br></p>
+  <p>🌐 Fonctionnalités<br>- Commande par double tap (gestuelle sans toucher l’écran)<br>- Siri local avec accès aux données de santé<br>- App Santé et suivi fitness intégrés<br>- Mode nuit automatique et résistante à l’eau WR50<br></p>
+  <p>🎮 Usage recommandé<br>Idéale pour le suivi quotidien, la santé, le sport et les notifications discrètes avec style.</p>
 
-  <script>
+ <script>
   const g = document.querySelector(".gallery img");
   const l = document.getElementById("lightbox");
   const z = document.getElementById("lightbox-img");
@@ -40,7 +40,7 @@
 
   const nomProduit = document.querySelector("h1").textContent.trim();
 
-  fetch("data/equipements.json")
+  fetch("../../data/equipements.json")
     .then(res => res.json())
     .then(data => {
       const produit = data.find(p => p.nom === nomProduit);
@@ -54,13 +54,14 @@
     .catch(err => console.error("Erreur chargement JSON :", err));
 </script>
 
+
   <footer class="footer">
   <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
 
   <div class="footer-links">
    <div class="footer-item">
       <img src="../../assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
-      <a href="index.html">Accueil</a>
+      <a href="../../index.html">Accueil</a>
     </div>
 
     <div class="footer-item">
@@ -70,5 +71,5 @@
   </div>
 </footer>
 
-</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+</body> <script src="../../assets/js/utils.js"></script>
 </html>

@@ -24,7 +24,6 @@ const ficheManager = {
             return '#';
         }
 
-        // Mapping des catégories vers leurs dossiers
         const categoryFolders = {
             'PC GAMING': 'pc-gaming',
             'SERVEUR': 'serveur',
@@ -50,28 +49,16 @@ const ficheManager = {
             return '#';
         }
 
-        // Nettoyer le nom du produit pour créer le fichier HTML
         const fileName = this.sanitizeFileName(product.nom);
-        
         return `fiches-produits/${folder}/${fileName}.html`;
     },
 
     // Nettoie un nom de produit pour en faire un nom de fichier
     sanitizeFileName(productName) {
         return productName
-            .replace(/\s+/g, ' ')           // Normaliser les espaces
-            .replace(/[\/\\:*?"<>|]/g, '')  // Supprimer caractères interdits
+            .replace(/\s+/g, ' ')
+            .replace(/[\/\\:*?"<>|]/g, '')
             .trim();
-    },
-
-    // Vérifie si une fiche existe (optionnel - pour validation)
-    async checkFicheExists(url) {
-        try {
-            const response = await fetch(url, { method: 'HEAD' });
-            return response.ok;
-        } catch (error) {
-            return false;
-        }
     },
 
     // Ouvre une fiche dans une nouvelle fenêtre/onglet
@@ -83,7 +70,6 @@ const ficheManager = {
             return;
         }
 
-        // Ouvrir dans nouvel onglet ou même fenêtre
         if (target === '_blank') {
             window.open(url, '_blank', 'noopener,noreferrer');
         } else {
@@ -91,7 +77,7 @@ const ficheManager = {
         }
     },
 
-    // Crée un modal pour afficher la fiche (alternative)
+    // Crée un modal pour afficher la fiche
     async showFicheModal(product) {
         const url = this.buildFicheUrl(product);
         
@@ -100,7 +86,6 @@ const ficheManager = {
             return;
         }
 
-        // Créer le modal
         const modal = document.createElement('div');
         modal.style.cssText = `
             position: fixed;
@@ -191,7 +176,6 @@ const utils = {
 
     // Gère les erreurs d'images avec fallback intelligent
     handleImageError: (img, fallbackText) => {
-        // Éviter la boucle infinie en vérifiant si c'est déjà un placeholder
         if (img.src.includes('data:image/svg+xml')) {
             img.style.display = 'none';
             return;
@@ -247,11 +231,9 @@ const utils = {
     // Formatage de prix
     formatPrice: (price) => {
         if (!price) return 'Non disponible';
-        // Si c'est déjà formaté, le retourner tel quel
         if (typeof price === 'string' && (price.includes('€') || price.includes('À partir'))) {
             return price;
         }
-        // Sinon, essayer de formater comme un nombre
         const numPrice = parseFloat(price);
         if (isNaN(numPrice)) return price;
         return `${utils.formatNumber(numPrice)} €`;
@@ -287,7 +269,6 @@ const dataManager = {
     // Filtre les produits par catégorie
     filterByCategory(data, category) {
         if (!data || !category) return [];
-        
         return data.filter(item => 
             utils.normalizeCat(item.categorie) === utils.normalizeCat(category)
         );
@@ -415,12 +396,10 @@ const uiManager = {
         toast.textContent = message;
         document.body.appendChild(toast);
         
-        // Animation d'entrée
         requestAnimationFrame(() => {
             toast.style.transform = 'translateX(0)';
         });
         
-        // Suppression automatique
         setTimeout(() => {
             toast.style.transform = 'translateX(100%)';
             setTimeout(() => {
@@ -433,26 +412,231 @@ const uiManager = {
 };
 
 // ====================================
-// STYLES D'ANIMATION POUR LE LOADER
+// FERMETURE AUTOMATIQUE DES ONGLETS DE FICHES
 // ====================================
 
-// Ajouter les styles d'animation si ils n'existent pas
-if (!document.querySelector('#utils-styles')) {
-    const style = document.createElement('style');
-    style.id = 'utils-styles';
-    style.textContent = `
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+const autoCloseManager = {
+    init() {
+        console.log('🔒 Initialisation fermeture automatique');
+        
+        if (this.isProductPage()) {
+            this.setupAutoClose();
         }
-    `;
-    document.head.appendChild(style);
-}
+        
+        this.setupProductOpening();
+    },
+
+    isProductPage() {
+        return window.location.pathname.includes('fiches-produits');
+    },
+
+    setupAutoClose() {
+        console.log('⏱️ Configuration fermeture automatique');
+        this.autoCloseAfterDelay();
+        this.closeOnReturn();
+        this.closeOnInactivity();
+    },
+
+    autoCloseAfterDelay(delay = 30000) {
+        console.log(`⏰ Fermeture automatique dans ${delay/1000}s`);
+        
+        let countdown = delay / 1000;
+        const warningTime = 10;
+        
+        const timer = setInterval(() => {
+            countdown--;
+            
+            if (countdown === warningTime) {
+                this.showCloseWarning(warningTime);
+            }
+            
+            if (countdown <= 0) {
+                clearInterval(timer);
+                this.closeTab();
+            }
+        }, 1000);
+        
+        this.setupInteractionListeners(() => {
+            clearInterval(timer);
+            this.hideCloseWarning();
+            console.log('⏸️ Fermeture automatique annulée par interaction');
+        });
+    },
+
+    showCloseWarning(seconds) {
+        const warning = document.createElement('div');
+        warning.id = 'close-warning';
+        warning.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 10000;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: pulse 1s infinite;
+        `;
+        
+        let countdown = seconds;
+        warning.innerHTML = `
+            🚨 Fermeture dans ${countdown}s
+            <button onclick="this.parentElement.remove()" style="
+                background: white;
+                color: #ff6b6b;
+                border: none;
+                padding: 5px 10px;
+                margin-left: 10px;
+                border-radius: 4px;
+                cursor: pointer;
+            ">Annuler</button>
+        `;
+        
+        document.body.appendChild(warning);
+        
+        const countdownTimer = setInterval(() => {
+            countdown--;
+            if (warning.parentElement) {
+                warning.innerHTML = `
+                    🚨 Fermeture dans ${countdown}s
+                    <button onclick="this.parentElement.remove()" style="
+                        background: white;
+                        color: #ff6b6b;
+                        border: none;
+                        padding: 5px 10px;
+                        margin-left: 10px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                    ">Annuler</button>
+                `;
+            } else {
+                clearInterval(countdownTimer);
+            }
+        }, 1000);
+    },
+
+    hideCloseWarning() {
+        const warning = document.getElementById('close-warning');
+        if (warning) {
+            warning.remove();
+        }
+    },
+
+    closeOnReturn() {
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href') || '';
+            const text = link.textContent.toLowerCase();
+
+            if ((href.includes('top-du-mois') || href.includes('index.html')) &&
+                (text.includes('retour') || text.includes('vitrine') || text.includes('accueil'))) {
+                
+                e.preventDefault();
+                console.log('🔙 Retour détecté - fermeture de l\'onglet');
+                this.closeTab();
+            }
+        });
+    },
+
+    closeOnInactivity(inactiveTime = 60000) {
+        let lastActivity = Date.now();
+        
+        const updateActivity = () => {
+            lastActivity = Date.now();
+        };
+        
+        ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+            document.addEventListener(event, updateActivity, true);
+        });
+        
+        const checkInactivity = setInterval(() => {
+            if (Date.now() - lastActivity > inactiveTime) {
+                clearInterval(checkInactivity);
+                console.log('😴 Inactivité détectée - fermeture de l\'onglet');
+                this.closeTab();
+            }
+        }, 5000);
+    },
+
+    setupInteractionListeners(callback) {
+        const events = ['click', 'keydown', 'scroll', 'mousemove'];
+        
+        const handleInteraction = () => {
+            events.forEach(event => {
+                document.removeEventListener(event, handleInteraction);
+            });
+            callback();
+        };
+        
+        events.forEach(event => {
+            document.addEventListener(event, handleInteraction, { once: true });
+        });
+    },
+
+    setupProductOpening() {
+        if (this.isProductPage()) return;
+        
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            if (!href || !href.includes('fiches-produits')) return;
+
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener');
+            
+            console.log('📂 Ouverture fiche dans nouvel onglet:', href);
+        });
+    },
+
+    closeTab() {
+        try {
+            if (window.close) {
+                window.close();
+                return;
+            }
+        } catch (e) {
+            console.log('Méthode 1 échouée');
+        }
+
+        try {
+            if (window.history.length > 1) {
+                window.history.back();
+                return;
+            }
+        } catch (e) {
+            console.log('Méthode 2 échouée');
+        }
+
+        try {
+            window.location.href = '../../top-du-mois.html';
+        } catch (e) {
+            console.log('Toutes les méthodes ont échoué');
+        }
+    }
+};
+
 // ====================================
-// STYLES CSS POUR LES FICHES
+// STYLES ET INITIALISATION
 // ====================================
 
 const additionalCSS = `
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
 .product-content {
     cursor: pointer;
     transition: transform 0.2s ease;
@@ -501,7 +685,6 @@ const additionalCSS = `
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
-/* Styles pour galerie et lightbox */
 .gallery {
     display: flex;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -550,29 +733,28 @@ const additionalCSS = `
 `;
 
 // ====================================
-// INITIALISATION
+// INITIALISATION ET EXPORT
 // ====================================
 
-// Ajouter les styles au chargement
 document.addEventListener('DOMContentLoaded', function() {
-    // Ajouter les styles si pas déjà présents
-    if (!document.querySelector('#fiche-complete-styles')) {
+    // Ajouter les styles
+    if (!document.querySelector('#utils-styles')) {
         const style = document.createElement('style');
-        style.id = 'fiche-complete-styles';
+        style.id = 'utils-styles';
         style.textContent = additionalCSS;
         document.head.appendChild(style);
     }
+    
+    // Initialiser la fermeture automatique
+    autoCloseManager.init();
 });
 
-console.log('✅ Système de fiches complètes initialisé');
+console.log('✅ Utils.js initialisé');
 
-// ====================================
-// EXPORT GLOBAL
-// ====================================
-
-// Rendre les utilitaires disponibles globalement
+// Export global
 window.utils = utils;
 window.dataManager = dataManager;
 window.uiManager = uiManager;
 window.CONFIG = CONFIG;
 window.ficheManager = ficheManager;
+window.autoCloseManager = autoCloseManager;

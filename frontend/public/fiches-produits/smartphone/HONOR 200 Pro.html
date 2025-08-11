@@ -2,12 +2,10 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Samsung Galaxy S25 Ultra</title>
+  <title>HONOR 200 Pro</title>
   <link rel="stylesheet" href="../../assets/css/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
@@ -16,57 +14,22 @@
     <a href="../../top-du-mois.html">Retour à la vitrine</a>
   </div>
 
-  <h1>Samsung Galaxy Tab S10 FE</h1>
-<div id="badge-top-mois"></div>
+  <h1>HONOR 200 Pro</h1>
+  <div id="badge-top-mois"></div>
 
-<p>Une tablette polyvalente pensée pour la productivité mobile et le divertissement.</p>
+  <p>Smartphone premium avec caméra portrait IA, design élégant et performances photo impressionnantes.</p>
 
-<div class="gallery">
-  <img src="../../assets/images/Galaxy Tab S10 FE.png" alt="Galaxy Tab S10 FE" class="img-centree">
-</div>
-
+  <div class="gallery">
+    <img src="../../assets/images/HONOR 200 Pro stylé.png" alt="HONOR 200 Pro" class="img-centree">
+  </div>
   <div class="lightbox" id="lightbox">
-    <img id="lightbox-img" src="" alt="Image Zoomée" />
+    <img id="lightbox-img" src="" alt="Zoom" />
   </div>
 
-  <p>💰 À partir de 699 € – écran 10,9", stylet S Pen inclus, design fin et léger.</p>
-
-<p>🧩 Spécifications matérielles<br>
-  - Processeur : Snapdragon 8 Gen 2<br>
-  - RAM : 8 Go<br>
-  - Stockage : 128 Go / 256 Go<br>
-  - Batterie : jusqu’à 12 heures<br>
-  - Connectivité : Wi-Fi 6E, Bluetooth 5.3, USB-C<br>
-  - Épaisseur : 6,3 mm
-</p>
-
-<p>🖥️ Écran et affichage<br>
-  - Taille : 10,9 pouces<br>
-  - Technologie : AMOLED<br>
-  - Résolution : 2560 × 1600<br>
-  - Luminosité : 1 200 nits<br>
-  - Taux de rafraîchissement : 90 Hz
-</p>
-
-<p>🖊️ Accessoires et interaction<br>
-  - S Pen inclus<br>
-  - Clavier Book Cover en option<br>
-  - Reconnaissance faciale<br>
-  - Système d’exploitation : One UI 7 (Android 15)
-</p>
-
-<p>🌐 Fonctionnalités avancées<br>
-  - Mode DeX pour bureau virtuel<br>
-  - Multifenêtrage intelligent<br>
-  - Synchronisation avec Galaxy Watch et Buds<br>
-  - Enregistrement vidéo 4K
-</p>
-
-<p>🎮 Expérience utilisateur<br>
-  - Idéal pour les étudiants, les pros nomades et les gamers<br>
-  - Compatible avec Xbox Cloud Gaming<br>
-  - Interface fluide et personnalisable
-</p>
+  <p>💰 Prix : 799,99 €</p>
+  <p>🧩 Spécifications<br>- Écran : OLED 6.78'' 120Hz<br>- Processeur : Snapdragon 8s Gen 3<br>- RAM : 12 Go<br>- Stockage : 512 Go<br>- Batterie : 5200 mAh avec recharge 100W<br>- Appareil photo : Triple capteur - 50MP Sony IMX906 + téléobjectif + ultra grand angle<br></p>
+  <p>🌐 Fonctionnalités<br>- Caméra portrait IA HONOR développée avec Studio Harcourt<br>- Recharge ultra-rapide 100W<br>- Design incurvé premium<br>- Optimisation thermique et autonomie longue durée<br></p>
+  <p>🎮 Usage recommandé<br>Idéal pour la photographie créative, les vidéos 4K, le gaming mobile et les expériences sociales immersives.</p>
 
   <script>
   const g = document.querySelector(".gallery img");
@@ -77,7 +40,7 @@
 
   const nomProduit = document.querySelector("h1").textContent.trim();
 
-  fetch("../../data/equipements.json")
+  fetch("data/equipements.json")
     .then(res => res.json())
     .then(data => {
       const produit = data.find(p => p.nom === nomProduit);
@@ -91,7 +54,7 @@
     .catch(err => console.error("Erreur chargement JSON :", err));
 </script>
 
-    <footer class="footer">
+  <footer class="footer">
   <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
 
   <div class="footer-links">
