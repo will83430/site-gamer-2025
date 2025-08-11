@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Autel Nano+</title>
-  <link rel="stylesheet" href="../../css/style/style 4.css">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
@@ -12,8 +12,8 @@
 <body>
 
   <div class="entete">
-    <img src="../../../../assets/images/gaming.png" alt="Gaming">
-    <a href="../../pages/top-du-mois.html">Retour à la vitrine</a>
+    <img src="../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../top-du-mois.html">Retour à la vitrine</a>
   </div>
 
   <h1>Autel Nano+</h1>
@@ -22,7 +22,7 @@
   <p>Mini drone ultra-léger et puissant, idéal pour les créateurs nomades et les passionnés de photo aérienne.</p>
 
   <div class="gallery">
-    <img src="../../../../assets/images/image bloc/Autel Nano+.png" alt="Autel Nano+" class="img-centree">
+    <img src="../../assets/images/Autel Nano+.png" alt="Autel Nano+" class="img-centree">
   </div>
 
   <div class="lightbox" id="lightbox">
@@ -66,7 +66,7 @@
 
     const nomProduit = document.querySelector("h1").textContent.trim();
 
-    fetch("../../../../data/top-du-mois/data/equipements.json")
+    fetch("../../data/equipements.json")
       .then(res => res.json())
       .then(data => {
         const produit = data.find(p => p.nom === nomProduit);
@@ -80,13 +80,21 @@
       .catch(err => console.error("Erreur chargement JSON :", err));
   </script>
 
-  <div class="pied-de-page">
-    <img src="../../assets/bannière pour pied d.png" alt="Samouraï">
-    <img src="../../assets/logo blanc fond mauv.png" alt="Accueil" style="width: 35px; height:35px;">
-    <a href="../index.html">Accueil</a>
-    <img src="../../assets/logo blanc base de dokk.png" alt="Multibloc" style="width: 35px; height:35px;">
-    <a href="../../fiche catégorie/fiches.html">Retour sélection</a>
-  </div>
+    <footer class="footer">
+  <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
 
-</body> <script src="../../assets/js/automatisation-fiches.js"></script>
+  <div class="footer-links">
+   <div class="footer-item">
+      <img src="../../assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+      <a href="../../index.html">Accueil</a>
+    </div>
+
+    <div class="footer-item">
+      <img src="../../assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+      <a href="equipements.html">Équipements</a>
+    </div>
+  </div>
+</footer>
+
+</body> <script src="../../assets/js/utils.js"></script>
 </html>

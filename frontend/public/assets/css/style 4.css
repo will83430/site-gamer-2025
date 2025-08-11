@@ -4,7 +4,7 @@ body {
   font-family: "Manrope", sans-serif;
   font-size: 1em;
   background-color: #1f2039;
-  background-image: url('../../../../assets/images/image bloc/un-logo-au-centre.png');
+  background-image: url('../../assets/images/un-logo-au-centre.png');
   background-size: cover;
   /* Ajuste l'image pour couvrir tout l'écran */
   background-position: center;

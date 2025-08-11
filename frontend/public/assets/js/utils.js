@@ -13,6 +13,133 @@ const CONFIG = {
 };
 
 // ====================================
+// SYSTÈME D'AFFICHAGE DES FICHES COMPLÈTES
+// ====================================
+
+const ficheManager = {
+    // Construit l'URL correcte vers une fiche produit
+    buildFicheUrl(product) {
+        if (!product || !product.nom || !product.categorie) {
+            console.warn('Produit invalide pour buildFicheUrl:', product);
+            return '#';
+        }
+
+        const categoryFolders = {
+            'PC GAMING': 'pc-gaming',
+            'SERVEUR': 'serveur',
+            'PERIPHERIQUES': 'peripheriques',
+            'TABLETTE': 'tablette',
+            'SMARTPHONE': 'smartphone',
+            'MONTRE CONNECTE': 'montre-connecte',
+            'ECRAN TV': 'ecran-tv',
+            'CAMERA': 'camera',
+            'VIDEO PROJECTEUR': 'video-projecteur',
+            'BOX INTERNET': 'box-internet',
+            'CASQUE AUDIO': 'casque-audio',
+            'TABLEAU INTERACTIF': 'tableau-interactif',
+            'CONSOLE': 'console',
+            'CASQUE VR': 'casque-vr',
+            'IMPRIMANTE 3D': 'imprimante-3d',
+            'DRONE': 'drone'
+        };
+
+        const folder = categoryFolders[product.categorie.toUpperCase()];
+        if (!folder) {
+            console.warn('Dossier non trouvé pour la catégorie:', product.categorie);
+            return '#';
+        }
+
+        const fileName = this.sanitizeFileName(product.nom);
+        return `fiches-produits/${folder}/${fileName}.html`;
+    },
+
+    // Nettoie un nom de produit pour en faire un nom de fichier
+    sanitizeFileName(productName) {
+        return productName
+            .replace(/\s+/g, ' ')
+            .replace(/[\/\\:*?"<>|]/g, '')
+            .trim();
+    },
+
+    // Ouvre une fiche dans une nouvelle fenêtre/onglet
+    openFiche(product, target = '_blank') {
+        const url = this.buildFicheUrl(product);
+        
+        if (url === '#') {
+            console.warn('Fiche non disponible pour ce produit');
+            return;
+        }
+
+        if (target === '_blank') {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+            window.location.href = url;
+        }
+    },
+
+    // Crée un modal pour afficher la fiche
+    async showFicheModal(product) {
+        const url = this.buildFicheUrl(product);
+        
+        if (url === '#') {
+            console.warn('Fiche non disponible');
+            return;
+        }
+
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.style.cssText = `
+            width: 90%;
+            height: 90%;
+            max-width: 1000px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+        `;
+
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '✕';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10001;
+        `;
+
+        closeBtn.onclick = () => document.body.removeChild(modal);
+        modal.onclick = (e) => {
+            if (e.target === modal) document.body.removeChild(modal);
+        };
+
+        modal.appendChild(iframe);
+        modal.appendChild(closeBtn);
+        document.body.appendChild(modal);
+    }
+};
+
+// ====================================
 // UTILITAIRES DE BASE
 // ====================================
 
@@ -49,7 +176,6 @@ const utils = {
 
     // Gère les erreurs d'images avec fallback intelligent
     handleImageError: (img, fallbackText) => {
-        // Éviter la boucle infinie en vérifiant si c'est déjà un placeholder
         if (img.src.includes('data:image/svg+xml')) {
             img.style.display = 'none';
             return;
@@ -105,11 +231,9 @@ const utils = {
     // Formatage de prix
     formatPrice: (price) => {
         if (!price) return 'Non disponible';
-        // Si c'est déjà formaté, le retourner tel quel
         if (typeof price === 'string' && (price.includes('€') || price.includes('À partir'))) {
             return price;
         }
-        // Sinon, essayer de formater comme un nombre
         const numPrice = parseFloat(price);
         if (isNaN(numPrice)) return price;
         return `${utils.formatNumber(numPrice)} €`;
@@ -145,7 +269,6 @@ const dataManager = {
     // Filtre les produits par catégorie
     filterByCategory(data, category) {
         if (!data || !category) return [];
-        
         return data.filter(item => 
             utils.normalizeCat(item.categorie) === utils.normalizeCat(category)
         );
@@ -273,12 +396,10 @@ const uiManager = {
         toast.textContent = message;
         document.body.appendChild(toast);
         
-        // Animation d'entrée
         requestAnimationFrame(() => {
             toast.style.transform = 'translateX(0)';
         });
         
-        // Suppression automatique
         setTimeout(() => {
             toast.style.transform = 'translateX(100%)';
             setTimeout(() => {
@@ -291,28 +412,349 @@ const uiManager = {
 };
 
 // ====================================
-// STYLES D'ANIMATION POUR LE LOADER
+// FERMETURE AUTOMATIQUE DES ONGLETS DE FICHES
 // ====================================
 
-// Ajouter les styles d'animation si ils n'existent pas
-if (!document.querySelector('#utils-styles')) {
-    const style = document.createElement('style');
-    style.id = 'utils-styles';
-    style.textContent = `
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+const autoCloseManager = {
+    init() {
+        console.log('🔒 Initialisation fermeture automatique');
+        
+        if (this.isProductPage()) {
+            this.setupAutoClose();
         }
-    `;
-    document.head.appendChild(style);
+        
+        this.setupProductOpening();
+    },
+
+    isProductPage() {
+        return window.location.pathname.includes('fiches-produits');
+    },
+
+    setupAutoClose() {
+        console.log('⏱️ Configuration fermeture automatique');
+        this.autoCloseAfterDelay();
+        this.closeOnReturn();
+        this.closeOnInactivity();
+    },
+
+    autoCloseAfterDelay(delay = 30000) {
+        console.log(`⏰ Fermeture automatique dans ${delay/1000}s`);
+        
+        let countdown = delay / 1000;
+        const warningTime = 10;
+        
+        const timer = setInterval(() => {
+            countdown--;
+            
+            if (countdown === warningTime) {
+                this.showCloseWarning(warningTime);
+            }
+            
+            if (countdown <= 0) {
+                clearInterval(timer);
+                this.closeTab();
+            }
+        }, 1000);
+        
+        this.setupInteractionListeners(() => {
+            clearInterval(timer);
+            this.hideCloseWarning();
+            console.log('⏸️ Fermeture automatique annulée par interaction');
+        });
+    },
+
+    showCloseWarning(seconds) {
+        const warning = document.createElement('div');
+        warning.id = 'close-warning';
+        warning.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 10000;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: pulse 1s infinite;
+        `;
+        
+        let countdown = seconds;
+        warning.innerHTML = `
+            🚨 Fermeture dans ${countdown}s
+            <button onclick="this.parentElement.remove()" style="
+                background: white;
+                color: #ff6b6b;
+                border: none;
+                padding: 5px 10px;
+                margin-left: 10px;
+                border-radius: 4px;
+                cursor: pointer;
+            ">Annuler</button>
+        `;
+        
+        document.body.appendChild(warning);
+        
+        const countdownTimer = setInterval(() => {
+            countdown--;
+            if (warning.parentElement) {
+                warning.innerHTML = `
+                    🚨 Fermeture dans ${countdown}s
+                    <button onclick="this.parentElement.remove()" style="
+                        background: white;
+                        color: #ff6b6b;
+                        border: none;
+                        padding: 5px 10px;
+                        margin-left: 10px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                    ">Annuler</button>
+                `;
+            } else {
+                clearInterval(countdownTimer);
+            }
+        }, 1000);
+    },
+
+    hideCloseWarning() {
+        const warning = document.getElementById('close-warning');
+        if (warning) {
+            warning.remove();
+        }
+    },
+
+    closeOnReturn() {
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href') || '';
+            const text = link.textContent.toLowerCase();
+
+            if ((href.includes('top-du-mois') || href.includes('index.html')) &&
+                (text.includes('retour') || text.includes('vitrine') || text.includes('accueil'))) {
+                
+                e.preventDefault();
+                console.log('🔙 Retour détecté - fermeture de l\'onglet');
+                this.closeTab();
+            }
+        });
+    },
+
+    closeOnInactivity(inactiveTime = 60000) {
+        let lastActivity = Date.now();
+        
+        const updateActivity = () => {
+            lastActivity = Date.now();
+        };
+        
+        ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+            document.addEventListener(event, updateActivity, true);
+        });
+        
+        const checkInactivity = setInterval(() => {
+            if (Date.now() - lastActivity > inactiveTime) {
+                clearInterval(checkInactivity);
+                console.log('😴 Inactivité détectée - fermeture de l\'onglet');
+                this.closeTab();
+            }
+        }, 5000);
+    },
+
+    setupInteractionListeners(callback) {
+        const events = ['click', 'keydown', 'scroll', 'mousemove'];
+        
+        const handleInteraction = () => {
+            events.forEach(event => {
+                document.removeEventListener(event, handleInteraction);
+            });
+            callback();
+        };
+        
+        events.forEach(event => {
+            document.addEventListener(event, handleInteraction, { once: true });
+        });
+    },
+
+    setupProductOpening() {
+        if (this.isProductPage()) return;
+        
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            if (!href || !href.includes('fiches-produits')) return;
+
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener');
+            
+            console.log('📂 Ouverture fiche dans nouvel onglet:', href);
+        });
+    },
+
+    closeTab() {
+        try {
+            if (window.close) {
+                window.close();
+                return;
+            }
+        } catch (e) {
+            console.log('Méthode 1 échouée');
+        }
+
+        try {
+            if (window.history.length > 1) {
+                window.history.back();
+                return;
+            }
+        } catch (e) {
+            console.log('Méthode 2 échouée');
+        }
+
+        try {
+            window.location.href = '../../top-du-mois.html';
+        } catch (e) {
+            console.log('Toutes les méthodes ont échoué');
+        }
+    }
+};
+
+// ====================================
+// STYLES ET INITIALISATION
+// ====================================
+
+const additionalCSS = `
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.product-content {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.product-content:hover {
+    transform: scale(1.02);
+}
+
+.btn-fiche-complete {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-fiche-complete:hover {
+    background: linear-gradient(45deg, #0056b3, #004494);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.btn-details {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-details:hover {
+    background: linear-gradient(45deg, #0056b3, #004494);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.gallery {
+    display: flex;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+
+.img-centree {
+    display: block;
+    margin: 30px auto;
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(166, 180, 252, 0.6);
+}
+`;
+
 // ====================================
-// EXPORT GLOBAL
+// INITIALISATION ET EXPORT
 // ====================================
 
-// Rendre les utilitaires disponibles globalement
+document.addEventListener('DOMContentLoaded', function() {
+    // Ajouter les styles
+    if (!document.querySelector('#utils-styles')) {
+        const style = document.createElement('style');
+        style.id = 'utils-styles';
+        style.textContent = additionalCSS;
+        document.head.appendChild(style);
+    }
+    
+    // Initialiser la fermeture automatique
+    autoCloseManager.init();
+});
+
+console.log('✅ Utils.js initialisé');
+
+// Export global
 window.utils = utils;
 window.dataManager = dataManager;
 window.uiManager = uiManager;
 window.CONFIG = CONFIG;
+window.ficheManager = ficheManager;
+window.autoCloseManager = autoCloseManager;
