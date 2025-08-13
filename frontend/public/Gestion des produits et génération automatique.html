@@ -232,6 +232,81 @@
                 </div>
             </div>
             
+            <!-- Section Édition de Produit -->
+            <div class="section">
+                <h2>✏️ Éditer un Produit Existant</h2>
+                <div class="alert alert-info">
+                    <strong>Info :</strong> Sélectionnez un produit pour modifier ses données directement.
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-select">Sélectionner un produit à éditer</label>
+                    <select id="product-select" onchange="loadProductForEdit()">
+                        <option value="">-- Choisir un produit --</option>
+                    </select>
+                </div>
+                
+                <div id="edit-form" style="display: none;">
+                    <form id="product-edit-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nom du produit</label>
+                                <input type="text" id="edit-nom" readonly style="background: #f0f0f0;">
+                            </div>
+                            <div class="form-group">
+                                <label>Catégorie</label>
+                                <input type="text" id="edit-categorie" readonly style="background: #f0f0f0;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Prix</label>
+                                <input type="text" id="edit-prix" placeholder="Ex: 499,99 €">
+                            </div>
+                            <div class="form-group">
+                                <label>Top du mois</label>
+                                <select id="edit-top">
+                                    <option value="false">Non</option>
+                                    <option value="true">Oui</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Description courte</label>
+                            <input type="text" id="edit-description" placeholder="Description courte du produit">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Chemin de l'image</label>
+                            <input type="text" id="edit-image" placeholder="assets/images/nom-produit.png">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Fonctionnalités avancées (une par ligne)</label>
+                            <textarea id="edit-fonctionnalites" rows="3" style="width: 100%; padding: 10px; border: 2px solid #dee2e6; border-radius: 6px; font-family: 'Manrope', sans-serif;"></textarea>
+                        </div>
+                        
+                        <h3 style="margin-top: 20px; color: #007bff;">Données de la fiche</h3>
+                        <div id="donnees-fiche-container">
+                            <!-- Les champs seront générés dynamiquement selon la catégorie -->
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="submit" class="btn btn-success">
+                                💾 Sauvegarder les modifications
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="downloadEditedJSON()">
+                                📥 Télécharger le JSON modifié
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div id="edit-result" style="margin-top: 20px;"></div>
+            </div>
+            
             <!-- Section Génération de Produit -->
             <div class="section">
                 <h2>🚀 Générer un Nouveau Produit</h2>
@@ -302,24 +377,6 @@
             const randomId = Math.floor(Math.random() * 9999) + 1;
             return `prod_${randomId}`;
         }
-        async function generateUniqueProductId() {
-    try {
-        const response = await fetch('data/equipements.json');
-        const data = await response.json();
-        const existingIds = data.equipements.map(p => p.id);
-        
-        let newId;
-        do {
-            const randomId = Math.floor(Math.random() * 9999) + 1;
-            newId = `prod_${randomId}`;
-        } while (existingIds.includes(newId));
-        
-        return newId;
-    } catch {
-        // Si erreur, générer un ID aléatoire simple
-        return `prod_${Math.floor(Math.random() * 9999) + 1}`;
-    }
-}
 
         // Créer le template JSON pour un nouveau produit
         function createProductTemplate(nom, categorie) {
@@ -439,15 +496,14 @@
             try {
                 // Simuler le chargement du JSON existant
                 // En production, tu devras charger le vrai fichier
-                const existingData = {
-                    "equipements": []
-                };
+                const existingData = [];  // ← Directement un tableau
+existingData.push(product);
                 
                 // Ajouter le nouveau produit
                 existingData.equipements.push(product);
                 
                 // Télécharger le JSON mis à jour
-                downloadJSON(existingData, 'equipements-updated.json');
+                downloadJSON(existingData, 'equipements.json');
                 
                 console.log('✅ Produit ajouté au JSON');
                 return true;
@@ -565,6 +621,8 @@
   </div>
 
   <h1>${product.nom}</h1>
+
+  <div id="badge-top-mois"></div>
   
   <p class="description">À REMPLIR - Description rapide du produit.</p>
   
@@ -574,8 +632,6 @@
   <div class="lightbox" id="lightbox">
     <img id="lightbox-img" src="" alt="Zoom" />
   </div>
-  
-  <div id="badge-top-mois"></div>
 
   <!-- Les paragraphes seront remplis dynamiquement -->
   <div id="product-content">
@@ -597,9 +653,8 @@
     fetch("../../data/equipements.json")
       .then(res => res.json())
       .then(data => {
-        const produit = data.equipements ? 
-          data.equipements.find(p => p.nom === nomProduit) : 
-          data.find(p => p.nom === nomProduit);
+    const produits = Array.isArray(data) ? data : (data.equipements || []);
+    const produit = produits.find(p => p.nom === nomProduit);
           
         if (produit) {
           console.log("Produit trouvé:", produit);
@@ -773,7 +828,7 @@
                 resultDiv.innerHTML = `
                     <div class="alert alert-success">
                         ✅ <strong>Produit généré avec succès !</strong><br>
-                        📄 Fichier JSON mis à jour : equipements-updated.json<br>
+                        📄 Fichier JSON mis à jour : equipement.json<br>
                         📄 Page HTML créée : ${result.htmlFile}<br>
                         ℹ️ Les fichiers sont prêts à être personnalisés
                     </div>
@@ -823,6 +878,231 @@
         }
 
         console.log('✅ Interface d\'administration chargée !');
+        
+        // Variables globales
+        let currentProducts = [];
+        let currentEditingProduct = null;
+        
+        // Charger la liste des produits au démarrage
+        loadProductsList();
+        
+        // Fonction pour charger la liste des produits
+        async function loadProductsList() {
+            try {
+                const select = document.getElementById('product-select');
+                select.innerHTML = '<option value="">-- Choisir un produit --</option>';
+                
+                // Charger le vrai fichier JSON
+                const response = await fetch('data/equipements.json');
+                const data = await response.json();
+                
+                // Le JSON est directement un tableau, pas un objet avec "equipements"
+                currentProducts = Array.isArray(data) ? data : (data.equipements || []);
+                
+                // Afficher tous les produits dans la liste
+                currentProducts.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.id || product.nom;
+                    option.textContent = `${product.nom} (${product.categorie})`;
+                    select.appendChild(option);
+                });
+                
+                console.log(`✅ ${currentProducts.length} produits chargés`);
+                
+            } catch (error) {
+                console.error('❌ Erreur chargement produits:', error);
+                
+                // Message d'erreur dans l'interface
+                const resultDiv = document.getElementById('edit-result');
+                if (resultDiv) {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            ❌ Impossible de charger les produits. 
+                            Vérifiez que le fichier <strong>data/equipements.json</strong> est accessible.
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Fonction pour charger un produit dans le formulaire d'édition
+        function loadProductForEdit() {
+            const select = document.getElementById('product-select');
+            const productId = select.value;
+            
+            if (!productId) {
+                document.getElementById('edit-form').style.display = 'none';
+                return;
+            }
+            
+            // Trouver le produit dans la liste chargée
+            const product = currentProducts.find(p => 
+                (p.id && p.id === productId) || p.nom === productId
+            );
+            
+            if (!product) {
+                console.error('Produit non trouvé:', productId);
+                return;
+            }
+            
+            currentEditingProduct = product;
+            
+            // Remplir le formulaire avec les vraies données
+            document.getElementById('edit-nom').value = product.nom || '';
+            document.getElementById('edit-categorie').value = product.categorie || '';
+            document.getElementById('edit-prix').value = product.prix || 'À DÉFINIR €';
+            document.getElementById('edit-description').value = product.description || '';
+            document.getElementById('edit-image').value = product.image || '';
+            document.getElementById('edit-top').value = product.top_du_mois ? 'true' : 'false';
+            document.getElementById('edit-fonctionnalites').value = 
+                (product.fonctionnalites_avancees || []).join('\n');
+            
+            // Générer les champs pour donnees_fiche
+            generateDonneesFicheFields(product);
+            
+            // Afficher le formulaire
+            document.getElementById('edit-form').style.display = 'block';
+            
+            console.log('✅ Produit chargé pour édition:', product.nom);
+        }
+        
+        // Générer les champs pour les données de la fiche
+        function generateDonneesFicheFields(product) {
+            const container = document.getElementById('donnees-fiche-container');
+            container.innerHTML = '';
+            
+            const fields = [
+                { label: "Description détaillée", id: "fiche-description" },
+                { label: "Prix (avec emoji 💰)", id: "fiche-prix" },
+                { label: "Spécifications matérielles 🧩", id: "fiche-specs" }
+            ];
+            
+            // Ajouter les champs spécifiques selon la catégorie
+            const categoryFields = getCategorySpecificFields(product.categorie);
+            fields.push(...categoryFields);
+            
+            // Ajouter les champs finaux
+            fields.push(
+                { label: "Fonctionnalités connectées 🌐", id: "fiche-connectees" },
+                { label: "Expérience utilisateur 🎮", id: "fiche-experience" }
+            );
+            
+            // Créer les textarea pour chaque champ
+            fields.forEach((field, index) => {
+                const div = document.createElement('div');
+                div.className = 'form-group';
+                div.innerHTML = `
+                    <label>${field.label}</label>
+                    <textarea id="${field.id}" rows="3" style="width: 100%; padding: 10px; border: 2px solid #dee2e6; border-radius: 6px; font-family: 'Manrope', sans-serif;">${product.donnees_fiche[index] || 'À REMPLIR'}</textarea>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        // Obtenir les champs spécifiques selon la catégorie
+        function getCategorySpecificFields(categorie) {
+            const fields = {
+                'DRONE': [{ label: "Fonctions vidéo 🎥", id: "fiche-video" }],
+                'CONSOLE': [
+                    { label: "Écran et affichage 🖥️", id: "fiche-ecran" },
+                    { label: "Contrôleurs et interaction 🕹️", id: "fiche-controleurs" }
+                ],
+                'TABLETTE': [
+                    { label: "Écran et affichage 🖥️", id: "fiche-ecran" },
+                    { label: "Accessoires et interaction 🖊️", id: "fiche-accessoires" }
+                ],
+                'SMARTPHONE': [{ label: "Appareil photo 📸", id: "fiche-photo" }],
+                'PC GAMING': [{ label: "Fonctions gaming 🎮", id: "fiche-gaming" }],
+                'SERVEUR': [{ label: "Performances et virtualisation 🖥️", id: "fiche-perf" }],
+                'PERIPHERIQUES': [{ label: "Ergonomie et design 🖥️", id: "fiche-ergo" }],
+                'CASQUE AUDIO': [{ label: "Fonctions audio 🎧", id: "fiche-audio" }],
+                'MONTRE CONNECTE': [{ label: "Fonctions sport et santé ⌚", id: "fiche-sante" }],
+                'ECRAN TV': [
+                    { label: "Qualité d'image 🖥️", id: "fiche-image" },
+                    { label: "Gaming et fluidité 🎮", id: "fiche-gaming" },
+                    { label: "Expérience cinéma 🎬", id: "fiche-cinema" }
+                ],
+                'CAMERA': [{ label: "Fonctions vidéo 🎥", id: "fiche-video" }],
+                'VIDEO PROJECTEUR': [
+                    { label: "Qualité d'image 🖥️", id: "fiche-image" },
+                    { label: "Gaming et fluidité 🎮", id: "fiche-gaming" },
+                    { label: "Expérience cinéma 🎬", id: "fiche-cinema" }
+                ],
+                'BOX INTERNET': [{ label: "Services TV et multimédia 📺", id: "fiche-tv" }],
+                'TABLEAU INTERACTIF': [{ label: "Fonctions interactives 🖊️", id: "fiche-interactif" }],
+                'CASQUE VR': [{ label: "Fonctions VR et MR 🎮", id: "fiche-vr" }],
+                'IMPRIMANTE 3D': [{ label: "Fonctions avancées 🖨️", id: "fiche-3d" }]
+            };
+            
+            return fields[categorie] || [];
+        }
+        
+        // Sauvegarder les modifications
+        document.getElementById('product-edit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!currentEditingProduct) return;
+            
+            // Récupérer les valeurs du formulaire
+            currentEditingProduct.prix = document.getElementById('edit-prix').value;
+            currentEditingProduct.description = document.getElementById('edit-description').value;
+            currentEditingProduct.image = document.getElementById('edit-image').value;
+            currentEditingProduct.top_du_mois = document.getElementById('edit-top').value === 'true';
+            currentEditingProduct.fonctionnalites_avancees = 
+                document.getElementById('edit-fonctionnalites').value.split('\n').filter(f => f.trim());
+            
+            // Récupérer les données de la fiche
+            const donneesFiche = [];
+            const textareas = document.querySelectorAll('#donnees-fiche-container textarea');
+            textareas.forEach(textarea => {
+                donneesFiche.push(textarea.value);
+            });
+            currentEditingProduct.donnees_fiche = donneesFiche;
+            
+            // Afficher le résultat
+            document.getElementById('edit-result').innerHTML = `
+                <div class="alert alert-success">
+                    ✅ <strong>Produit modifié avec succès !</strong><br>
+                    💡 Utilisez le bouton "Télécharger le JSON modifié" pour obtenir le fichier mis à jour.<br>
+                    ⚠️ N'oubliez pas de remplacer le fichier equipements.json sur votre serveur.
+                </div>
+            `;
+            
+            console.log('Produit modifié:', currentEditingProduct);
+        });
+        
+        // Télécharger le JSON modifié
+        function downloadEditedJSON() {
+            if (!currentEditingProduct) {
+                alert('Aucun produit en cours d\'édition');
+                return;
+            }
+            
+            // Mettre à jour le produit dans la liste complète
+            const index = currentProducts.findIndex(p => 
+                (p.id && p.id === currentEditingProduct.id) || p.nom === currentEditingProduct.nom
+            );
+            
+            if (index !== -1) {
+                currentProducts[index] = currentEditingProduct;
+            }
+            
+            // Créer le JSON complet avec TOUS les produits
+            const data = currentProducts;  // ← Directement le tableau
+            
+            // Télécharger
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'equipements.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            console.log('✅ JSON complet téléchargé avec tous les produits');
+        }
     </script>
 </body>
 </html>

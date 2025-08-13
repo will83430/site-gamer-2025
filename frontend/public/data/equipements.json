@@ -14,10 +14,10 @@
     "donnees_fiche": [
       "Le PC gamer compact le plus puissant de 2025, idéal pour le jeu 4K et la création.",
       "💰 À partir de 3 499 € – Intel Core i9-14900K, RTX 5090, 64 Go DDR5, SSD 4 To, Wi-Fi 7.",
-      "🧩 Spécifications matérielles - Processeur : Intel Core i9-14900K - Carte graphique : NVIDIA RTX 5090 24 Go - RAM : 64 Go DDR5 - Stockage : SSD NVMe 4 To - Connectivité : Wi-Fi 7, Bluetooth 5.4, Ethernet 10G",
-      "🎮 Fonctions gaming - Ray tracing, DLSS 4, Reflex - Refroidissement liquide intégral - RGB personnalisable",
-      "🌐 Fonctionnalités connectées - iCUE pour gestion RGB et monitoring - Streaming 4K, VR Ready - Ports Thunderbolt 4, USB-C, HDMI 2.1",
-      "🎮 Expérience utilisateur - Format compact, ultra silencieux - Châssis aluminium premium - Idéal pour gamers, streamers, créateurs"
+      "🧩 Spécifications matérielles\\n - Processeur : Intel Core i9-14900K\\n - Carte graphique : NVIDIA RTX 5090 24 Go\\n - RAM : 64 Go DDR5\\n - Stockage : SSD NVMe 4 To\\n - Connectivité : Wi-Fi 7, Bluetooth 5.4, Ethernet 10G",
+      "🎮 Fonctions gaming\\n - Ray tracing, DLSS 4, Reflex\\n - Refroidissement liquide intégral\\n - RGB personnalisable",
+      "🌐 Fonctionnalités connectées\\n - iCUE pour gestion RGB et monitoring\\n - Streaming 4K, VR Ready\\n - Ports Thunderbolt 4, USB-C, HDMI 2.1",
+      "🎮 Expérience utilisateur\\n - Format compact, ultra silencieux\\n - Châssis aluminium premium\\n - Idéal pour gamers, streamers, créateurs"
     ]
   },
   {
@@ -55,10 +55,10 @@
     "donnees_fiche": [
       "Le PC portable gaming 18 pouces ultime, conçu pour les performances extrêmes et les jeux AAA en 2.5K.",
       "💰 À partir de 2 599 € – Intel Core Ultra 9 275HX, RTX 5070, 32 Go DDR5, SSD 1 To, écran 240 Hz.",
-      "🧩 Spécifications matérielles - Processeur : Intel Core Ultra 9 275HX (36 Mo cache, jusqu’à 5.1 GHz) - Carte graphique : NVIDIA GeForce RTX 5070 Laptop GPU (8 Go GDDR7) - RAM : 32 Go DDR5-5600 (2x16 Go) - Stockage : SSD PCIe Gen4 NVMe de 1 To - Connectivité : Wi-Fi 6E, Bluetooth 5.3, Ethernet RJ45, USB-C 40Gbps - Refroidissement : ROG Intelligent Cooling avec métal liquide",
-      "🎮 Fonctions gaming - Technologies : NVIDIA Advanced Optimus, DLSS 3.5, G-Sync - Audio : Dolby Atmos, Smart Amp - Clavier : rétroéclairé RGB par touche, effet Halo Sync - Système : Windows 11 Pro avec Armoury Crate",
-      "🌐 Fonctionnalités connectées - Ports : 2x USB-A 3.2 Gen2, 2x USB-C (Thunderbolt 4 + DisplayPort), HDMI 2.1, combo audio 3.5mm - Extension : 2 slots M.2, 2 slots SO-DIMM (jusqu’à 64 Go) - Sécurité : webcam FHD, verrou Kensington - Écosystème : compatible ROG accessories, Aura Sync",
-      "🎮 Expérience utilisateur - Écran : 18” WQXGA IPS (2560 × 1600), 240 Hz, 100% DCI-P3, Dolby Vision - Design : châssis aluminium, ventilation arrière, finitions gaming - Poids : 3.2 kg - Idéal pour les gamers exigeants, streamers et créateurs de contenu"
+      "🧩 Spécifications matérielles\\n - Processeur : Intel Core Ultra 9 275HX (36 Mo cache, jusqu’à 5.1 GHz)\\n - Carte graphique : NVIDIA GeForce RTX 5070 Laptop GPU (8 Go GDDR7)\\n - RAM : 32 Go DDR5-5600 (2x16 Go)\\n - Stockage : SSD PCIe Gen4 NVMe de 1 To\\n - Connectivité : Wi-Fi 6E, Bluetooth 5.3, Ethernet RJ45, USB-C 40Gbps\\n - Refroidissement : ROG Intelligent Cooling avec métal liquide",
+      "🎮 Fonctions gaming\\n - Technologies : NVIDIA Advanced Optimus, DLSS 3.5, G-Sync\\n - Audio : Dolby Atmos, Smart Amp\\n - Clavier : rétroéclairé RGB par touche, effet Halo Sync\\n - Système : Windows 11 Pro avec Armoury Crate",
+      "🌐 Fonctionnalités connectées\\n - Ports : 2x USB-A 3.2 Gen2, 2x USB-C (Thunderbolt 4 + DisplayPort), HDMI 2.1, combo audio 3.5mm\\n - Extension : 2 slots M.2, 2 slots SO-DIMM (jusqu’à 64 Go)\\n - Sécurité : webcam FHD, verrou Kensington\\n - Écosystème : compatible ROG accessories, Aura Sync",
+      "🎮 Expérience utilisateur\\n - Écran : 18” WQXGA IPS (2560 × 1600), 240 Hz, 100% DCI-P3, Dolby Vision\\n - Design : châssis aluminium, ventilation arrière, finitions gaming\\n - Poids : 3.2 kg\\n - Idéal pour les gamers exigeants, streamers et créateurs de contenu"
     ]
   },
   {
@@ -76,10 +76,10 @@
     "donnees_fiche": [
       "Le serveur rack 4U le plus performant de 2025, conçu pour les charges critiques et les environnements cloud hybrides.",
       "💰 À partir de 8 999 € – 4 processeurs Intel Xeon Gen5, jusqu’à 6 To de RAM DDR5, stockage NVMe haute densité.",
-      "🧩 Spécifications matérielles - Processeurs : jusqu’à 4 × Intel Xeon Gen5 - RAM : jusqu’à 6 To DDR5 ECC - Stockage : jusqu’à 32 × SSD NVMe U.2 - Refroidissement : ventilateurs redondants + gestion thermique intelligente - Connectivité : 4 × ports 10/25/100 GbE, USB 3.2, iDRAC9 - Format : rack 4U avec rails coulissants",
-      "🖥️ Performances et virtualisation - Optimisé pour VMware, Hyper-V, Proxmox - Prise en charge des conteneurs (Docker, Kubernetes) - Sécurité renforcée avec TPM 2.0 et Secure Boot - Gestion à distance via OpenManage Enterprise",
-      "🌐 Fonctionnalités avancées - Redondance complète (alimentation, réseau, stockage) - BIOS et firmware auto-réparables - Surveillance proactive avec IA embarquée - Compatible cloud hybride et edge computing",
-      "🎮 Cas d’usage - Datacenters haute performance - Intelligence artificielle et machine learning - Bases de données critiques (SAP HANA, Oracle) - Virtualisation massive et hébergement web"
+      "🧩 Spécifications matérielles\\n - Processeurs : jusqu’à 4 × Intel Xeon Gen5\\n - RAM : jusqu’à 6 To DDR5 ECC\\n - Stockage : jusqu’à 32 × SSD NVMe U.2\\n - Refroidissement : ventilateurs redondants + gestion thermique intelligente\\n - Connectivité : 4 × ports 10/25/100 GbE, USB 3.2, iDRAC9\\n - Format : rack 4U avec rails coulissants",
+      "🖥️ Performances et virtualisation\\n - Optimisé pour VMware, Hyper-V, Proxmox\\n - Prise en charge des conteneurs (Docker, Kubernetes)\\n - Sécurité renforcée avec TPM 2.0 et Secure Boot\\n - Gestion à distance via OpenManage Enterprise",
+      "🌐 Fonctionnalités avancées\\n - Redondance complète (alimentation, réseau, stockage)\\n - BIOS et firmware auto-réparables\\n - Surveillance proactive avec IA embarquée\\n - Compatible cloud hybride et edge computing",
+      "🎮 Cas d’usage\\n - Datacenters haute performance\\n - Intelligence artificielle et machine learning\\n - Bases de données critiques (SAP HANA, Oracle)\\n - Virtualisation massive et hébergement web"
     ]
   },
   {
@@ -97,10 +97,10 @@
     "donnees_fiche": [
       "Serveur rack 2U hautes performances, idéal pour la virtualisation, l’IA et les infrastructures cloud hybrides.",
       "💰 À partir de 5 499 € – 2 processeurs Intel Xeon Gen5, jusqu’à 8 To de RAM DDR5, stockage NVMe haute densité.",
-      "🧩 Spécifications matérielles - Processeurs : jusqu’à 2 × Intel Xeon Gen5 (jusqu’à 56 cœurs chacun) - RAM : jusqu’à 8 To DDR5 ECC (32 slots DIMM) - Stockage : jusqu’à 24 × SSD NVMe U.2 Gen4/Gen5 - Refroidissement : Smart Flow chassis + ventilateurs redondants - Connectivité : 2 × ports 100 GbE, USB 3.2, iDRAC9 - Format : rack 2U avec options GPU (jusqu’à 2 double-wide)",
-      "🖥️ Performances et virtualisation - Optimisé pour VMware, Hyper-V, Proxmox - Prise en charge des conteneurs (Docker, Kubernetes) - Sécurité renforcée avec TPM 2.0, Secure Boot et MFA - Gestion centralisée via OpenManage Enterprise",
-      "🌐 Fonctionnalités avancées - Architecture résiliente Zero Trust - BIOS et firmware auto-réparables - Surveillance proactive avec IA embarquée - Compatible cloud hybride, edge computing et IA",
-      "🎮 Cas d’usage - Virtualisation standardisée - Bases de données et analytics - Infrastructure VDI - Intelligence artificielle et machine learning"
+      "🧩 Spécifications matérielles\\n - Processeurs : jusqu’à 2 × Intel Xeon Gen5 (jusqu’à 56 cœurs chacun)\\n - RAM : jusqu’à 8 To DDR5 ECC (32 slots DIMM)\\n - Stockage : jusqu’à 24 × SSD NVMe U.2 Gen4/Gen5\\n - Refroidissement : Smart Flow chassis + ventilateurs redondants\\n - Connectivité : 2 × ports 100 GbE, USB 3.2, iDRAC9\\n - Format : rack 2U avec options GPU (jusqu’à 2 double-wide)",
+      "🖥️ Performances et virtualisation\\n - Optimisé pour VMware, Hyper-V, Proxmox\\n - Prise en charge des conteneurs (Docker, Kubernetes)\\n - Sécurité renforcée avec TPM 2.0, Secure Boot et MFA\\n - Gestion centralisée via OpenManage Enterprise",
+      "🌐 Fonctionnalités avancées\\n - Architecture résiliente Zero Trust\\n - BIOS et firmware auto-réparables\\n - Surveillance proactive avec IA embarquée\\n - Compatible cloud hybride, edge computing et IA",
+      "🎮 Cas d’usage\\n - Virtualisation standardisée\\n - Bases de données et analytics\\n - Infrastructure VDI\\n - Intelligence artificielle et machine learning"
     ]
   },
   {
@@ -118,10 +118,10 @@
     "donnees_fiche": [
       "La souris haut de gamme la plus précise et polyvalente de 2025, conçue pour les pros et les créateurs.",
       "💰 À partir de 149 € – capteur 8K DPI, défilement MagSpeed, autonomie 90 jours, connectivité multi-appareils.",
-      "🧩 Spécifications matérielles - Capteur : 8 000 DPI avec suivi sur verre - Boutons : 7 personnalisables + molette latérale - Défilement : MagSpeed électromagnétique ultra rapide - Autonomie : jusqu’à 90 jours - Recharge : USB-C rapide (1 min = 3h) - Connectivité : Bluetooth + Logi Bolt",
-      "🖥️ Ergonomie et design - Forme sculptée pour droitier - Repose-pouce intégré - Finition mate premium - Disponible en noir graphite, gris clair et bleu nuit",
-      "🌐 Fonctionnalités avancées - Flow : contrôle multi-PC avec copier-coller entre machines - Appairage avec 3 appareils - Logiciel Logi Options+ pour personnalisation - Compatible Windows, macOS, Linux, ChromeOS",
-      "🎮 Expérience utilisateur - Idéale pour bureautique, création, productivité - Silencieuse et ultra fluide - Parfaite pour les longues sessions - Récompensée pour son confort et sa précision"
+      "🧩 Spécifications matérielles\\n - Capteur : 8 000 DPI avec suivi sur verre\\n - Boutons : 7 personnalisables + molette latérale\\n - Défilement : MagSpeed électromagnétique ultra rapide\\n - Autonomie : jusqu’à 90 jours\\n - Recharge : USB-C rapide (1 min = 3h)\\n - Connectivité : Bluetooth + Logi Bolt",
+      "🖥️ Ergonomie et design\\n - Forme sculptée pour droitier\\n - Repose-pouce intégré\\n - Finition mate premium\\n - Disponible en noir graphite, gris clair et bleu nuit",
+      "🌐 Fonctionnalités avancées\\n - Flow : contrôle multi-PC avec copier-coller entre machines\\n - Appairage avec 3 appareils\\n - Logiciel Logi Options+ pour personnalisation\\n - Compatible Windows, macOS, Linux, ChromeOS",
+      "🎮 Expérience utilisateur\\n - Idéale pour bureautique, création, productivité\\n - Silencieuse et ultra fluide\\n - Parfaite pour les longues sessions\\n - Récompensée pour son confort et sa précision"
     ]
   },
   {
@@ -139,10 +139,10 @@
     "donnees_fiche": [
       "Le clavier gaming le plus rapide du monde, conçu pour les joueurs compétitifs avec switches magnétiques OmniPoint 3.0.",
       "💰 À partir de 249 € – switches OmniPoint 3.0, Rapid Trigger, écran OLED, aluminium premium, USB-C détachable.",
-      "🧩 Spécifications matérielles - Switches : OmniPoint 3.0 à effet Hall, activation réglable 0.1–4.0 mm - Format : Tenkeyless (TKL), sans pavé numérique - Matériaux : plaque supérieure en aluminium de qualité aéronautique - Écran : OLED intelligent pour stats et contrôle multimédia - Connectivité : USB-C détachable, compatible SteelSeries GG",
-      "🖥️ Ergonomie et design - Dimensions : 355 × 129 × 42 mm - Poids : 974 g - Rétroéclairage RGB par touche - Molette de volume en aluminium - Câble tressé amovible",
-      "🌐 Fonctionnalités avancées - Rapid Trigger et Rapid Tap pour saisie ultra rapide - Protection Mode pour éviter les frappes accidentelles - GG QuickSet : préréglages instantanés - Compatible Windows, macOS, Linux",
-      "🎮 Expérience utilisateur - Idéal pour e-sport, FPS, MOBA et multitâche - Personnalisation complète via SteelSeries GG - Résistant, précis et ultra réactif - Récompensé pour sa performance et son confort"
+      "🧩 Spécifications matérielles\\n - Switches : OmniPoint 3.0 à effet Hall, activation réglable 0.1–4.0 mm\\n - Format : Tenkeyless (TKL), sans pavé numérique\\n - Matériaux : plaque supérieure en aluminium de qualité aéronautique\\n - Écran : OLED intelligent pour stats et contrôle multimédia\\n - Connectivité : USB-C détachable, compatible SteelSeries GG",
+      "🖥️ Ergonomie et design\\n - Dimensions : 355 × 129 × 42 mm\\n - Poids : 974 g\\n - Rétroéclairage RGB par touche\\n - Molette de volume en aluminium\\n - Câble tressé amovible",
+      "🌐 Fonctionnalités avancées\\n - Rapid Trigger et Rapid Tap pour saisie ultra rapide\\n - Protection Mode pour éviter les frappes accidentelles\\n - GG QuickSet : préréglages instantanés\\n - Compatible Windows, macOS, Linux",
+      "🎮 Expérience utilisateur\\n - Idéal pour e-sport, FPS, MOBA et multitâche\\n - Personnalisation complète via SteelSeries GG\\n - Résistant, précis et ultra réactif\\n - Récompensé pour sa performance et son confort"
     ]
   },
   {
@@ -160,11 +160,11 @@
     "donnees_fiche": [
       "La tablette la plus puissante et élégante de 2025, conçue pour les créateurs et les pros.",
       "💰 À partir de 1 099 € – puce Apple M4, écran OLED Ultra Retina XDR, design ultra-fin, Apple Pencil Pro compatible.",
-      "🧩 Spécifications matérielles - Processeur : Apple M4 - RAM : 8 ou 16 Go selon configuration - Stockage : 256 Go / 512 Go / 1 To / 2 To - Batterie : autonomie jusqu’à 10 heures - Connectivité : Wi-Fi 6E, Bluetooth 5.3, USB-C - Épaisseur : seulement 5,1 mm",
-      "🖥️ Écran et affichage - Taille : 11 ou 13 pouces - Technologie : OLED Ultra Retina XDR - Résolution : 2420 × 1668 (11\") / 2752 × 2064 (13\") - Luminosité : jusqu’à 1 600 nits en HDR - Taux de rafraîchissement : 120 Hz (ProMotion)",
-      "🖊️ Accessoires et interaction - Apple Pencil Pro : retour haptique, capteur de pression, gestuelle - Magic Keyboard : pavé tactile, touches rétroéclairées - Face ID et caméra falseDepth - Système d’exploitation : iPadOS 17",
-      "🌐 Fonctionnalités avancées - Multifenêtrage et Stage Manager - Applications pro : Final Cut Pro, Logic Pro, Affinity Photo - Enregistrement vidéo en ProRes - Synchronisation iCloud et AirDrop",
-      "🎮 Expérience utilisateur - Idéal pour le dessin, le montage vidéo, la musique et le gaming - Compatible avec les jeux Apple Arcade et les apps créatives - Interface fluide et intuitive"
+      "🧩 Spécifications matérielles\\n - Processeur : Apple M4\\n - RAM : 8 ou 16 Go selon configuration\\n - Stockage : 256 Go / 512 Go / 1 To / 2 To\\n - Batterie : autonomie jusqu’à 10 heures\\n - Connectivité : Wi-Fi 6E, Bluetooth 5.3, USB-C\\n - Épaisseur : seulement 5,1 mm",
+      "🖥️ Écran et affichage\\n - Taille : 11 ou 13 pouces\\n - Technologie : OLED Ultra Retina XDR\\n - Résolution : 2420 × 1668 (11\") / 2752 × 2064 (13\")\\n - Luminosité : jusqu’à 1 600 nits en HDR\\n - Taux de rafraîchissement : 120 Hz (ProMotion)",
+      "🖊️ Accessoires et interaction\\n - Apple Pencil Pro : retour haptique, capteur de pression, gestuelle\\n - Magic Keyboard : pavé tactile, touches rétroéclairées\\n - Face ID et caméra falseDepth\\n - Système d’exploitation : iPadOS 17",
+      "🌐 Fonctionnalités avancées\\n - Multifenêtrage et Stage Manager\\n - Applications pro : Final Cut Pro, Logic Pro, Affinity Photo\\n - Enregistrement vidéo en ProRes\\n - Synchronisation iCloud et AirDrop",
+      "🎮 Expérience utilisateur\\n - Idéal pour le dessin, le montage vidéo, la musique et le gaming\\n - Compatible avec les jeux Apple Arcade et les apps créatives\\n - Interface fluide et intuitive"
     ]
   },
   {
@@ -182,11 +182,11 @@
     "donnees_fiche": [
       "Le smartphone Android le plus puissant et polyvalent de 2025.",
       "💰 À partir de 1 199 € – Snapdragon 8 Elite, écran Dynamic AMOLED 2X, quadruple capteur photo, IA intégrée.",
-      "🧩 Spécifications matérielles - Processeur : Snapdragon 8 Elite - RAM : 12 ou 16 Go - Stockage : 256 Go / 512 Go / 1 To - Batterie : 5 000 mAh — autonomie jusqu’à 2 jours - Refroidissement : chambre à vapeur optimisée - Connectivité : Wi-Fi 7, Bluetooth 5.4, USB-C",
-      "🖥️ Écran et affichage - Taille : 6,9 pouces Dynamic AMOLED 2X - Résolution : 1440 × 3120 pixels - Taux de rafraîchissement : 1 à 120 Hz (LTPO) - Luminosité : jusqu’à 2 600 nits - Revêtement : Gorilla Glass Armor anti-reflets",
-      "📸 Appareil photo - Capteur principal : 200 MP - Ultra grand-angle : 50 MP - Téléobjectif x3 : 10 MP - Périscope x5 : 50 MP - Zoom optique jusqu’à x10 - Vidéo : 8K à 30 fps",
-      "🌐 Fonctionnalités avancées - Galaxy AI : résumé vocal, traduction instantanée, retouche photo intelligente - Interface One UI 7 - S Pen intégré (sans Bluetooth) - Résistance IP68 - Recharge rapide 45W + recharge sans fil",
-      "🎮 Expérience utilisateur - Idéal pour le multitâche, la photo pro et le gaming - Compatible avec DeX, Samsung Cloud, et SmartThings - Mises à jour Android garanties pendant 7 ans"
+      "🧩 Spécifications matérielles\\n - Processeur : Snapdragon 8 Elite\\n - RAM : 12 ou 16 Go\\n - Stockage : 256 Go / 512 Go / 1 To\\n - Batterie : 5 000 mAh — autonomie jusqu’à 2 jours\\n - Refroidissement : chambre à vapeur optimisée\\n - Connectivité : Wi-Fi 7, Bluetooth 5.4, USB-C",
+      "🖥️ Écran et affichage\\n - Taille : 6,9 pouces Dynamic AMOLED 2X\\n - Résolution : 1440 × 3120 pixels\\n - Taux de rafraîchissement : 1 à 120 Hz (LTPO)\\n - Luminosité : jusqu’à 2 600 nits\\n - Revêtement : Gorilla Glass Armor anti-reflets",
+      "📸 Appareil photo\\n - Capteur principal : 200 MP\\n - Ultra grand-angle : 50 MP\\n - Téléobjectif x3 : 10 MP\\n - Périscope x5 : 50 MP\\n - Zoom optique jusqu’à x10\\n - Vidéo : 8K à 30 fps",
+      "🌐 Fonctionnalités avancées\\n - Galaxy AI : résumé vocal, traduction instantanée, retouche photo intelligente\\n - Interface One UI 7\\n - S Pen intégré (sans Bluetooth)\\n - Résistance IP68\\n - Recharge rapide 45W + recharge sans fil",
+      "🎮 Expérience utilisateur\\n - Idéal pour le multitâche, la photo pro et le gaming\\n - Compatible avec DeX, Samsung Cloud, et SmartThings\\n - Mises à jour Android garanties pendant 7 ans"
     ]
   },
   {
@@ -204,10 +204,10 @@
     "donnees_fiche": [
       "La montre connectée la plus complète de 2025, idéale pour le sport, l’aventure et la santé.",
       "💰 À partir de 799 € – GPS multi-bandes, autonomie 30j, écran AMOLED, cartographie mondiale, paiement sans contact.",
-      "🧩 Spécifications matérielles - Écran : AMOLED 1,4” tactile - GPS multi-bandes, altimètre, baromètre, boussole - Autonomie : jusqu’à 30 jours - Étanchéité : 10 ATM",
-      "⌚ Fonctions sport et santé - Suivi multisport, VO2max, ECG, SpO2 - Analyse du sommeil, stress, récupération - Coach Garmin, plans d’entraînement - Paiement Garmin Pay",
-      "🌐 Fonctionnalités connectées - Notifications smartphone, musique embarquée - Cartographie mondiale, LiveTrack - Boutique Connect IQ pour apps et cadrans",
-      "🎮 Expérience utilisateur - Interface personnalisable - Bracelet QuickFit, verre saphir - Idéale pour sportifs, aventuriers, voyageurs"
+      "🧩 Spécifications matérielles\\n - Écran : AMOLED 1,4” tactile\\n - GPS multi-bandes, altimètre, baromètre, boussole\\n - Autonomie : jusqu’à 30 jours\\n - Étanchéité : 10 ATM",
+      "⌚ Fonctions sport et santé\\n - Suivi multisport, VO2max, ECG, SpO2\\n - Analyse du sommeil, stress, récupération\\n - Coach Garmin, plans d’entraînement\\n - Paiement Garmin Pay",
+      "🌐 Fonctionnalités connectées\\n - Notifications smartphone, musique embarquée\\n - Cartographie mondiale, LiveTrack\\n - Boutique Connect IQ pour apps et cadrans",
+      "🎮 Expérience utilisateur\\n - Interface personnalisable\\n - Bracelet QuickFit, verre saphir\\n - Idéale pour sportifs, aventuriers, voyageurs"
     ]
   },
   {
@@ -224,12 +224,13 @@
     "id": "prod_11",
     "donnees_fiche": [
       "Le téléviseur OLED le plus performant et lumineux de 2025.",
-      "💰 À partir de 2 790 € – dalle OLED Evo, processeur Alpha 11 AI, Dolby Vision, HDMI 2.1, design mural.",
-      "🧩 Spécifications matérielles - Taille : 65 pouces - Technologie : OLED Evo 4K - Processeur : Alpha 11 AI 4K Gen2 - Luminosité : jusqu’à 2 412 cd/m² - Connectivité : Wi-Fi 6, Bluetooth 5.3, HDMI 2.1 x4 - Design : ultra-fin, montage mural sans espace",
-      "🖥️ Qualité d’image - Résolution : 3840 × 2160 pixels - HDR : Dolby Vision, HDR10, HLG - Modes : Filmmaker, Cinéma, Jeu, Standard, Vif - Colorimétrie : Delta E moyen à 0,79 - Température des couleurs : 6493 K",
-      "🎮 Gaming et fluidité - Taux de rafraîchissement : 120 Hz - VRR, ALLM, G-Sync et FreeSync compatibles - Input lag ultra faible - Optimiseur de jeu intégré",
-      "🌐 Fonctionnalités connectées - Système : webOS avec applications multimédia - Assistant vocal : Google Assistant, Alexa - Multi-vues et contrôle domotique - Mode galerie et fond d’écran dynamique",
-      "🎬 Expérience cinéma - Contraste infini - Noirs parfaits - Son immersif avec AI Sound Pro - Compatible Dolby Atmos"
+      "💰 À partir de 2 790 €",
+      "🧩 Spécifications matérielles\\n - Taille : 65 pouces\\n - Technologie : OLED Evo 4K\\n - Processeur : Alpha 11 AI 4K Gen2\\n - Luminosité : jusqu’à 2 412 cd/m²\\n - Connectivité : Wi-Fi 6, Bluetooth 5.3, HDMI 2.1 x4\\n - Design : ultra fin, montage mural sans espace  – Particularités : dalle OLED Evo, Dolby Vision, HDMI 2.1, design mural.",
+      "🖥️ Qualité d’image\\n - Résolution : 3840 × 2160 pixels\\n - HDR : Dolby Vision, HDR10, HLG\\n - Modes : Filmmaker, Cinéma, Jeu, Standard, Vif\\n - Colorimétrie : Delta E moyen à 0,79\\n - Température des couleurs : 6493 K",
+      "🎮 Gaming et fluidité\\n - Taux de rafraîchissement : 120 Hz\\n - VRR, ALLM, G-Sync et FreeSync compatibles\\n - Input lag ultra faible\\n - Optimiseur de jeu intégré",
+      "🌐 Fonctionnalités connectées\\n - Système : webOS avec applications multimédia\\n - Assistant vocal : Google Assistant, Alexa\\n - Multi-vues et contrôle domotique\\n - Mode galerie et fond d’écran dynamique",
+      "🎬 Expérience cinéma\\n - Contraste infini\\n - Noirs parfaits\\n - Son immersif avec AI Sound Pro\\n - Compatible Dolby Atmos  – dalle OLED Evo  Dolby Vision, HDMI 2.1, design mural.",
+      "À REMPLIR"
     ]
   },
   {
@@ -246,12 +247,12 @@
     "id": "prod_12",
     "donnees_fiche": [
       "Le téléviseur OLED Evo G3 de 65 pouces, avec dalle MLA ultra lumineuse et design mural affleurant.",
-      "💰 À partir de 3 599 € – dalle OLED Evo MLA, processeur Alpha 9 Gen6, Dolby Vision IQ, HDMI 2.1, WebOS 23.",
-      "🧩 Spécifications matérielles - Taille : 65 pouces - Technologie : OLED Evo MLA 4K - Processeur : Alpha 9 AI 4K Gen6 - Luminosité : jusqu’à 1 490 cd/m² - Connectivité : Wi-Fi 6, Bluetooth 5.3, HDMI 2.1 x4, USB x3, Ethernet - Design : One Wall Design, montage mural sans espace",
-      "🖥️ Qualité d’image - Résolution : 3840 × 2160 pixels - HDR : Dolby Vision IQ, HDR10, HLG - Modes : Filmmaker, Cinéma, Jeu, Standard, Vif - Colorimétrie : Delta E moyen à 0,79 - Fréquence : 120 Hz natif",
-      "🎮 Gaming et fluidité - Compatibilité : VRR, ALLM, G-Sync, FreeSync - Input lag : 9,1 ms - Optimiseur de jeu intégré - Accès direct à GeForce Now",
-      "🌐 Fonctionnalités connectées - Système : WebOS 23 avec Quick Media Switching - Assistant vocal : Google Assistant, Alexa - Protocoles : AirPlay 2, Miracast, Matter - Multi-vues, contrôle domotique, mode galerie",
-      "🎬 Expérience cinéma - Contraste infini et noirs absolus - Son immersif avec Dolby Atmos et AI Sound Pro - Dalle certifiée anti-reflets - Télécommande ergonomique (non rétroéclairée)"
+      "💰 À partir de 2 999 €",
+      "🧩 Spécifications matérielles\\n - Taille : 65 pouces \\n- Technologie : OLED Evo MLA 4K\\n - Processeur : Alpha 9 AI 4K Gen6\\n - Luminosité : jusqu’à 1 490 cd/m²\\n - Connectivité : Wi-Fi 6, Bluetooth 5.3, HDMI 2.1 x4, USB x3, Ethernet \\n- Design : One Wall Design, montage mural sans espace\\n -Spécificités :  dalle OLED Evo MLA, Dolby Vision IQ, HDMI 2.1, WebOS 23.",
+      "🖥️ Qualité d’image \\n- Résolution : 3840 × 2160 pixels\\n - HDR : Dolby Vision IQ, HDR10, HLG\\n - Modes : Filmmaker, Cinéma, Jeu, Standard, Vif\\n - Colorimétrie : Delta E moyen à 0,79\\n - Fréquence : 120 Hz natif",
+      "🎮 Gaming et fluidité\\n - Compatibilité : VRR, ALLM, G-Sync, FreeSync\\n - Input lag : 9,1 ms\\n - Optimiseur de jeu intégré\\n - Accès direct à GeForce Now",
+      "🌐 Fonctionnalités connectées\\n - Système : WebOS 23 avec Quick Media Switching\\n - Assistant vocal : Google Assistant, Alexa\\n - Protocoles : AirPlay 2, Miracast, Matter\\n - Multi-vues, contrôle domotique, mode galerie",
+      "🎬 Expérience cinéma\\n - Contraste infini et noirs absolus\\n - Son immersif avec Dolby Atmos et AI Sound Pro\\n - Dalle certifiée anti-reflets\\n - Télécommande ergonomique (non rétroéclairée)"
     ]
   },
   {
@@ -269,10 +270,10 @@
     "donnees_fiche": [
       "La caméra 360° la plus avancée de 2025, idéale pour les créateurs immersifs et les aventuriers.",
       "💰 À partir de 549 € – vidéo 8K 360°, stabilisation FlowState, lentilles interchangeables, étanchéité renforcée.",
-      "🧩 Spécifications matérielles - Capteurs : double capteur 1/1.28 pouces - Résolution vidéo : 8K 360° / 5.7K standard - Stabilisation : FlowState + horizon lock - Autonomie : jusqu’à 90 minutes - Étanchéité : jusqu’à 10 m sans caisson - Connectivité : Wi-Fi, Bluetooth, USB-C",
-      "🎥 Fonctions vidéo - Mode FreeFrame pour recadrage libre - Timelapse, Bullet Time, HDR vidéo - Enregistrement en faible lumière optimisé - Lentilles remplaçables en cas de rayure",
-      "🌐 Fonctionnalités connectées - Application Insta360 avec IA de cadrage - Partage direct sur réseaux sociaux - Contrôle vocal et gestuel - Compatible avec Insta360 Studio pour montage avancé",
-      "🎮 Expérience utilisateur - Interface tactile intuitive - Compatible Android, iOS, Windows, macOS - Accessoires multiples : perche invisible, trépied, support casque - Idéale pour vlog, sport extrême, voyage et réalité virtuelle"
+      "🧩 Spécifications matérielles\\n - Capteurs : double capteur 1/1.28 pouces\\n - Résolution vidéo : 8K 360° / 5.7K standard\\n - Stabilisation : FlowState + horizon lock\\n - Autonomie : jusqu’à 90 minutes\\n - Étanchéité : jusqu’à 10 m sans caisson\\n - Connectivité : Wi-Fi, Bluetooth, USB-C",
+      "🎥 Fonctions vidéo\\n - Mode FreeFrame pour recadrage libre\\n - Timelapse, Bullet Time, HDR vidéo\\n - Enregistrement en faible lumière optimisé\\n - Lentilles remplaçables en cas de rayure",
+      "🌐 Fonctionnalités connectées\\n - Application Insta360 avec IA de cadrage\\n - Partage direct sur réseaux sociaux\\n - Contrôle vocal et gestuel\\n - Compatible avec Insta360 Studio pour montage avancé",
+      "🎮 Expérience utilisateur\\n - Interface tactile intuitive\\n - Compatible Android, iOS, Windows, macOS\\n - Accessoires multiples : perche invisible, trépied, support casque\\n - Idéale pour vlog, sport extrême, voyage et réalité virtuelle"
     ]
   },
   {
@@ -290,10 +291,10 @@
     "donnees_fiche": [
       "Appareil photo hybride plein format ultra rapide, idéal pour les créateurs exigeants en photo et vidéo.",
       "💰 À partir de 2 499 € – capteur 24.2 MP, vidéo 4K 60p, stabilisation 8 stops, autofocus intelligent.",
-      "🧩 Spécifications matérielles - Capteur : CMOS plein format 24.2 MP - Processeur : DIGIC X - Stabilisation : jusqu’à 8 stops (IBIS) - Viseur : OLED 3.69 Mpts, 120 Hz - Écran : LCD tactile orientable 3” - Connectivité : Wi-Fi, Bluetooth, USB-C, micro-HDMI, jack casque et micro",
-      "🎥 Fonctions vidéo - Résolution : 4K 60p oversamplée, Full HD 180p - Formats : MP4, RAW, C-RAW, HEIF - Autofocus : Dual Pixel CMOS AF II avec détection des visages, animaux, véhicules - Stabilisation numérique vidéo + IBIS - Enregistrement sans limite de durée",
-      "🌐 Fonctionnalités connectées - Double slot SD UHS-II - Application Canon Camera Connect - Mise à jour firmware via app - Contrôle à distance via smartphone",
-      "🎮 Expérience utilisateur - Rafale : jusqu’à 40 i/s en obturateur électronique - Ergonomie : boîtier robuste et tropicalisé - Compatibilité : objectifs RF, EF via adaptateur - Idéal pour reportage, mariage, sport, vlog et cinéma"
+      "🧩 Spécifications matérielles\\n - Capteur : CMOS plein format 24.2 MP\\n - Processeur : DIGIC X\\n - Stabilisation : jusqu’à 8 stops (IBIS)\\n - Viseur : OLED 3.69 Mpts, 120 Hz\\n - Écran : LCD tactile orientable 3”\\n - Connectivité : Wi-Fi, Bluetooth, USB-C, micro-HDMI, jack casque et micro",
+      "🎥 Fonctions vidéo\\n - Résolution : 4K 60p oversamplée, Full HD 180p\\n - Formats : MP4, RAW, C-RAW, HEIF\\n - Autofocus : Dual Pixel CMOS AF II avec détection des visages, animaux, véhicules\\n - Stabilisation numérique vidéo + IBIS\\n - Enregistrement sans limite de durée",
+      "🌐 Fonctionnalités connectées\\n - Double slot SD UHS-II\\n - Application Canon Camera Connect\\n - Mise à jour firmware via app\\n - Contrôle à distance via smartphone",
+      "🎮 Expérience utilisateur\\n - Rafale : jusqu’à 40 i/s en obturateur électronique\\n - Ergonomie : boîtier robuste et tropicalisé\\n - Compatibilité : objectifs RF, EF via adaptateur\\n - Idéal pour reportage, mariage, sport, vlog et cinéma"
     ]
   },
   {
@@ -311,11 +312,11 @@
     "donnees_fiche": [
       "Le vidéoprojecteur trilaser 4K le plus avancé de 2025, conçu pour le home cinéma et le gaming.",
       "💰 À partir de 2 999 € – technologie trilaser, Dolby Vision, HDR10+, Google TV, zoom optique, faible latence.",
-      "🧩 Spécifications matérielles - Technologie : trilaser DLP 4K UHD - Luminosité : pic lumineux très élevé - Contraste : dynamique avec EBL (Enhanced Black Level) - Connectivité : HDMI 2.1, USB-C, Wi-Fi, Bluetooth - Audio : système intégré, télécommande rétroéclairée - Interface : Google TV fluide et complète",
-      "🖥️ Qualité d’image - Résolution : 3840 × 2160 pixels - HDR : compatible HDR10+ et Dolby Vision - Colorimétrie : couverture étendue, calibrage possible - Zoom optique et mise au point automatique - Correction du trapèze avancée",
-      "🎮 Gaming et fluidité - Faible input lag - Compatible avec consoles et PC - Mode jeu dédié - Bonne réactivité en 4K 60 fps",
-      "🌐 Fonctionnalités connectées - Google TV avec Netflix, Prime Video, YouTube - Assistant vocal intégré - Multi-utilisateurs et profils - Contrôle via smartphone",
-      "🎬 Expérience cinéma - Image grand format immersive - Contraste profond et couleurs éclatantes - Silencieux en fonctionnement - Idéal pour films, séries et sport"
+      "🧩 Spécifications matérielles\\n - Technologie : trilaser DLP 4K UHD\\n - Luminosité : pic lumineux très élevé\\n - Contraste : dynamique avec EBL (Enhanced Black Level)\\n - Connectivité : HDMI 2.1, USB-C, Wi-Fi, Bluetooth\\n - Audio : système intégré, télécommande rétroéclairée\\n - Interface : Google TV fluide et complète",
+      "🖥️ Qualité d’image\\n - Résolution : 3840 × 2160 pixels\\n - HDR : compatible HDR10+ et Dolby Vision\\n - Colorimétrie : couverture étendue, calibrage possible\\n - Zoom optique et mise au point automatique\\n - Correction du trapèze avancée",
+      "🎮 Gaming et fluidité\\n - Faible input lag\\n - Compatible avec consoles et PC\\n - Mode jeu dédié\\n - Bonne réactivité en 4K 60 fps",
+      "🌐 Fonctionnalités connectées\\n - Google TV avec Netflix, Prime Video, YouTube\\n - Assistant vocal intégré\\n - Multi-utilisateurs et profils\\n - Contrôle via smartphone",
+      "🎬 Expérience cinéma\\n - Image grand format immersive\\n - Contraste profond et couleurs éclatantes\\n - Silencieux en fonctionnement\\n - Idéal pour films, séries et sport"
     ]
   },
   {
@@ -333,11 +334,11 @@
     "donnees_fiche": [
       "Vidéoprojecteur laser 4K HDR haut de gamme, conçu pour le home cinéma immersif et les sessions gaming en grand format.",
       "💰 À partir de 3 999 € – technologie 3LCD, HDR10+, 2 700 lumens, contraste 2 500 000:1, zoom motorisé, faible latence.",
-      "🧩 Spécifications matérielles - Technologie : 3LCD avec laser phosphore - Résolution : 3840 × 2160 (4K PRO-UHD avec pixel shifting) - Luminosité : 2 700 lumens (ISO couleur et blanc) - Contraste : dynamique 2 500 000:1 - Connectivité : HDMI 2.1 x2, USB x2, Ethernet, RS232, trigger 12V - Optique : zoom motorisé 2.1x, mise au point et lens shift motorisés (±96% vertical / ±47% horizontal)",
-      "🖥️ Qualité d’image - HDR : compatible HDR10+ et HLG - Traitement : 4K Frame Interpolation, Super Resolution - Couleurs : 10 bits, couverture étendue - Taille d’image : de 50 à 300 pouces - Bruit : 30 dB / 22 dB (Eco)",
-      "🎮 Gaming et fluidité - Input lag : 20 ms en 4K/60p - Compatible avec consoles et PC - Mode jeu dédié - Fluidité optimisée pour les contenus rapides",
-      "🌐 Fonctionnalités connectées - Processeur : Epson ZX Picture Processor - Scene Adaptive Gamma - Correction trapèze numérique - Compatible domotique via RS232 et trigger",
-      "🎬 Expérience cinéma - Image ultra précise et lumineuse - Installation flexible et rapide - Longévité : jusqu’à 20 000 h sans maintenance - Idéal pour films, séries, sport et gaming immersif"
+      "🧩 Spécifications matérielles\\n - Technologie : 3LCD avec laser phosphore\\n - Résolution : 3840 × 2160 (4K PRO-UHD avec pixel shifting)\\n - Luminosité : 2 700 lumens (ISO couleur et blanc)\\n - Contraste : dynamique 2 500 000:1\\n - Connectivité : HDMI 2.1 x2, USB x2, Ethernet, RS232, trigger 12V\\n - Optique : zoom motorisé 2.1x, mise au point et lens shift motorisés (±96% vertical / ±47% horizontal)",
+      "🖥️ Qualité d’image\\n - HDR : compatible HDR10+ et HLG\\n - Traitement : 4K Frame Interpolation, Super Resolution\\n - Couleurs : 10 bits, couverture étendue\\n - Taille d’image : de 50 à 300 pouces\\n - Bruit : 30 dB / 22 dB (Eco)",
+      "🎮 Gaming et fluidité\\n - Input lag : 20 ms en 4K/60p\\n - Compatible avec consoles et PC\\n - Mode jeu dédié\\n - Fluidité optimisée pour les contenus rapides",
+      "🌐 Fonctionnalités connectées\\n - Processeur : Epson ZX Picture Processor\\n - Scene Adaptive Gamma\\n - Correction trapèze numérique\\n - Compatible domotique via RS232 et trigger",
+      "🎬 Expérience cinéma\\n - Image ultra précise et lumineuse\\n - Installation flexible et rapide\\n - Longévité : jusqu’à 20 000 h sans maintenance\\n - Idéal pour films, séries, sport et gaming immersif"
     ]
   },
   {
@@ -355,10 +356,10 @@
     "donnees_fiche": [
       "La box internet la plus rapide et complète de 2025, idéale pour les foyers ultra-connectés.",
       "💰 À partir de 49,99 € – fibre jusqu’à 8 Gbit/s, WiFi 7, 280 chaînes TV, appels illimités, services SVOD inclus.",
-      "🧩 Spécifications matérielles - Débit descendant : jusqu’à 8 Gbit/s - Débit montant : jusqu’à 8 Gbit/s - WiFi : WiFi 7 avec répéteur inclus - Téléphonie : appels illimités vers fixes et mobiles - Connectivité : Ethernet 2.5G, USB-C, Bluetooth, Wi-Fi 7 - Réseau : fibre optique FTTH",
-      "📺 Services TV et multimédia - 280 chaînes incluses - Décodeur TV 4K HDR - Replay, enregistrement, contrôle du direct - Compatible Netflix, Disney+, Prime Video (inclus 3 mois)",
-      "🌐 Fonctionnalités avancées - Interface FreeOS intuitive - Multi-TV et multi-utilisateurs - Contrôle parental et gestion des profils - Accès à OQEE Ciné et Cafeyn",
-      "🎮 Expérience utilisateur - Idéal pour le gaming en ligne et le streaming 4K - Faible latence et stabilité réseau - Compatible domotique et objets connectés - Abonnement Free Mobile 5G à tarif réduit pour les abonnés"
+      "🧩 Spécifications matérielles\\n - Débit descendant : jusqu’à 8 Gbit/s\\n - Débit montant : jusqu’à 8 Gbit/s\\n - WiFi : WiFi 7 avec répéteur inclus\\n - Téléphonie : appels illimités vers fixes et mobiles\\n - Connectivité : Ethernet 2.5G, USB-C, Bluetooth, Wi-Fi 7\\n - Réseau : fibre optique FTTH",
+      "📺 Services TV et multimédia\\n - 280 chaînes incluses\\n - Décodeur TV 4K HDR\\n - Replay, enregistrement, contrôle du direct\\n - Compatible Netflix, Disney+, Prime Video (inclus 3 mois)",
+      "🌐 Fonctionnalités avancées\\n - Interface FreeOS intuitive\\n - Multi-TV et multi-utilisateurs\\n - Contrôle parental et gestion des profils\\n - Accès à OQEE Ciné et Cafeyn",
+      "🎮 Expérience utilisateur\\n - Idéal pour le gaming en ligne et le streaming 4K\\n - Faible latence et stabilité réseau\\n - Compatible domotique et objets connectés\\n - Abonnement Free Mobile 5G à tarif réduit pour les abonnés"
     ]
   },
   {
@@ -376,10 +377,10 @@
     "donnees_fiche": [
       "Le casque audio à réduction de bruit le plus confortable de 2025, idéal pour la musique et les appels.",
       "💰 À partir de 349 € – réduction de bruit active, autonomie 24h, Bluetooth 5.1, mode Aware, confort premium.",
-      "🧩 Spécifications matérielles - Haut-parleurs : 40 mm - Réduction de bruit : active, 3 modes - Autonomie : jusqu’à 24h - Connectivité : Bluetooth 5.1, USB-C, jack 3.5mm - Poids : 240g",
-      "🎧 Fonctions audio - Mode Aware pour entendre l’environnement - Égaliseur personnalisable via app - Microphones à réduction de bruit pour appels clairs - Multipoint : connexion à 2 appareils simultanés",
-      "🌐 Fonctionnalités connectées - Application Bose Music - Assistant vocal intégré (Google, Alexa, Siri) - Mise à jour firmware via app",
-      "🎮 Expérience utilisateur - Coussinets ultra-doux - Arceau pliable et étui de transport - Idéal pour le voyage, le bureau, la maison"
+      "🧩 Spécifications matérielles\\n - Haut-parleurs : 40 mm\\n - Réduction de bruit : active, 3 modes\\n - Autonomie : jusqu’à 24h\\n - Connectivité : Bluetooth 5.1, USB-C, jack 3.5mm\\n - Poids : 240g",
+      "🎧 Fonctions audio\\n - Mode Aware pour entendre l’environnement\\n - Égaliseur personnalisable via app\\n - Microphones à réduction de bruit pour appels clairs\\n - Multipoint : connexion à 2 appareils simultanés",
+      "🌐 Fonctionnalités connectées\\n - Application Bose Music\\n - Assistant vocal intégré (Google, Alexa, Siri)\\n - Mise à jour firmware via app",
+      "🎮 Expérience utilisateur\\n - Coussinets ultra-doux\\n - Arceau pliable et étui de transport\\n - Idéal pour le voyage, le bureau, la maison"
     ]
   },
   {
@@ -397,10 +398,10 @@
     "donnees_fiche": [
       "Casque audio haut de gamme à réduction de bruit active, conçu pour une immersion sonore totale et des appels ultra clairs.",
       "💰 À partir de 399 € – réduction de bruit adaptative, autonomie 30h, Bluetooth 5.2, design épuré et confort premium.",
-      "🧩 Spécifications matérielles - Haut-parleurs : 30 mm avec aimants néodyme - Réduction de bruit : active, optimisée par IA (8 micros) - Autonomie : jusqu’à 30h (NC activé), 40h (NC désactivé) - Connectivité : Bluetooth 5.2, USB-C, jack 3.5mm - Poids : 250g",
-      "🎧 Fonctions audio - Optimisation NC personnelle + pression atmosphérique - Égaliseur via app Sony Headphones Connect - Microphones beamforming pour appels clairs - Multipoint : connexion à 2 appareils simultanés",
-      "🌐 Fonctionnalités connectées - Assistant vocal intégré (Google, Alexa, Siri) - Mode Quick Attention + Ambient Sound - Mise à jour firmware via app - Codec LDAC haute résolution",
-      "🎮 Expérience utilisateur - Coussinets en mousse à mémoire de forme - Arceau souple et design pliable - Étui de transport inclus - Idéal pour les trajets, le télétravail et les sessions musicales prolongées"
+      "🧩 Spécifications matérielles\\n - Haut-parleurs : 30 mm avec aimants néodyme\\n - Réduction de bruit : active, optimisée par IA (8 micros)\\n - Autonomie : jusqu’à 30h (NC activé), 40h (NC désactivé)\\n - Connectivité : Bluetooth 5.2, USB-C, jack 3.5mm\\n - Poids : 250g",
+      "🎧 Fonctions audio\\n - Optimisation NC personnelle + pression atmosphérique\\n - Égaliseur via app Sony Headphones Connect\\n - Microphones beamforming pour appels clairs\\n - Multipoint : connexion à 2 appareils simultanés",
+      "🌐 Fonctionnalités connectées\\n - Assistant vocal intégré (Google, Alexa, Siri)\\n - Mode Quick Attention + Ambient Sound\\n - Mise à jour firmware via app\\n - Codec LDAC haute résolution",
+      "🎮 Expérience utilisateur\\n - Coussinets en mousse à mémoire de forme\\n - Arceau souple et design pliable\\n - Étui de transport inclus\\n - Idéal pour les trajets, le télétravail et les sessions musicales prolongées"
     ]
   },
   {
@@ -418,10 +419,10 @@
     "donnees_fiche": [
       "Le tableau interactif le plus fluide et collaboratif de 2025, idéal pour les salles de classe et les espaces de réunion.",
       "💰 À partir de 2 199 € – écran tactile 4K, stylet passif, multi-utilisateurs, connectivité étendue, interface intuitive.",
-      "🧩 Spécifications matérielles - Taille : 65\", 75\" ou 85\" selon modèle - Résolution : UHD 3840 × 2160 pixels - Écran : tactile capacitif avec 20 points de contact - Stylet : passif, sans batterie - Connectivité : HDMI, USB, LAN, Wi-Fi, Bluetooth - Système : Tizen OS avec interface Flip intuitive",
-      "🖊️ Fonctions interactives - Écriture fluide et naturelle - Effacement à la main ou au doigt - Annotation sur documents, images, vidéos - Mode tableau blanc, présentation, brainstorming - Exportation en PDF ou image",
-      "🌐 Fonctionnalités connectées - Partage d’écran sans fil (AirPlay, Miracast) - Accès à Internet et aux applications web - Multi-utilisateurs simultanés - Enregistrement et sauvegarde sur USB ou Cloud - Compatible avec Microsoft Teams, Zoom, Google Meet",
-      "🎮 Expérience utilisateur - Interface intuitive et rapide - Mode portrait ou paysage - Idéal pour l’enseignement, les réunions, les ateliers - Design épuré et mobile avec support à roulettes"
+      "🧩 Spécifications matérielles\\n - Taille : 65\", 75\" ou 85\" selon modèle\\n - Résolution : UHD 3840 × 2160 pixels\\n - Écran : tactile capacitif avec 20 points de contact\\n - Stylet : passif, sans batterie\\n - Connectivité : HDMI, USB, LAN, Wi-Fi, Bluetooth\\n - Système : Tizen OS avec interface Flip intuitive",
+      "🖊️ Fonctions interactives\\n - Écriture fluide et naturelle\\n - Effacement à la main ou au doigt\\n - Annotation sur documents, images, vidéos\\n - Mode tableau blanc, présentation, brainstorming\\n - Exportation en PDF ou image",
+      "🌐 Fonctionnalités connectées\\n - Partage d’écran sans fil (AirPlay, Miracast)\\n - Accès à Internet et aux applications web\\n - Multi-utilisateurs simultanés\\n - Enregistrement et sauvegarde sur USB ou Cloud\\n - Compatible avec Microsoft Teams, Zoom, Google Meet",
+      "🎮 Expérience utilisateur\\n - Interface intuitive et rapide\\n - Mode portrait ou paysage\\n - Idéal pour l’enseignement, les réunions, les ateliers\\n - Design épuré et mobile avec support à roulettes"
     ]
   },
   {
@@ -439,10 +440,10 @@
     "donnees_fiche": [
       "Tableau interactif 4K UHD avec double système Android/Windows, idéal pour l’enseignement, les réunions et la collaboration hybride.",
       "💰 À partir de 3 599 € – écran tactile 75\", 4K UHD, 20 points de contact, 8 Go RAM, 128 Go SSD, stylet passif, connectivité complète.",
-      "🧩 Spécifications matérielles - Taille : 75 pouces - Résolution : UHD 3840 × 2160 pixels - Écran : tactile infrarouge avec 20 points de contact - Stylet : passif, haute précision 2 mm - Système : Android 12.0 + Windows 10 (dual boot) - Mémoire : 8 Go RAM, 128 Go SSD - Connectivité : HDMI, USB-C, USB-A, LAN, Wi-Fi, Bluetooth",
-      "🖊️ Fonctions interactives - Écriture fluide avec reconnaissance manuscrite IA - Annotation sur documents, images, vidéos - Effacement à la main ou au doigt - Exportation en PDF ou QR code - Multi-canvas et collaboration simultanée",
-      "🌐 Fonctionnalités connectées - Partage d’écran sans fil (AirPlay, Miracast) - Accès à Google Drive, Dropbox, OneDrive - Compatible Zoom, Teams, Meet, Webex - Contrôle à distance via smartphone - Enregistrement local ou cloud",
-      "🎮 Expérience utilisateur - Interface intuitive et rapide - Support mobile avec roulettes verrouillables - Réglage de hauteur jusqu’à 15 cm - Idéal pour salles de classe, entreprises, ateliers - Design épuré et robuste"
+      "🧩 Spécifications matérielles\\n - Taille : 75 pouces\\n - Résolution : UHD 3840 × 2160 pixels\\n - Écran : tactile infrarouge avec 20 points de contact\\n - Stylet : passif, haute précision 2 mm\\n - Système : Android 12.0 + Windows 10 (dual boot)\\n - Mémoire : 8 Go RAM, 128 Go SSD\\n - Connectivité : HDMI, USB-C, USB-A, LAN, Wi-Fi, Bluetooth",
+      "🖊️ Fonctions interactives\\n - Écriture fluide avec reconnaissance manuscrite IA\\n - Annotation sur documents, images, vidéos\\n - Effacement à la main ou au doigt\\n - Exportation en PDF ou QR code\\n - Multi-canvas et collaboration simultanée",
+      "🌐 Fonctionnalités connectées\\n - Partage d’écran sans fil (AirPlay, Miracast)\\n - Accès à Google Drive, Dropbox, OneDrive\\n - Compatible Zoom, Teams, Meet, Webex\\n - Contrôle à distance via smartphone\\n - Enregistrement local ou cloud",
+      "🎮 Expérience utilisateur\\n - Interface intuitive et rapide\\n - Support mobile avec roulettes verrouillables\\n - Réglage de hauteur jusqu’à 15 cm\\n - Idéal pour salles de classe, entreprises, ateliers\\n - Design épuré et robuste"
     ]
   },
   {
@@ -460,11 +461,11 @@
     "donnees_fiche": [
       "La console portable la plus puissante de 2025, conçue pour les jeux AAA.",
       "💰 À partir de 899 € – Ryzen Z1 Extreme, 24 Go RAM, SSD 1 To, écran 120 Hz.",
-      "🧩 Spécifications matérielles - Processeur : AMD Ryzen Z1 Extreme - RAM : 24 Go LPDDR5 - Stockage : SSD M.2 2280 de 1 To - Batterie : 80 Wh — autonomie jusqu’à 6h30 - Refroidissement : système silencieux optimisé - Connectivité : Wi-Fi 6E, Bluetooth 5.2, USB-C",
-      "🖥️ Écran et affichage - Taille : 7 pouces IPS - Résolution : Full HD (1920 × 1080) - Taux de rafraîchissement : 120 Hz - Technologie : VRR avec FreeSync Premium",
-      "🕹️ Contrôleurs et interaction - Interface : Armoury Crate SE sous Windows 11 - Joysticks et gâchettes : effet Hall pour plus de précision - Ergonomie : design repensé pour le confort - Compatibilité : Game Pass, Steam, Epic Games",
-      "🌐 Fonctionnalités avancées - Refroidissement performant et silencieux - Interface personnalisable - Accès à tous les jeux PC - Abonnement Game Pass inclus pendant 3 mois",
-      "🎮 Expérience utilisateur - Idéale pour les gamers nomades - Compatible avec les jeux AAA comme Cyberpunk 2077, Elden Ring, Starfield - Performances dignes d’un PC gaming haut de gamme"
+      "🧩 Spécifications matérielles\\n - Processeur : AMD Ryzen Z1 Extreme\\n - RAM : 24 Go LPDDR5\\n - Stockage : SSD M.2 2280 de 1 To\\n - Batterie : 80 Wh — autonomie jusqu’à 6h30\\n - Refroidissement : système silencieux optimisé\\n - Connectivité : Wi-Fi 6E, Bluetooth 5.2, USB-C",
+      "🖥️ Écran et affichage\\n - Taille : 7 pouces IPS\\n - Résolution : Full HD (1920 × 1080)\\n - Taux de rafraîchissement : 120 Hz\\n - Technologie : VRR avec FreeSync Premium",
+      "🕹️ Contrôleurs et interaction\\n - Interface : Armoury Crate SE sous Windows 11\\n - Joysticks et gâchettes : effet Hall pour plus de précision\\n - Ergonomie : design repensé pour le confort\\n - Compatibilité : Game Pass, Steam, Epic Games",
+      "🌐 Fonctionnalités avancées\\n - Refroidissement performant et silencieux\\n - Interface personnalisable\\n - Accès à tous les jeux PC\\n - Abonnement Game Pass inclus pendant 3 mois",
+      "🎮 Expérience utilisateur\\n - Idéale pour les gamers nomades\\n - Compatible avec les jeux AAA comme Cyberpunk 2077, Elden Ring, Starfield\\n - Performances dignes d’un PC gaming haut de gamme"
     ]
   },
   {
@@ -482,10 +483,10 @@
     "donnees_fiche": [
       "Le casque VR autonome le plus immersif de 2025, idéal pour la réalité virtuelle et mixte.",
       "💰 À partir de 549 € – processeur Snapdragon XR3, écrans 4K+, suivi des mains, réalité mixte couleur.",
-      "🧩 Spécifications matérielles - Processeur : Snapdragon XR3 Gen2 - RAM : 12 Go - Stockage : 128 Go / 512 Go - Autonomie : jusqu’à 2h30 - Poids : 515g",
-      "🎮 Fonctions VR et MR - Suivi des mains et des yeux - Caméras couleur pour réalité mixte - Audio spatial intégré - Compatible PC VR (Air Link)",
-      "🌐 Fonctionnalités connectées - Store Meta Quest avec des milliers d’apps - Partage d’écran sur TV ou mobile - Contrôle parental et profils multiples",
-      "🎮 Expérience utilisateur - Confort optimisé pour longues sessions - Réglage IPD facile - Accessoires : Elite Strap, batterie, étui, etc."
+      "🧩 Spécifications matérielles\\n - Processeur : Snapdragon XR3 Gen2\\n - RAM : 12 Go\\n - Stockage : 128 Go / 512 Go\\n - Autonomie : jusqu’à 2h30\\n - Poids : 515g",
+      "🎮 Fonctions VR et MR\\n - Suivi des mains et des yeux\\n - Caméras couleur pour réalité mixte\\n - Audio spatial intégré\\n - Compatible PC VR (Air Link)",
+      "🌐 Fonctionnalités connectées\\n - Store Meta Quest avec des milliers d’apps\\n - Partage d’écran sur TV ou mobile\\n - Contrôle parental et profils multiples",
+      "🎮 Expérience utilisateur\\n - Confort optimisé pour longues sessions\\n - Réglage IPD facile\\n - Accessoires : Elite Strap, batterie, étui, etc."
     ]
   },
   {
@@ -503,10 +504,10 @@
     "donnees_fiche": [
       "L’imprimante 3D la plus polyvalente de 2025, idéale pour le prototypage et la création à domicile.",
       "💰 À partir de 399 € – volume 220×220×250 mm, auto-nivellement, double extrusion, écran tactile.",
-      "🧩 Spécifications matérielles - Volume d’impression : 220×220×250 mm - Double extrusion, auto-nivellement - Plateau chauffant, buse 260°C - Connectivité : USB, carte SD, Wi-Fi",
-      "🖨️ Fonctions avancées - Reprise d’impression après coupure - Détection de fin de filament - Impression multi-matériaux - Logiciel Creality Print inclus",
-      "🌐 Fonctionnalités connectées - Contrôle à distance via appli mobile - Surveillance caméra (optionnelle) - Mises à jour firmware OTA",
-      "🎮 Expérience utilisateur - Montage rapide et facile - Interface tactile intuitive - Idéale pour makers, écoles, designers"
+      "🧩 Spécifications matérielles\\n - Volume d’impression : 220×220×250 mm\\n - Double extrusion, auto-nivellement\\n - Plateau chauffant, buse 260°C\\n - Connectivité : USB, carte SD, Wi-Fi",
+      "🖨️ Fonctions avancées\\n - Reprise d’impression après coupure\\n - Détection de fin de filament\\n - Impression multi-matériaux\\n - Logiciel Creality Print inclus",
+      "🌐 Fonctionnalités connectées\\n - Contrôle à distance via appli mobile\\n - Surveillance caméra (optionnelle)\\n - Mises à jour firmware OTA",
+      "🎮 Expérience utilisateur\\n - Montage rapide et facile\\n - Interface tactile intuitive\\n - Idéale pour makers, écoles, designers"
     ]
   },
   {
@@ -544,10 +545,10 @@
     "donnees_fiche": [
       "Imprimante 3D résine ultra précise avec écran 14K, idéale pour les figurines, bijoux et prototypes professionnels.",
       "💰 À partir de 499 € – écran LCD 14K, volume 223×126×230 mm, vitesse jusqu’à 150 mm/h, connectivité complète.",
-      "🧩 Spécifications matérielles - Volume d’impression : 223×126×230 mm - Écran : Mono LCD 10.1” – résolution 14K (13 320 × 5 120 px) - Source lumineuse : intégrale 3.0 – uniformité >90% - Hauteur de couche : 50 à 200 microns - Connectivité : USB, Wi-Fi, Ethernet - Bruit : <49 dB en fonctionnement",
-      "🖨️ Fonctions avancées - Mode Dynax+ : vitesse jusqu’à 150 mm/h - Film Pictor 3 couches pour décollement optimisé - Plaque gravée au laser pour meilleure adhérence - Moteur à boucle fermée – couple 1300 N·m - Rails linéaires doubles sur axe Z",
-      "🌐 Fonctionnalités connectées - Système HALOT OS avec contrôle à distance - Compatible Creality Cloud et Halot Box - Tranchage via appli mobile ou PC - Surveillance caméra (optionnelle)",
-      "🎮 Expérience utilisateur - Interface tactile intuitive - Compatible résines 405 nm toutes marques - Idéale pour créateurs, designers, joailliers et makers exigeants"
+      "🧩 Spécifications matérielles\\n - Volume d’impression : 223×126×230 mm\\n - Écran : Mono LCD 10.1” – résolution 14K (13 320 × 5 120 px)\\n - Source lumineuse : intégrale 3.0 – uniformité >90%\\n - Hauteur de couche : 50 à 200 microns\\n - Connectivité : USB, Wi-Fi, Ethernet\\n - Bruit : <49 dB en fonctionnement",
+      "🖨️ Fonctions avancées\\n - Mode Dynax+ : vitesse jusqu’à 150 mm/h\\n - Film Pictor 3 couches pour décollement optimisé\\n - Plaque gravée au laser pour meilleure adhérence\\n - Moteur à boucle fermée – couple 1300 N·m\\n - Rails linéaires doubles sur axe Z",
+      "🌐 Fonctionnalités connectées\\n - Système HALOT OS avec contrôle à distance\\n - Compatible Creality Cloud et Halot Box\\n - Tranchage via appli mobile ou PC\\n - Surveillance caméra (optionnelle)",
+      "🎮 Expérience utilisateur\\n - Interface tactile intuitive\\n - Compatible résines 405 nm toutes marques\\n - Idéale pour créateurs, designers, joailliers et makers exigeants"
     ]
   },
   {
@@ -565,10 +566,10 @@
     "donnees_fiche": [
       "Le drone grand public le plus avancé de 2025, idéal pour la photo et la vidéo aérienne.",
       "💰 À partir de 1 799 € – caméra Hasselblad 4/3, vidéo 8K, autonomie 45 min, détection d’obstacles omnidirectionnelle.",
-      "🧩 Spécifications matérielles - Capteur : CMOS 4/3 Hasselblad 20 MP - Vidéo : 8K/30fps, 4K/120fps - Autonomie : jusqu’à 45 min - Portée : 15 km - Poids : 895g",
-      "🎥 Fonctions vidéo - Hyperlapse, ActiveTrack 5.0, Mastershots - Zoom optique x7, mode nuit - Transmission O4 HD, retour vidéo 1080p",
-      "🌐 Fonctionnalités connectées - Application DJI Fly - Partage direct sur réseaux sociaux - Contrôle gestuel et vocal",
-      "🎮 Expérience utilisateur - Interface intuitive - Accessoires : filtres ND, batteries, sacoche - Idéal pour créateurs, voyageurs, pros"
+      "🧩 Spécifications matérielles\\n - Capteur : CMOS 4/3 Hasselblad 20 MP\\n - Vidéo : 8K/30fps, 4K/120fps\\n - Autonomie : jusqu’à 45 min\\n - Portée : 15 km\\n - Poids : 895g",
+      "🎥 Fonctions vidéo\\n - Hyperlapse, ActiveTrack 5.0, Mastershots\\n - Zoom optique x7, mode nuit\\n - Transmission O4 HD, retour vidéo 1080p",
+      "🌐 Fonctionnalités connectées\\n - Application DJI Fly\\n - Partage direct sur réseaux sociaux\\n - Contrôle gestuel et vocal",
+      "🎮 Expérience utilisateur\\n - Interface intuitive\\n - Accessoires : filtres ND, batteries, sacoche\\n - Idéal pour créateurs, voyageurs, pros"
     ]
   },
   {
@@ -587,9 +588,9 @@
       "Le drone autonome le plus intelligent du marché, conçu pour les missions complexes, la sécurité, et l’inspection industrielle.",
       "💰 À partir de 1 799 € – caméra Hasselblad 4/3, vidéo 8K, autonomie 45 min, détection d’obstacles omnidirectionnelle.",
       "💰 À partir de 2 999 € – navigation IA, caméra 4K HDR, thermique FLIR, autonomie 40 min.",
-      "🧩 Spécifications matérielles - Capteur : Dual 48 MP RGB + FLIR thermique- Vidéo : 4K HDR/60fps, stabilisation active- Autonomie : jusqu’à 40 min- Portée : 12 km- Poids : 1 100g",
-      "🎥 Fonctions vidéo - Suivi autonome par IA, détection et évitement d’obstacles en temps réel- Fonction vol sécurisé, mapping 3D- Transmission Skydio Link, retour vidéo HD",
-      "🌐 Fonctionnalités connectées - Application Skydio Enterprise- Contrôle via tablette ou télécommande- Sync cloud sécurisé pour les relevés de terrain",
+      "🧩 Spécifications matérielles\\n - Capteur : Dual 48 MP RGB + FLIR thermique- Vidéo : 4K HDR/60fps, stabilisation active- Autonomie : jusqu’à 40 min- Portée : 12 km- Poids : 1 100g",
+      "🎥 Fonctions vidéo\\n - Suivi autonome par IA, détection et évitement d’obstacles en temps réel- Fonction vol sécurisé, mapping 3D- Transmission Skydio Link, retour vidéo HD",
+      "🌐 Fonctionnalités connectées\\n - Application Skydio Enterprise- Contrôle via tablette ou télécommande- Sync cloud sécurisé pour les relevés de terrain",
       "🎮 Expérience utilisateur- Interface pro avec modes personnalisables- Accessoires : station mobile, valise rigide, batteries longue durée- Idéal pour sécurité, inspections, infrastructures critiques"
     ]
   },
@@ -608,10 +609,10 @@
     "donnees_fiche": [
       "Drone polyvalent haut de gamme, idéal pour les créateurs de contenu, les voyageurs et les pros de l’image.",
       "💰 À partir de 1 599 € – double caméra 1” + 1/1.3”, vidéo 4K HDR, autonomie 45 min, détection omnidirectionnelle avec LiDAR.",
-      "🧩 Spécifications matérielles - Capteurs : 50 MP CMOS 1” + 48 MP 1/1.3” - Vidéo : 4K/60fps HDR, 2.7K vertical - Autonomie : jusqu’à 45 min - Portée : 20 km - Poids : 724g",
-      "🎥 Fonctions vidéo - Zoom optique x3, mode Panorama Libre - Détection d’obstacles nocturne, FocusTrack - Transmission O4 HD, retour vidéo 1080p",
-      "🌐 Fonctionnalités connectées - Application DJI Fly - Dongle 4G en option - Radiocommande avec écran intégré (RC 2)",
-      "🎮 Expérience utilisateur - Interface intuitive, décollage paume de main - Accessoires : filtres ND, batteries, sacoche - Idéal pour vloggers, vidéastes, pros mobiles"
+      "🧩 Spécifications matérielles\\n - Capteurs : 50 MP CMOS 1” + 48 MP 1/1.3”\\n - Vidéo : 4K/60fps HDR, 2.7K vertical\\n - Autonomie : jusqu’à 45 min\\n - Portée : 20 km\\n - Poids : 724g",
+      "🎥 Fonctions vidéo\\n - Zoom optique x3, mode Panorama Libre\\n - Détection d’obstacles nocturne, FocusTrack\\n - Transmission O4 HD, retour vidéo 1080p",
+      "🌐 Fonctionnalités connectées\\n - Application DJI Fly\\n - Dongle 4G en option\\n - Radiocommande avec écran intégré (RC 2)",
+      "🎮 Expérience utilisateur\\n - Interface intuitive, décollage paume de main\\n - Accessoires : filtres ND, batteries, sacoche\\n - Idéal pour vloggers, vidéastes, pros mobiles"
     ]
   },
   {
@@ -629,10 +630,10 @@
     "donnees_fiche": [
       "Drone professionnel conçu pour les missions critiques : sécurité, inspection, cartographie, recherche.",
       "💰 À partir de 2 699 € – triple capteur (RGB + télé + thermique), zoom x32, autonomie 32 min, IP53, décollage en 55s.",
-      "🧩 Spécifications matérielles - Capteurs : 2x CMOS 1/2.4” + FLIR Boson thermique - Vidéo : 4K HDR + thermique 320x256 - Autonomie : jusqu’à 32 min - Portée : 10 km - Poids : 500g",
-      "🎥 Fonctions vidéo - Zoom x32, superposition thermique + RGB - Stabilisation 3 axes, vision nocturne - Orientation -140° à +110°, mapping 3D",
-      "🌐 Fonctionnalités connectées - Application FreeFlight 6.0 - Pas de zones NFZ - Chiffrement AES-XTS 512 bits",
-      "🎮 Expérience utilisateur - Déploiement ultra rapide - Accessoires : batteries, hélices, valise - Idéal pour pompiers, BTP, forces de l’ordre"
+      "🧩 Spécifications matérielles\\n - Capteurs : 2x CMOS 1/2.4” + FLIR Boson thermique\\n - Vidéo : 4K HDR + thermique 320x256\\n - Autonomie : jusqu’à 32 min\\n - Portée : 10 km\\n - Poids : 500g",
+      "🎥 Fonctions vidéo\\n - Zoom x32, superposition thermique + RGB\\n - Stabilisation 3 axes, vision nocturne\\n - Orientation\\n -140° à +110°, mapping 3D",
+      "🌐 Fonctionnalités connectées\\n - Application FreeFlight 6.0\\n - Pas de zones NFZ\\n - Chiffrement AES-XTS 512 bits",
+      "🎮 Expérience utilisateur\\n - Déploiement ultra rapide\\n - Accessoires : batteries, hélices, valise\\n - Idéal pour pompiers, BTP, forces de l’ordre"
     ]
   },
   {
@@ -650,10 +651,10 @@
     "donnees_fiche": [
       "Le drone ultra-léger nouvelle génération, conçu pour les créateurs exigeants et les passionnés de vol libre.",
       "💰 À partir de 999 € – capteur 1”, vidéo 5.3K HDR, LiDAR, autonomie 38 min, poids < 249g.",
-      "🧩 Spécifications matérielles - Capteur : CMOS 1” 20 MP - Vidéo : 5.3K/30fps, 4K/60fps HDR - Autonomie : jusqu’à 38 min - Portée : 18 km - Poids : 249g",
-      "🎥 Fonctions vidéo - ActiveTrack 360°, Mastershots, Hyperlapse - Zoom numérique x4, mode nuit amélioré - Transmission O5 HD, retour vidéo 1080p",
-      "🌐 Fonctionnalités connectées - Application DJI Fly - Détection LiDAR omnidirectionnelle - Contrôle vocal, synchronisation cloud",
-      "🎮 Expérience utilisateur - Interface simplifiée, décollage paume - Accessoires : filtres ND, batteries, valise - Idéal pour vloggers, voyageurs, pros mobiles"
+      "🧩 Spécifications matérielles\\n - Capteur : CMOS 1” 20 MP\\n - Vidéo : 5.3K/30fps, 4K/60fps HDR\\n - Autonomie : jusqu’à 38 min\\n - Portée : 18 km\\n - Poids : 249g",
+      "🎥 Fonctions vidéo\\n - ActiveTrack 360°, Mastershots, Hyperlapse\\n - Zoom numérique x4, mode nuit amélioré\\n - Transmission O5 HD, retour vidéo 1080p",
+      "🌐 Fonctionnalités connectées\\n - Application DJI Fly\\n - Détection LiDAR omnidirectionnelle\\n - Contrôle vocal, synchronisation cloud",
+      "🎮 Expérience utilisateur\\n - Interface simplifiée, décollage paume\\n - Accessoires : filtres ND, batteries, valise\\n - Idéal pour vloggers, voyageurs, pros mobiles"
     ]
   },
   {
@@ -671,10 +672,10 @@
     "donnees_fiche": [
       "Mini drone ultra-léger et puissant, idéal pour les créateurs nomades et les passionnés de photo aérienne.",
       "💰 À partir de 849 € – capteur 50 MP, vidéo 4K HDR, zoom x16, autonomie 28 min, poids < 250g.",
-      "🧩 Spécifications matérielles - Capteur : CMOS 1/1.28” RYYB 50 MP - Vidéo : 4K/30fps HDR, stabilisation 3 axes - Autonomie : jusqu’à 28 min - Portée : 10 km - Poids : 249g",
-      "🎥 Fonctions vidéo - Zoom numérique x16, suivi automatique - Modes QuickShot : Flick, Orbit, Rocket, Fade Away - Transmission SkyLink HD, retour vidéo 2.7K/1080p",
-      "🌐 Fonctionnalités connectées - Application Autel Sky - Contrôle gestuel et vocal - Synchronisation cloud sécurisée",
-      "🎮 Expérience utilisateur - Interface intuitive, décollage rapide - Accessoires : batteries, filtres ND, sacoche - Idéal pour vloggers, voyageurs, créateurs mobiles"
+      "🧩 Spécifications matérielles\\n - Capteur : CMOS 1/1.28” RYYB 50 MP\\n - Vidéo : 4K/30fps HDR, stabilisation 3 axes\\n - Autonomie : jusqu’à 28 min\\n - Portée : 10 km\\n - Poids : 249g",
+      "🎥 Fonctions vidéo\\n - Zoom numérique x16, suivi automatique\\n - Modes QuickShot : Flick, Orbit, Rocket, Fade Away\\n - Transmission SkyLink HD, retour vidéo 2.7K/1080p",
+      "🌐 Fonctionnalités connectées\\n - Application Autel Sky\\n - Contrôle gestuel et vocal\\n - Synchronisation cloud sécurisée",
+      "🎮 Expérience utilisateur\\n - Interface intuitive, décollage rapide\\n - Accessoires : batteries, filtres ND, sacoche\\n - Idéal pour vloggers, voyageurs, créateurs mobiles"
     ]
   },
   {
@@ -691,10 +692,10 @@
     "donnees_fiche": [
       "Le drone ultra-léger nouvelle génération, conçu pour les créateurs exigeants et les passionnés de vol libre.",
       "💰 À partir de 999 € – capteur 1”, vidéo 5.3K HDR, LiDAR, autonomie 38 min, poids < 249g.",
-      "🧩 Spécifications matérielles - Capteur : CMOS 1” 20 MP - Vidéo : 5.3K/30fps, 4K/60fps HDR - Autonomie : jusqu’à 38 min - Portée : 18 km - Poids : 249g",
-      "🎥 Fonctions vidéo - ActiveTrack 360°, Mastershots, Hyperlapse - Zoom numérique x4, mode nuit amélioré - Transmission O5 HD, retour vidéo 1080p",
-      "🌐 Fonctionnalités connectées - Application DJI Fly - Détection LiDAR omnidirectionnelle - Contrôle vocal, synchronisation cloud",
-      "🎮 Expérience utilisateur - Interface simplifiée, décollage paume - Accessoires : filtres ND, batteries, valise - Idéal pour vloggers, voyageurs, pros mobiles"
+      "🧩 Spécifications matérielles\\n - Capteur : CMOS 1” 20 MP\\n - Vidéo : 5.3K/30fps, 4K/60fps HDR\\n - Autonomie : jusqu’à 38 min\\n - Portée : 18 km\\n - Poids : 249g",
+      "🎥 Fonctions vidéo\\n - ActiveTrack 360°, Mastershots, Hyperlapse\\n - Zoom numérique x4, mode nuit amélioré\\n - Transmission O5 HD, retour vidéo 1080p",
+      "🌐 Fonctionnalités connectées\\n - Application DJI Fly\\n - Détection LiDAR omnidirectionnelle\\n - Contrôle vocal, synchronisation cloud",
+      "🎮 Expérience utilisateur\\n - Interface simplifiée, décollage paume\\n - Accessoires : filtres ND, batteries, valise\\n - Idéal pour vloggers, voyageurs, pros mobiles"
     ],
     "id": "prod_33"
   },
@@ -761,8 +762,8 @@
     "donnees_fiche": [
       "Montre connectée ultra fine avec écran OLED bord à bord, capteurs santé avancés et autonomie optimisée.",
       "💰 Prix : 449,00 €",
-      "🧩 Spécifications - Écran : OLED Retina LTPO 1.96'' toujours activé, 2000 nits - Puce : S10 SiP double cœur + Neural Engine 4 cœurs - Mémoire : 64 Go de stockage - Autonomie : 18h / jusqu’à 36h en mode économie - Connectivité : Wi-Fi, Bluetooth 5.3, GPS/GNSS, NFC, UWB - Capteurs : ECG, fréquence cardiaque, SpO2, température, profondimètre, altimètre, détection de chute et d’apnée du sommeil",
-      "🌐 Fonctionnalités - Commande par double tap - Siri local avec accès aux données santé - App Santé, Pleine conscience, Bruit, Sommeil - Étanchéité WR50 + verre Ion-X ou saphir selon finition",
+      "🧩 Spécifications\\n - Écran : OLED Retina LTPO 1.96'' toujours activé, 2000 nits\\n - Puce : S10 SiP double cœur + Neural Engine 4 cœurs\\n - Mémoire : 64 Go de stockage\\n - Autonomie : 18h / jusqu’à 36h en mode économie\\n - Connectivité : Wi-Fi, Bluetooth 5.3, GPS/GNSS, NFC, UWB\\n - Capteurs : ECG, fréquence cardiaque, SpO2, température, profondimètre, altimètre, détection de chute et d’apnée du sommeil",
+      "🌐 Fonctionnalités\\n - Commande par double tap\\n - Siri local avec accès aux données santé\\n - App Santé, Pleine conscience, Bruit, Sommeil\\n - Étanchéité WR50 + verre Ion-X ou saphir selon finition",
       "🎮 Usage recommandé Idéale pour le sport, la santé, le suivi du sommeil et les notifications discrètes avec style et précision."
     ]
   },
@@ -781,7 +782,7 @@
     "donnees_fiche": [
       "Smartphone premium avec caméra portrait IA, design élégant et performances photo impressionnantes.",
       "💰 Prix : 799,99 €",
-      "🧩 Spécifications- Écran : OLED 6.78'' 120Hz- Processeur : Snapdragon 8s Gen 3- RAM : 12 Go- Stockage : 512 Go- Batterie : 5200 mAh avec recharge 100W- Appareil photo : Triple capteur - 50MP Sony IMX906 + téléobjectif + ultra grand angle",
+      "🧩 Spécifications- Écran : OLED 6.78'' 120Hz- Processeur : Snapdragon 8s Gen 3- RAM : 12 Go- Stockage : 512 Go- Batterie : 5200 mAh avec recharge 100W- Appareil photo : Triple capteur\\n - 50MP Sony IMX906 + téléobjectif + ultra grand angle",
       "🌐 Fonctionnalités- Caméra portrait IA HONOR développée avec Studio Harcourt- Recharge ultra-rapide 100W- Design incurvé premium- Optimisation thermique et autonomie longue durée",
       "🎮 Usage recommandéIdéal pour la photographie créative, les vidéos 4K, le gaming mobile et les expériences sociales immersives."
     ]
@@ -823,11 +824,11 @@
     "donnees_fiche": [
       "Une tablette polyvalente pensée pour la productivité mobile et le divertissement.",
       "💰 À partir de 699 € – écran 10,9\", stylet S Pen inclus, design fin et léger.",
-      "🧩 Spécifications matérielles - Processeur : Snapdragon 8 Gen 2 - RAM : 8 Go - Stockage : 128 Go / 256 Go - Batterie : jusqu’à 12 heures - Connectivité : Wi-Fi 6E, Bluetooth 5.3, USB-C - Épaisseur : 6,3 mm",
-      "🖥️ Écran et affichage - Taille : 10,9 pouces - Technologie : AMOLED - Résolution : 2560 × 1600 - Luminosité : 1 200 nits - Taux de rafraîchissement : 90 Hz",
-      "🖊️ Accessoires et interaction - S Pen inclus - Clavier Book Cover en option - Reconnaissance faciale - Système d’exploitation : One UI 7 (Android 15)",
-      "🌐 Fonctionnalités avancées - Mode DeX pour bureau virtuel - Multifenêtrage intelligent - Synchronisation avec Galaxy Watch et Buds - Enregistrement vidéo 4K",
-      "🎮 Expérience utilisateur - Idéal pour les étudiants, les pros nomades et les gamers - Compatible avec Xbox Cloud Gaming - Interface fluide et personnalisable"
+      "🧩 Spécifications matérielles\\n - Processeur : Snapdragon 8 Gen 2\\n - RAM : 8 Go\\n - Stockage : 128 Go / 256 Go\\n - Batterie : jusqu’à 12 heures\\n - Connectivité : Wi-Fi 6E, Bluetooth 5.3, USB-C\\n - Épaisseur : 6,3 mm",
+      "🖥️ Écran et affichage\\n - Taille : 10,9 pouces\\n - Technologie : AMOLED\\n - Résolution : 2560 × 1600\\n - Luminosité : 1 200 nits\\n - Taux de rafraîchissement : 90 Hz",
+      "🖊️ Accessoires et interaction\\n - S Pen inclus\\n - Clavier Book Cover en option\\n - Reconnaissance faciale\\n - Système d’exploitation : One UI 7 (Android 15)",
+      "🌐 Fonctionnalités avancées\\n - Mode DeX pour bureau virtuel\\n - Multifenêtrage intelligent\\n - Synchronisation avec Galaxy Watch et Buds\\n - Enregistrement vidéo 4K",
+      "🎮 Expérience utilisateur\\n - Idéal pour les étudiants, les pros nomades et les gamers\\n - Compatible avec Xbox Cloud Gaming\\n - Interface fluide et personnalisable"
     ]
   },
   {
@@ -847,11 +848,11 @@
     "donnees_fiche": [
       "La tablette hybride Windows pensée pour les créateurs et les professionnels en déplacement.",
       "💰 À partir de 1 199 € – processeur ARM SQ4, écran PixelSense, clavier détachable.",
-      "🧩 Spécifications matérielles - Processeur : Microsoft SQ4 (ARM) - RAM : 16 Go - Stockage : 256 Go / 512 Go - Batterie : jusqu’à 15 heures - Connectivité : Wi-Fi 7, Bluetooth 5.4, USB-C - Épaisseur : 7,3 mm",
-      "🖥️ Écran et affichage - Taille : 13 pouces - Technologie : PixelSense Flow - Résolution : 2880 × 1920 - Luminosité : 1 400 nits - Taux de rafraîchissement : 120 Hz",
-      "🖊️ Accessoires et interaction - Surface Slim Pen 3 - Clavier Signature avec pavé tactile - Windows Hello (caméra IR) - Système d’exploitation : Windows 11 ARM",
-      "🌐 Fonctionnalités avancées - Mode tablette ou PC - Applications pro : Adobe CC, Teams, Office 365 - Enregistrement vidéo 4K HDR - Cloud Sync avec OneDrive",
-      "🎮 Expérience utilisateur - Parfait pour les créateurs, développeurs et télétravailleurs - Compatible avec Steam et Xbox Game Pass - Interface Windows fluide et multitâche"
+      "🧩 Spécifications matérielles\\n - Processeur : Microsoft SQ4 (ARM)\\n - RAM : 16 Go\\n - Stockage : 256 Go / 512 Go\\n - Batterie : jusqu’à 15 heures\\n - Connectivité : Wi-Fi 7, Bluetooth 5.4, USB-C\\n - Épaisseur : 7,3 mm",
+      "🖥️ Écran et affichage\\n - Taille : 13 pouces\\n - Technologie : PixelSense Flow\\n - Résolution : 2880 × 1920\\n - Luminosité : 1 400 nits\\n - Taux de rafraîchissement : 120 Hz",
+      "🖊️ Accessoires et interaction\\n - Surface Slim Pen 3\\n - Clavier Signature avec pavé tactile\\n - Windows Hello (caméra IR)\\n - Système d’exploitation : Windows 11 ARM",
+      "🌐 Fonctionnalités avancées\\n - Mode tablette ou PC\\n - Applications pro : Adobe CC, Teams, Office 365\\n - Enregistrement vidéo 4K HDR\\n - Cloud Sync avec OneDrive",
+      "🎮 Expérience utilisateur\\n - Parfait pour les créateurs, développeurs et télétravailleurs\\n - Compatible avec Steam et Xbox Game Pass\\n - Interface Windows fluide et multitâche"
     ]
   },
   {
@@ -868,54 +869,64 @@
     "id": "prod_40",
     "donnees_fiche": [
       "💰 Prix : 549,00 €",
-      "🧩 Spécifications - CPU : AMD Zen 2 8 cœurs 3.8 GHz - GPU : RDNA 2 avec 12 TFLOPS - RAM : 16 Go GDDR6 - Stockage : SSD NVMe 1 To - Résolution : 4K UHD à 120 fps - Connectivité : HDMI 2.1, USB 3.1, Ethernet, Wi-Fi 5",
-      "🌐 Fonctionnalités - Quick Resume pour basculer entre les jeux instantanément - Refroidissement silencieux avec design monolithique - Compatible avec Xbox Game Pass Ultimate - Rétrocompatibilité étendue avec les jeux Xbox One, 360 et originaux",
+      "🧩 Spécifications\\n - CPU : AMD Zen 2 8 cœurs 3.8 GHz\\n - GPU : RDNA 2 avec 12 TFLOPS\\n - RAM : 16 Go GDDR6\\n - Stockage : SSD NVMe 1 To\\n - Résolution : 4K UHD à 120 fps\\n - Connectivité : HDMI 2.1, USB 3.1, Ethernet, Wi-Fi 5",
+      "🌐 Fonctionnalités\\n - Quick Resume pour basculer entre les jeux instantanément\\n - Refroidissement silencieux avec design monolithique\\n - Compatible avec Xbox Game Pass Ultimate\\n - Rétrocompatibilité étendue avec les jeux Xbox One, 360 et originaux",
       "🎮 Usage recommandé Parfaite pour les gamers hardcore, les amateurs de graphismes ultra-réalistes, et les fans de l’écosystème Xbox."
     ]
   },
-  {
-   "nom": "Nintendo Switch 2 Pro",
-      "categorie": "CONSOLE",
-      "image": "assets/images/nintendo-switch-2-pro.png",
-      "lien": "fiches-produits/console/Nintendo Switch 2 Pro.html",
-      "description": "À REMPLIR - Description courte du produit",
-      "top_du_mois": false,
-      "prix": "299 €",
-      "fonctionnalites_avancees": [
-        "À REMPLIR - Fonctionnalité avancée"
-      ],
-      "id": "prod_41",
-      "donnees_fiche": [
-        "À REMPLIR - Description détaillée du produit.",
-        "💰 Prix : 299€",
-        "🧩 Spécifications matérielles\\n bla bla\\n blo blo",
-        "🖥️ Écran et affichage\\nÀ REMPLIR",
-        "🕹️ Contrôleurs et interaction\\nÀ REMPLIR",
-        "🌐 Fonctionnalités connectées\\nÀ REMPLIR",
-        "🎮 Expérience utilisateur\\nÀ REMPLIR"
-      ]
-},
-    {
-  "nom": "Drone X-Pro 2025",
-  "categorie": "DRONE",
-  "image": "assets/images/drone-x-pro-2025.png",
-  "lien": "fiches-produits/drone/drone-x-pro-2025.html",
-  "description": "Drone pliable ultra-portable avec caméra HD, idéal pour capturer des vues aériennes spectaculaires.",
-  "top_du_mois": false,
-  "prix": "41,32 €",
+ {
+  "nom": "Nintendo Switch 2 Pro",
+  "categorie": "CONSOLE",
+  "image": "assets/images/Nintendo Switch 2 Pro.png",
+  "lien": "fiches-produits/console/Nintendo Switch 2 Pro.html",
+  "description": "La Nintendo Switch 2 Pro est une console hybride nouvelle génération, alliant puissance de salon et portabilité ultime.",
+  "top_du_mois": true,
+  "prix": "469 €",
   "fonctionnalites_avancees": [
-    "Caméra HD 1080p avec mode panoramique et slow motion",
-    "Design pliable et compact, facile à transporter",
-    "Capteur de gravité pour éviter les obstacles"
+    "Spécifications matérielles - CPU : 8 cœurs ARM Cortex-A78C jusqu’à 1,7 GHz",
+    "GPU : NVIDIA Ampere, 1536 cœurs CUDA, jusqu’à 3,07 TFLOPS",
+    "RAM : 12 Go LPDDR5X (9 Go pour les jeux, 3 Go pour le système)",
+    "Stockage : 256 Go UFS 3.1, extensible via microSD Express jusqu’à 2 To",
+    "Écran : LCD 7,9 pouces, 1080p, HDR10, VRR 120 Hz",
+    "Résolution : 4K HDR à 60 fps en mode téléviseur, 1080p portable",
+    "Connectivité : HDMI 2.0, USB-C, Bluetooth, Wi-Fi 6, Ethernet via dock",
+    "Audio : Haut-parleurs stéréo, prise jack 3,5 mm, microphone intégré",
+    "Contrôleurs : Joy-Con 2 avec fixation magnétique, capteur optique, gâchettes élargies"
   ],
-  "id": "prod_42",
+
+
+  "id": "prod_41",
   "donnees_fiche": [
-        "À REMPLIR - Description détaillée du produit.",
-        "💰 Prix : À DÉFINIR",
-        "🧩 Spécifications matérielle\n- À REMPLIR",
-        "🎥 Fonctions vidéo\n- À REMPLIR",
-        "🌐 Fonctionnalités connectée\n- À REMPLIR",
-        "🎮 Expérience utilisateur\n- À REMPLIR"
-      ]
-}
+    "La Nintendo Switch 2 Pro repousse les limites du jeu nomade avec une puissance accrue, un affichage 4K en mode docké, et une compatibilité étendue avec les accessoires et jeux de la première génération.",
+    "💰 Prix : 469€",
+    "🧩 Spécifications matérielles\n- Processeur custom NVIDIA Tegra X2\n- RAM 12 Go LPDDR5\n- Stockage interne 256 Go extensible via microSD",
+    "🖥️ Écran et affichage\n- Écran OLED 7.5 pouces\n- Résolution 1080p portable / 4K docké\n- Taux de rafraîchissement 120 Hz",
+    "🕹️ Contrôleurs et interaction\n- Joy-Con 2 avec retour haptique HD Rumble 2\n- Manette Pro 2 avec boutons arrière programmables\n- Bouton GameChat intégré",
+    "🌐 Fonctionnalités connectées\n- Wi-Fi 6E\n- Bluetooth 5.2\n- Port Ethernet sur le dock\n- Synchronisation instantanée avec les accessoires Switch 1",
+    "🎮 Expérience utilisateur\n- Interface retravaillée\n- Mode multi-utilisateur amélioré\n- Accès rapide aux jeux et applications\n- Support vocal intégré pour le chat en ligne"
+  ]
+},
+  {
+    "nom": "Drone X-Pro 2025",
+    "categorie": "DRONE",
+    "image": "assets/images/drone-x-pro-2025.png",
+    "lien": "fiches-produits/drone/drone-x-pro-2025.html",
+    "description": "Drone pliable ultra-portable avec caméra HD, idéal pour capturer des vues aériennes spectaculaires.",
+    "top_du_mois": false,
+    "prix": "41,32 €",
+    "fonctionnalites_avancees": [
+      "Caméra HD 1080p avec mode panoramique et slow motion",
+      "Design pliable et compact, facile à transporter",
+      "Capteur de gravité pour éviter les obstacles"
+    ],
+    "id": "prod_42",
+    "donnees_fiche": [
+      "À REMPLIR\\n - Description détaillée du produit.",
+      "💰 Prix : À DÉFINIR",
+      "🧩 Spécifications matérielle\n- À REMPLIR",
+      "🎥 Fonctions vidéo\n- À REMPLIR",
+      "🌐 Fonctionnalités connectée\n- À REMPLIR",
+      "🎮 Expérience utilisateur\n- À REMPLIR"
+    ]
+  }
 ]
