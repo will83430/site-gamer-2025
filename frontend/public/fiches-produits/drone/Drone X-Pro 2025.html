@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Drone X-Pro 2025</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <div class="entete">
+    <img src="../../assets/images/gaming.png" alt="Gaming">
+    <a href="../../top-du-mois.html">Retour à la vitrine</a>
+  </div>
+
+  <h1>Drone X-Pro 2025</h1>
+  
+  <p>À REMPLIR - Description rapide du produit.</p>
+  
+  <div class="gallery">
+    <img src="../../assets/images/placeholder.png" alt="Drone X-Pro 2025" class="img-centree">
+  </div>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Zoom" />
+  </div>
+  
+  <div id="badge-top-mois"></div>
+
+  <p>💰 Prix : À DÉFINIR €</p>
+  
+  <p>🧩 Spécifications matérielles<br>
+    À REMPLIR
+  </p>
+  
+  <p>🎥 Fonctions vidéo<br>
+  À REMPLIR
+</p>
+  
+  <p>🌐 Fonctionnalités connectées<br>
+    À REMPLIR
+  </p>
+  
+  <p>🎮 Expérience utilisateur<br>
+    À REMPLIR
+  </p>
+
+  <script>
+    const g = document.querySelector(".gallery img");
+    const l = document.getElementById("lightbox");
+    const z = document.getElementById("lightbox-img");
+    g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+    l.addEventListener("click", () => l.style.display = "none");
+
+    const nomProduit = document.querySelector("h1").textContent.trim();
+
+    fetch("../../data/equipements.json")
+      .then(res => res.json())
+      .then(data => {
+        const produit = data.equipements.find(p => p.nom === nomProduit);
+        if (produit?.top_du_mois) {
+          document.getElementById("badge-top-mois").innerHTML = `
+            <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+              ⭐ Ce produit est en vedette ce mois-ci !
+            </div>`;
+        }
+      })
+      .catch(err => console.error("Erreur chargement JSON :", err));
+  </script>
+  
+  <footer class="footer">
+    <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
+    <div class="footer-links">
+      <div class="footer-item">
+        <img src="../../assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+        <a href="../../index.html">Accueil</a>
+      </div>
+      <div class="footer-item">
+        <img src="../../assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+        <a href="equipements.html">Équipements</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+<script src="../../assets/js/utils.js"></script>
+</html>

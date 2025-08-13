@@ -16,14 +16,14 @@
     <a href="../../top-du-mois.html">Retour à la vitrine</a>
   </div>
 
-  <!-- Titre et badge -->
+ 
   <h1>Xbox Series X</h1>
   <div id="badge-top-mois"></div>
 
-  <!-- Description courte -->
-  <p class="short-desc">La console la plus puissante de Microsoft, conçue pour des performances de jeu exceptionnelles en 4K et une immersion totale.</p>
+  
+  <p>La console la plus puissante de Microsoft, conçue pour des performances de jeu exceptionnelles en 4K et une immersion totale.</p>
 
-  <!-- Galerie image -->
+  
   <div class="gallery">
     <img src="../../assets/images/Xbox Series X.png" alt="Xbox Series X" class="img-centree">
   </div>
@@ -31,54 +31,35 @@
     <img id="lightbox-img" src="" alt="Image Zoomée" />
   </div>
 
-  <!-- Paragraphes détaillés -->
-  <p style="
-          text-align: center;
-          max-width: 700px;
-          margin: 0 auto 1em auto;
-          line-height: 1.6;
-        ">La console la plus puissante de Microsoft, conçue pour des performances de jeu exceptionnelles en 4K et une immersion totale.</p>
+    <p>💰 Prix : 549,00 €</p>
+    <p>🧩 Spécifications <br> - CPU : AMD Zen 2 8 cœurs 3.8 GHz <br>- GPU : RDNA 2 avec 12 TFLOPS <br>- RAM : 16 Go GDDR6 <br>- Stockage : SSD NVMe 1 To <br>- Résolution : 4K UHD à 120 fps <br>- Connectivité : HDMI 2.1, USB 3.1, Ethernet, Wi-Fi 5</p>
+    <p>🌐 Fonctionnalités <br>- Quick Resume pour basculer entre les jeux instantanément <br>- Refroidissement silencieux avec design monolithique <br>- Compatible avec Xbox Game Pass Ultimate <br>- Rétrocompatibilité étendue avec les jeux Xbox One, 360 et originaux</p>
+    <p>🎮 Usage recommandé Parfaite pour les gamers hardcore, les amateurs de graphismes ultra-réalistes, et les fans de l’écosystème Xbox.</p> 
 
-  <p style="
-          text-align: center;
-          max-width: 700px;
-          margin: 0 auto 1em auto;
-          line-height: 1.6;
-        ">💰 Prix : 549,00 €</p>
+<script>
+  const g = document.querySelector(".gallery img");
+  const l = document.getElementById("lightbox");
+  const z = document.getElementById("lightbox-img");
+  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
+  l.addEventListener("click", () => l.style.display = "none");
 
-  <p style="
-          text-align: center;
-          max-width: 700px;
-          margin: 0 auto 1em auto;
-          line-height: 1.6;
-        ">🧩 Spécifications
-  - CPU : AMD Zen 2 8 cœurs 3.8 GHz  
-  - GPU : RDNA 2 avec 12 TFLOPS  
-  - RAM : 16 Go GDDR6  
-  - Stockage : SSD NVMe 1 To  
-  - Résolution : 4K UHD à 120 fps  
-  - Connectivité : HDMI 2.1, USB 3.1, Ethernet, Wi-Fi 5</p>
+  const nomProduit = document.querySelector("h1").textContent.trim();
 
-  <p style="
-          text-align: center;
-          max-width: 700px;
-          margin: 0 auto 1em auto;
-          line-height: 1.6;
-        ">🌐 Fonctionnalités
-  - Quick Resume pour basculer entre les jeux instantanément  
-  - Refroidissement silencieux avec design monolithique  
-  - Compatible avec Xbox Game Pass Ultimate  
-  - Rétrocompatibilité étendue avec les jeux Xbox One, 360 et originaux</p>
+  fetch("../../data/equipements.json")
+    .then(res => res.json())
+    .then(data => {
+      const produit = data.find(p => p.nom === nomProduit);
+      if (produit?.top_du_mois) {
+        document.getElementById("badge-top-mois").innerHTML = `
+          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+            ⭐ Ce produit est en vedette ce mois-ci !
+          </div>`;
+      }
+    })
+    .catch(err => console.error("Erreur chargement JSON :", err));
+</script>
 
-  <p style="
-          text-align: center;
-          max-width: 700px;
-          margin: 0 auto 1em auto;
-          line-height: 1.6;
-        ">🎮 Usage recommandé
-  Parfaite pour les gamers hardcore, les amateurs de graphismes ultra-réalistes, et les fans de l’écosystème Xbox.</p>
-
-  <!-- Pied de page… -->
+  
   <div class="pied-de-page">…</div>
 
    <footer class="footer">
@@ -96,30 +77,6 @@
     </div>
   </div>
 </footer>
-
-  <script>
-    const g = document.querySelector(".gallery img");
-    const l = document.getElementById("lightbox");
-    const z = document.getElementById("lightbox-img");
-    g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
-    l.addEventListener("click", () => l.style.display = "none");
-
-    const nomProduit = document.querySelector("h1").textContent.trim();
-
-    fetch("../../data/equipements.json")
-      .then(res => res.json())
-      .then(data => {
-        const p = data.find(x => x.nom === nomProduit);
-
-        if (p?.top_du_mois) {
-          document.getElementById("badge-top-mois").innerHTML = `
-            <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
-              ⭐ Ce produit est en vedette ce mois-ci !
-            </div>`;
-        }
-      })
-      .catch(err => console.error("Erreur chargement JSON :", err));
-  </script>
 
 </body> <script src="../../assets/js/utils.js"></script>
 </html>
