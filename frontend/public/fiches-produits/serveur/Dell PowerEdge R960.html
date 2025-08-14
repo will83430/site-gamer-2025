@@ -4,101 +4,138 @@
     <meta charset="UTF-8">
     <title>Dell PowerEdge R960</title>
     <link rel="stylesheet" href="../../assets/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
-   <div class="entete">
-    <img src="../../assets/images/gaming.png" alt="Gaming">
-    <a href="../../top-du-mois.html">Retour à la vitrine</a>
-  </div>
+    <div class="entete">
+        <img src="../../assets/images/gaming.png" alt="Gaming">
+        <a href="../../top-du-mois.html">Retour à la vitrine</a>
+    </div>
 
     <h1>Dell PowerEdge R960</h1>
+
     <div id="badge-top-mois"></div>
 
-    <p>Le serveur rack 4U le plus performant de 2025, conçu pour les charges critiques et les environnements cloud hybrides.</p>
+    <p class="description">Le serveur rack 4U le plus performant de 2025, conçu pour les charges critiques et les environnements cloud hybrides.</p>
 
     <div class="gallery">
-      <img src="../../assets/images/dell-poweredge-r960.png" alt="Dell PowerEdge R960" class="img-centree">
+        <img src="../../assets/images/placeholder.png" alt="Dell PowerEdge R960" class="img-centree">
     </div>
-
     <div class="lightbox" id="lightbox">
-      <img id="lightbox-img" src="" alt="Image Zoomée" />
+        <img id="lightbox-img" src="" alt="Zoom">
     </div>
 
-    <p>💰 À partir de 8 999 € – 4 processeurs Intel Xeon Gen5, jusqu’à 6 To de RAM DDR5, stockage NVMe haute densité.</p>
-
-    <p>🧩 Spécifications matérielles<br>
-        - Processeurs : jusqu’à 4 × Intel Xeon Gen5<br>
-        - RAM : jusqu’à 6 To DDR5 ECC<br>
-        - Stockage : jusqu’à 32 × SSD NVMe U.2<br>
-        - Refroidissement : ventilateurs redondants + gestion thermique intelligente<br>
-        - Connectivité : 4 × ports 10/25/100 GbE, USB 3.2, iDRAC9<br>
-        - Format : rack 4U avec rails coulissants
-    </p>
-
-    <p>🖥️ Performances et virtualisation<br>
-        - Optimisé pour VMware, Hyper-V, Proxmox<br>
-        - Prise en charge des conteneurs (Docker, Kubernetes)<br>
-        - Sécurité renforcée avec TPM 2.0 et Secure Boot<br>
-        - Gestion à distance via OpenManage Enterprise
-    </p>
-
-    <p>🌐 Fonctionnalités avancées<br>
-        - Redondance complète (alimentation, réseau, stockage)<br>
-        - BIOS et firmware auto-réparables<br>
-        - Surveillance proactive avec IA embarquée<br>
-        - Compatible cloud hybride et edge computing
-    </p>
-
-    <p>🎮 Cas d’usage<br>
-        - Datacenters haute performance<br>
-        - Intelligence artificielle et machine learning<br>
-        - Bases de données critiques (SAP HANA, Oracle)<br>
-        - Virtualisation massive et hébergement web
-    </p>
+    <!-- Les paragraphes seront remplis dynamiquement -->
+    <div id="product-content">
+        <!-- Le contenu sera injecté ici par JavaScript -->
+    </div>
 
     <script>
-  const g = document.querySelector(".gallery img");
-  const l = document.getElementById("lightbox");
-  const z = document.getElementById("lightbox-img");
-  g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
-  l.addEventListener("click", () => l.style.display = "none");
+        const g = document.querySelector(".gallery img");
+        const l = document.getElementById("lightbox");
+        const z = document.getElementById("lightbox-img");
+        if (g) {
+            g.addEventListener("click", () => {
+                l.style.display = "flex";
+                z.src = g.src;
+            });
+            l.addEventListener("click", () => (l.style.display = "none"));
+        }
 
-  const nomProduit = document.querySelector("h1").textContent.trim();
+        const nomProduit = document.querySelector("h1").textContent.trim();
 
-  fetch("../../data/equipements.json")
-    .then(res => res.json())
-    .then(data => {
-      const produit = data.find(p => p.nom === nomProduit);
-      if (produit?.top_du_mois) {
-        document.getElementById("badge-top-mois").innerHTML = `
-          <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
-            ⭐ Ce produit est en vedette ce mois-ci !
-          </div>`;
-      }
-    })
-    .catch(err => console.error("Erreur chargement JSON :", err));
-</script>
+        // Charger et afficher TOUTES les données depuis le JSON
+        fetch("../../data/equipements.json")
+            .then((res) => res.json())
+            .then((data) => {
+                const produit = data.equipements
+                    ? data.equipements.find((p) => p.nom === nomProduit)
+                    : data.find((p) => p.nom === nomProduit);
+
+                if (produit) {
+                    console.log("Produit trouvé:", produit);
+
+                    // Badge top du mois
+                    if (produit.top_du_mois) {
+                        document.getElementById("badge-top-mois").innerHTML = `
+                        <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
+                            ⭐ Ce produit est en vedette ce mois-ci !
+                        </div>`;
+                    }
+
+                    // Mettre à jour la description
+                    const description = document.querySelector(".description");
+                    if (description && produit.description) {
+                        description.textContent = produit.description;
+                    }
+
+                    // Mettre à jour l'image
+                    if (produit.image) {
+                        const img = document.querySelector(".gallery img");
+                        if (img) {
+                            img.src = "../../" + produit.image;
+                            img.alt = produit.nom;
+                        }
+                    }
+
+                    // IMPORTANT : Créer dynamiquement tous les paragraphes depuis donnees_fiche
+                    const contentDiv = document.getElementById("product-content");
+                    if (contentDiv && produit.donnees_fiche && produit.donnees_fiche.length > 0) {
+                        contentDiv.innerHTML = "";
+
+                        // Créer un paragraphe pour chaque donnée (sauf la première qui est la description)
+                        produit.donnees_fiche.forEach((donnee, index) => {
+                            if (index > 0) {
+                                const p = document.createElement("p");
+                                p.innerHTML = donnee
+                                    .replace(/\\n/g, "<br>")
+                                    .replace(/\n/g, "<br>");
+                                contentDiv.appendChild(p);
+                            }
+                        });
+                    } else {
+                        // Template par défaut si pas de données
+                        const contentDiv = document.getElementById("product-content");
+                        contentDiv.innerHTML = `
+                        <p>💰 Prix : À DÉFINIR €</p>
+                        <p>🧩 Spécifications : À REMPLIR</p>
+                        <p>🌐 Fonctionnalités : À REMPLIR</p>
+                        <p>🎮 Expérience : À REMPLIR</p>`;
+                    }
+                } else {
+                    console.log("Produit non trouvé dans le JSON");
+                    // Afficher le contenu par défaut
+                    document.getElementById("product-content").innerHTML = `
+                    <p>💰 Prix : À DÉFINIR €</p>
+                    <p>🧩 Spécifications : À REMPLIR</p>
+                    <p>🌐 Fonctionnalités : À REMPLIR</p>
+                    <p>🎮 Expérience : À REMPLIR</p>`;
+                }
+            })
+            .catch((err) => {
+                console.error("Erreur chargement JSON :", err);
+                document.getElementById("product-content").innerHTML = `
+                <p>💰 Prix : À DÉFINIR €</p>
+                <p>🧩 Spécifications : À REMPLIR</p>
+                <p>🌐 Fonctionnalités : À REMPLIR</p>
+                <p>🎮 Expérience : À REMPLIR</p>`;
+            });
+    </script>
 
     <footer class="footer">
-  <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
-
-  <div class="footer-links">
-   <div class="footer-item">
-      <img src="../../assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
-      <a href="../../index.html">Accueil</a>
-    </div>
-
-    <div class="footer-item">
-      <img src="../../assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
-      <a href="equipements.html">Équipements</a>
-    </div>
-  </div>
-</footer>
-
-</body> <script src="../../assets/js/utils.js"></script>
+        <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
+        <div class="footer-links">
+            <div class="footer-item">
+                <img src="../../assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+                <a href="../../index.html">Accueil</a>
+            </div>
+            <div class="footer-item">
+                <img src="../../assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+                <a href="equipements.html">Équipements</a>
+            </div>
+        </div>
+    </footer>
+</body>
+<script src="../../assets/js/utils.js"></script>
 </html>

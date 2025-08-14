@@ -362,7 +362,7 @@ video {
 }
 
 .description {
-  color: #666;
+  color: #f9f7f7;
   margin-bottom: 30px;
 }
 
@@ -458,7 +458,7 @@ input[type="checkbox"].produit-checkbox {
 
 .comparaison-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
   justify-content: center;
 }
@@ -469,7 +469,7 @@ input[type="checkbox"].produit-checkbox {
   box-shadow: var(--box-shadow);
   padding: 15px;
   text-align: center;
-  width: 240px;
+  width: 300px;
   margin: 0 auto;
   min-height: 360px;
   display: flex;
