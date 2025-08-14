@@ -282,7 +282,7 @@
     "image": "assets/images/Canon EOS R6 Mark II.png",
     "lien": "fiches-produits/camera/Canon EOS R6 Mark II.html",
     "description": "Appareil photo hybride plein format ultra rapide, idéal pour les créateurs photo/vidéo.",
-    "top_du_mois": false,
+    "top_du_mois": true,
     "prix": "À partir de 2 899 €",
     "fonctionnalites_avancees": [
       "Spécifications matérielles - Capteur : CMOS plein format 24.2 MP (36 x 24 mm) - Processeur : DIGIC X - Autofocus : Dual Pixel CMOS AF II avec suivi humain/animal/véhicule - Stabilisation : IBIS 5 axes jusqu’à 8 stops - Rafale : jusqu’à 40 i/s en obturateur électronique - Vidéo : 4K 60p sans crop, Full HD 180p, C-Log 3 - Écran : tactile orientable 3” LCD 1.62M points - Viseur : OLED 3.69M points à 120Hz - Connectivité : Wi-Fi 5, Bluetooth 5.0, USB-C, micro HDMI, double slot SD UHS-II - Poids : 670g avec batterie et carte"
@@ -290,7 +290,7 @@
     "id": "prod_14",
     "donnees_fiche": [
       "Appareil photo hybride plein format ultra rapide, idéal pour les créateurs exigeants en photo et vidéo.",
-      "💰 À partir de 2 499 € – capteur 24.2 MP, vidéo 4K 60p, stabilisation 8 stops, autofocus intelligent.",
+      "💰 À partir de 2 899 € – capteur 24.2 MP, vidéo 4K 60p, stabilisation 8 stops, autofocus intelligent.",
       "🧩 Spécifications matérielles\\n - Capteur : CMOS plein format 24.2 MP\\n - Processeur : DIGIC X\\n - Stabilisation : jusqu’à 8 stops (IBIS)\\n - Viseur : OLED 3.69 Mpts, 120 Hz\\n - Écran : LCD tactile orientable 3”\\n - Connectivité : Wi-Fi, Bluetooth, USB-C, micro-HDMI, jack casque et micro",
       "🎥 Fonctions vidéo\\n - Résolution : 4K 60p oversamplée, Full HD 180p\\n - Formats : MP4, RAW, C-RAW, HEIF\\n - Autofocus : Dual Pixel CMOS AF II avec détection des visages, animaux, véhicules\\n - Stabilisation numérique vidéo + IBIS\\n - Enregistrement sans limite de durée",
       "🌐 Fonctionnalités connectées\\n - Double slot SD UHS-II\\n - Application Canon Camera Connect\\n - Mise à jour firmware via app\\n - Contrôle à distance via smartphone",
@@ -383,27 +383,20 @@
       "🎮 Expérience utilisateur\\n - Coussinets ultra-doux\\n - Arceau pliable et étui de transport\\n - Idéal pour le voyage, le bureau, la maison"
     ]
   },
-  {
-    "nom": "Sony WH-1000XM5",
-    "categorie": "CASQUE AUDIO",
-    "image": "assets/images/Sony WH-1000XM5.png",
-    "lien": "fiches-produits/casque-audio/Sony WH-1000XM5.html",
-    "description": "Casque sans fil haut de gamme avec réduction de bruit active et audio haute résolution.",
-    "top_du_mois": false,
-    "prix": "À partir de 419 €",
-    "fonctionnalites_avancees": [
-      "Spécifications matérielles - Type : Circum-aural fermé, dynamique - Transducteurs : 30 mm avec aimants néodyme - Réponse en fréquence : 4 Hz – 40 000 Hz (câble), jusqu’à 96 kHz en LDAC - Réduction de bruit : NC adaptative avec Auto NC Optimizer - Microphones : 8 micros + IA pour appels clairs - Autonomie : jusqu’à 30h (NC activé), 40h (NC désactivé) - Connectivité : Bluetooth 5.2, NFC, USB-C, mini-jack stéréo - Codecs : SBC, AAC, LDAC - Poids : 250g - Fonctions : Quick Attention, mode ambiant, capteur de port"
-    ],
-    "id": "prod_19",
-    "donnees_fiche": [
-      "Casque audio haut de gamme à réduction de bruit active, conçu pour une immersion sonore totale et des appels ultra clairs.",
-      "💰 À partir de 399 € – réduction de bruit adaptative, autonomie 30h, Bluetooth 5.2, design épuré et confort premium.",
-      "🧩 Spécifications matérielles\\n - Haut-parleurs : 30 mm avec aimants néodyme\\n - Réduction de bruit : active, optimisée par IA (8 micros)\\n - Autonomie : jusqu’à 30h (NC activé), 40h (NC désactivé)\\n - Connectivité : Bluetooth 5.2, USB-C, jack 3.5mm\\n - Poids : 250g",
-      "🎧 Fonctions audio\\n - Optimisation NC personnelle + pression atmosphérique\\n - Égaliseur via app Sony Headphones Connect\\n - Microphones beamforming pour appels clairs\\n - Multipoint : connexion à 2 appareils simultanés",
-      "🌐 Fonctionnalités connectées\\n - Assistant vocal intégré (Google, Alexa, Siri)\\n - Mode Quick Attention + Ambient Sound\\n - Mise à jour firmware via app\\n - Codec LDAC haute résolution",
-      "🎮 Expérience utilisateur\\n - Coussinets en mousse à mémoire de forme\\n - Arceau souple et design pliable\\n - Étui de transport inclus\\n - Idéal pour les trajets, le télétravail et les sessions musicales prolongées"
-    ]
-  },
+ {
+  "nom": "Sony WH-1000XM5",
+  "description": "Casque audio haut de gamme à réduction de bruit active, conçu pour une immersion sonore totale et des appels ultra clairs.",
+  "categorie": "gaming",
+  "image": "assets/images/Sony WH-1000XM5.png",
+  "top_du_mois": false,
+  "donnees_fiche": [
+    "Casque audio haut de gamme à réduction de bruit active, conçu pour une immersion sonore totale et des appels ultra clairs.",
+    "💰 À partir de 399 € – réduction de bruit adaptative, autonomie 30h, Bluetooth 5.2, design épuré et confort premium.",
+    "🧩 Spécifications matérielles\\n\n    - Haut-parleurs : 30 mm avec aimants néodyme\\n\n    - Réduction de bruit : active, optimisée par IA (8 micros)\\n\n    - Autonomie : jusqu’à 30h (NC activé), 40h (NC désactivé)\\n\n    - Connectivité : Bluetooth 5.2, USB-C, jack 3.5mm\\n\n    - Poids : 250g\n  ",
+    "🌐 Fonctionnalités connectées\\n\n    - Assistant vocal intégré (Google, Alexa, Siri)\\n\n    - Mode Quick Attention + Ambient Sound\\n\n    - Mise à jour firmware via app\\n\n    - Codec LDAC haute résolution\n  ",
+    "🎮 Expérience utilisateur\\n\n    - Coussinets en mousse à mémoire de forme\\n\n    - Arceau souple et design pliable\\n\n    - Étui de transport inclus\\n\n    - Idéal pour les trajets, le télétravail et les sessions musicales prolongées\n  "
+  ]
+},
   {
     "nom": "Samsung Flip Pro 2025",
     "categorie": "TABLEAU INTERACTIF",
@@ -883,15 +876,7 @@
   "top_du_mois": true,
   "prix": "469 €",
   "fonctionnalites_avancees": [
-    "Spécifications matérielles - CPU : 8 cœurs ARM Cortex-A78C jusqu’à 1,7 GHz",
-    "GPU : NVIDIA Ampere, 1536 cœurs CUDA, jusqu’à 3,07 TFLOPS",
-    "RAM : 12 Go LPDDR5X (9 Go pour les jeux, 3 Go pour le système)",
-    "Stockage : 256 Go UFS 3.1, extensible via microSD Express jusqu’à 2 To",
-    "Écran : LCD 7,9 pouces, 1080p, HDR10, VRR 120 Hz",
-    "Résolution : 4K HDR à 60 fps en mode téléviseur, 1080p portable",
-    "Connectivité : HDMI 2.0, USB-C, Bluetooth, Wi-Fi 6, Ethernet via dock",
-    "Audio : Haut-parleurs stéréo, prise jack 3,5 mm, microphone intégré",
-    "Contrôleurs : Joy-Con 2 avec fixation magnétique, capteur optique, gâchettes élargies"
+    "Spécifications matérielles - CPU : AMD Zen 2 8 cœurs 3.8 GHz - GPU : RDNA 2 avec 12 TFLOPS - RAM : 16 Go GDDR6 - Stockage : SSD NVMe 1 To - Résolution : 4K UHD à 120 fps - Connectivité : HDMI 2.1, USB 3.1, Ethernet, Wi-Fi 5"
   ],
 
 
