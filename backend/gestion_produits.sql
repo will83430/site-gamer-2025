@@ -1,4 +1,9 @@
-[
+INSERT INTO produits
+SELECT *
+FROM json_populate_recordset(
+    NULL::produits,
+    $$
+  
   {
     "nom": "Corsair One i500",
     "categorie": "PC GAMING",
@@ -962,4 +967,63 @@
       "🎮 Expérience utilisateur \n- Commandes tactiles \n- Détection de port automatique"
     ]
   }
-]
+$$
+);
+-- Vérifier le nombre total importé
+SELECT COUNT(*) AS total_importe FROM produits;
+
+
+-- 2️⃣  Statistiques individuelles
+---------------------------------------------------------
+-- Produits totaux avec id valide (prod_X, 1 ≤ X ≤ 99999)
+SELECT COUNT(DISTINCT id) AS total_products
+FROM produits
+WHERE id ~ '^prod_[0-9]{1,5}$'
+  AND CAST(SUBSTRING(id FROM 6) AS INTEGER) BETWEEN 1 AND 99999;
+
+-- Nombre de catégories uniques
+SELECT COUNT(DISTINCT categorie) AS total_categories
+FROM produits
+WHERE categorie IS NOT NULL AND categorie <> '';
+
+-- Nombre de produits "top du mois"
+SELECT COUNT(*) AS featured_products
+FROM produits
+WHERE top_du_mois = TRUE;
+
+
+-- 3️⃣  Statistiques combinées en une seule requête
+---------------------------------------------------------
+SELECT
+    COUNT(DISTINCT id) FILTER (
+        WHERE id ~ '^prod_[0-9]{1,5}$'
+          AND CAST(SUBSTRING(id FROM 6) AS INTEGER) BETWEEN 1 AND 99999
+    ) AS total_products,
+
+    COUNT(DISTINCT categorie) FILTER (
+        WHERE categorie IS NOT NULL AND categorie <> ''
+    ) AS total_categories,
+
+    COUNT(*) FILTER (
+        WHERE top_du_mois = TRUE
+    ) AS featured_products
+FROM produits;
+
+
+-- 4️⃣  Analyse complémentaire
+---------------------------------------------------------
+-- Produits par catégorie
+SELECT categorie, COUNT(*) AS nb_produits
+FROM produits
+GROUP BY categorie
+ORDER BY nb_produits DESC;
+
+-- Valeur totale de stock par catégorie (exemple avec champ `prix`)
+-- SELECT categorie, SUM(prix) AS valeur_stock
+-- FROM produits
+-- GROUP BY categorie
+-- ORDER BY valeur_stock DESC;
+
+-- =====================================================
+-- 📌 Fin du script
+-- =====================================================
