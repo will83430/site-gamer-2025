@@ -219,19 +219,24 @@
             <!-- Statistiques -->
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-number" id="total-products">47</div>
+                    <div class="stat-number" id="total-products"></div>
                     <div class="stat-label">Produits totaux</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="total-categories">16</div>
+                    <div class="stat-number" id="total-categories"></div>
                     <div class="stat-label">Catégories</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="featured-products">12</div>
+                    <div class="stat-number" id="featured-products"></div>
                     <div class="stat-label">Top du mois</div>
                 </div>
             </div>
-            
+            <script src="../public/assets/js/stats.js"></script>
+<script>
+  // Appelle la fonction avec le bon chemin vers ton fichier JSON
+  updateStats("../public/data/equipements.json"); // adapte le chemin selon ton projet
+</script>
+
             <!-- Section Édition de Produit -->
             <div class="section">
                 <h2>✏️ Éditer un Produit Existant</h2>
