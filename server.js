@@ -636,6 +636,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+
 // ========== DÉMARRAGE DU SERVEUR ==========
 
 app.listen(port, async () => {

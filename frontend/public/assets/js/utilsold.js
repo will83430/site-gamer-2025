@@ -50,7 +50,7 @@ const ficheManager = {
         }
 
         const fileName = this.sanitizeFileName(product.nom);
-        return `fiches/${folder}/${fileName}.html`;
+        return `fiches-produits/${folder}/${fileName}.html`;
     },
 
     // Nettoie un nom de produit pour en faire un nom de fichier
