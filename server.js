@@ -1,10 +1,9 @@
-// server-postgres-images.js - Serveur avec gestion d'images et fichiers locaux
+// server-fixed.js - Version corrigée du serveur
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
 const path = require('path');
-const multer = require('multer');
-const fs = require('fs').promises;
+const fs = require('fs'); // IMPORTANT !
 
 const app = express();
 const port = 3000;
@@ -18,205 +17,37 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Configuration des dossiers de fiches produits
-const FICHES_FOLDERS = [
-  'fiches',           // Dossier principal
-  'fiches/drone',
-  'fiches/console',
-  'fiches/tablette',
-  'fiches/smartphone',
-  'fiches/pc-gaming',
-  'fiches/serveur',
-  'fiches/casque-audio',
-  'fiches/montre-connecte',
-  'fiches/ecran-tv',
-  'fiches/camera',
-  'fiches/video-projecteur',
-  'fiches/box-internet',
-  'fiches/casque-vr',
-  'fiches/imprimante-3d',
-  'fiches/peripheriques',
-  'fiches/tableau-interactif',
-];
-
-// Configuration Multer pour l'upload d'images
-const storage = multer.diskStorage({
-  destination: async (req, file, cb) => {
-    const uploadDir = 'public/uploads';
-    try {
-      await fs.mkdir(uploadDir, { recursive: true });
-    } catch (err) {
-      console.error('Erreur création dossier:', err);
-    }
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ 
-  storage: storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024 // Limite à 10MB
-  },
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-    
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb(new Error('Seules les images sont autorisées'));
-    }
-  }
-});
-
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use('/uploads', express.static('public/uploads'));
-app.use(express.static('public'));
 
-// Servir les fichiers de fiches depuis plusieurs dossiers
-FICHES_FOLDERS.forEach(folder => {
-  app.use(`/${folder}`, express.static(folder));
-});
+// ========== SERVIR LES FICHIERS STATIQUES - ORDRE IMPORTANT ! ==========
+
+// 1. D'ABORD servir le dossier frontend/public/assets pour /assets
+const assetsPath = path.join(__dirname, 'frontend', 'public', 'assets');
+console.log('📁 Dossier assets configuré:', assetsPath);
+app.use('/assets', express.static(assetsPath));
+
+// 2. Servir aussi frontend/public pour les fichiers HTML
+const frontendPath = path.join(__dirname, 'frontend', 'public');
+app.use('/frontend/public', express.static(frontendPath));
+
+// 3. Servir le dossier fiches
+const fichesPath = path.join(__dirname, 'fiches');
+if (fs.existsSync(fichesPath)) {
+    app.use('/fiches', express.static(fichesPath));
+}
+
+// 4. Servir la racine pour index.html, etc.
+app.use(express.static(__dirname));
 
 // ========== ROUTES API ==========
-
-// GET - Liste des fichiers HTML disponibles
-app.get('/api/fiches-list', async (req, res) => {
-  try {
-    console.log('📁 Recherche des fichiers HTML...');
-    const allFiles = [];
-    
-    for (const folder of FICHES_FOLDERS) {
-      try {
-        const files = await fs.readdir(folder);
-        const htmlFiles = files.filter(f => f.endsWith('.html') || f.endsWith('.htm'));
-        
-        for (const file of htmlFiles) {
-          allFiles.push({
-            name: file,
-            path: `${folder}/${file}`,
-            folder: folder,
-            url: `/${folder}/${file}`
-          });
-        }
-      } catch (err) {
-        // Le dossier n'existe peut-être pas
-        console.log(`⚠️ Dossier ${folder} non trouvé`);
-      }
-    }
-    
-    console.log(`✅ ${allFiles.length} fichiers HTML trouvés`);
-    
-    res.json({
-      success: true,
-      files: allFiles,
-      count: allFiles.length
-    });
-    
-  } catch (error) {
-    console.error('❌ Erreur liste fiches:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
-// POST - Upload d'image
-app.post('/api/upload', upload.single('image'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        error: 'Aucune image fournie'
-      });
-    }
-    
-    console.log(`📸 Image uploadée: ${req.file.filename}`);
-    
-    // Retourner le chemin de l'image
-    const imageUrl = `/uploads/${req.file.filename}`;
-    
-    res.json({
-      success: true,
-      url: imageUrl,
-      filename: req.file.filename,
-      originalName: req.file.originalname,
-      size: req.file.size
-    });
-    
-  } catch (error) {
-    console.error('❌ Erreur upload:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
-// POST - Upload Base64 (pour stocker directement dans la BDD)
-app.post('/api/upload-base64', async (req, res) => {
-  try {
-    const { image, filename } = req.body;
-    
-    if (!image) {
-      return res.status(400).json({
-        success: false,
-        error: 'Aucune image fournie'
-      });
-    }
-    
-    // Extraire le type MIME et les données
-    const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-    
-    if (!matches || matches.length !== 3) {
-      return res.status(400).json({
-        success: false,
-        error: 'Format d\'image invalide'
-      });
-    }
-    
-    const imageBuffer = Buffer.from(matches[2], 'base64');
-    const mimeType = matches[1];
-    
-    // Générer un nom de fichier unique
-    const uniqueFilename = Date.now() + '-' + (filename || 'image.jpg');
-    const uploadPath = path.join('public', 'uploads', uniqueFilename);
-    
-    // Sauvegarder le fichier
-    await fs.writeFile(uploadPath, imageBuffer);
-    
-    console.log(`📸 Image Base64 sauvegardée: ${uniqueFilename}`);
-    
-    res.json({
-      success: true,
-      url: `/uploads/${uniqueFilename}`,
-      filename: uniqueFilename,
-      size: imageBuffer.length,
-      mimeType: mimeType
-    });
-    
-  } catch (error) {
-    console.error('❌ Erreur upload Base64:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
 
 // GET - Récupérer tous les produits
 app.get('/api/produits', async (req, res) => {
   try {
-    console.log('📊 GET /api/produits - Récupération des produits...');
+    console.log('📊 GET /api/produits');
     
     const result = await pool.query(`
       SELECT 
@@ -226,14 +57,14 @@ app.get('/api/produits', async (req, res) => {
       ORDER BY categorie, nom
     `);
     
-    // Traiter les images pour chaque produit
+    // Traiter les images pour ajouter image_url
     const productsWithImages = result.rows.map(product => {
+      // Ajouter image_url basé sur image ou image_data
       if (product.image_data) {
-        // Si on a une image en base64 dans la BDD
         product.image_url = product.image_data;
       } else if (product.image) {
-        // Si on a un chemin d'image
-        product.image_url = product.image;
+        // S'assurer que le chemin commence par /
+        product.image_url = product.image.startsWith('/') ? product.image : '/' + product.image;
       }
       return product;
     });
@@ -259,7 +90,7 @@ app.get('/api/produits', async (req, res) => {
 app.get('/api/produits/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`🔍 GET /api/produits/${id} - Recherche du produit...`);
+    console.log(`🔍 GET /api/produits/${id}`);
     
     const result = await pool.query(
       'SELECT * FROM produits WHERE id = $1',
@@ -275,14 +106,12 @@ app.get('/api/produits/:id', async (req, res) => {
     
     const product = result.rows[0];
     
-    // Gérer l'image
+    // Ajouter image_url
     if (product.image_data) {
       product.image_url = product.image_data;
     } else if (product.image) {
-      product.image_url = product.image;
+      product.image_url = product.image.startsWith('/') ? product.image : '/' + product.image;
     }
-    
-    console.log(`✅ Produit ${id} trouvé`);
     
     res.json({
       success: true,
@@ -306,9 +135,8 @@ app.post('/api/produits', async (req, res) => {
       top_du_mois, prix, fonctionnalites_avancees, donnees_fiche 
     } = req.body;
     
-    console.log(`➕ POST /api/produits - Création d'un nouveau produit: ${nom}`);
+    console.log(`➕ POST /api/produits - Création: ${nom}`);
     
-    // Validation basique
     if (!nom) {
       return res.status(400).json({
         success: false,
@@ -316,7 +144,7 @@ app.post('/api/produits', async (req, res) => {
       });
     }
     
-    // Vérifier d'abord si la colonne image_data existe
+    // Vérifier si la colonne image_data existe
     const columnCheck = await pool.query(`
       SELECT column_name 
       FROM information_schema.columns 
@@ -326,7 +154,7 @@ app.post('/api/produits', async (req, res) => {
     let query, params;
     
     if (columnCheck.rows.length > 0) {
-      // La colonne existe, on peut l'utiliser
+      // La colonne existe
       query = `
         INSERT INTO produits 
         (nom, categorie, description, image, image_data, lien, top_du_mois, prix, fonctionnalites_avancees, donnees_fiche)
@@ -334,19 +162,13 @@ app.post('/api/produits', async (req, res) => {
         RETURNING *
       `;
       params = [
-        nom, 
-        categorie || null, 
-        description || null, 
-        image || null,
-        image_data || null,
-        lien || null,
-        top_du_mois || false, 
-        prix || null, 
-        fonctionnalites_avancees || [], 
-        donnees_fiche || []
+        nom, categorie || null, description || null, 
+        image || null, image_data || null, lien || null,
+        top_du_mois || false, prix || null, 
+        fonctionnalites_avancees || [], donnees_fiche || []
       ];
     } else {
-      // La colonne n'existe pas, on utilise seulement 'image'
+      // La colonne n'existe pas
       query = `
         INSERT INTO produits 
         (nom, categorie, description, image, lien, top_du_mois, prix, fonctionnalites_avancees, donnees_fiche)
@@ -354,15 +176,10 @@ app.post('/api/produits', async (req, res) => {
         RETURNING *
       `;
       params = [
-        nom, 
-        categorie || null, 
-        description || null, 
-        image || image_data || null, // Utiliser image_data dans le champ image si pas de colonne dédiée
-        lien || null,
-        top_du_mois || false, 
-        prix || null, 
-        fonctionnalites_avancees || [], 
-        donnees_fiche || []
+        nom, categorie || null, description || null, 
+        image || image_data || null, lien || null,
+        top_du_mois || false, prix || null, 
+        fonctionnalites_avancees || [], donnees_fiche || []
       ];
     }
     
@@ -394,7 +211,7 @@ app.put('/api/produits/:id', async (req, res) => {
       top_du_mois, prix, fonctionnalites_avancees, donnees_fiche 
     } = req.body;
     
-    console.log(`✏️ PUT /api/produits/${id} - Mise à jour du produit...`);
+    console.log(`✏️ PUT /api/produits/${id}`);
     
     // Vérifier si le produit existe
     const checkResult = await pool.query(
@@ -419,63 +236,35 @@ app.put('/api/produits/:id', async (req, res) => {
     let query, params;
     
     if (columnCheck.rows.length > 0) {
-      // La colonne existe
       query = `
         UPDATE produits 
-        SET 
-          nom = $1, 
-          categorie = $2, 
-          description = $3, 
-          image = $4,
-          image_data = $5,
-          lien = $6,
-          top_du_mois = $7, 
-          prix = $8, 
-          fonctionnalites_avancees = $9,
-          donnees_fiche = $10
+        SET nom = $1, categorie = $2, description = $3, image = $4,
+            image_data = $5, lien = $6, top_du_mois = $7, prix = $8, 
+            fonctionnalites_avancees = $9, donnees_fiche = $10
         WHERE id = $11
         RETURNING *
       `;
       params = [
-        nom, 
-        categorie || null, 
-        description || null, 
-        image || null,
-        image_data || null,
-        lien || null,
-        top_du_mois || false, 
-        prix || null, 
-        fonctionnalites_avancees || [], 
-        donnees_fiche || [],
+        nom, categorie || null, description || null, 
+        image || null, image_data || null, lien || null,
+        top_du_mois || false, prix || null, 
+        fonctionnalites_avancees || [], donnees_fiche || [],
         id
       ];
     } else {
-      // La colonne n'existe pas
       query = `
         UPDATE produits 
-        SET 
-          nom = $1, 
-          categorie = $2, 
-          description = $3, 
-          image = $4,
-          lien = $5,
-          top_du_mois = $6, 
-          prix = $7, 
-          fonctionnalites_avancees = $8,
-          donnees_fiche = $9
+        SET nom = $1, categorie = $2, description = $3, image = $4,
+            lien = $5, top_du_mois = $6, prix = $7, 
+            fonctionnalites_avancees = $8, donnees_fiche = $9
         WHERE id = $10
         RETURNING *
       `;
       params = [
-        nom, 
-        categorie || null, 
-        description || null, 
-        image || image_data || null,
-        lien || null,
-        top_du_mois || false, 
-        prix || null, 
-        fonctionnalites_avancees || [], 
-        donnees_fiche || [],
+        nom, categorie || null, description || null, 
+        image || image_data || null, lien || null,
+        top_du_mois || false, prix || null, 
+        fonctionnalites_avancees || [], donnees_fiche || [],
         id
       ];
     }
@@ -503,26 +292,7 @@ app.put('/api/produits/:id', async (req, res) => {
 app.delete('/api/produits/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`🗑️ DELETE /api/produits/${id} - Suppression du produit...`);
-    
-    // Récupérer d'abord l'image pour la supprimer du serveur
-    const productResult = await pool.query(
-      'SELECT image FROM produits WHERE id = $1',
-      [id]
-    );
-    
-    if (productResult.rows.length > 0 && productResult.rows[0].image) {
-      const imagePath = productResult.rows[0].image;
-      if (imagePath && imagePath.startsWith('/uploads/')) {
-        const fullPath = path.join('public', imagePath);
-        try {
-          await fs.unlink(fullPath);
-          console.log(`🗑️ Image supprimée: ${imagePath}`);
-        } catch (err) {
-          console.log(`⚠️ Impossible de supprimer l'image: ${err.message}`);
-        }
-      }
-    }
+    console.log(`🗑️ DELETE /api/produits/${id}`);
     
     const result = await pool.query(
       'DELETE FROM produits WHERE id = $1 RETURNING nom',
@@ -555,7 +325,7 @@ app.delete('/api/produits/:id', async (req, res) => {
 // GET - Statistiques
 app.get('/api/stats', async (req, res) => {
   try {
-    console.log('📈 GET /api/stats - Calcul des statistiques...');
+    console.log('📈 GET /api/stats');
     
     const stats = await pool.query(`
       SELECT
@@ -564,8 +334,6 @@ app.get('/api/stats', async (req, res) => {
         COUNT(*) FILTER (WHERE top_du_mois = TRUE) AS featured_products
       FROM produits
     `);
-    
-    console.log('✅ Statistiques calculées');
     
     res.json({
       success: true,
@@ -581,81 +349,31 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// POST - Créer la colonne image_data si elle n'existe pas
-app.post('/api/init-image-column', async (req, res) => {
-  try {
-    console.log('🔧 Vérification de la colonne image_data...');
-    
-    // Vérifier si la colonne existe
-    const columnCheck = await pool.query(`
-      SELECT column_name 
-      FROM information_schema.columns 
-      WHERE table_name = 'produits' AND column_name = 'image_data'
-    `);
-    
-    if (columnCheck.rows.length === 0) {
-      // Créer la colonne
-      await pool.query(`
-        ALTER TABLE produits 
-        ADD COLUMN IF NOT EXISTS image_data TEXT
-      `);
-      
-      console.log('✅ Colonne image_data créée');
-      
-      res.json({
-        success: true,
-        message: 'Colonne image_data créée avec succès'
-      });
-    } else {
-      res.json({
-        success: true,
-        message: 'Colonne image_data existe déjà'
-      });
-    }
-    
-  } catch (error) {
-    console.error('❌ Erreur création colonne:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
 // Route de test
 app.get('/api/test', (req, res) => {
   res.json({ 
     success: true, 
-    message: 'API PostgreSQL avec gestion d\'images fonctionne!',
+    message: 'API PostgreSQL fonctionne!',
     timestamp: new Date().toISOString()
   });
 });
-
-// Servir l'interface admin
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 
 // ========== DÉMARRAGE DU SERVEUR ==========
 
 app.listen(port, async () => {
   console.log('');
   console.log('╔════════════════════════════════════════════╗');
-  console.log('║   🚀 SERVEUR AVEC GESTION D\'IMAGES        ║');
+  console.log('║   🚀 SERVEUR POSTGRESQL DÉMARRÉ            ║');
   console.log('╚════════════════════════════════════════════╝');
   console.log('');
   console.log(`📡 API: http://localhost:${port}/api`);
-  console.log(`🖥️  Interface: http://localhost:${port}`);
+  console.log(`🖥️  Site: http://localhost:${port}`);
   console.log('');
-  
-  // Créer le dossier uploads s'il n'existe pas
-  try {
-    await fs.mkdir('public/uploads', { recursive: true });
-    console.log('✅ Dossier uploads créé/vérifié');
-  } catch (err) {
-    console.error('❌ Erreur dossier uploads:', err);
-  }
+  console.log('📁 Dossiers configurés:');
+  console.log(`   Assets: ${assetsPath}`);
+  console.log(`   Frontend: ${frontendPath}`);
+  console.log(`   Fiches: ${fichesPath}`);
+  console.log('');
   
   // Test connexion PostgreSQL
   try {
@@ -666,5 +384,20 @@ app.listen(port, async () => {
     console.error('❌ Erreur PostgreSQL:', err.message);
   }
   
+  // Vérifier que les images sont accessibles
+  const testImagePath = path.join(assetsPath, 'images',);
+  if (fs.existsSync(testImagePath)) {
+    console.log('✅ Image test trouvée: ' + testImagePath);
+  } else {
+    console.log('⚠️ Image test non trouvée');
+  }
+  
   console.log('');
+});
+
+// Gestion propre de l'arrêt
+process.on('SIGINT', async () => {
+  console.log('\n👋 Arrêt du serveur...');
+  await pool.end();
+  process.exit(0);
 });
