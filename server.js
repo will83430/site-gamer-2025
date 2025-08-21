@@ -4,9 +4,12 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs'); // IMPORTANT !
+const compression = require('compression'); // 🔥 AJOUTE CETTE LIGNE
 
 const app = express();
 const port = 3000;
+
+app.use(compression()); // Compression gzip
 
 // Configuration PostgreSQL
 const pool = new Pool({
@@ -27,7 +30,9 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // 1. D'ABORD servir le dossier frontend/public/assets pour /assets
 const assetsPath = path.join(__dirname, 'frontend', 'public', 'assets');
 console.log('📁 Dossier assets configuré:', assetsPath);
-app.use('/assets', express.static(assetsPath));
+app.use('/assets', express.static(assetsPath, {
+    maxAge: '1d' // Cache 1 jour
+}));
 
 // 2. Servir aussi frontend/public pour les fichiers HTML
 const frontendPath = path.join(__dirname, 'frontend', 'public');

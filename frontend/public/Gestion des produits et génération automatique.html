@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +30,7 @@
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
@@ -46,7 +47,7 @@
             background: white;
             padding: 15px;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .tab-btn {
@@ -71,7 +72,7 @@
             background: white;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .tab-content.active {
@@ -116,7 +117,9 @@
             margin-bottom: 8px;
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -125,7 +128,9 @@
             transition: border-color 0.3s;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -166,7 +171,7 @@
         .image-preview img {
             width: 100%;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         /* Buttons */
@@ -207,7 +212,7 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         /* Actions */
@@ -241,6 +246,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -260,7 +266,7 @@
             border-radius: 12px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .stat-value {
@@ -280,14 +286,16 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(0,0,0,.1);
+            border: 3px solid rgba(0, 0, 0, .1);
             border-radius: 50%;
             border-top-color: #667eea;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* File input style */
@@ -308,20 +316,21 @@
 
         .file-label:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
             }
-            
+
             .tabs {
                 flex-direction: column;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -330,208 +339,208 @@
             <p style="color: #666;">Gestion complète avec images locales</p>
         </div>
 
-    <script>
-        // Configuration
-        const API_URL = 'http://localhost:3000/api';
-        let allProducts = [];
-        let currentEditingId = null;
-        let currentImageData = {};
-        let currentFicheData = {};
+        <script>
+            // Configuration
+            const API_URL = 'http://localhost:3000/api';
+            let allProducts = [];
+            let currentEditingId = null;
+            let currentImageData = {};
+            let currentFicheData = {};
 
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', () => {
-            initImageColumn();
-            loadStats();
-            loadProducts();
-            setupDragAndDrop();
-        });
+            // Initialisation
+            document.addEventListener('DOMContentLoaded', () => {
+                initImageColumn();
+                loadStats();
+                loadProducts();
+                setupDragAndDrop();
+            });
 
-        // Gérer la sélection de fichier HTML
-        function handleFicheSelect(event, prefix) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            // Récupérer le nom du fichier
-            const fileName = file.name;
-            const pathInput = document.getElementById(`${prefix}-lien`);
-            
-            // Si le champ est vide, mettre juste le nom du fichier
-            if (!pathInput.value) {
-                pathInput.value = `fiches/${fileName}`;
-            }
-            
-            // Lire le contenu du fichier HTML (optionnel)
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentFicheData[prefix] = {
-                    name: fileName,
-                    content: e.target.result
+            // Gérer la sélection de fichier HTML
+            function handleFicheSelect(event, prefix) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                // Récupérer le nom du fichier
+                const fileName = file.name;
+                const pathInput = document.getElementById(`${prefix}-lien`);
+
+                // Si le champ est vide, mettre juste le nom du fichier
+                if (!pathInput.value) {
+                    pathInput.value = `fiches/${fileName}`;
+                }
+
+                // Lire le contenu du fichier HTML (optionnel)
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    currentFicheData[prefix] = {
+                        name: fileName,
+                        content: e.target.result
+                    };
+                    showMessage(`📄 Fichier "${fileName}" sélectionné`, 'success');
                 };
-                showMessage(`📄 Fichier "${fileName}" sélectionné`, 'success');
-            };
-            reader.readAsText(file);
-        }
-
-        // Afficher le sélecteur de fiches
-        async function showFicheSelector(prefix) {
-            const selector = document.getElementById(`${prefix}-fiche-selector`);
-            
-            if (selector.style.display === 'block') {
-                selector.style.display = 'none';
-                return;
+                reader.readAsText(file);
             }
-            
-            try {
-                const response = await fetch(`${API_URL}/fiches-list`);
-                const data = await response.json();
-                
-                if (data.success && data.files.length > 0) {
-                    // Grouper par dossier
-                    const grouped = data.files.reduce((acc, file) => {
-                        if (!acc[file.folder]) acc[file.folder] = [];
-                        acc[file.folder].push(file);
-                        return acc;
-                    }, {});
-                    
-                    let html = '<div style="font-size: 14px;">';
-                    Object.keys(grouped).sort().forEach(folder => {
-                        html += `<div style="margin-bottom: 10px;">
+
+            // Afficher le sélecteur de fiches
+            async function showFicheSelector(prefix) {
+                const selector = document.getElementById(`${prefix}-fiche-selector`);
+
+                if (selector.style.display === 'block') {
+                    selector.style.display = 'none';
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_URL}/fiches-list`);
+                    const data = await response.json();
+
+                    if (data.success && data.files.length > 0) {
+                        // Grouper par dossier
+                        const grouped = data.files.reduce((acc, file) => {
+                            if (!acc[file.folder]) acc[file.folder] = [];
+                            acc[file.folder].push(file);
+                            return acc;
+                        }, {});
+
+                        let html = '<div style="font-size: 14px;">';
+                        Object.keys(grouped).sort().forEach(folder => {
+                            html += `<div style="margin-bottom: 10px;">
                             <strong style="color: #667eea;">📁 ${folder}/</strong>
                             <div style="margin-left: 20px; margin-top: 5px;">`;
-                        
-                        grouped[folder].forEach(file => {
-                            html += `
+
+                            grouped[folder].forEach(file => {
+                                html += `
                                 <div style="padding: 5px; cursor: pointer; hover: background: #f0f0f0;" 
                                      onmouseover="this.style.background='#f0f0f0'" 
                                      onmouseout="this.style.background='none'"
                                      onclick="selectFiche('${prefix}', '${file.path}')">
                                     📄 ${file.name}
                                 </div>`;
+                            });
+
+                            html += '</div></div>';
                         });
-                        
-                        html += '</div></div>';
-                    });
-                    html += '</div>';
-                    
-                    selector.innerHTML = html;
+                        html += '</div>';
+
+                        selector.innerHTML = html;
+                        selector.style.display = 'block';
+                    } else {
+                        selector.innerHTML = '<p style="color: #888;">Aucun fichier HTML trouvé dans les dossiers de fiches</p>';
+                        selector.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Erreur chargement fiches:', error);
+                    selector.innerHTML = '<p style="color: #dc3545;">Erreur lors du chargement des fiches</p>';
                     selector.style.display = 'block';
-                } else {
-                    selector.innerHTML = '<p style="color: #888;">Aucun fichier HTML trouvé dans les dossiers de fiches</p>';
-                    selector.style.display = 'block';
                 }
-            } catch (error) {
-                console.error('Erreur chargement fiches:', error);
-                selector.innerHTML = '<p style="color: #dc3545;">Erreur lors du chargement des fiches</p>';
-                selector.style.display = 'block';
             }
-        }
 
-        // Sélectionner une fiche depuis la liste
-        function selectFiche(prefix, path) {
-            document.getElementById(`${prefix}-lien`).value = path;
-            document.getElementById(`${prefix}-fiche-selector`).style.display = 'none';
-            showMessage(`✅ Fiche sélectionnée: ${path}`, 'success');
-        }
-
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', () => {
-            initImageColumn();
-            loadStats();
-            loadProducts();
-            setupDragAndDrop();
-        });
-
-        // Initialiser la colonne image_data si nécessaire
-        async function initImageColumn() {
-            try {
-                await fetch(`${API_URL}/init-image-column`, { method: 'POST' });
-                console.log('✅ Colonne image vérifiée');
-            } catch (error) {
-                console.error('Erreur init colonne:', error);
+            // Sélectionner une fiche depuis la liste
+            function selectFiche(prefix, path) {
+                document.getElementById(`${prefix}-lien`).value = path;
+                document.getElementById(`${prefix}-fiche-selector`).style.display = 'none';
+                showMessage(`✅ Fiche sélectionnée: ${path}`, 'success');
             }
-        }
 
-        // Navigation tabs
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
+            // Initialisation
+            document.addEventListener('DOMContentLoaded', () => {
+                initImageColumn();
+                loadStats();
+                loadProducts();
+                setupDragAndDrop();
             });
-            
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-            event.target.classList.add('active');
-        }
 
-        // Charger les statistiques
-        async function loadStats() {
-            try {
-                const response = await fetch(`${API_URL}/stats`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    document.getElementById('total-products').textContent = data.stats.total_products || 0;
-                    document.getElementById('total-categories').textContent = data.stats.total_categories || 0;
-                    document.getElementById('featured-products').textContent = data.stats.featured_products || 0;
+            // Initialiser la colonne image_data si nécessaire
+            async function initImageColumn() {
+                try {
+                    await fetch(`${API_URL}/init-image-column`, { method: 'POST' });
+                    console.log('✅ Colonne image vérifiée');
+                } catch (error) {
+                    console.error('Erreur init colonne:', error);
                 }
-            } catch (error) {
-                console.error('Erreur stats:', error);
             }
-        }
 
-        // Charger tous les produits
-        async function loadProducts() {
-            try {
-                const response = await fetch(`${API_URL}/produits`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    allProducts = data.data;
-                    displayProducts(allProducts);
-                    populateEditSelect(allProducts);
+            // Navigation tabs
+            function showTab(tabName) {
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+                event.target.classList.add('active');
+            }
+
+            // Charger les statistiques
+            async function loadStats() {
+                try {
+                    const response = await fetch(`${API_URL}/stats`);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        document.getElementById('total-products').textContent = data.stats.total_products || 0;
+                        document.getElementById('total-categories').textContent = data.stats.total_categories || 0;
+                        document.getElementById('featured-products').textContent = data.stats.featured_products || 0;
+                    }
+                } catch (error) {
+                    console.error('Erreur stats:', error);
                 }
-            } catch (error) {
-                console.error('Erreur chargement:', error);
-                showMessage('Erreur de chargement des produits', 'danger');
             }
-        }
 
-        // Afficher les produits dans le tableau
-        function displayProducts(products) {
-            const tbody = document.getElementById('products-list');
-            
-            if (products.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Aucun produit trouvé</td></tr>';
-                return;
+            // Charger tous les produits
+            async function loadProducts() {
+                try {
+                    const response = await fetch(`${API_URL}/produits`);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        allProducts = data.data;
+                        displayProducts(allProducts);
+                        populateEditSelect(allProducts);
+                    }
+                } catch (error) {
+                    console.error('Erreur chargement:', error);
+                    showMessage('Erreur de chargement des produits', 'danger');
+                }
             }
-            
-            tbody.innerHTML = products.map(product => {
-                let imageUrl = product.image_data || product.image || product.image_url || '';
 
-// Nettoyer l'URL de l'image
-if (imageUrl) {
-    // Supprimer le "/" au début s'il existe
-    if (imageUrl.startsWith('/')) {
-        imageUrl = imageUrl.substring(1);
-    }
-    
-    // Si ce n'est pas une URL complète et ne commence pas par "assets/images/"
-    if (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:') && !imageUrl.startsWith('assets/images/')) {
-        imageUrl = `assets/images/${imageUrl}`;
-    }
-} else {
-    // Placeholder SVG si pas d'image
-    imageUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23ddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E📦%3C/text%3E%3C/svg%3E';
-}
+            // Afficher les produits dans le tableau
+            function displayProducts(products) {
+                const tbody = document.getElementById('products-list');
 
-console.log('🖼️ Admin - Image finale pour', product.nom, ':', imageUrl);
-                const imageHtml = imageUrl 
-                    ? `<img src="${imageUrl}" alt="${product.nom}" class="product-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23ddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E📦%3C/text%3E%3C/svg%3E'">`
-                    : '<div style="width:60px;height:60px;background:#f0f0f0;border-radius:8px;display:flex;align-items:center;justify-content:center;">📦</div>';
-                
-                return `
+                if (products.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Aucun produit trouvé</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = products.map(product => {
+                    let imageUrl = product.image_data || product.image || product.image_url || '';
+
+                    // Nettoyer l'URL de l'image
+                    if (imageUrl) {
+                        // Supprimer le "/" au début s'il existe
+                        if (imageUrl.startsWith('/')) {
+                            imageUrl = imageUrl.substring(1);
+                        }
+
+                        // Si ce n'est pas une URL complète et ne commence pas par "assets/images/"
+                        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:') && !imageUrl.startsWith('assets/images/')) {
+                            imageUrl = `assets/images/${imageUrl}`;
+                        }
+                    } else {
+                        // Placeholder SVG si pas d'image
+                        imageUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23ddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E📦%3C/text%3E%3C/svg%3E';
+                    }
+
+                    console.log('🖼️ Admin - Image finale pour', product.nom, ':', imageUrl);
+                    const imageHtml = imageUrl
+                        ? `<img src="${imageUrl}" alt="${product.nom}" class="product-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23ddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E📦%3C/text%3E%3C/svg%3E'">`
+                        : '<div style="width:60px;height:60px;background:#f0f0f0;border-radius:8px;display:flex;align-items:center;justify-content:center;">📦</div>';
+
+                    return `
                     <tr>
                         <td>${imageHtml}</td>
                         <td>${product.id}</td>
@@ -541,326 +550,343 @@ console.log('🖼️ Admin - Image finale pour', product.nom, ':', imageUrl);
                         <td>${product.top_du_mois ? '⭐' : '-'}</td>
                         <td>
                             <div class="actions">
-                                <button class="btn btn-warning" onclick="editProduct(${product.id})">✏️</button>
-                                <button class="btn btn-danger" onclick="confirmDelete(${product.id})">🗑️</button>
+                                <button class="btn btn-warning" onclick="editProduct('${product.id}')">✏️</button>
+<button class="btn btn-danger" onclick="confirmDelete('${product.id}')">🗑️</button>
                             </div>
                         </td>
                     </tr>
                 `;
-            }).join('');
-        }
-
-        // Gérer la sélection d'image
-        async function handleImageSelect(event, prefix) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            if (file.size > 10 * 1024 * 1024) {
-                showMessage('❌ L\'image est trop lourde (max 10MB)', 'danger');
-                return;
+                }).join('');
             }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // Stocker l'image en base64
-                currentImageData[prefix] = e.target.result;
-                
-                // Afficher l'aperçu
-                document.getElementById(`${prefix}-upload-area`).style.display = 'none';
-                document.getElementById(`${prefix}-image-preview`).style.display = 'block';
-                document.getElementById(`${prefix}-preview-img`).src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
 
-        // Supprimer l'image
-        function removeImage(prefix) {
-            delete currentImageData[prefix];
-            document.getElementById(`${prefix}-upload-area`).style.display = 'block';
-            document.getElementById(`${prefix}-image-preview`).style.display = 'none';
-            document.getElementById(`${prefix}-preview-img`).src = '';
-            document.getElementById(`${prefix}-image-file`).value = '';
-        }
+            // Gérer la sélection d'image
+            async function handleImageSelect(event, prefix) {
+                const file = event.target.files[0];
+                if (!file) return;
 
-        // Setup Drag and Drop
-        function setupDragAndDrop() {
-            ['new', 'edit'].forEach(prefix => {
-                const area = document.getElementById(`${prefix}-upload-area`);
-                if (!area) return;
-                
-                area.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    area.classList.add('dragover');
+                if (file.size > 10 * 1024 * 1024) {
+                    showMessage('❌ L\'image est trop lourde (max 10MB)', 'danger');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Stocker l'image en base64
+                    currentImageData[prefix] = e.target.result;
+
+                    // Afficher l'aperçu
+                    document.getElementById(`${prefix}-upload-area`).style.display = 'none';
+                    document.getElementById(`${prefix}-image-preview`).style.display = 'block';
+                    document.getElementById(`${prefix}-preview-img`).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Supprimer l'image
+            function removeImage(prefix) {
+                delete currentImageData[prefix];
+                document.getElementById(`${prefix}-upload-area`).style.display = 'block';
+                document.getElementById(`${prefix}-image-preview`).style.display = 'none';
+                document.getElementById(`${prefix}-preview-img`).src = '';
+                document.getElementById(`${prefix}-image-file`).value = '';
+            }
+
+            // Setup Drag and Drop
+            function setupDragAndDrop() {
+                ['new', 'edit'].forEach(prefix => {
+                    const area = document.getElementById(`${prefix}-upload-area`);
+                    if (!area) return;
+
+                    area.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        area.classList.add('dragover');
+                    });
+
+                    area.addEventListener('dragleave', () => {
+                        area.classList.remove('dragover');
+                    });
+
+                    area.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        area.classList.remove('dragover');
+
+                        const files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                            const input = document.getElementById(`${prefix}-image-file`);
+                            input.files = files;
+                            handleImageSelect({ target: input }, prefix);
+                        }
+                    });
                 });
-                
-                area.addEventListener('dragleave', () => {
-                    area.classList.remove('dragover');
-                });
-                
-                area.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    area.classList.remove('dragover');
-                    
-                    const files = e.dataTransfer.files;
-                    if (files.length > 0) {
-                        const input = document.getElementById(`${prefix}-image-file`);
-                        input.files = files;
-                        handleImageSelect({ target: input }, prefix);
+            }
+
+            // Créer un nouveau produit
+            async function createProduct(event) {
+                event.preventDefault();
+
+                const productData = {
+                    nom: document.getElementById('new-nom').value,
+                    categorie: document.getElementById('new-categorie').value,
+                    prix: document.getElementById('new-prix').value,
+                    description: document.getElementById('new-description').value,
+                    lien: document.getElementById('new-lien').value,
+                    top_du_mois: document.getElementById('new-top').value === 'true',
+                    fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
+                    donnees_fiche: collectCategoryData('new')
+                };
+
+                // Ajouter l'image si présente
+                if (currentImageData['new']) {
+                    productData.image_data = currentImageData['new'];
+                }
+
+                try {
+                    const response = await fetch(`${API_URL}/produits`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(productData)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showMessage('✅ Produit créé avec succès!', 'success');
+                        resetCreateForm();
+                        loadProducts();
+                        loadStats();
+                    } else {
+                        showMessage('❌ Erreur: ' + data.error, 'danger');
                     }
-                });
-            });
-        }
-
-        // Créer un nouveau produit
-        async function createProduct(event) {
-            event.preventDefault();
-            
-            const productData = {
-                nom: document.getElementById('new-nom').value,
-                categorie: document.getElementById('new-categorie').value,
-                prix: document.getElementById('new-prix').value,
-                description: document.getElementById('new-description').value,
-                lien: document.getElementById('new-lien').value,
-                top_du_mois: document.getElementById('new-top').value === 'true',
-                fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
-                donnees_fiche: collectCategoryData('new')
-            };
-            
-            // Ajouter l'image si présente
-            if (currentImageData['new']) {
-                productData.image_data = currentImageData['new'];
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/produits`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(productData)
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage('✅ Produit créé avec succès!', 'success');
-                    resetCreateForm();
-                    loadProducts();
-                    loadStats();
-                } else {
-                    showMessage('❌ Erreur: ' + data.error, 'danger');
+                } catch (error) {
+                    console.error('Erreur création:', error);
+                    showMessage('❌ Erreur lors de la création', 'danger');
                 }
-            } catch (error) {
-                console.error('Erreur création:', error);
-                showMessage('❌ Erreur lors de la création', 'danger');
             }
-        }
 
-        // Charger un produit pour édition
-        async function loadProductForEdit() {
-            const select = document.getElementById('edit-product-select');
-            const productId = select.value;
-            
-            if (!productId) {
-                document.getElementById('edit-form-container').style.display = 'none';
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/produits/${productId}`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    currentEditingId = productId;
-                    populateEditForm(data.data);
-                    document.getElementById('edit-form-container').style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Erreur chargement:', error);
-                showMessage('❌ Erreur lors du chargement', 'danger');
-            }
-        }
+            // Charger un produit pour édition
+            async function loadProductForEdit() {
+                const select = document.getElementById('edit-product-select');
+                const productId = select.value;
 
-        // Remplir le formulaire d'édition
-        function populateEditForm(product) {
-            document.getElementById('edit-nom').value = product.nom || '';
-            document.getElementById('edit-categorie').value = product.categorie || '';
-            document.getElementById('edit-prix').value = product.prix || '';
-            document.getElementById('edit-description').value = product.description || '';
-            document.getElementById('edit-lien').value = product.lien || '';
-            document.getElementById('edit-top').value = product.top_du_mois ? 'true' : 'false';
-            
-            const fonctionnalites = Array.isArray(product.fonctionnalites_avancees) 
-                ? product.fonctionnalites_avancees.join('\n')
-                : '';
-            document.getElementById('edit-fonctionnalites').value = fonctionnalites;
-            
-            // Afficher l'image existante avec nettoyage du chemin
-if (product.image_url || product.image || product.image_data) {
-    let imageUrl = product.image_data || product.image || product.image_url || '';
-    
-    // Nettoyer l'URL de l'image (même logique que displayProducts)
-    if (imageUrl) {
-        // Supprimer le "/" au début s'il existe
-        if (imageUrl.startsWith('/')) {
-            imageUrl = imageUrl.substring(1);
-        }
-        
-        // Si ce n'est pas une URL complète et ne commence pas par "assets/images/"
-        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:') && !imageUrl.startsWith('assets/images/')) {
-            imageUrl = `assets/images/${imageUrl}`;
-        }
-    }
-    
-    console.log('🖼️ Image formulaire édition pour', product.nom, ':', imageUrl);
-    
-    document.getElementById('edit-upload-area').style.display = 'none';
-    document.getElementById('edit-image-preview').style.display = 'block';
-    document.getElementById('edit-preview-img').src = imageUrl;
-    currentImageData['edit'] = imageUrl;
-}
-            
-            updateCategoryFields('edit', product.donnees_fiche);
-        }
-
-        // Mettre à jour un produit
-        async function updateProduct(event) {
-            event.preventDefault();
-            
-            if (!currentEditingId) return;
-            
-            const productData = {
-                nom: document.getElementById('edit-nom').value,
-                categorie: document.getElementById('edit-categorie').value,
-                prix: document.getElementById('edit-prix').value,
-                description: document.getElementById('edit-description').value,
-                lien: document.getElementById('edit-lien').value,
-                top_du_mois: document.getElementById('edit-top').value === 'true',
-                fonctionnalites_avancees: document.getElementById('edit-fonctionnalites').value.split('\n').filter(f => f.trim()),
-                donnees_fiche: collectCategoryData('edit')
-            };
-            
-            // Ajouter l'image si présente
-            if (currentImageData['edit']) {
-                productData.image_data = currentImageData['edit'];
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/produits/${currentEditingId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(productData)
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage('✅ Produit mis à jour avec succès!', 'success');
-                    loadProducts();
-                    loadStats();
-                } else {
-                    showMessage('❌ Erreur: ' + data.error, 'danger');
-                }
-            } catch (error) {
-                console.error('Erreur mise à jour:', error);
-                showMessage('❌ Erreur lors de la mise à jour', 'danger');
-            }
-        }
-
-        // Supprimer un produit
-        async function deleteProduct() {
-            if (!currentEditingId) return;
-            
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce produit?')) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/produits/${currentEditingId}`, {
-                    method: 'DELETE'
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage('✅ Produit supprimé avec succès!', 'success');
+                if (!productId) {
                     document.getElementById('edit-form-container').style.display = 'none';
-                    loadProducts();
-                    loadStats();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_URL}/produits/${productId}`);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        currentEditingId = productId;
+                        populateEditForm(data.data);
+                        document.getElementById('edit-form-container').style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Erreur chargement:', error);
+                    showMessage('❌ Erreur lors du chargement', 'danger');
+                }
+            }
+
+            // Remplir le formulaire d'édition
+            function populateEditForm(product) {
+                document.getElementById('edit-nom').value = product.nom || '';
+                document.getElementById('edit-categorie').value = product.categorie || '';
+                document.getElementById('edit-prix').value = product.prix || '';
+                document.getElementById('edit-description').value = product.description || '';
+                document.getElementById('edit-lien').value = product.lien || '';
+                document.getElementById('edit-top').value = product.top_du_mois ? 'true' : 'false';
+
+                const fonctionnalites = Array.isArray(product.fonctionnalites_avancees)
+                    ? product.fonctionnalites_avancees.join('\n')
+                    : '';
+                document.getElementById('edit-fonctionnalites').value = fonctionnalites;
+
+                // Afficher l'image existante avec nettoyage du chemin
+                if (product.image_url || product.image || product.image_data) {
+                    let imageUrl = product.image_data || product.image || product.image_url || '';
+
+                    // Nettoyer l'URL de l'image (même logique que displayProducts)
+                    if (imageUrl) {
+                        // Supprimer le "/" au début s'il existe
+                        if (imageUrl.startsWith('/')) {
+                            imageUrl = imageUrl.substring(1);
+                        }
+
+                        // Si ce n'est pas une URL complète et ne commence pas par "assets/images/"
+                        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:') && !imageUrl.startsWith('assets/images/')) {
+                            imageUrl = `assets/images/${imageUrl}`;
+                        }
+                    }
+
+                    console.log('🖼️ Image formulaire édition pour', product.nom, ':', imageUrl);
+
+                    document.getElementById('edit-upload-area').style.display = 'none';
+                    document.getElementById('edit-image-preview').style.display = 'block';
+                    document.getElementById('edit-preview-img').src = imageUrl;
+                    currentImageData['edit'] = imageUrl;
+                }
+
+                updateCategoryFields('edit', product.donnees_fiche);
+            }
+
+            // Mettre à jour un produit
+            async function updateProduct(event) {
+                event.preventDefault();
+
+                if (!currentEditingId) return;
+
+                const productData = {
+                    nom: document.getElementById('edit-nom').value,
+                    categorie: document.getElementById('edit-categorie').value,
+                    prix: document.getElementById('edit-prix').value,
+                    description: document.getElementById('edit-description').value,
+                    lien: document.getElementById('edit-lien').value,
+                    top_du_mois: document.getElementById('edit-top').value === 'true',
+                    fonctionnalites_avancees: document.getElementById('edit-fonctionnalites').value.split('\n').filter(f => f.trim()),
+                    donnees_fiche: collectCategoryData('edit')
+                };
+
+                // Ajouter l'image si présente
+                if (currentImageData['edit']) {
+                    productData.image_data = currentImageData['edit'];
+                }
+
+                try {
+                    const response = await fetch(`${API_URL}/produits/${currentEditingId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(productData)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showMessage('✅ Produit mis à jour avec succès!', 'success');
+                        loadProducts();
+                        loadStats();
+                    } else {
+                        showMessage('❌ Erreur: ' + data.error, 'danger');
+                    }
+                } catch (error) {
+                    console.error('Erreur mise à jour:', error);
+                    showMessage('❌ Erreur lors de la mise à jour', 'danger');
+                }
+            }
+
+            // Supprimer un produit
+            async function deleteProduct() {
+                if (!currentEditingId) return;
+
+                if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce produit?')) return;
+
+                try {
+                    const response = await fetch(`${API_URL}/produits/${currentEditingId}`, {
+                        method: 'DELETE'
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showMessage('✅ Produit supprimé avec succès!', 'success');
+                        document.getElementById('edit-form-container').style.display = 'none';
+                        loadProducts();
+                        loadStats();
+                    } else {
+                        showMessage('❌ Erreur: ' + data.error, 'danger');
+                    }
+                } catch (error) {
+                    console.error('Erreur suppression:', error);
+                    showMessage('❌ Erreur lors de la suppression', 'danger');
+                }
+            }
+
+            // Supprimer un produit (raccourci depuis la colonne Actions)  
+            async function confirmDelete(productId) {
+                console.log('🗑️ confirmDelete appelé avec ID:', productId);
+
+                if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_URL}/produits/${productId}`, {
+                        method: 'DELETE'
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showMessage('✅ Produit supprimé avec succès !', 'success');
+                        loadProducts(); // Recharger la liste
+                        loadStats();   // Mettre à jour les stats
+                    } else {
+                        showMessage('❌ Erreur: ' + data.error, 'danger');
+                    }
+                } catch (error) {
+                    console.error('❌ Erreur suppression:', error);
+                    showMessage('❌ Erreur lors de la suppression', 'danger');
+                }
+            }
+
+            // Éditer un produit (raccourci depuis la colonne Actions)
+            function editProduct(productId) {
+                console.log('🔍 editProduct appelé avec ID:', productId);
+
+                // Aller dans l'onglet modifier
+                showTab('modify');
+
+                // Sélectionner le produit dans la liste déroulante
+                const select = document.getElementById('edit-product-select');
+                if (select) {
+                    select.value = productId;
+                    // Déclencher le chargement du formulaire
+                    loadProductForEdit();
                 } else {
-                    showMessage('❌ Erreur: ' + data.error, 'danger');
+                    console.error('❌ Element edit-product-select non trouvé');
                 }
-            } catch (error) {
-                console.error('Erreur suppression:', error);
-                showMessage('❌ Erreur lors de la suppression', 'danger');
             }
-        }
 
-        // Confirmer suppression depuis la liste
-        async function confirmDelete(productId) {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce produit?')) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/produits/${productId}`, {
-                    method: 'DELETE'
+            // Peupler le select d'édition
+            function populateEditSelect(products) {
+                const select = document.getElementById('edit-product-select');
+                select.innerHTML = '<option value="">-- Choisir un produit --</option>';
+
+                const grouped = products.reduce((acc, product) => {
+                    const cat = product.categorie || 'Sans catégorie';
+                    if (!acc[cat]) acc[cat] = [];
+                    acc[cat].push(product);
+                    return acc;
+                }, {});
+
+                Object.keys(grouped).sort().forEach(category => {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = category;
+
+                    grouped[category].forEach(product => {
+                        const option = document.createElement('option');
+                        option.value = product.id;
+                        option.textContent = `${product.nom} - ${product.prix || 'N/A'}`;
+                        optgroup.appendChild(option);
+                    });
+
+                    select.appendChild(optgroup);
                 });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage('✅ Produit supprimé!', 'success');
-                    loadProducts();
-                    loadStats();
+            }
+
+            // Mettre à jour les champs spécifiques à la catégorie
+            function updateCategoryFields(prefix, existingData = null) {
+                const category = document.getElementById(`${prefix}-categorie`).value;
+                const container = document.getElementById(`${prefix}-category-fields`);
+
+                if (!category) {
+                    container.innerHTML = '';
+                    return;
                 }
-            } catch (error) {
-                console.error('Erreur suppression:', error);
-                showMessage('❌ Erreur lors de la suppression', 'danger');
-            }
-        }
 
-        // Éditer un produit (raccourci)
-        function editProduct(productId) {
-            showTab('modify');
-            document.getElementById('edit-product-select').value = productId;
-            loadProductForEdit();
-        }
+                const fields = getCategorySpecificFields(category);
 
-        // Peupler le select d'édition
-        function populateEditSelect(products) {
-            const select = document.getElementById('edit-product-select');
-            select.innerHTML = '<option value="">-- Choisir un produit --</option>';
-            
-            const grouped = products.reduce((acc, product) => {
-                const cat = product.categorie || 'Sans catégorie';
-                if (!acc[cat]) acc[cat] = [];
-                acc[cat].push(product);
-                return acc;
-            }, {});
-            
-            Object.keys(grouped).sort().forEach(category => {
-                const optgroup = document.createElement('optgroup');
-                optgroup.label = category;
-                
-                grouped[category].forEach(product => {
-                    const option = document.createElement('option');
-                    option.value = product.id;
-                    option.textContent = `${product.nom} - ${product.prix || 'N/A'}`;
-                    optgroup.appendChild(option);
-                });
-                
-                select.appendChild(optgroup);
-            });
-        }
-
-        // Mettre à jour les champs spécifiques à la catégorie
-        function updateCategoryFields(prefix, existingData = null) {
-            const category = document.getElementById(`${prefix}-categorie`).value;
-            const container = document.getElementById(`${prefix}-category-fields`);
-            
-            if (!category) {
-                container.innerHTML = '';
-                return;
-            }
-            
-            const fields = getCategorySpecificFields(category);
-            
-            container.innerHTML = `
+                container.innerHTML = `
                 <h3 style="margin-top: 30px; margin-bottom: 20px; color: #667eea;">
                     📋 Données de fiche pour ${category}
                 </h3>
@@ -875,399 +901,409 @@ if (product.image_url || product.image || product.image_data) {
                     </div>
                 `).join('')}
             `;
-        }
-
-        // Obtenir les champs spécifiques à une catégorie
-        function getCategorySpecificFields(category) {
-            const baseFields = [
-                { label: "Description détaillée", placeholder: "Description complète du produit" },
-                { label: "Prix (avec emoji 💰)", placeholder: "Ex: 💰 1299€ - Prix compétitif" },
-                { label: "Spécifications matérielles 🧩", placeholder: "Processeur, RAM, stockage..." }
-            ];
-            
-            const categorySpecific = {
-                'DRONE': [
-                    { label: "Fonctions vidéo 🎥", placeholder: "Résolution, stabilisation..." }
-                ],
-                'CONSOLE': [
-                    { label: "Écran et affichage 🖥️", placeholder: "Résolution, taux..." },
-                    { label: "Contrôleurs 🕹️", placeholder: "Manettes, accessoires..." }
-                ],
-                'TABLETTE': [
-                    { label: "Écran et affichage 🖥️", placeholder: "Taille, résolution..." },
-                    { label: "Accessoires 🖊️", placeholder: "Stylet, clavier..." }
-                ],
-                'SMARTPHONE': [
-                    { label: "Appareil photo 📸", placeholder: "Capteurs, modes..." }
-                ],
-                'PC GAMING': [
-                    { label: "Fonctions gaming 🎮", placeholder: "GPU, FPS, RGB..." }
-                ],
-                'SERVEUR': [
-                    { label: "Performances 🖥️", placeholder: "Coeurs, virtualisation..." }
-                ],
-                'CASQUE AUDIO': [
-                    { label: "Fonctions audio 🎧", placeholder: "Drivers, fréquence..." }
-                ],
-                'MONTRE CONNECTE': [
-                    { label: "Sport et santé ⌚", placeholder: "Capteurs, autonomie..." }
-                ]
-            };
-            
-            const specificFields = categorySpecific[category] || [];
-            
-            return [
-                ...baseFields,
-                ...specificFields,
-                { label: "Connectivité 🌐", placeholder: "WiFi, Bluetooth, apps..." },
-                { label: "Expérience utilisateur 🎮", placeholder: "Interface, facilité..." }
-            ];
-        }
-
-        // Collecter les données de catégorie
-        function collectCategoryData(prefix) {
-            const data = [];
-            let index = 0;
-            
-            while (true) {
-                const field = document.getElementById(`${prefix}-fiche-${index}`);
-                if (!field) break;
-                data.push(field.value);
-                index++;
             }
-            
-            return data;
-        }
 
-        // Réinitialiser le formulaire de création
-        function resetCreateForm() {
-            document.getElementById('create-form').reset();
-            document.getElementById('new-category-fields').innerHTML = '';
-            removeImage('new');
-        }
+            // Obtenir les champs spécifiques à une catégorie
+            function getCategorySpecificFields(category) {
+                const baseFields = [
+                    { label: "Description détaillée", placeholder: "Description complète du produit" },
+                    { label: "Prix (avec emoji 💰)", placeholder: "Ex: 💰 1299€ - Prix compétitif" },
+                    { label: "Spécifications matérielles 🧩", placeholder: "Processeur, RAM, stockage..." }
+                ];
 
-        // Afficher un message
-        function showMessage(message, type) {
-            const container = document.getElementById('message-container');
-            container.innerHTML = `
+                const categorySpecific = {
+                    'DRONE': [
+                        { label: "Fonctions vidéo 🎥", placeholder: "Résolution, stabilisation..." }
+                    ],
+                    'CONSOLE': [
+                        { label: "Écran et affichage 🖥️", placeholder: "Résolution, taux..." },
+                        { label: "Contrôleurs 🕹️", placeholder: "Manettes, accessoires..." }
+                    ],
+                    'TABLETTE': [
+                        { label: "Écran et affichage 🖥️", placeholder: "Taille, résolution..." },
+                        { label: "Accessoires 🖊️", placeholder: "Stylet, clavier..." }
+                    ],
+                    'SMARTPHONE': [
+                        { label: "Appareil photo 📸", placeholder: "Capteurs, modes..." }
+                    ],
+                    'PC GAMING': [
+                        { label: "Fonctions gaming 🎮", placeholder: "GPU, FPS, RGB..." }
+                    ],
+                    'SERVEUR': [
+                        { label: "Performances 🖥️", placeholder: "Coeurs, virtualisation..." }
+                    ],
+                    'CASQUE AUDIO': [
+                        { label: "Fonctions audio 🎧", placeholder: "Drivers, fréquence..." }
+                    ],
+                    'MONTRE CONNECTE': [
+                        { label: "Sport et santé ⌚", placeholder: "Capteurs, autonomie..." }
+                    ]
+                };
+
+                const specificFields = categorySpecific[category] || [];
+
+                return [
+                    ...baseFields,
+                    ...specificFields,
+                    { label: "Connectivité 🌐", placeholder: "WiFi, Bluetooth, apps..." },
+                    { label: "Expérience utilisateur 🎮", placeholder: "Interface, facilité..." }
+                ];
+            }
+
+            // Collecter les données de catégorie
+            function collectCategoryData(prefix) {
+                const data = [];
+                let index = 0;
+
+                while (true) {
+                    const field = document.getElementById(`${prefix}-fiche-${index}`);
+                    if (!field) break;
+                    data.push(field.value);
+                    index++;
+                }
+
+                return data;
+            }
+
+            // Réinitialiser le formulaire de création
+            function resetCreateForm() {
+                document.getElementById('create-form').reset();
+                document.getElementById('new-category-fields').innerHTML = '';
+                removeImage('new');
+            }
+
+            // Afficher un message
+            function showMessage(message, type) {
+                const container = document.getElementById('message-container');
+                container.innerHTML = `
                 <div class="alert alert-${type}">
                     ${message}
                 </div>
             `;
-            
-            setTimeout(() => {
-                container.innerHTML = '';
-            }, 5000);
-        }
 
-        // Raccourcis clavier
-        document.addEventListener('keydown', (e) => {
-            // Ctrl+N : Nouveau produit
-            if (e.ctrlKey && e.key === 'n') {
-                e.preventDefault();
-                showTab('create');
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 5000);
             }
-            
-            // Ctrl+E : Éditer
-            if (e.ctrlKey && e.key === 'e') {
-                e.preventDefault();
-                showTab('modify');
-            }
-            
-            // Ctrl+L : Liste
-            if (e.ctrlKey && e.key === 'l') {
-                e.preventDefault();
-                showTab('list');
-            }
-        });
 
-        // Auto-refresh toutes les 30 secondes
-        setInterval(() => {
-            loadStats();
-        }, 30000);
-    </script>
+            // Raccourcis clavier
+            document.addEventListener('keydown', (e) => {
+                // Ctrl+N : Nouveau produit
+                if (e.ctrlKey && e.key === 'n') {
+                    e.preventDefault();
+                    showTab('create');
+                }
+
+                // Ctrl+E : Éditer
+                if (e.ctrlKey && e.key === 'e') {
+                    e.preventDefault();
+                    showTab('modify');
+                }
+
+                // Ctrl+L : Liste
+                if (e.ctrlKey && e.key === 'l') {
+                    e.preventDefault();
+                    showTab('list');
+                }
+            });
+
+            // Auto-refresh toutes les 30 secondes
+            setInterval(() => {
+                loadStats();
+            }, 30000);
+        </script>
 </body>
+
 </html>>
 
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value" id="total-products">0</div>
-                <div class="stat-label">📦 Total Produits</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="total-categories">0</div>
-                <div class="stat-label">📂 Catégories</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="featured-products">0</div>
-                <div class="stat-label">⭐ Top du mois</div>
-            </div>
-        </div>
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value" id="total-products">0</div>
+        <div class="stat-label">📦 Total Produits</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" id="total-categories">0</div>
+        <div class="stat-label">📂 Catégories</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" id="featured-products">0</div>
+        <div class="stat-label">⭐ Top du mois</div>
+    </div>
+</div>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('list')">📋 Liste des Produits</button>
-            <button class="tab-btn" onclick="showTab('create')">➕ Créer un Produit</button>
-            <button class="tab-btn" onclick="showTab('modify')">✏️ Modifier un Produit</button>
-        </div>
+<!-- Tabs -->
+<div class="tabs">
+    <button class="tab-btn active" onclick="showTab('list')">📋 Liste des Produits</button>
+    <button class="tab-btn" onclick="showTab('create')">➕ Créer un Produit</button>
+    <button class="tab-btn" onclick="showTab('modify')">✏️ Modifier un Produit</button>
+</div>
 
-        <!-- Message Container -->
-        <div id="message-container"></div>
+<!-- Message Container -->
+<div id="message-container"></div>
 
-        <!-- Tab: Liste des Produits -->
-        <div id="list-tab" class="tab-content active">
-            <h2 style="margin-bottom: 20px;">📋 Tous les Produits</h2>
-            
-            <div style="overflow-x: auto;">
-                <table class="products-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>ID</th>
-                            <th>Nom</th>
-                            <th>Catégorie</th>
-                            <th>Prix</th>
-                            <th>Top</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="products-list">
-                        <tr>
-                            <td colspan="7" style="text-align: center;">Chargement...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<!-- Tab: Liste des Produits -->
+<div id="list-tab" class="tab-content active">
+    <h2 style="margin-bottom: 20px;">📋 Tous les Produits</h2>
 
-        <!-- Tab: Créer un Produit -->
-        <div id="create-tab" class="tab-content">
-            <h2 style="margin-bottom: 20px;">➕ Créer un Nouveau Produit</h2>
-            
-            <form id="create-form" onsubmit="createProduct(event)">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nom du produit *</label>
-                        <input type="text" id="new-nom" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Catégorie *</label>
-                        <select id="new-categorie" required onchange="updateCategoryFields('new')">
-                            <option value="">-- Choisir --</option>
-                            <option value="DRONE">DRONE</option>
-                            <option value="CONSOLE">CONSOLE</option>
-                            <option value="TABLETTE">TABLETTE</option>
-                            <option value="SMARTPHONE">SMARTPHONE</option>
-                            <option value="PC GAMING">PC GAMING</option>
-                            <option value="SERVEUR">SERVEUR</option>
-                            <option value="CASQUE AUDIO">CASQUE AUDIO</option>
-                            <option value="MONTRE CONNECTE">MONTRE CONNECTE</option>
-                            <option value="CASQUE VR">CASQUE VR</option>
-                            <option value="IMPRIMANTE 3D">IMPRIMANTE 3D</option>
-                            <option value="ECRAN TV">ECRAN TV</option>
-                            <option value="CAMERA">CAMERA</option>
-                            <option value="PERIPHERIQUES">PERIPHERIQUES</option>
-                            <option value="VIDEO PROJECTEUR">VIDEO PROJECTEUR</option>
-                            <option value="BOX INTERNET">BOX INTERNET</option>
-                            <option value="TABLEAU INTERACTIF">TABLEAU INTERACTIF</option>
-                            
-                        </select>
-                    </div>
-                </div>
+    <div style="overflow-x: auto;">
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Prix</th>
+                    <th>Top</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="products-list">
+                <tr>
+                    <td colspan="7" style="text-align: center;">Chargement...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Prix</label>
-                        <input type="text" id="new-prix" placeholder="Ex: 1299€">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Top du mois</label>
-                        <select id="new-top">
-                            <option value="false">Non</option>
-                            <option value="true">Oui ⭐</option>
-                        </select>
-                    </div>
-                </div>
+<!-- Tab: Créer un Produit -->
+<div id="create-tab" class="tab-content">
+    <h2 style="margin-bottom: 20px;">➕ Créer un Nouveau Produit</h2>
 
-                <div class="form-group">
-                    <label>Description courte</label>
-                    <textarea id="new-description" rows="3"></textarea>
-                </div>
-
-                <!-- Zone d'upload d'image -->
-                <div class="form-group">
-                    <label>Image du produit</label>
-                    <div class="image-upload-area" id="new-upload-area" onclick="document.getElementById('new-image-file').click()">
-                        <p style="font-size: 48px; margin: 0;">📸</p>
-                        <p style="margin: 10px 0;">Cliquez ou glissez une image ici</p>
-                        <p style="color: #888; font-size: 12px;">JPG, PNG, GIF, WebP (Max 10MB)</p>
-                        <input type="file" id="new-image-file" accept="image/*" onchange="handleImageSelect(event, 'new')">
-                    </div>
-                    <div id="new-image-preview" class="image-preview" style="display: none;">
-                        <img id="new-preview-img" src="" alt="Aperçu">
-                        <button type="button" class="btn btn-danger" style="margin-top: 10px;" onclick="removeImage('new')">
-                            🗑️ Supprimer l'image
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Fichier de fiche produit (HTML local)</label>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <input type="text" id="new-lien" placeholder="Ex: fiches/drone/mavic-pro.html" style="flex: 1;">
-                        <label class="file-label" style="margin: 0;">
-                            📁 Parcourir
-                            <input type="file" id="new-fiche-file" accept=".html,.htm" onchange="handleFicheSelect(event, 'new')" style="display: none;">
-                        </label>
-                        <button type="button" class="btn btn-info" onclick="showFicheSelector('new')">
-                            📂 Liste des fiches
-                        </button>
-                    </div>
-                    <small style="color: #888;">Entrez le chemin relatif ou sélectionnez depuis la liste</small>
-                    <div id="new-fiche-selector" style="display: none; margin-top: 10px; max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 10px;">
-                        <!-- La liste des fichiers sera chargée ici -->
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Fonctionnalités avancées (une par ligne)</label>
-                    <textarea id="new-fonctionnalites" rows="5"></textarea>
-                </div>
-
-                <div id="new-category-fields">
-                    <!-- Les champs spécifiques à la catégorie seront ajoutés ici -->
-                </div>
-
-                <div style="margin-top: 30px;">
-                    <button type="submit" class="btn btn-success">
-                        💾 Créer le Produit
-                    </button>
-                    <button type="button" class="btn btn-warning" onclick="resetCreateForm()">
-                        🔄 Réinitialiser
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Tab: Modifier un Produit -->
-        <div id="modify-tab" class="tab-content">
-            <h2 style="margin-bottom: 20px;">✏️ Modifier un Produit</h2>
-            
+    <form id="create-form" onsubmit="createProduct(event)">
+        <div class="form-row">
             <div class="form-group">
-                <label>Sélectionner un produit</label>
-                <select id="edit-product-select" onchange="loadProductForEdit()">
-                    <option value="">-- Choisir un produit --</option>
+                <label>Nom du produit *</label>
+                <input type="text" id="new-nom" required>
+            </div>
+
+            <div class="form-group">
+                <label>Catégorie *</label>
+                <select id="new-categorie" required onchange="updateCategoryFields('new')">
+                    <option value="">-- Choisir --</option>
+                    <option value="DRONE">DRONE</option>
+                    <option value="CONSOLE">CONSOLE</option>
+                    <option value="TABLETTE">TABLETTE</option>
+                    <option value="SMARTPHONE">SMARTPHONE</option>
+                    <option value="PC GAMING">PC GAMING</option>
+                    <option value="SERVEUR">SERVEUR</option>
+                    <option value="CASQUE AUDIO">CASQUE AUDIO</option>
+                    <option value="MONTRE CONNECTE">MONTRE CONNECTE</option>
+                    <option value="CASQUE VR">CASQUE VR</option>
+                    <option value="IMPRIMANTE 3D">IMPRIMANTE 3D</option>
+                    <option value="ECRAN TV">ECRAN TV</option>
+                    <option value="CAMERA">CAMERA</option>
+                    <option value="PERIPHERIQUES">PERIPHERIQUES</option>
+                    <option value="VIDEO PROJECTEUR">VIDEO PROJECTEUR</option>
+                    <option value="BOX INTERNET">BOX INTERNET</option>
+                    <option value="TABLEAU INTERACTIF">TABLEAU INTERACTIF</option>
+
                 </select>
             </div>
+        </div>
 
-            <div id="edit-form-container" style="display: none;">
-                <form id="edit-form" onsubmit="updateProduct(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Nom du produit *</label>
-                            <input type="text" id="edit-nom" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Catégorie *</label>
-                            <select id="edit-categorie" required onchange="updateCategoryFields('edit')">
-                                <option value="">-- Choisir --</option>
-                                <option value="DRONE">DRONE</option>
-                                <option value="CONSOLE">CONSOLE</option>
-                                <option value="TABLETTE">TABLETTE</option>
-                                <option value="SMARTPHONE">SMARTPHONE</option>
-                                <option value="PC GAMING">PC GAMING</option>
-                                <option value="SERVEUR">SERVEUR</option>
-                                <option value="CASQUE AUDIO">CASQUE AUDIO</option>
-                                <option value="MONTRE CONNECTE">MONTRE CONNECTE</option>
-                                <option value="CASQUE VR">CASQUE VR</option>
-                                <option value="IMPRIMANTE 3D">IMPRIMANTE 3D</option>
-                                <option value="ECRAN TV">ECRAN TV</option>
-                                <option value="CAMERA">CAMERA</option>
-                                <option value="PERIPHERIQUES">PERIPHERIQUES</option>
-                                <option value="VIDEO PROJECTEUR">VIDEO PROJECTEUR</option>
-                                <option value="BOX INTERNET">BOX INTERNET</option>
-                                <option value="TABLEAU INTERACTIF">TABLEAU INTERACTIF</option>
-                            </select>
-                        </div>
-                    </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Prix</label>
+                <input type="text" id="new-prix" placeholder="Ex: 1299€">
+            </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Prix</label>
-                            <input type="text" id="edit-prix" placeholder="Ex: 1299€">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Top du mois</label>
-                            <select id="edit-top">
-                                <option value="false">Non</option>
-                                <option value="true">Oui ⭐</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Description courte</label>
-                        <textarea id="edit-description" rows="3"></textarea>
-                    </div>
-
-                    <!-- Zone d'upload d'image -->
-                    <div class="form-group">
-                        <label>Image du produit</label>
-                        <div class="image-upload-area" id="edit-upload-area" onclick="document.getElementById('edit-image-file').click()">
-                            <p style="font-size: 48px; margin: 0;">📸</p>
-                            <p style="margin: 10px 0;">Cliquez ou glissez une nouvelle image</p>
-                            <p style="color: #888; font-size: 12px;">JPG, PNG, GIF, WebP (Max 10MB)</p>
-                            <input type="file" id="edit-image-file" accept="image/*" onchange="handleImageSelect(event, 'edit')">
-                        </div>
-                        <div id="edit-image-preview" class="image-preview" style="display: none;">
-                            <img id="edit-preview-img" src="" alt="Aperçu">
-                            <button type="button" class="btn btn-danger" style="margin-top: 10px;" onclick="removeImage('edit')">
-                                🗑️ Supprimer l'image
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Fichier de fiche produit (HTML local)</label>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <input type="text" id="edit-lien" placeholder="Ex: fiches/smartphone/iphone15.html" style="flex: 1;">
-                            <label class="file-label" style="margin: 0;">
-                                📁 Parcourir
-                                <input type="file" id="edit-fiche-file" accept=".html,.htm" onchange="handleFicheSelect(event, 'edit')" style="display: none;">
-                            </label>
-                            <button type="button" class="btn btn-info" onclick="showFicheSelector('edit')">
-                                📂 Liste des fiches
-                            </button>
-                        </div>
-                        <small style="color: #888;">Entrez le chemin relatif ou sélectionnez depuis la liste</small>
-                        <div id="edit-fiche-selector" style="display: none; margin-top: 10px; max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 10px;">
-                            <!-- La liste des fichiers sera chargée ici -->
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Fonctionnalités avancées (une par ligne)</label>
-                        <textarea id="edit-fonctionnalites" rows="5"></textarea>
-                    </div>
-
-                    <div id="edit-category-fields">
-                        <!-- Les champs spécifiques à la catégorie seront ajoutés ici -->
-                    </div>
-
-                    <div style="margin-top: 30px;">
-                        <button type="submit" class="btn btn-primary">
-                            💾 Sauvegarder les modifications
-                        </button>
-                        <button type="button" class="btn btn-danger" onclick="deleteProduct()">
-                            🗑️ Supprimer ce produit
-                        </button>
-                    </div>
-                </form>
+            <div class="form-group">
+                <label>Top du mois</label>
+                <select id="new-top">
+                    <option value="false">Non</option>
+                    <option value="true">Oui ⭐</option>
+                </select>
             </div>
         </div>
-    </div
+
+        <div class="form-group">
+            <label>Description courte</label>
+            <textarea id="new-description" rows="3"></textarea>
+        </div>
+
+        <!-- Zone d'upload d'image -->
+        <div class="form-group">
+            <label>Image du produit</label>
+            <div class="image-upload-area" id="new-upload-area"
+                onclick="document.getElementById('new-image-file').click()">
+                <p style="font-size: 48px; margin: 0;">📸</p>
+                <p style="margin: 10px 0;">Cliquez ou glissez une image ici</p>
+                <p style="color: #888; font-size: 12px;">JPG, PNG, GIF, WebP (Max 10MB)</p>
+                <input type="file" id="new-image-file" accept="image/*" onchange="handleImageSelect(event, 'new')">
+            </div>
+            <div id="new-image-preview" class="image-preview" style="display: none;">
+                <img id="new-preview-img" src="" alt="Aperçu">
+                <button type="button" class="btn btn-danger" style="margin-top: 10px;" onclick="removeImage('new')">
+                    🗑️ Supprimer l'image
+                </button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Fichier de fiche produit (HTML local)</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="new-lien" placeholder="Ex: fiches/drone/mavic-pro.html" style="flex: 1;">
+                <label class="file-label" style="margin: 0;">
+                    📁 Parcourir
+                    <input type="file" id="new-fiche-file" accept=".html,.htm"
+                        onchange="handleFicheSelect(event, 'new')" style="display: none;">
+                </label>
+                <button type="button" class="btn btn-info" onclick="showFicheSelector('new')">
+                    📂 Liste des fiches
+                </button>
+            </div>
+            <small style="color: #888;">Entrez le chemin relatif ou sélectionnez depuis la liste</small>
+            <div id="new-fiche-selector"
+                style="display: none; margin-top: 10px; max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 10px;">
+                <!-- La liste des fichiers sera chargée ici -->
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Fonctionnalités avancées (une par ligne)</label>
+            <textarea id="new-fonctionnalites" rows="5"></textarea>
+        </div>
+
+        <div id="new-category-fields">
+            <!-- Les champs spécifiques à la catégorie seront ajoutés ici -->
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button type="submit" class="btn btn-success">
+                💾 Créer le Produit
+            </button>
+            <button type="button" class="btn btn-warning" onclick="resetCreateForm()">
+                🔄 Réinitialiser
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Tab: Modifier un Produit -->
+<div id="modify-tab" class="tab-content">
+    <h2 style="margin-bottom: 20px;">✏️ Modifier un Produit</h2>
+
+    <div class="form-group">
+        <label>Sélectionner un produit</label>
+        <select id="edit-product-select" onchange="loadProductForEdit()">
+            <option value="">-- Choisir un produit --</option>
+        </select>
+    </div>
+
+    <div id="edit-form-container" style="display: none;">
+        <form id="edit-form" onsubmit="updateProduct(event)">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nom du produit *</label>
+                    <input type="text" id="edit-nom" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Catégorie *</label>
+                    <select id="edit-categorie" required onchange="updateCategoryFields('edit')">
+                        <option value="">-- Choisir --</option>
+                        <option value="DRONE">DRONE</option>
+                        <option value="CONSOLE">CONSOLE</option>
+                        <option value="TABLETTE">TABLETTE</option>
+                        <option value="SMARTPHONE">SMARTPHONE</option>
+                        <option value="PC GAMING">PC GAMING</option>
+                        <option value="SERVEUR">SERVEUR</option>
+                        <option value="CASQUE AUDIO">CASQUE AUDIO</option>
+                        <option value="MONTRE CONNECTE">MONTRE CONNECTE</option>
+                        <option value="CASQUE VR">CASQUE VR</option>
+                        <option value="IMPRIMANTE 3D">IMPRIMANTE 3D</option>
+                        <option value="ECRAN TV">ECRAN TV</option>
+                        <option value="CAMERA">CAMERA</option>
+                        <option value="PERIPHERIQUES">PERIPHERIQUES</option>
+                        <option value="VIDEO PROJECTEUR">VIDEO PROJECTEUR</option>
+                        <option value="BOX INTERNET">BOX INTERNET</option>
+                        <option value="TABLEAU INTERACTIF">TABLEAU INTERACTIF</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Prix</label>
+                    <input type="text" id="edit-prix" placeholder="Ex: 1299€">
+                </div>
+
+                <div class="form-group">
+                    <label>Top du mois</label>
+                    <select id="edit-top">
+                        <option value="false">Non</option>
+                        <option value="true">Oui ⭐</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description courte</label>
+                <textarea id="edit-description" rows="3"></textarea>
+            </div>
+
+            <!-- Zone d'upload d'image -->
+            <div class="form-group">
+                <label>Image du produit</label>
+                <div class="image-upload-area" id="edit-upload-area"
+                    onclick="document.getElementById('edit-image-file').click()">
+                    <p style="font-size: 48px; margin: 0;">📸</p>
+                    <p style="margin: 10px 0;">Cliquez ou glissez une nouvelle image</p>
+                    <p style="color: #888; font-size: 12px;">JPG, PNG, GIF, WebP (Max 10MB)</p>
+                    <input type="file" id="edit-image-file" accept="image/*"
+                        onchange="handleImageSelect(event, 'edit')">
+                </div>
+                <div id="edit-image-preview" class="image-preview" style="display: none;">
+                    <img id="edit-preview-img" src="" alt="Aperçu">
+                    <button type="button" class="btn btn-danger" style="margin-top: 10px;"
+                        onclick="removeImage('edit')">
+                        🗑️ Supprimer l'image
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Fichier de fiche produit (HTML local)</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="edit-lien" placeholder="Ex: fiches/smartphone/iphone15.html"
+                        style="flex: 1;">
+                    <label class="file-label" style="margin: 0;">
+                        📁 Parcourir
+                        <input type="file" id="edit-fiche-file" accept=".html,.htm"
+                            onchange="handleFicheSelect(event, 'edit')" style="display: none;">
+                    </label>
+                    <button type="button" class="btn btn-info" onclick="showFicheSelector('edit')">
+                        📂 Liste des fiches
+                    </button>
+                </div>
+                <small style="color: #888;">Entrez le chemin relatif ou sélectionnez depuis la liste</small>
+                <div id="edit-fiche-selector"
+                    style="display: none; margin-top: 10px; max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 10px;">
+                    <!-- La liste des fichiers sera chargée ici -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Fonctionnalités avancées (une par ligne)</label>
+                <textarea id="edit-fonctionnalites" rows="5"></textarea>
+            </div>
+
+            <div id="edit-category-fields">
+                <!-- Les champs spécifiques à la catégorie seront ajoutés ici -->
+            </div>
+
+            <div style="margin-top: 30px;">
+                <button type="submit" class="btn btn-primary">
+                    💾 Sauvegarder les modifications
+                </button>
+                <button type="button" class="btn btn-danger" onclick="deleteProduct()">
+                    🗑️ Supprimer ce produit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</div
