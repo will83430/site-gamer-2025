@@ -1,7 +1,17 @@
 // assets/js/fiche-produit.js - Connexion des fiches HTML individuelles à PostgreSQL
 
 // Configuration API
-const API_URL = 'http://localhost:3000/api';
+const API_URL = (() => {
+    const hostname = window.location.hostname;
+    const protocol = window.location.protocol;
+    const port = '3000';
+    
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:3000/api';
+    }
+    
+    return `${protocol}//${hostname}:${port}/api`;
+})();
 
 // Fonction principale pour charger les données du produit depuis PostgreSQL
 async function chargerDonneesProduit() {
@@ -39,7 +49,7 @@ async function chargerDonneesProduit() {
         }
     } catch (error) {
         console.error("❌ Erreur de connexion à PostgreSQL:", error);
-        console.log("💡 Assurez-vous que le serveur est lancé: node server-postgres-images.js");
+        console.log("💡 Assurez-vous que le serveur est lancé: node server.js");
         afficherContenuParDefaut();
     }
 }
@@ -268,7 +278,7 @@ async function verifierConnexion() {
         }
     } catch (error) {
         console.error("❌ Serveur PostgreSQL non accessible");
-        console.log("💡 Lancez le serveur: node server-postgres-images.js");
+        console.log("💡 Lancez le serveur: node server.js");
         return false;
     }
 }
@@ -291,7 +301,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin: 20px 0;">
                     ⚠️ <strong>Erreur de connexion</strong><br>
                     Impossible de se connecter à la base de données PostgreSQL.<br>
-                    Assurez-vous que le serveur est lancé avec: <code>node server-postgres-images.js</code>
+                    Assurez-vous que le serveur est lancé avec: <code>node server.js</code>
                 </div>
             ` + contentDiv.innerHTML;
         }

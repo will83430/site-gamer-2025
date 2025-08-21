@@ -350,7 +350,7 @@ async function verifierConnexionServeur() {
         }
     } catch (error) {
         console.error('❌ Serveur non accessible:', error);
-        afficherNotification('⚠️ Le serveur n\'est pas lancé. Lancez: node server-postgres-images.js', 'error');
+        afficherNotification('⚠️ Le serveur n\'est pas lancé. Lancez: node server.js', 'error');
         return false;
     }
 }

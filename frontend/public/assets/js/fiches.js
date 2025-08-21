@@ -1,13 +1,32 @@
 // assets/js/fiches.js - Connexion à la base de données PostgreSQL
 
 // Configuration de l'API
-const API_URL = 'http://localhost:3000/api';
+const API_URL = (() => {
+    const hostname = window.location.hostname;
+    const protocol = window.location.protocol;
+    const port = '3000';
+    
+    console.log('🔍 Hostname détecté:', hostname);
+    
+    // Si localhost ou 127.0.0.1, utiliser localhost explicitement
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:3000/api';
+    }
+    
+    // Sinon utiliser l'IP détectée
+    return `${protocol}//${hostname}:${port}/api`;
+})();
+
+console.log('🌐 API_URL configurée:', API_URL);
 
 // Variables globales
 let produitsSelectionnes = [];
 let categorieActuelle = '';
 let tousLesProduits = null; // Cache pour tous les produits
 let statsCache = null; // Cache pour les stats
+
+const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+console.log('📱 Détection mobile:', isMobile);
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
@@ -36,24 +55,37 @@ async function chargerTousLesProduits() {
     }
     
     try {
-        console.log('📊 Chargement unique des produits depuis PostgreSQL...');
         
-        const response = await fetch(`${API_URL}/produits`);
+        // Timeout plus long pour mobile
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 secondes
+        
+        const response = await fetch(`${API_URL}/produits`, {
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
         const data = await response.json();
         
         if (data.success) {
-            // Mettre en cache tous les produits
+            // Limiter sur mobile pour éviter timeout
             tousLesProduits = data.data;
-            console.log(`✅ ${tousLesProduits.length} produits chargés et mis en cache`);
+            
+            console.log(`✅ ${tousLesProduits.length} produits chargés (mobile: ${isMobile})`);
             return tousLesProduits;
         } else {
             throw new Error(data.error || 'Erreur lors du chargement');
         }
         
     } catch (error) {
-        console.error('❌ Erreur lors du chargement des produits:', error);
-        tousLesProduits = []; // Cache vide pour éviter de recharger
-        afficherErreur('Impossible de charger les produits depuis la base de données');
+        if (error.name === 'AbortError') {
+            console.error('⏰ Timeout - chargement trop long');
+            afficherErreur('Connexion trop lente. Réessayez en WiFi.');
+        } else {
+            console.error('❌ Erreur lors du chargement des produits:', error);
+            afficherErreur('Impossible de charger les produits depuis la base de données');
+        }
+        tousLesProduits = []; 
         return [];
     }
 }
@@ -83,8 +115,12 @@ function afficherProduitsCategorie(categorie) {
     descElement.textContent = descriptions[categorie] || `Produits de la catégorie ${categorie}`;
     
     // Filtrer les produits depuis le cache (pas de nouvelle requête !)
-    if (tousLesProduits && tousLesProduits.length > 0) {
-        const produitsFiltres = tousLesProduits.filter(p => p.categorie === categorie);
+   if (tousLesProduits && tousLesProduits.length > 0) {
+       let produitsFiltres = tousLesProduits.filter(p => p.categorie === categorie);
+        if (isMobile && produitsFiltres.length > 10) {
+            produitsFiltres = produitsFiltres.slice(0, 10);
+            console.log('📱 Limité à 10 produits pour mobile');
+        }
         afficherProduits(produitsFiltres);
     } else {
         afficherProduits([]);
@@ -144,11 +180,17 @@ if (imageUrl) {
 console.log('🖼️ Image URL pour', produit.nom, ':', imageUrl);
         
         let ficheUrl = '#';
-        if (produit.lien) {
-            ficheUrl = produit.lien.startsWith('http')
-                ? produit.lien
-                : `http://localhost:3000/${produit.lien.replace(/^\/+/, '')}`;
-        }
+if (produit.lien) {
+    if (produit.lien.startsWith('http')) {
+        ficheUrl = produit.lien;
+    } else {
+        // Construire l'URL complète selon l'environnement
+        const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000'
+            : `${window.location.protocol}//${window.location.hostname}:3000`;
+        ficheUrl = `${baseUrl}/${produit.lien.replace(/^\/+/, '')}`;
+    }
+}
 
         return `
             <div class="fiche-produit" data-id="${produit.id}" style="position: relative;">
