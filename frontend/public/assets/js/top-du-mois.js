@@ -1,7 +1,17 @@
 // assets/js/top-du-mois.js - Connexion à PostgreSQL pour la page top-du-mois.html
 
 // Configuration API
-const API_URL = 'http://localhost:3000/api';
+const API_URL = (() => {
+    const hostname = window.location.hostname;
+    const protocol = window.location.protocol;
+    const port = '3000';
+    
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:3000/api';
+    }
+    
+    return `${protocol}//${hostname}:${port}/api`;
+})();
 
 // Variables globales
 let produitsParCategorie = {};
