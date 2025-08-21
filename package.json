@@ -11,6 +11,7 @@
     "db:populate": "psql -U postgres -d gamer_2025 -f backend/gestion_produits.sql"
   },
   "dependencies": {
+    "compression": "^1.8.1",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "multer": "^2.0.2",

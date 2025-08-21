@@ -105,18 +105,6 @@ function afficherToutesCategories() {
     }
 }
 
-// Ancienne fonction devenue obsolète (gardée pour compatibilité)
-async function chargerProduitsCategorieDepuisBDD(categorie) {
-    // Rediriger vers la nouvelle fonction qui utilise le cache
-    afficherProduitsCategorie(categorie);
-}
-
-// Ancienne fonction devenue obsolète (gardée pour compatibilité)
-async function afficherToutesCategoriesDepuisBDD() {
-    // Rediriger vers la nouvelle fonction qui utilise le cache
-    afficherToutesCategories();
-}
-
 // Afficher les produits dans la grille
 // Remplacez TOUTE la fonction afficherProduits dans fiches.js par ceci :
 
@@ -337,7 +325,9 @@ async function comparerProduits() {
                     </div>
                 `).join('')}
             </div>
-            <button class="btn" style="margin-top: 20px;" onclick="fermerComparaison()">Fermer la comparaison</button>
+            <button id="btn-fermer-comparaison" class="btn btn-comparer" onclick="fermerComparaison()">
+    Fermer la comparaison
+</button>
         `;
         
         // Afficher la zone de comparaison
