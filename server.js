@@ -354,6 +354,18 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
+app.post('/api/init-image-column', (req, res) => {
+  res.json({ success: true, message: 'Colonne OK' });
+});
+app.get('/api/fiches-list', (req, res) => {
+  res.json({ 
+    success: true, 
+    fiches: [
+      { name: "exemple.html", path: "fiches/exemple.html", category: "test" }
+    ]
+  });
+});
+
 // Route de test
 app.get('/api/test', (req, res) => {
   res.json({ 

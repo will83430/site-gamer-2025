@@ -105,6 +105,104 @@
             border-radius: 8px;
         }
 
+        /* DRAG & DROP MODERNE - NOUVEAUX STYLES */
+.upload-zone {
+    border: 3px dashed #667eea;
+    border-radius: 20px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-zone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+}
+
+.upload-zone:hover::before {
+    left: 100%;
+}
+
+.upload-zone:hover {
+    border-color: #764ba2;
+    background: linear-gradient(135deg, #e3e6ff 0%, #d1d9ff 100%);
+    transform: scale(1.02);
+}
+
+.upload-zone.dragover {
+    border-color: #4c63d2;
+    background: linear-gradient(135deg, #e3e6ff 0%, #d1d9ff 100%);
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(76, 99, 210, 0.3);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #667eea;
+    margin-bottom: 15px;
+    animation: bounce 2s infinite;
+}
+
+.upload-text {
+    font-size: 1.1rem;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.upload-hint {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.preview-card-modern {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform 0.3s ease;
+    animation: slideIn 0.5s ease;
+}
+
+.preview-card-modern:hover {
+    transform: translateY(-5px);
+}
+
+.upload-progress {
+    width: 100%;
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    width: 0%;
+    transition: width 0.3s;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
         /* Form Styles */
         .form-group {
             margin-bottom: 20px;
@@ -442,14 +540,6 @@
                 showMessage(`✅ Fiche sélectionnée: ${path}`, 'success');
             }
 
-            // Initialisation
-            document.addEventListener('DOMContentLoaded', () => {
-                initImageColumn();
-                loadStats();
-                loadProducts();
-                setupDragAndDrop();
-            });
-
             // Initialiser la colonne image_data si nécessaire
             async function initImageColumn() {
                 try {
@@ -591,35 +681,7 @@
                 document.getElementById(`${prefix}-image-file`).value = '';
             }
 
-            // Setup Drag and Drop
-            function setupDragAndDrop() {
-                ['new', 'edit'].forEach(prefix => {
-                    const area = document.getElementById(`${prefix}-upload-area`);
-                    if (!area) return;
-
-                    area.addEventListener('dragover', (e) => {
-                        e.preventDefault();
-                        area.classList.add('dragover');
-                    });
-
-                    area.addEventListener('dragleave', () => {
-                        area.classList.remove('dragover');
-                    });
-
-                    area.addEventListener('drop', (e) => {
-                        e.preventDefault();
-                        area.classList.remove('dragover');
-
-                        const files = e.dataTransfer.files;
-                        if (files.length > 0) {
-                            const input = document.getElementById(`${prefix}-image-file`);
-                            input.files = files;
-                            handleImageSelect({ target: input }, prefix);
-                        }
-                    });
-                });
-            }
-
+            
             // Créer un nouveau produit
             async function createProduct(event) {
                 event.preventDefault();
@@ -721,9 +783,13 @@
 
                     console.log('🖼️ Image formulaire édition pour', product.nom, ':', imageUrl);
 
-                    document.getElementById('edit-upload-area').style.display = 'none';
-                    document.getElementById('edit-image-preview').style.display = 'block';
-                    document.getElementById('edit-preview-img').src = imageUrl;
+                   const editUploadArea = document.getElementById('edit-upload-area');
+const editImagePreview = document.getElementById('edit-image-preview');  
+const editPreviewImg = document.getElementById('edit-preview-img');
+
+if (editUploadArea) editUploadArea.style.display = 'none';
+if (editImagePreview) editImagePreview.style.display = 'block';
+if (editPreviewImg) editPreviewImg.src = imageUrl;
                     currentImageData['edit'] = imageUrl;
                 }
 
@@ -1011,6 +1077,138 @@
             setInterval(() => {
                 loadStats();
             }, 30000);
+
+            // DRAG & DROP MODERNE
+class ModernImageUpload {
+    constructor(prefix) {
+        this.prefix = prefix;
+        this.uploadZone = document.getElementById(`${prefix}-upload-zone`);
+        this.fileInput = document.getElementById(`${prefix}-image-file`);
+        this.previewContainer = document.getElementById(`${prefix}-preview-container`);
+        this.currentFile = null;
+        
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+          console.log(`🔧 Setup listeners pour ${this.prefix}`);
+    console.log('uploadZone:', this.uploadZone);
+    console.log('fileInput:', this.fileInput);
+
+        if (!this.uploadZone || !this.fileInput) return;
+
+        this.uploadZone.addEventListener('click', () => {
+            console.log(`🖱️ Clic sur zone ${this.prefix}`);
+            this.fileInput.click();
+        });
+
+        this.fileInput.addEventListener('change', (e) => {
+            console.log(`📁 Changement fichier ${this.prefix}:`, e.target.files);
+            this.handleFiles(e.target.files);
+        });
+
+        this.uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            this.uploadZone.classList.add('dragover');
+        });
+
+        this.uploadZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            this.uploadZone.classList.remove('dragover');
+        });
+
+        this.uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            this.uploadZone.classList.remove('dragover');
+            this.handleFiles(e.dataTransfer.files);
+        });
+    }
+
+    handleFiles(files) {
+        console.log(`📥 handleFiles appelé pour ${this.prefix} avec:`, files);
+        if (files.length === 0) return;
+        
+        const file = files[0];
+        console.log(`📄 Fichier sélectionné:`, file.name);
+        
+        if (!file.type.startsWith('image/')) {
+            showMessage(`❌ ${file.name} n'est pas une image`, 'danger');
+            return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+            showMessage(`❌ ${file.name} dépasse 5MB`, 'danger');
+            return;
+        }
+
+        this.currentFile = file;
+        this.createPreview(file);
+        showMessage(`✅ Image ${file.name} sélectionnée`, 'success');
+    }
+
+    createPreview(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.previewContainer.innerHTML = `
+                <div class="preview-card-modern">
+                    <img src="${e.target.result}" alt="Aperçu" style="width:100%;height:200px;object-fit:cover;">
+                    <div style="padding:15px;text-align:center;">
+                        <div style="font-weight:600;color:#333;margin-bottom:10px;">${file.name}</div>
+                        <div class="upload-progress" style="display:none;">
+                            <div class="progress-bar" id="progress-${this.prefix}"></div>
+                        </div>
+                        <div style="display:flex;gap:10px;justify-content:center;margin-top:10px;">
+                            <button type="button" class="btn btn-primary" onclick="modernUpload.${this.prefix}.simulateUpload()">
+                                📤 Traiter
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="modernUpload.${this.prefix}.removePreview()">
+                                🗑️ Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            currentImageData[this.prefix] = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async simulateUpload() {
+        const progressBar = document.getElementById(`progress-${this.prefix}`);
+        const progressContainer = progressBar.parentElement;
+        
+        progressContainer.style.display = 'block';
+
+        for (let i = 0; i <= 100; i += 20) {
+            progressBar.style.width = i + '%';
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        showMessage(`✅ Image traitée avec succès !`, 'success');
+        progressContainer.style.display = 'none';
+    }
+
+    removePreview() {
+        this.previewContainer.innerHTML = '';
+        this.fileInput.value = '';
+        this.currentFile = null;
+        delete currentImageData[this.prefix];
+        showMessage(`🗑️ Image supprimée`, 'warning');
+    }
+}
+
+// Initialisation des uploaders modernes
+const modernUpload = {};
+
+// Remplacer l'ancien setupDragAndDrop
+function setupDragAndDrop() {
+    setTimeout(() => {
+        modernUpload.new = new ModernImageUpload('new');
+        modernUpload.edit = new ModernImageUpload('edit');
+        console.log('🎨 Drag & drop moderne initialisé');
+    }, 500);
+}
         </script>
 </body>
 
@@ -1124,23 +1322,17 @@
             <textarea id="new-description" rows="3"></textarea>
         </div>
 
-        <!-- Zone d'upload d'image -->
-        <div class="form-group">
-            <label>Image du produit</label>
-            <div class="image-upload-area" id="new-upload-area"
-                onclick="document.getElementById('new-image-file').click()">
-                <p style="font-size: 48px; margin: 0;">📸</p>
-                <p style="margin: 10px 0;">Cliquez ou glissez une image ici</p>
-                <p style="color: #888; font-size: 12px;">JPG, PNG, GIF, WebP (Max 10MB)</p>
-                <input type="file" id="new-image-file" accept="image/*" onchange="handleImageSelect(event, 'new')">
-            </div>
-            <div id="new-image-preview" class="image-preview" style="display: none;">
-                <img id="new-preview-img" src="" alt="Aperçu">
-                <button type="button" class="btn btn-danger" style="margin-top: 10px;" onclick="removeImage('new')">
-                    🗑️ Supprimer l'image
-                </button>
-            </div>
-        </div>
+        <!-- Zone d'upload d'image MODERNE -->
+<div class="form-group">
+    <label>Image du produit</label>
+    <div class="upload-zone" id="new-upload-zone">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Glissez votre image ici</div>
+        <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
+        <input type="file" id="new-image-file" accept="image/*" style="display: none;">
+    </div>
+    <div id="new-preview-container"></div>
+</div>
 
         <div class="form-group">
             <label>Fichier de fiche produit (HTML local)</label>
@@ -1245,25 +1437,17 @@
                 <textarea id="edit-description" rows="3"></textarea>
             </div>
 
-            <!-- Zone d'upload d'image -->
-            <div class="form-group">
-                <label>Image du produit</label>
-                <div class="image-upload-area" id="edit-upload-area"
-                    onclick="document.getElementById('edit-image-file').click()">
-                    <p style="font-size: 48px; margin: 0;">📸</p>
-                    <p style="margin: 10px 0;">Cliquez ou glissez une nouvelle image</p>
-                    <p style="color: #888; font-size: 12px;">JPG, PNG, GIF, WebP (Max 10MB)</p>
-                    <input type="file" id="edit-image-file" accept="image/*"
-                        onchange="handleImageSelect(event, 'edit')">
-                </div>
-                <div id="edit-image-preview" class="image-preview" style="display: none;">
-                    <img id="edit-preview-img" src="" alt="Aperçu">
-                    <button type="button" class="btn btn-danger" style="margin-top: 10px;"
-                        onclick="removeImage('edit')">
-                        🗑️ Supprimer l'image
-                    </button>
-                </div>
-            </div>
+            <!-- Zone d'upload d'image MODERNE -->
+<div class="form-group">
+    <label>Image du produit</label>
+    <div class="upload-zone" id="edit-upload-zone">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Glissez votre image ici</div>
+        <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
+        <input type="file" id="edit-image-file" accept="image/*" style="display: none;">
+    </div>
+    <div id="edit-preview-container"></div>
+</div>
 
             <div class="form-group">
                 <label>Fichier de fiche produit (HTML local)</label>
