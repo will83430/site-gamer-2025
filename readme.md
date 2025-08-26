@@ -1,183 +1,179 @@
 # Site Gamer 2025
 
-Site web de présentation d'équipements technologiques avec dashboard d'administration intégré.
+Site web de présentation d'équipements technologiques avec système de fiches produits et connexion PostgreSQL.
 
-## 🎯 Fonctionnalités
+## 🎯 Fonctionnalités principales
 
-- **Catalogue de produits** : 47 équipements dans 15 catégories
-- **Dashboard admin** : Interface complète de gestion
-- **Génération automatique** : Fiches produits HTML
-- **Interface responsive** : Compatible mobile et desktop
+- **Catalogue produits** : Base de données PostgreSQL
+- **Page fiches** : Navigation par catégories
+- **Dashboard admin** : Gestion complète des produits
+- **Design responsive** : Compatible mobile et desktop
 
-## 📁 Structure
+## 📁 Structure du projet
 
 ```
 site-gamer-2025/
 ├── frontend/public/
-│   ├── assets/          # Images et ressources
-│   ├── css/            # Styles CSS
-│   ├── js/             # Scripts JavaScript
-│   ├── data/           # Données JSON
-│   ├── fiches-produits/ # Pages produits générées
-│   ├── index.html      # Page d'accueil
-│   ├── admin.html      # Dashboard administrateur
-│   └── top-du-mois.html # Vitrine produits
+│   ├── assets/          
+│   │   ├── images/      # Images produits
+│   │   ├── categories/  # Images catégories  
+│   │   ├── css/         # Styles CSS
+│   │   └── js/          # Scripts JavaScript
+│   │       ├── fiches.js
+│   │       ├── fiche-produit.js
+│   │       └── utils.js
+│   ├── pages/
+│   │   └── fiches.html  # Page principale des fiches
+│   ├── fiches-produits/ # Fiches HTML générées (legacy)
+│   ├── index.html       # Page d'accueil
+│   └── admin.html       # Dashboard admin
+├── fiches/              # Fiches produits organisées par catégorie
+│   ├── drone/
+│   ├── console/
+│   ├── tablette/
+│   └── ...
+├── server.js            # Serveur Node.js avec PostgreSQL
+├── package.json         # Dépendances Node.js
+└── README.md
 ```
 
-## 🚀 Démarrage rapide
+## 🚀 Installation rapide
 
-### Prérequis
-- Navigateur web moderne
-- Serveur web local (optionnel)
-
-### Installation locale
-
-1. **Cloner le projet**
+### 1. Cloner le projet
 ```bash
 git clone [votre-repo]
 cd site-gamer-2025
 ```
 
-2. **Lancer le site**
+### 2. Installation des dépendances (si utilisation du serveur)
 ```bash
-# Option 1: Directement dans le navigateur
-open frontend/public/index.html
-
-# Option 2: Serveur local (recommandé)
-# Avec Python
-cd frontend/public
-python -m http.server 8000
-
-# Avec Node.js
-npx serve frontend/public
+npm install
 ```
 
-3. **Accéder au dashboard admin**
-```
-http://localhost:8000/admin.html
-```
+### 3. Lancer le projet
 
-## ⚙️ Utilisation
+**Avec serveur Node.js et PostgreSQL**
+```bash
+# Lancer le serveur
+node server.js
 
-### Dashboard administrateur
-
-Le dashboard (`admin.html`) permet de :
-- **Gérer les produits** : Ajouter, modifier, supprimer
-- **Organiser par catégories** : 15 catégories disponibles
-- **Générer les fiches** : HTML automatique pour chaque produit
-- **Statistiques** : Vue d'ensemble des données
-
-### Ajout d'un produit
-
-1. Ouvrir le dashboard admin
-2. Aller dans "Ajouter Produit"
-3. Remplir les informations :
-   - Nom du produit *
-   - Catégorie *
-   - Prix
-   - Description
-   - Image (optionnel)
-   - Spécifications techniques
-4. Sauvegarder ou "Sauvegarder & Générer Fiche"
-
-### Catégories disponibles
-
-- PC Gaming, Console, Casque VR
-- Smartphone, Tablette, Montre Connectée
-- Casque Audio, Caméra, Écran TV
-- Drone, Imprimante 3D, Serveur
-- Périphériques, Vidéoprojecteur, Box Internet, Tableau Interactif
-
-## 📝 Format des données
-
-Les produits sont stockés en JSON (`data/equipements.json`) :
-
-```json
-{
-  "nom": "Nom du produit",
-  "categorie": "CATEGORIE",
-  "prix": "999€",
-  "description": "Description courte",
-  "image": "assets/images/produit.png",
-  "top_du_mois": false,
-  "specifications": "Détails techniques",
-  "fonctionnalites_avancees": ["Fonctionnalité 1", "Fonctionnalité 2"]
-}
+# Le site sera accessible sur
+http://localhost:3000
 ```
 
-## 🔧 Génération automatique
+### 4. Pages principales
+- Page d'accueil : `http://localhost:3000`
+- Page fiches : `http://localhost:3000/frontend/public/pages/fiches.html`
+- Dashboard admin : `http://localhost:3000/admin.html`
 
-### Fiches produits
-- **Déclenchement** : Bouton "Générer Fiche" dans le dashboard
-- **Emplacement** : `fiches-produits/[categorie]/[nom-produit].html`
-- **Template** : Structure HTML standardisée avec CSS intégré
+## ⚙️ Configuration
 
-### Fichiers système
-- **Sitemap** : `sitemap.xml` généré automatiquement
-- **Robots.txt** : Configuration SEO
+### Base de données PostgreSQL
+
+Configurez vos identifiants dans `server.js` :
+
+```javascript
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: 'votre_mot_de_passe',
+  port: 5432,
+});
+```
+
+## 📊 Format des données
+
+Structure dans PostgreSQL (table `produits`) :
+
+```sql
+CREATE TABLE produits (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(255) NOT NULL,
+  categorie VARCHAR(100),
+  prix VARCHAR(50),
+  description TEXT,
+  image VARCHAR(500),
+  image_data TEXT, -- Pour base64
+  lien VARCHAR(500),
+  top_du_mois BOOLEAN DEFAULT false,
+  fonctionnalites_avancees TEXT[],
+  donnees_fiche TEXT[]
+);
+```
 
 ## 🛠️ Développement
 
 ### Fichiers principaux
 
-- `admin.html` : Interface d'administration complète
-- `js/home.js` : Logique page d'accueil
-- `js/fiches.js` : Système de gestion des fiches
-- `js/utils.js` : Fonctions utilitaires
-- `css/style/style 4.css` : Styles principaux
+- `server.js` : Serveur Node.js avec API PostgreSQL
+- `admin.html` : Dashboard administrateur
+- `pages/fiches.html` : Page principale des fiches produits
+- `assets/js/fiches.js` : Logique de la page fiches
+- `assets/js/fiche-produit.js` : Logique des fiches individuelles
+- `assets/css/styles.css` : Styles principaux
 
-### Ajout d'une nouvelle catégorie
+### Ajouter une catégorie
 
-1. Modifier le mapping dans `admin.html` :
-```javascript
-const categoryFolders = {
-  'NOUVELLE_CATEGORIE': 'nouveau-dossier'
-};
-```
+1. Créer le dossier dans `/fiches/nouvelle-categorie/`
+2. Ajouter les produits dans PostgreSQL via l'admin
+3. Générer les fiches HTML depuis le dashboard
 
-2. Créer le dossier correspondant :
-```bash
-mkdir fiches-produits/nouveau-dossier
-```
+### API Endpoints (avec serveur)
 
-### Customisation du template
-
-Modifier la fonction `generateProductHTML()` dans `admin.html` pour personnaliser le template des fiches produits.
+- `GET /api/produits` : Liste tous les produits
+- `GET /api/produits/:id` : Détails d'un produit
+- `POST /api/produits` : Créer un produit
+- `PUT /api/produits/:id` : Modifier un produit
+- `DELETE /api/produits/:id` : Supprimer un produit
 
 ## 📦 Sauvegarde
 
-- **Auto-sauvegarde** : LocalStorage du navigateur
-- **Export manuel** : Bouton "Sauvegarder Données" dans le dashboard
-- **Format** : Fichier JSON avec timestamp
+### PostgreSQL
+- Export via pgAdmin : Click droit sur la base > Backup
+- En ligne de commande : `pg_dump -U postgres -d postgres > backup.sql`
+- Restauration : `psql -U postgres -d postgres < backup.sql`
 
-## 🌐 Déploiement
+## 🚀 Déploiement
 
-### Site statique
-Le projet est entièrement statique et peut être déployé sur :
-- GitHub Pages
-- Netlify
-- Vercel
-- Serveur web classique
+### Production avec serveur Node.js
+```bash
+# Installation des dépendances
+npm install
 
-### Workflow recommandé
+# Lancer avec PM2 (recommandé)
+npm install -g pm2
+pm2 start server.js --name site-gamer
 
-1. **Développement** : Utilisation du dashboard admin en local
-2. **Génération** : Création des fiches via l'interface
-3. **Commit** : Versioning des fichiers générés
-4. **Merge sur main** : Déploiement automatique
+# Ou avec Node directement
+node server.js
+```
+
+### Hébergeurs compatibles
+- Heroku (avec add-on PostgreSQL)
+- Railway
+- Render
+- VPS avec Node.js et PostgreSQL
+
+## 🔧 Dépannage
+
+### Le serveur ne démarre pas
+- Vérifier PostgreSQL est lancé
+- Vérifier les identifiants dans `server.js`
+- Port 3000 disponible
+
+### Les images ne s'affichent pas
+- Vérifier les chemins dans la base de données
+- Les images doivent être dans `/frontend/public/assets/images/`
+
+### Erreur CORS
+- Le serveur inclut déjà les headers CORS
+- En local, utiliser `localhost` et non `127.0.0.1`
 
 ## 📄 Licence
 
-Domaine public (CC0 1.0 Universal)
-
-## 🤝 Contribution
-
-Pour contribuer :
-1. Utiliser le dashboard admin pour les modifications de contenu
-2. Tester la génération des fiches avant commit
-3. Vérifier la compatibilité mobile
-4. Suivre la structure de dossiers existante
+MIT
 
 ---
 
-*Généré pour le projet Site Gamer 2025*
+*Projet Site Gamer 2025*
