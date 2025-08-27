@@ -471,6 +471,10 @@ app.get('/api/fiches-list', (req, res) => {
   });
 });
 
+app.post('/api/generate-fiche/:id', async (req, res) => {
+    res.json({ success: false, error: 'Endpoint à implémenter' });
+});
+
 // Route de test
 app.get('/api/test', (req, res) => {
   res.json({
