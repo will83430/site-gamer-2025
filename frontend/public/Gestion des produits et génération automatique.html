@@ -448,8 +448,6 @@
             // Configuration
             const API_URL = 'http://localhost:3000/api';
             let allProducts = [];
-            let currentEditingId = null;
-            let currentImageData = {};
             let currentFicheData = {};
 
             // Initialisation
@@ -678,18 +676,6 @@
                 };
                 reader.readAsDataURL(file);
             }
-
-            // Supprimer l'image
-            function removeImage(prefix) {
-                delete currentImageData[prefix];
-                const uploadArea = document.getElementById(`${prefix}-upload-area`);
-                if (uploadArea) uploadArea.style.display = 'block';
-                document.getElementById(`${prefix}-image-preview`).style.display = 'none';
-                document.getElementById(`${prefix}-preview-img`).src = '';
-                document.getElementById(`${prefix}-image-file`).value = '';
-            }
-
-
             // Créer un nouveau produit
             async function createProduct(event) {
                 event.preventDefault();
@@ -704,69 +690,6 @@
                     fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
                     donnees_fiche: collectCategoryData('new')
                 };
-                // Créer un produit ET générer sa fiche HTML
-                // Créer un produit ET générer sa fiche HTML
-                async function createAndGenerateFiche() {
-                    const productData = {
-                        nom: document.getElementById('new-nom').value,
-                        categorie: document.getElementById('new-categorie').value,
-                        prix: document.getElementById('new-prix').value,
-                        description: document.getElementById('new-description').value,
-                        lien: document.getElementById('new-lien').value,
-                        top_du_mois: document.getElementById('new-top').value === 'true',
-                        fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
-                        donnees_fiche: collectCategoryData('new')
-                    };
-
-                    if (currentImageData['new']) {
-                        productData.image_data = currentImageData['new'];
-                    }
-
-                    if (!productData.nom || !productData.categorie) {
-                        showMessage('⚠️ Nom et catégorie sont obligatoires', 'warning');
-                        return;
-                    }
-
-                    try {
-                        // 1. Créer le produit
-                        const createResponse = await fetch(`${API_URL}/produits`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(productData)
-                        });
-
-                        const createData = await createResponse.json();
-                        if (!createData.success) {
-                            showMessage('❌ Erreur création: ' + createData.error, 'danger');
-                            return;
-                        }
-
-                        const productId = createData.data.id;
-
-                        // 2. Générer la fiche HTML
-                        const ficheResponse = await fetch(`${API_URL}/generate-fiche/${productId}`, {
-                            method: 'POST'
-                        });
-
-                        const ficheData = await ficheResponse.json();
-                        if (ficheData.success) {
-                            showMessage(`✅ Produit créé ET fiche générée: ${ficheData.path}`, 'success');
-                        } else {
-                            showMessage(`✅ Produit créé mais erreur fiche: ${ficheData.error}`, 'warning');
-                        }
-
-                        // 3. Nettoyer et recharger
-                        resetCreateForm();
-                        loadProducts();
-                        loadStats();
-
-                    } catch (error) {
-                        console.error('Erreur:', error);
-                        showMessage('❌ Erreur lors du processus', 'danger');
-                    }
-                }
-
-
 
                 // Ajouter l'image si présente
                 if (currentImageData['new']) {
@@ -774,6 +697,9 @@
                 }
 
                 try {
+                    showMessage('🔄 Création du produit en cours...', 'info');
+
+                    // 1. CRÉER LE PRODUIT DANS LA BDD
                     const response = await fetch(`${API_URL}/produits`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -782,43 +708,72 @@
 
                     const data = await response.json();
 
-                    if (data.success) {
-                        showMessage('✅ Produit créé avec succès!', 'success');
-                        resetCreateForm();
-                        loadProducts();
-                        loadStats();
-                    } else {
-                        showMessage('❌ Erreur: ' + data.error, 'danger');
+                    if (!data.success) {
+                        throw new Error(data.message || 'Erreur lors de la création');
                     }
+
+                    const newProduct = data.data;
+                    showMessage('✅ Produit créé en base de données!', 'success');
+
+                    // 2. GÉNÉRER AUTOMATIQUEMENT LA FICHE HTML
+                    try {
+                        showMessage('🔄 Génération de la fiche HTML...', 'info');
+
+                        const html = await generateFicheHTML(newProduct.id);
+
+                        // Créer le nom de fichier
+                        const fileName = productData.nom.toLowerCase()
+                            .replace(/[^a-z0-9]+/g, '-')
+                            .replace(/^-+|-+$/g, '') + '.html';
+
+                        // Sauvegarder dans le dossier approprié
+                        await saveFicheToFolder(html, productData.categorie, fileName);
+
+                        showMessage(`✅ Fiche "${fileName}" générée et sauvegardée!`, 'success');
+
+                    } catch (ficheError) {
+                        console.error('Erreur génération fiche:', ficheError);
+                        showMessage('⚠️ Produit créé mais erreur lors de la génération de fiche', 'warning');
+                    }
+
+                    // Réinitialiser le formulaire et recharger la liste
+                    resetCreateForm();
+                    loadProducts();
+
                 } catch (error) {
-                    console.error('Erreur création:', error);
-                    showMessage('❌ Erreur lors de la création', 'danger');
+                    console.error('Erreur création produit:', error);
+                    showMessage('❌ Erreur: ' + error.message, 'error');
                 }
             }
 
-            // Charger un produit pour édition
-            async function loadProductForEdit() {
-                const select = document.getElementById('edit-product-select');
-                const productId = select.value;
+            // Nouvelle fonction pour sauvegarder la fiche dans le bon dossier
+            async function saveFicheToFolder(html, categorie, fileName) {
+                // Déterminer le dossier selon la catégorie
+                const folderMap = {
+                    'SMARTPHONE': 'smartphone',
+                    'TABLETTE': 'tablette',
+                    'PC GAMING': 'pc-gaming',
+                    'CONSOLE': 'console',
+                    'CASQUE AUDIO': 'casque-audio',
+                    'MONTRE CONNECTE': 'montre-connectee',
+                    'DRONE': 'drone',
+                    'SERVEUR': 'serveur'
+                };
 
-                if (!productId) {
-                    document.getElementById('edit-form-container').style.display = 'none';
-                    return;
-                }
+                const folderName = folderMap[categorie] || categorie.toLowerCase().replace(/\s+/g, '-');
+                const fullPath = `fiches/${folderName}/${fileName}`;
 
-                try {
-                    const response = await fetch(`${API_URL}/produits/${productId}`);
-                    const data = await response.json();
+                // Simuler la sauvegarde (à adapter selon votre méthode)
+                // En local, on peut utiliser le téléchargement automatique
+                const blob = new Blob([html], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                a.click();
+                URL.revokeObjectURL(url);
 
-                    if (data.success) {
-                        currentEditingId = productId;
-                        populateEditForm(data.data);
-                        document.getElementById('edit-form-container').style.display = 'block';
-                    }
-                } catch (error) {
-                    console.error('Erreur chargement:', error);
-                    showMessage('❌ Erreur lors du chargement', 'danger');
-                }
+                console.log(`Fiche sauvegardée: ${fullPath}`);
             }
 
             // Remplir le formulaire d'édition
@@ -868,10 +823,15 @@
             }
 
             // Mettre à jour un produit
+            // Remplacer la fonction updateProduct existante
             async function updateProduct(event) {
                 event.preventDefault();
 
-                if (!currentEditingId) return;
+                const productId = document.getElementById('edit-product-select').value;
+                if (!productId) {
+                    showMessage('❌ Aucun produit sélectionné', 'error');
+                    return;
+                }
 
                 const productData = {
                     nom: document.getElementById('edit-nom').value,
@@ -890,7 +850,10 @@
                 }
 
                 try {
-                    const response = await fetch(`${API_URL}/produits/${currentEditingId}`, {
+                    showMessage('🔄 Mise à jour du produit...', 'info');
+
+                    // 1. METTRE À JOUR EN BDD
+                    const response = await fetch(`${API_URL}/produits/${productId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(productData)
@@ -898,16 +861,39 @@
 
                     const data = await response.json();
 
-                    if (data.success) {
-                        showMessage('✅ Produit mis à jour avec succès!', 'success');
-                        loadProducts();
-                        loadStats();
-                    } else {
-                        showMessage('❌ Erreur: ' + data.error, 'danger');
+                    if (!data.success) {
+                        throw new Error(data.message || 'Erreur lors de la mise à jour');
                     }
+
+                    showMessage('✅ Produit mis à jour en base!', 'success');
+
+                    // 2. RÉGÉNÉRER LA FICHE HTML (écrase l'ancienne)
+                    try {
+                        showMessage('🔄 Mise à jour de la fiche HTML...', 'info');
+
+                        const html = await generateFicheHTML(productId);
+
+                        // Créer le nom de fichier
+                        const fileName = productData.nom.toLowerCase()
+                            .replace(/[^a-z0-9]+/g, '-')
+                            .replace(/^-+|-+$/g, '') + '.html';
+
+                        // Écraser l'ancienne fiche dans le dossier approprié
+                        await saveFicheToFolder(html, productData.categorie, fileName);
+
+                        showMessage(`✅ Fiche "${fileName}" mise à jour!`, 'success');
+
+                    } catch (ficheError) {
+                        console.error('Erreur mise à jour fiche:', ficheError);
+                        showMessage('⚠️ Produit mis à jour mais erreur lors de la fiche', 'warning');
+                    }
+
+                    // Recharger la liste
+                    loadProducts();
+
                 } catch (error) {
-                    console.error('Erreur mise à jour:', error);
-                    showMessage('❌ Erreur lors de la mise à jour', 'danger');
+                    console.error('Erreur mise à jour produit:', error);
+                    showMessage('❌ Erreur: ' + error.message, 'error');
                 }
             }
 
@@ -1302,6 +1288,212 @@
                     console.log('🎨 Drag & drop moderne initialisé');
                 }, 500);
             }
+            // AJOUTER CES FONCTIONS MANQUANTES DANS LE HTML
+
+// Fonction pour charger un produit pour édition
+async function loadProductForEdit() {
+    console.log('📝 loadProductForEdit appelée');  // LIGNE DE DEBUG
+    const select = document.getElementById('edit-product-select');
+    const productId = select.value;
+
+    if (!productId) {
+        document.getElementById('edit-form-container').style.display = 'none';
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/produits/${productId}`);
+        const data = await response.json();
+
+        if (data.success) {
+            currentEditingId = productId;
+            populateEditForm(data.data);
+            document.getElementById('edit-form-container').style.display = 'block';
+        } else {
+            showMessage('❌ Erreur lors du chargement du produit', 'danger');
+        }
+    } catch (error) {
+        console.error('Erreur chargement:', error);
+        showMessage('❌ Erreur lors du chargement', 'danger');
+    }
+}
+
+// Fonction pour afficher l'aperçu d'image (version sécurisée)
+function showImagePreview(prefix, imageSrc) {
+    const previewContainer = document.getElementById(`${prefix}-image-preview`);
+    const previewImg = document.getElementById(`${prefix}-preview-img`);
+    
+    if (previewContainer && previewImg) {
+        previewImg.src = imageSrc;
+        previewContainer.style.display = 'block';
+        console.log(`Aperçu image affiché pour ${prefix}`);
+    } else {
+        console.log(`Éléments d'aperçu non trouvés pour ${prefix}`);
+        // Si les éléments n'existent pas, stocker juste les données
+        if (!currentImageData) currentImageData = {};
+        currentImageData[prefix] = imageSrc;
+    }
+}
+
+// Fonction pour supprimer l'image (version sécurisée)
+function removeImage(prefix) {
+    const previewContainer = document.getElementById(`${prefix}-image-preview`);
+    const previewImg = document.getElementById(`${prefix}-preview-img`);
+    
+    // Vérifier que les éléments existent avant de les modifier
+    if (previewContainer) {
+        previewContainer.style.display = 'none';
+    }
+    if (previewImg) {
+        previewImg.src = '';
+    }
+    
+    // Supprimer les données d'image
+    if (currentImageData && currentImageData[prefix]) {
+        delete currentImageData[prefix];
+    }
+    
+    // Si les éléments n'existent pas, ne rien faire (pas d'erreur)
+    console.log(`Nettoyage image pour ${prefix} - éléments trouvés: preview=${!!previewContainer}, img=${!!previewImg}`);
+}
+// Fonction pour remplir le formulaire d'édition
+function populateEditForm(product) {
+    document.getElementById('edit-nom').value = product.nom || '';
+    document.getElementById('edit-categorie').value = product.categorie || '';
+    document.getElementById('edit-prix').value = product.prix || '';
+    document.getElementById('edit-description').value = product.description || '';
+    document.getElementById('edit-lien').value = product.lien || '';
+    document.getElementById('edit-top').value = product.top_du_mois ? 'true' : 'false';
+
+    // Fonctionnalités avancées
+    const fonctionnalites = Array.isArray(product.fonctionnalites_avancees) 
+        ? product.fonctionnalites_avancees.join('\n') 
+        : '';
+    document.getElementById('edit-fonctionnalites').value = fonctionnalites;
+
+    // Image
+    if (product.image_data && product.image_data.startsWith('data:image')) {
+        currentImageData['edit'] = product.image_data;
+        showImagePreview('edit', product.image_data);
+    } else {
+        removeImage('edit');
+    }
+
+    // Mettre à jour les champs de catégorie
+    updateCategoryFields('edit', product.donnees_fiche);
+}
+
+// Fonction pour mettre à jour les champs spécifiques à la catégorie  
+function updateCategoryFields(prefix, existingData = null) {
+    const category = document.getElementById(`${prefix}-categorie`).value;
+    const container = document.getElementById(`${prefix}-category-fields`);
+
+    if (!category) {
+        container.innerHTML = '';
+        return;
+    }
+
+    const fields = getCategorySpecificFields(category);
+
+    container.innerHTML = `
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #667eea;">
+            📋 Données de fiche pour ${category}
+        </h3>
+        ${fields.map((field, index) => `
+            <div class="form-group">
+                <label>${field.label}</label>
+                <textarea 
+                    id="${prefix}-fiche-${index}" 
+                    rows="3"
+                    placeholder="${field.placeholder || ''}"
+                    style="width: 100%; padding: 10px; border: 2px solid #dee2e6; border-radius: 6px; font-family: 'Manrope', sans-serif;"
+                >${existingData && existingData[index] ? existingData[index] : ''}</textarea>
+            </div>
+        `).join('')}
+    `;
+}
+
+// Fonction pour obtenir les champs spécifiques à une catégorie
+function getCategorySpecificFields(category) {
+    const baseFields = [
+        { label: "Description détaillée", placeholder: "Description complète du produit" },
+        { label: "Prix (avec emoji 💰)", placeholder: "Ex: 💰 1299€ - Prix compétitif" },
+        { label: "Spécifications matérielles 🧩", placeholder: "Processeur, RAM, stockage..." }
+    ];
+
+    const categorySpecific = {
+        'DRONE': [
+            { label: "Fonctions vidéo 🎥", placeholder: "Résolution, stabilisation..." }
+        ],
+        'CONSOLE': [
+            { label: "Écran et affichage 🖥️", placeholder: "Résolution, taux..." },
+            { label: "Contrôleurs 🕹️", placeholder: "Manettes, accessoires..." }
+        ],
+        'TABLETTE': [
+            { label: "Écran et affichage 🖥️", placeholder: "Taille, résolution..." },
+            { label: "Accessoires 🖊️", placeholder: "Stylet, clavier..." }
+        ],
+        'SMARTPHONE': [
+            { label: "Appareil photo 📸", placeholder: "Capteurs, modes..." }
+        ],
+        'PC GAMING': [
+            { label: "Fonctions gaming 🎮", placeholder: "GPU, FPS, RGB..." }
+        ],
+        'SERVEUR': [
+            { label: "Performances 🖥️", placeholder: "Coeurs, virtualisation..." }
+        ],
+        'CASQUE AUDIO': [
+            { label: "Fonctions audio 🎧", placeholder: "Drivers, fréquence..." }
+        ],
+        'MONTRE CONNECTE': [
+            { label: "Sport et santé ⌚", placeholder: "Capteurs, autonomie..." }
+        ]
+    };
+
+    const specificFields = categorySpecific[category] || [];
+
+    return [
+        ...baseFields,
+        ...specificFields,
+        { label: "Connectivité 🌐", placeholder: "WiFi, Bluetooth, apps..." },
+        { label: "Expérience utilisateur 🎮", placeholder: "Interface, facilité..." }
+    ];
+}
+
+// Fonction pour collecter les données de catégorie
+function collectCategoryData(prefix) {
+    const category = document.getElementById(`${prefix}-categorie`).value;
+    if (!category) return [];
+
+    const fields = getCategorySpecificFields(category);
+    const data = [];
+    
+    fields.forEach((field, index) => {
+        const element = document.getElementById(`${prefix}-fiche-${index}`);
+        data.push(element ? element.value : '');
+    });
+    
+    return data;
+}
+
+// Variables globales manquantes
+let currentEditingId = null;
+let currentImageData = {};
+
+// Fonction editProduct corrigée
+function editProduct(id) {
+    console.log('🔍 editProduct appelé avec ID:', id);
+    
+    // Aller à l'onglet modifier
+    showTab('modify');
+    
+    // Sélectionner le produit dans la liste
+    const select = document.getElementById('edit-product-select');
+    select.value = id;
+    
+    // Charger les données du produit
+    loadProductForEdit();
+}
         </script>
 </body>
 
@@ -1457,17 +1649,15 @@
         </div>
 
         <div style="margin-top: 30px;">
-            <button type="submit" class="btn btn-success">
-                💾 Créer le Produit
-            </button>
-            <button type="button" class="btn btn-info" onclick="createAndGenerateFiche()">
-                📄 Créer + Générer Fiche HTML
+            <button type="submit" class="btn btn-success" style="font-size: 16px; padding: 12px 24px;">
+                💾 Sauvegarder en BDD + Générer Fiche HTML
             </button>
             <button type="button" class="btn btn-warning" onclick="resetCreateForm()">
                 🔄 Réinitialiser
             </button>
         </div>
-    </form>
+</div>
+</form>
 </div>
 
 <!-- Tab: Modifier un Produit -->
@@ -1575,17 +1765,13 @@
                 <!-- Les champs spécifiques à la catégorie seront ajoutés ici -->
             </div>
 
+            <!-- Dans l'onglet MODIFIER UN PRODUIT -->
             <div style="margin-top: 30px;">
-                <button type="submit" class="btn btn-primary">
-                    💾 Sauvegarder les modifications
+                <button type="submit" class="btn btn-primary" style="font-size: 16px; padding: 12px 24px;">
+                    💾 Sauvegarder en BDD + Mise à jour Fiche HTML
                 </button>
                 <button type="button" class="btn btn-danger" onclick="deleteProduct()">
                     🗑️ Supprimer ce produit
-                </button>
-            </div>
-            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
-                <button type="button" class="btn btn-info" onclick="generateFicheFromEdit()">
-                    📄 Générer la fiche HTML
                 </button>
             </div>
         </form>
