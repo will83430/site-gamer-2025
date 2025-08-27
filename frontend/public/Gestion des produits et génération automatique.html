@@ -106,102 +106,109 @@
         }
 
         /* DRAG & DROP MODERNE - NOUVEAUX STYLES */
-.upload-zone {
-    border: 3px dashed #667eea;
-    border-radius: 20px;
-    padding: 40px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    position: relative;
-    overflow: hidden;
-}
+        .upload-zone {
+            border: 3px dashed #667eea;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
 
-.upload-zone::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: left 0.5s;
-}
+        .upload-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
 
-.upload-zone:hover::before {
-    left: 100%;
-}
+        .upload-zone:hover::before {
+            left: 100%;
+        }
 
-.upload-zone:hover {
-    border-color: #764ba2;
-    background: linear-gradient(135deg, #e3e6ff 0%, #d1d9ff 100%);
-    transform: scale(1.02);
-}
+        .upload-zone:hover {
+            border-color: #764ba2;
+            background: linear-gradient(135deg, #e3e6ff 0%, #d1d9ff 100%);
+            transform: scale(1.02);
+        }
 
-.upload-zone.dragover {
-    border-color: #4c63d2;
-    background: linear-gradient(135deg, #e3e6ff 0%, #d1d9ff 100%);
-    transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(76, 99, 210, 0.3);
-}
+        .upload-zone.dragover {
+            border-color: #4c63d2;
+            background: linear-gradient(135deg, #e3e6ff 0%, #d1d9ff 100%);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(76, 99, 210, 0.3);
+        }
 
-.upload-icon {
-    font-size: 3rem;
-    color: #667eea;
-    margin-bottom: 15px;
-    animation: bounce 2s infinite;
-}
+        .upload-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
 
-.upload-text {
-    font-size: 1.1rem;
-    color: #555;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
+        .upload-text {
+            font-size: 1.1rem;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
 
-.upload-hint {
-    color: #888;
-    font-size: 0.9rem;
-}
+        .upload-hint {
+            color: #888;
+            font-size: 0.9rem;
+        }
 
-.preview-card-modern {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    margin-top: 20px;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    transition: transform 0.3s ease;
-    animation: slideIn 0.5s ease;
-}
+        .preview-card-modern {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: transform 0.3s ease;
+            animation: slideIn 0.5s ease;
+        }
 
-.preview-card-modern:hover {
-    transform: translateY(-5px);
-}
+        .preview-card-modern:hover {
+            transform: translateY(-5px);
+        }
 
-.upload-progress {
-    width: 100%;
-    height: 6px;
-    background: #f0f0f0;
-    border-radius: 3px;
-    overflow: hidden;
-    margin: 10px 0;
-}
+        .upload-progress {
+            width: 100%;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
 
-.progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    width: 0%;
-    transition: width 0.3s;
-}
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s;
+        }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         /* Form Styles */
         .form-group {
@@ -675,13 +682,14 @@
             // Supprimer l'image
             function removeImage(prefix) {
                 delete currentImageData[prefix];
-                document.getElementById(`${prefix}-upload-area`).style.display = 'block';
+                const uploadArea = document.getElementById(`${prefix}-upload-area`);
+                if (uploadArea) uploadArea.style.display = 'block';
                 document.getElementById(`${prefix}-image-preview`).style.display = 'none';
                 document.getElementById(`${prefix}-preview-img`).src = '';
                 document.getElementById(`${prefix}-image-file`).value = '';
             }
 
-            
+
             // Créer un nouveau produit
             async function createProduct(event) {
                 event.preventDefault();
@@ -696,6 +704,69 @@
                     fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
                     donnees_fiche: collectCategoryData('new')
                 };
+                // Créer un produit ET générer sa fiche HTML
+                // Créer un produit ET générer sa fiche HTML
+                async function createAndGenerateFiche() {
+                    const productData = {
+                        nom: document.getElementById('new-nom').value,
+                        categorie: document.getElementById('new-categorie').value,
+                        prix: document.getElementById('new-prix').value,
+                        description: document.getElementById('new-description').value,
+                        lien: document.getElementById('new-lien').value,
+                        top_du_mois: document.getElementById('new-top').value === 'true',
+                        fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
+                        donnees_fiche: collectCategoryData('new')
+                    };
+
+                    if (currentImageData['new']) {
+                        productData.image_data = currentImageData['new'];
+                    }
+
+                    if (!productData.nom || !productData.categorie) {
+                        showMessage('⚠️ Nom et catégorie sont obligatoires', 'warning');
+                        return;
+                    }
+
+                    try {
+                        // 1. Créer le produit
+                        const createResponse = await fetch(`${API_URL}/produits`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(productData)
+                        });
+
+                        const createData = await createResponse.json();
+                        if (!createData.success) {
+                            showMessage('❌ Erreur création: ' + createData.error, 'danger');
+                            return;
+                        }
+
+                        const productId = createData.data.id;
+
+                        // 2. Générer la fiche HTML
+                        const ficheResponse = await fetch(`${API_URL}/generate-fiche/${productId}`, {
+                            method: 'POST'
+                        });
+
+                        const ficheData = await ficheResponse.json();
+                        if (ficheData.success) {
+                            showMessage(`✅ Produit créé ET fiche générée: ${ficheData.path}`, 'success');
+                        } else {
+                            showMessage(`✅ Produit créé mais erreur fiche: ${ficheData.error}`, 'warning');
+                        }
+
+                        // 3. Nettoyer et recharger
+                        resetCreateForm();
+                        loadProducts();
+                        loadStats();
+
+                    } catch (error) {
+                        console.error('Erreur:', error);
+                        showMessage('❌ Erreur lors du processus', 'danger');
+                    }
+                }
+
+
 
                 // Ajouter l'image si présente
                 if (currentImageData['new']) {
@@ -783,13 +854,13 @@
 
                     console.log('🖼️ Image formulaire édition pour', product.nom, ':', imageUrl);
 
-                   const editUploadArea = document.getElementById('edit-upload-area');
-const editImagePreview = document.getElementById('edit-image-preview');  
-const editPreviewImg = document.getElementById('edit-preview-img');
+                    const editUploadArea = document.getElementById('edit-upload-area');
+                    const editImagePreview = document.getElementById('edit-image-preview');
+                    const editPreviewImg = document.getElementById('edit-preview-img');
 
-if (editUploadArea) editUploadArea.style.display = 'none';
-if (editImagePreview) editImagePreview.style.display = 'block';
-if (editPreviewImg) editPreviewImg.src = imageUrl;
+                    if (editUploadArea) editUploadArea.style.display = 'none';
+                    if (editImagePreview) editImagePreview.style.display = 'block';
+                    if (editPreviewImg) editPreviewImg.src = imageUrl;
                     currentImageData['edit'] = imageUrl;
                 }
 
@@ -910,6 +981,28 @@ if (editPreviewImg) editPreviewImg.src = imageUrl;
                     loadProductForEdit();
                 } else {
                     console.error('❌ Element edit-product-select non trouvé');
+                }
+            }
+
+            async function generateFicheFromEdit() {
+                if (!currentEditingId) {
+                    showMessage('Sélectionnez un produit', 'warning');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_URL}/generate-fiche/${currentEditingId}`, {
+                        method: 'POST'
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        showMessage(`Fiche générée: ${data.path}`, 'success');
+                    } else {
+                        showMessage(`Erreur: ${data.error}`, 'danger');
+                    }
+                } catch (error) {
+                    showMessage('Erreur de génération', 'danger');
                 }
             }
 
@@ -1079,77 +1172,77 @@ if (editPreviewImg) editPreviewImg.src = imageUrl;
             }, 30000);
 
             // DRAG & DROP MODERNE
-class ModernImageUpload {
-    constructor(prefix) {
-        this.prefix = prefix;
-        this.uploadZone = document.getElementById(`${prefix}-upload-zone`);
-        this.fileInput = document.getElementById(`${prefix}-image-file`);
-        this.previewContainer = document.getElementById(`${prefix}-preview-container`);
-        this.currentFile = null;
-        
-        this.setupEventListeners();
-    }
+            class ModernImageUpload {
+                constructor(prefix) {
+                    this.prefix = prefix;
+                    this.uploadZone = document.getElementById(`${prefix}-upload-zone`);
+                    this.fileInput = document.getElementById(`${prefix}-image-file`);
+                    this.previewContainer = document.getElementById(`${prefix}-preview-container`);
+                    this.currentFile = null;
 
-    setupEventListeners() {
-          console.log(`🔧 Setup listeners pour ${this.prefix}`);
-    console.log('uploadZone:', this.uploadZone);
-    console.log('fileInput:', this.fileInput);
+                    this.setupEventListeners();
+                }
 
-        if (!this.uploadZone || !this.fileInput) return;
+                setupEventListeners() {
+                    console.log(`🔧 Setup listeners pour ${this.prefix}`);
+                    console.log('uploadZone:', this.uploadZone);
+                    console.log('fileInput:', this.fileInput);
 
-        this.uploadZone.addEventListener('click', () => {
-            console.log(`🖱️ Clic sur zone ${this.prefix}`);
-            this.fileInput.click();
-        });
+                    if (!this.uploadZone || !this.fileInput) return;
 
-        this.fileInput.addEventListener('change', (e) => {
-            console.log(`📁 Changement fichier ${this.prefix}:`, e.target.files);
-            this.handleFiles(e.target.files);
-        });
+                    this.uploadZone.addEventListener('click', () => {
+                        console.log(`🖱️ Clic sur zone ${this.prefix}`);
+                        this.fileInput.click();
+                    });
 
-        this.uploadZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            this.uploadZone.classList.add('dragover');
-        });
+                    this.fileInput.addEventListener('change', (e) => {
+                        console.log(`📁 Changement fichier ${this.prefix}:`, e.target.files);
+                        this.handleFiles(e.target.files);
+                    });
 
-        this.uploadZone.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            this.uploadZone.classList.remove('dragover');
-        });
+                    this.uploadZone.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        this.uploadZone.classList.add('dragover');
+                    });
 
-        this.uploadZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            this.uploadZone.classList.remove('dragover');
-            this.handleFiles(e.dataTransfer.files);
-        });
-    }
+                    this.uploadZone.addEventListener('dragleave', (e) => {
+                        e.preventDefault();
+                        this.uploadZone.classList.remove('dragover');
+                    });
 
-    handleFiles(files) {
-        console.log(`📥 handleFiles appelé pour ${this.prefix} avec:`, files);
-        if (files.length === 0) return;
-        
-        const file = files[0];
-        console.log(`📄 Fichier sélectionné:`, file.name);
-        
-        if (!file.type.startsWith('image/')) {
-            showMessage(`❌ ${file.name} n'est pas une image`, 'danger');
-            return;
-        }
-        
-        if (file.size > 5 * 1024 * 1024) {
-            showMessage(`❌ ${file.name} dépasse 5MB`, 'danger');
-            return;
-        }
+                    this.uploadZone.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        this.uploadZone.classList.remove('dragover');
+                        this.handleFiles(e.dataTransfer.files);
+                    });
+                }
 
-        this.currentFile = file;
-        this.createPreview(file);
-        showMessage(`✅ Image ${file.name} sélectionnée`, 'success');
-    }
+                handleFiles(files) {
+                    console.log(`📥 handleFiles appelé pour ${this.prefix} avec:`, files);
+                    if (files.length === 0) return;
 
-    createPreview(file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            this.previewContainer.innerHTML = `
+                    const file = files[0];
+                    console.log(`📄 Fichier sélectionné:`, file.name);
+
+                    if (!file.type.startsWith('image/')) {
+                        showMessage(`❌ ${file.name} n'est pas une image`, 'danger');
+                        return;
+                    }
+
+                    if (file.size > 5 * 1024 * 1024) {
+                        showMessage(`❌ ${file.name} dépasse 5MB`, 'danger');
+                        return;
+                    }
+
+                    this.currentFile = file;
+                    this.createPreview(file);
+                    showMessage(`✅ Image ${file.name} sélectionnée`, 'success');
+                }
+
+                createPreview(file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.previewContainer.innerHTML = `
                 <div class="preview-card-modern">
                     <img src="${e.target.result}" alt="Aperçu" style="width:100%;height:200px;object-fit:cover;">
                     <div style="padding:15px;text-align:center;">
@@ -1168,47 +1261,47 @@ class ModernImageUpload {
                     </div>
                 </div>
             `;
-            
-            currentImageData[this.prefix] = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
 
-    async simulateUpload() {
-        const progressBar = document.getElementById(`progress-${this.prefix}`);
-        const progressContainer = progressBar.parentElement;
-        
-        progressContainer.style.display = 'block';
+                        currentImageData[this.prefix] = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
 
-        for (let i = 0; i <= 100; i += 20) {
-            progressBar.style.width = i + '%';
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
+                async simulateUpload() {
+                    const progressBar = document.getElementById(`progress-${this.prefix}`);
+                    const progressContainer = progressBar.parentElement;
 
-        showMessage(`✅ Image traitée avec succès !`, 'success');
-        progressContainer.style.display = 'none';
-    }
+                    progressContainer.style.display = 'block';
 
-    removePreview() {
-        this.previewContainer.innerHTML = '';
-        this.fileInput.value = '';
-        this.currentFile = null;
-        delete currentImageData[this.prefix];
-        showMessage(`🗑️ Image supprimée`, 'warning');
-    }
-}
+                    for (let i = 0; i <= 100; i += 20) {
+                        progressBar.style.width = i + '%';
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
 
-// Initialisation des uploaders modernes
-const modernUpload = {};
+                    showMessage(`✅ Image traitée avec succès !`, 'success');
+                    progressContainer.style.display = 'none';
+                }
 
-// Remplacer l'ancien setupDragAndDrop
-function setupDragAndDrop() {
-    setTimeout(() => {
-        modernUpload.new = new ModernImageUpload('new');
-        modernUpload.edit = new ModernImageUpload('edit');
-        console.log('🎨 Drag & drop moderne initialisé');
-    }, 500);
-}
+                removePreview() {
+                    this.previewContainer.innerHTML = '';
+                    this.fileInput.value = '';
+                    this.currentFile = null;
+                    delete currentImageData[this.prefix];
+                    showMessage(`🗑️ Image supprimée`, 'warning');
+                }
+            }
+
+            // Initialisation des uploaders modernes
+            const modernUpload = {};
+
+            // Remplacer l'ancien setupDragAndDrop
+            function setupDragAndDrop() {
+                setTimeout(() => {
+                    modernUpload.new = new ModernImageUpload('new');
+                    modernUpload.edit = new ModernImageUpload('edit');
+                    console.log('🎨 Drag & drop moderne initialisé');
+                }, 500);
+            }
         </script>
 </body>
 
@@ -1323,16 +1416,16 @@ function setupDragAndDrop() {
         </div>
 
         <!-- Zone d'upload d'image MODERNE -->
-<div class="form-group">
-    <label>Image du produit</label>
-    <div class="upload-zone" id="new-upload-zone">
-        <div class="upload-icon">📁</div>
-        <div class="upload-text">Glissez votre image ici</div>
-        <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
-        <input type="file" id="new-image-file" accept="image/*" style="display: none;">
-    </div>
-    <div id="new-preview-container"></div>
-</div>
+        <div class="form-group">
+            <label>Image du produit</label>
+            <div class="upload-zone" id="new-upload-zone">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Glissez votre image ici</div>
+                <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
+                <input type="file" id="new-image-file" accept="image/*" style="display: none;">
+            </div>
+            <div id="new-preview-container"></div>
+        </div>
 
         <div class="form-group">
             <label>Fichier de fiche produit (HTML local)</label>
@@ -1366,6 +1459,9 @@ function setupDragAndDrop() {
         <div style="margin-top: 30px;">
             <button type="submit" class="btn btn-success">
                 💾 Créer le Produit
+            </button>
+            <button type="button" class="btn btn-info" onclick="createAndGenerateFiche()">
+                📄 Créer + Générer Fiche HTML
             </button>
             <button type="button" class="btn btn-warning" onclick="resetCreateForm()">
                 🔄 Réinitialiser
@@ -1438,16 +1534,16 @@ function setupDragAndDrop() {
             </div>
 
             <!-- Zone d'upload d'image MODERNE -->
-<div class="form-group">
-    <label>Image du produit</label>
-    <div class="upload-zone" id="edit-upload-zone">
-        <div class="upload-icon">📁</div>
-        <div class="upload-text">Glissez votre image ici</div>
-        <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
-        <input type="file" id="edit-image-file" accept="image/*" style="display: none;">
-    </div>
-    <div id="edit-preview-container"></div>
-</div>
+            <div class="form-group">
+                <label>Image du produit</label>
+                <div class="upload-zone" id="edit-upload-zone">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Glissez votre image ici</div>
+                    <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
+                    <input type="file" id="edit-image-file" accept="image/*" style="display: none;">
+                </div>
+                <div id="edit-preview-container"></div>
+            </div>
 
             <div class="form-group">
                 <label>Fichier de fiche produit (HTML local)</label>
@@ -1485,6 +1581,11 @@ function setupDragAndDrop() {
                 </button>
                 <button type="button" class="btn btn-danger" onclick="deleteProduct()">
                     🗑️ Supprimer ce produit
+                </button>
+            </div>
+            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                <button type="button" class="btn btn-info" onclick="generateFicheFromEdit()">
+                    📄 Générer la fiche HTML
                 </button>
             </div>
         </form>

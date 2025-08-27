@@ -221,7 +221,7 @@ if (produit.lien) {
     </a>
 ` : `
     <button class="btn btn-details" onclick="afficherDetailsModal(${produit.id})">
-        Voir détails
+        Voir la fiche
     </button>
                 `}
             </div>
