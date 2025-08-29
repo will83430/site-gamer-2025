@@ -465,6 +465,32 @@ app.post('/api/generate-fiche/:id', async (req, res) => {
     res.json({ success: false, error: 'Endpoint à implémenter' });
 });
 
+// Supprimer la fiche HTML locale d'un produit
+app.delete('/api/fiches/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        // Récupérer le chemin du fichier depuis la BDD
+        const { rows } = await pool.query('SELECT lien FROM produits WHERE id = $1', [id]);
+        if (!rows.length) return res.status(404).json({ success: false, error: 'Produit non trouvé' });
+
+        const fichePath = rows[0].lien; // ex: fiches/drone/mon-produit.html
+        if (!fichePath) return res.json({ success: true, message: 'Pas de fiche à supprimer' });
+
+        // Chemin absolu correct :
+        const absolutePath = path.join(__dirname, fichePath);
+
+        // Supprimer le fichier s'il existe
+        if (fs.existsSync(absolutePath)) {
+            fs.unlinkSync(absolutePath);
+            return res.json({ success: true, message: 'Fiche supprimée' });
+        } else {
+            return res.json({ success: true, message: 'Fiche non trouvée' });
+        }
+    } catch (error) {
+        return res.status(500).json({ success: false, error: 'Erreur suppression fiche' });
+    }
+});
+
 // Route de test
 app.get('/api/test', (req, res) => {
   res.json({
