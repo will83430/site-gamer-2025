@@ -360,18 +360,13 @@ app.post('/api/generate-fiche/:id', async (req, res) => {
 
 // Fonction de génération du template HTML
 function generateFicheHTML(product) {
-  let imageUrl = '/assets/images/placeholder.png';
-  if (product.image_data) {
-    imageUrl = product.image_data;
-  } else if (product.image) {
-    imageUrl = product.image.startsWith('/') ? product.image : `/assets/images/${product.image}`;
-  }
-
+  // On met le nom du produit dans le <title> et <h1>
+  // Le JS se charge de tout charger dynamiquement via l'API
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>${product.nom}</title>
+    <title>${product.nom} - Fiche Produit</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -379,31 +374,26 @@ function generateFicheHTML(product) {
 <body>
     <div class="entete">
         <img src="/assets/images/gaming.png" alt="Gaming">
-        <a href="javascript:history.back()">Retour à la vitrine</a>
+        <a href="javascript:history.back()">← Retour</a>
     </div>
 
     <h1>${product.nom}</h1>
-
-    <div id="badge-top-mois">${product.top_du_mois ?
-      '<div style="background: linear-gradient(45deg, #ffd700, #ffed4e); padding: 10px; margin-bottom: 20px; text-align: center; border-radius: 8px; font-weight: bold;">⭐ Ce produit est en vedette ce mois-ci !</div>' : ''
-    }</div>
-
-    <p class="description">${product.description || ''}</p>
+    <div id="badge-top-mois"></div>
+    <p class="description">Chargement de la description...</p>
 
     <div class="gallery">
-        <img src="${imageUrl}" alt="${product.nom}" class="img-centree">
+        <img src="/assets/images/placeholder.png" alt="${product.nom}" class="img-centree" onerror="this.src='/assets/images/placeholder.png'">
     </div>
-     
+    
     <div class="lightbox" id="lightbox">
         <img id="lightbox-img" src="" alt="Zoom">
     </div>
 
     <div id="product-content">
-        ${product.prix ? `<p><strong>💰 Prix :</strong> ${product.prix}</p>` : ''}
-        ${product.donnees_fiche && product.donnees_fiche.length > 0 ?
-      product.donnees_fiche.map(donnee => donnee ? `<p>${donnee}</p>` : '').join('') :
-      '<p style="color: #666; font-style: italic;">ℹ️ Aucune donnée détaillée disponible pour ce produit.</p>'
-    }
+        <p style="text-align: center; color: #666;">
+            <span style="display: inline-block; width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+            Chargement des données...
+        </p>
     </div>
 
     <style>

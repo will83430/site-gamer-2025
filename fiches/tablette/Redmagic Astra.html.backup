@@ -1,165 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Redmagic Astra</title>
-  <link rel="stylesheet" href="../../assets/css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Redmagic Astra - Fiche Produit</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
-  <div class="entete">
-    <img src="../../assets/images/gaming.png" alt="Gaming">
-    <a href="../../top-du-mois.html">Retour à la vitrine</a>
-  </div>
-
-  <h1>Redmagic Astra</h1>
-
-  <div id="badge-top-mois"></div>
-  
-  <p class="description">À REMPLIR - Description rapide du produit.</p>
-  
-  <div class="gallery">
-    <img src="../../assets/images/placeholder.png" alt="Redmagic Astra" class="img-centree">
-  </div>
-  <div class="lightbox" id="lightbox">
-    <img id="lightbox-img" src="" alt="Zoom" />
-  </div>
-
-  <!-- Les paragraphes seront remplis dynamiquement -->
-  <div id="product-content">
-    <!-- Le contenu sera injecté ici par JavaScript -->
-  </div>
-
-  <script>
-    const g = document.querySelector(".gallery img");
-    const l = document.getElementById("lightbox");
-    const z = document.getElementById("lightbox-img");
-    if (g) {
-      g.addEventListener("click", () => { l.style.display = "flex"; z.src = g.src; });
-      l.addEventListener("click", () => l.style.display = "none");
-    }
-
-    const nomProduit = document.querySelector("h1").textContent.trim();
-
-    // Charger et afficher TOUTES les données depuis le JSON
-    fetch("../../data/equipements.json")
-      .then(res => res.json())
-      .then(data => {
-    const produits = Array.isArray(data) ? data : (data.equipements || []);
-    const produit = produits.find(p => p.nom === nomProduit);
-          
-        if (produit) {
-          console.log("Produit trouvé:", produit);
-          
-          // Badge top du mois
-          if (produit.top_du_mois) {
-            document.getElementById("badge-top-mois").innerHTML = `
-              <div style="background:#ffde59;padding:8px;margin-bottom:10px;text-align:center;border-radius:8px;">
-                ⭐ Ce produit est en vedette ce mois-ci !
-              </div>`;
-          }
-          
-          // Mettre à jour la description
-          const description = document.querySelector('.description');
-          if (description && produit.description) {
-            description.textContent = produit.description;
-          }
-          
-          // Mettre à jour l'image
-          if (produit.image) {
-            const img = document.querySelector('.gallery img');
-            if (img) {
-              img.src = '../../' + produit.image;
-              img.alt = produit.nom;
-            }
-          }
-          
-          // IMPORTANT : Créer dynamiquement tous les paragraphes depuis donnees_fiche
-          const contentDiv = document.getElementById('product-content');
-          if (contentDiv && produit.donnees_fiche && produit.donnees_fiche.length > 0) {
-            // Vider le contenu existant
-            contentDiv.innerHTML = '';
-            
-            // Créer un paragraphe pour chaque donnée (sauf la première qui est la description)
-            produit.donnees_fiche.forEach((donnee, index) => {
-              if (index > 0) { // Skip la première ligne (description)
-                const p = document.createElement('p');
-                p.innerHTML = donnee.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
-                contentDiv.appendChild(p);
-              }
-            });
-          } else {
-            // Si pas de données, afficher le template par défaut
-            const contentDiv = document.getElementById('product-content');
-            contentDiv.innerHTML = `
-              <p>💰 Prix : À DÉFINIR €</p>
-              <p>🧩 Spécifications matérielles<br>À REMPLIR</p>
-              <p>🖥️ Écran et affichage<br>
-  À REMPLIR
-</p>
-
-<p>🖊️ Accessoires et interaction<br>
-  À REMPLIR
-</p>
-              <p>🌐 Fonctionnalités connectées<br>À REMPLIR</p>
-              <p>🎮 Expérience utilisateur<br>À REMPLIR</p>
-            `;
-          }
-        } else {
-          console.log("Produit non trouvé dans le JSON");
-          // Afficher le contenu par défaut si le produit n'est pas trouvé
-          const contentDiv = document.getElementById('product-content');
-          contentDiv.innerHTML = `
-            <p>💰 Prix : À DÉFINIR €</p>
-            <p>🧩 Spécifications matérielles<br>À REMPLIR</p>
-            <p>🖥️ Écran et affichage<br>
-  À REMPLIR
-</p>
-
-<p>🖊️ Accessoires et interaction<br>
-  À REMPLIR
-</p>
-            <p>🌐 Fonctionnalités connectées<br>À REMPLIR</p>
-            <p>🎮 Expérience utilisateur<br>À REMPLIR</p>
-          `;
-        }
-      })
-      .catch(err => {
-        console.error("Erreur chargement JSON :", err);
-        // En cas d'erreur, afficher le contenu par défaut
-        const contentDiv = document.getElementById('product-content');
-        contentDiv.innerHTML = `
-          <p>💰 Prix : À DÉFINIR €</p>
-          <p>🧩 Spécifications matérielles<br>À REMPLIR</p>
-          <p>🖥️ Écran et affichage<br>
-  À REMPLIR
-</p>
-
-<p>🖊️ Accessoires et interaction<br>
-  À REMPLIR
-</p>
-          <p>🌐 Fonctionnalités connectées<br>À REMPLIR</p>
-          <p>🎮 Expérience utilisateur<br>À REMPLIR</p>
-        `;
-      });
-  </script>
-  
-  <footer class="footer">
-    <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
-    <div class="footer-links">
-      <div class="footer-item">
-        <img src="../../assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
-        <a href="../../index.html">Accueil</a>
-      </div>
-      <div class="footer-item">
-        <img src="../../assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
-        <a href="equipements.html">Équipements</a>
-      </div>
+    <div class="entete">
+        <img src="../../assets/images/gaming.png" alt="Gaming">
+        <a href="javascript:history.back()">← Retour</a>
     </div>
-  </footer>
 
+    <h1>Redmagic Astra</h1>
+    
+    <div id="badge-top-mois"></div>
+
+    <p class="description">Chargement de la description...</p>
+
+    <div class="gallery">
+        <img src="/assets/images/Redmagic Astra.png" alt="Redmagic Astra" class="img-centree" onerror="this.src='../../assets/images/placeholder.png'">
+    </div>
+    
+    <div class="lightbox" id="lightbox">
+        <img id="lightbox-img" src="" alt="Zoom">
+    </div>
+
+    <div id="product-content">
+        <p style="text-align: center; color: #666;">
+            <span style="display: inline-block; width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+            Chargement des données...
+        </p>
+    </div>
+
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
+    <footer class="footer">
+        <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
+        <div class="footer-links">
+            <div class="footer-item">
+                <img src="../../assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+                <a href="../../index.html">Accueil</a>
+            </div>
+            <div class="footer-item">
+                <img src="../../assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+                <a href="../../pages/fiches.html">Vitrine</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/fiche-produit.js"></script>
+    
 </body>
-<script src="../../assets/js/utils.js"></script>
 </html>

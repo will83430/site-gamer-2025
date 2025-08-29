@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Redmagic Astra</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Redmagic Astra - Fiche Produit</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    <div class="entete">
+        <img src="../../assets/images/gaming.png" alt="Gaming">
+        <a href="javascript:history.back()">← Retour</a>
+    </div>
 
-  <div class="entete">
-    <img src="/assets/images/gaming.png" alt="Gaming">
-<a href="javascript:history.back()">Retour à la vitrine</a>
-  </div>
+    <h1>Redmagic Astra</h1>
+    
+    <div id="badge-top-mois"></div>
 
-  <h1>Redmagic Astra</h1>
+    <p class="description">Chargement de la description...</p>
 
-  <div id="badge-top-mois"></div>
-  
-  <p class="description">À REMPLIR - Description rapide du produit.</p>
-  
-  <div class="gallery">
-    <img src="/assets/images/placeholder.png" alt="Redmagic Astra" class="img-centree">
-  </div>
-  <div class="lightbox" id="lightbox">
+    <div class="gallery">
+        <img src="../../assets/images/Redmagic Astra.png" alt="Redmagic Astra" class="img-centree" onerror="this.src='../../assets/images/placeholder.png'">
+    </div>
+    
+    <div class="lightbox" id="lightbox">
         <img id="lightbox-img" src="" alt="Zoom">
     </div>
 
-    <!-- Le contenu sera rempli automatiquement depuis PostgreSQL -->
     <div id="product-content">
         <p style="text-align: center; color: #666;">
-            <span class="spinner" style="display: inline-block; width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+            <span style="display: inline-block; width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></span>
             Chargement des données...
         </p>
     </div>
@@ -42,114 +41,21 @@
     </style>
 
     <footer class="footer">
-        <img src="/assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
+        <img src="../../assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
         <div class="footer-links">
             <div class="footer-item">
-                <img src="/assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
-                <a href="/index.html">Accueil</a>
+                <img src="../../assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+                <a href="../../index.html">Accueil</a>
             </div>
             <div class="footer-item">
-                <img src="/assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
-                <a href="/public/top-du-mois.html">Vitrine</a>
+                <img src="../../assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+                <a href="../../pages/fiches.html">Vitrine</a>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts avec les bons chemins -->
-    <script src="/assets/js/utils.js"></script>
-    <script src="/assets/js/fiche-produit.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/fiche-produit.js"></script>
     
-    <!-- Script de debug pour voir ce qui se passe -->
-    <script>
-        console.log('📄 Page chargée');
-        
-        // Vérifier si les scripts sont chargés
-        setTimeout(() => {
-            if (typeof ficheProduit === 'undefined') {
-                console.error('❌ fiche-produit.js n\'est pas chargé !');
-                console.log('Tentative de chargement manuel...');
-                
-                // Charger manuellement les données si le script ne fonctionne pas
-                fetch('http://localhost:3000/api/produits')
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            const produit = data.data.find(p => p.nom === 'Meta Quest 3');
-                            if (produit) {
-                                console.log('✅ Produit trouvé:', produit);
-                                afficherProduit(produit);
-                            } else {
-                                console.warn('Produit non trouvé dans la BDD');
-                                document.getElementById('product-content').innerHTML = `
-                                    <p>❌ Produit "Meta Quest 3" non trouvé dans la base de données.</p>
-                                    <p>Vérifiez que le nom est exactement le même dans PostgreSQL.</p>
-                                `;
-                            }
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Erreur API:', err);
-                        document.getElementById('product-content').innerHTML = `
-                            <p>❌ Erreur de connexion à l'API.</p>
-                            <p>Vérifiez que le serveur est lancé sur http://localhost:3000</p>
-                        `;
-                    });
-            } else {
-                console.log('✅ fiche-produit.js est chargé');
-            }
-        }, 1000);
-        
-        // Fonction pour afficher le produit
-        function afficherProduit(produit) {
-            const contentDiv = document.getElementById('product-content');
-            
-            // Badge top du mois
-            if (produit.top_du_mois) {
-                document.getElementById('badge-top-mois').innerHTML = `
-                    <div style="background: linear-gradient(45deg, #ffd700, #ffed4e); padding: 10px; margin-bottom: 20px; text-align: center; border-radius: 8px; font-weight: bold;">
-                        ⭐ Ce produit est en vedette ce mois-ci !
-                    </div>
-                `;
-            }
-            
-            // Description
-            if (produit.description) {
-                document.querySelector('.description').textContent = produit.description;
-            }
-            
-            // Image
-            if (produit.image || produit.image_data) {
-                const img = document.querySelector('.gallery img');
-                img.src = produit.image_data || produit.image;
-            }
-            
-            // Contenu principal
-            let html = '';
-            
-            // Prix
-            if (produit.prix) {
-                html += `<p><strong>💰 Prix :</strong> ${produit.prix}</p>`;
-            }
-            
-            // Données de fiche
-            if (produit.donnees_fiche && produit.donnees_fiche.length > 0) {
-                produit.donnees_fiche.forEach((donnee, index) => {
-                    if (donnee) {
-                        html += `<p>${donnee}</p>`;
-                    }
-                });
-            }
-            
-            if (html) {
-                contentDiv.innerHTML = html;
-            } else {
-                contentDiv.innerHTML = `
-                    <p style="color: #666; font-style: italic;">
-                        ℹ️ Aucune donnée détaillée disponible pour ce produit.
-                    </p>
-                `;
-            }
-        }
-    </script>
 </body>
 </html>

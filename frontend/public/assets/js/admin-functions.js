@@ -213,3 +213,4 @@ async function saveFicheToFolder(html, categorie, fileName) {
     
     console.log(`Fiche sauvegardée: ${fullPath}`);
 }
+

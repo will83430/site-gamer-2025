@@ -1045,57 +1045,75 @@
 
                 const fields = getCategorySpecificFields(category);
 
+                // 1. Récupère les valeurs déjà saisies AVANT de régénérer le HTML
+                let previousValues = [];
+                for (let i = 0; i < fields.length; i++) {
+                    const textarea = document.getElementById(`${prefix}-fiche-${i}`);
+                    if (textarea) {
+                        previousValues[i] = textarea.value;
+                    }
+                }
+
                 container.innerHTML = `
-                <h3 style="margin-top: 30px; margin-bottom: 20px; color: #667eea;">
-                    📋 Données de fiche pour ${category}
-                </h3>
-                ${fields.map((field, index) => `
-                    <div class="form-group">
-                        <label>${field.label}</label>
-                        <textarea 
-                            id="${prefix}-fiche-${index}" 
-                            rows="3"
-                            placeholder="${field.placeholder || ''}"
-                        >${existingData && existingData[index] ? existingData[index] : ''}</textarea>
-                    </div>
-                `).join('')}
+        <h3 style="margin-top: 30px; margin-bottom: 20px; color: #667eea;">
+            📋 Données de fiche pour ${category}
+        </h3>
+        ${fields.map((field, index) => {
+            // 2. Priorité : existingData (édition) > texte déjà saisi > vide
+            let value = '';
+            if (existingData && existingData[index]) {
+                value = existingData[index].split('\n').slice(1).join('\n'); // Ne garde que le texte, pas le label
+            } else if (previousValues[index]) {
+                value = previousValues[index];
+            }
+            return `
+                <div class="form-group">
+                    <label>${field.emoji} ${field.label}</label>
+                    <textarea 
+                        id="${prefix}-fiche-${index}" 
+                        rows="3"
+                        placeholder="${field.placeholder || ''}"
+                    >${value}</textarea>
+                </div>
             `;
+        }).join('')}
+    `;
             }
 
             // Obtenir les champs spécifiques à une catégorie
             function getCategorySpecificFields(category) {
                 const baseFields = [
-                    { label: "Description détaillée", placeholder: "Description complète du produit" },
-                    { label: "Prix (avec emoji 💰)", placeholder: "Ex: 💰 1299€ - Prix compétitif" },
-                    { label: "Spécifications matérielles 🧩", placeholder: "Processeur, RAM, stockage..." }
+                    { emoji: "📝", label: "Description détaillée", placeholder: "Description complète du produit" },
+                    { emoji: "💰", label: "Prix", placeholder: "Ex: 1299€ - Prix compétitif" },
+                    { emoji: "🧩", label: "Spécifications matérielles", placeholder: "Processeur, RAM, stockage..." }
                 ];
 
                 const categorySpecific = {
                     'DRONE': [
-                        { label: "Fonctions vidéo 🎥", placeholder: "Résolution, stabilisation..." }
+                        { emoji: "🎥", label: "Fonctions vidéo", placeholder: "Résolution, stabilisation..." }
                     ],
                     'CONSOLE': [
-                        { label: "Écran et affichage 🖥️", placeholder: "Résolution, taux..." },
-                        { label: "Contrôleurs 🕹️", placeholder: "Manettes, accessoires..." }
+                        { emoji: "🖥️", label: "Écran et affichage", placeholder: "Résolution, taux..." },
+                        { emoji: "🕹️", label: "Contrôleurs", placeholder: "Manettes, accessoires..." }
                     ],
                     'TABLETTE': [
-                        { label: "Écran et affichage 🖥️", placeholder: "Taille, résolution..." },
-                        { label: "Accessoires 🖊️", placeholder: "Stylet, clavier..." }
+                        { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution..." },
+                        { emoji: "🖊️", label: "Accessoires", placeholder: "Stylet, clavier..." }
                     ],
                     'SMARTPHONE': [
-                        { label: "Appareil photo 📸", placeholder: "Capteurs, modes..." }
+                        { emoji: "📸", label: "Appareil photo", placeholder: "Capteurs, modes..." }
                     ],
                     'PC GAMING': [
-                        { label: "Fonctions gaming 🎮", placeholder: "GPU, FPS, RGB..." }
+                        { emoji: "🎮", label: "Fonctions gaming", placeholder: "GPU, FPS, RGB..." }
                     ],
                     'SERVEUR': [
-                        { label: "Performances 🖥️", placeholder: "Coeurs, virtualisation..." }
+                        { emoji: "🖥️", label: "Performances", placeholder: "Coeurs, virtualisation..." }
                     ],
                     'CASQUE AUDIO': [
-                        { label: "Fonctions audio 🎧", placeholder: "Drivers, fréquence..." }
+                        { emoji: "🎧", label: "Fonctions audio", placeholder: "Drivers, fréquence..." }
                     ],
                     'MONTRE CONNECTE': [
-                        { label: "Sport et santé ⌚", placeholder: "Capteurs, autonomie..." }
+                        { emoji: "⌚", label: "Sport et santé", placeholder: "Capteurs, autonomie..." }
                     ]
                 };
 
@@ -1104,23 +1122,23 @@
                 return [
                     ...baseFields,
                     ...specificFields,
-                    { label: "Connectivité 🌐", placeholder: "WiFi, Bluetooth, apps..." },
-                    { label: "Expérience utilisateur 🎮", placeholder: "Interface, facilité..." }
+                    { emoji: "🌐", label: "Connectivité", placeholder: "WiFi, Bluetooth, apps..." },
+                    { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, facilité..." }
                 ];
             }
 
-            // Collecter les données de catégorie
+            // Collecter les données de catégorie AVEC LABELS ET ICÔNES
             function collectCategoryData(prefix) {
                 const data = [];
-                let index = 0;
+                const category = document.getElementById(`${prefix}-categorie`).value;
+                const fields = getCategorySpecificFields(category);
 
-                while (true) {
+                for (let index = 0; index < fields.length; index++) {
                     const field = document.getElementById(`${prefix}-fiche-${index}`);
-                    if (!field) break;
-                    data.push(field.value);
-                    index++;
+                    if (!field) continue;
+                    // Format : "📝 Description détaillée\nLe contenu saisi"
+                    data.push(`${fields[index].emoji} ${fields[index].label}\n${field.value.trim()}`);
                 }
-
                 return data;
             }
 
@@ -1302,10 +1320,105 @@
                     console.log('🎨 Drag & drop moderne initialisé');
                 }, 500);
             }
+
+            /**
+ * Sauvegarde un produit (création ou modification) et génère la fiche HTML.
+ * @param {'new'|'edit'} mode - 'new' pour création, 'edit' pour modification
+ */
+            async function saveProductAndGenerateFiche(mode) {
+                const isEdit = mode === 'edit';
+                const prefix = isEdit ? 'edit' : 'new';
+                const id = isEdit ? currentEditingId : null;
+
+                // Récupération des données du formulaire
+                const productData = {
+                    nom: document.getElementById(`${prefix}-nom`).value,
+                    categorie: document.getElementById(`${prefix}-categorie`).value,
+                    prix: document.getElementById(`${prefix}-prix`).value,
+                    description: document.getElementById(`${prefix}-description`).value,
+                    lien: document.getElementById(`${prefix}-lien`).value,
+                    top_du_mois: document.getElementById(`${prefix}-top`).value === 'true',
+                    fonctionnalites_avancees: document.getElementById(`${prefix}-fonctionnalites`).value.split('\n').filter(f => f.trim()),
+                    donnees_fiche: collectCategoryData(prefix)
+                };
+                if (currentImageData[prefix]) {
+                    productData.image_data = currentImageData[prefix];
+                }
+
+                // Validation
+                if (!productData.nom || !productData.categorie) {
+                    showMessage('⚠️ Nom et catégorie sont obligatoires', 'warning');
+                    return;
+                }
+
+                try {
+                    // 1. Création ou modification du produit
+                    let response, data;
+                    if (isEdit) {
+                        response = await fetch(`${API_URL}/produits/${id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(productData)
+                        });
+                    } else {
+                        response = await fetch(`${API_URL}/produits`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(productData)
+                        });
+                    }
+                    data = await response.json();
+
+                    if (!data.success) {
+                        showMessage('❌ Erreur: ' + data.error, 'danger');
+                        return;
+                    }
+
+                    const productId = isEdit ? id : data.data.id;
+
+                    // 2. Générer la fiche HTML
+                    const ficheResponse = await fetch(`${API_URL}/generate-fiche/${productId}`, {
+                        method: 'POST'
+                    });
+                    const ficheData = await ficheResponse.json();
+
+                    if (ficheData.success) {
+                        showMessage(`✅ Produit ${isEdit ? 'modifié' : 'créé'} et fiche générée: ${ficheData.path}`, 'success');
+                    } else {
+                        showMessage(`✅ Produit ${isEdit ? 'modifié' : 'créé'} mais erreur fiche: ${ficheData.error}`, 'warning');
+                    }
+
+                    // 3. Nettoyer et recharger
+                    if (!isEdit) resetCreateForm();
+                    loadProducts();
+                    loadStats();
+
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    showMessage('❌ Erreur lors du processus', 'danger');
+                }
+            }
+
+            function autoFillFichePath(prefix) {
+                const nom = document.getElementById(`${prefix}-nom`).value.trim();
+                const categorie = document.getElementById(`${prefix}-categorie`).value.trim();
+                if (!nom || !categorie) return;
+
+                // Formatage du chemin
+                const catSlug = categorie.toLowerCase().replace(/\s+/g, '-');
+                const nomSlug = nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "") // retire accents
+                    .replace(/[^a-zA-Z0-9]/g, '-') // remplace tout sauf lettres/chiffres par tiret
+                    .replace(/-+/g, '-') // évite les doubles tirets
+                    .replace(/^-|-$/g, '') // pas de tiret au début/fin
+                    .toLowerCase();
+
+                const path = `fiches/${catSlug}/${nomSlug}.html`;
+                document.getElementById(`${prefix}-lien`).value = path;
+            }
         </script>
 </body>
 
-</html>>
+</html>
 
 <!-- Stats -->
 <div class="stats-grid">
@@ -1359,10 +1472,9 @@
     </div>
 </div>
 
-<!-- Tab: Créer un Produit -->
+<!-- Onglet CRÉER UN PRODUIT -->
 <div id="create-tab" class="tab-content">
     <h2 style="margin-bottom: 20px;">➕ Créer un Nouveau Produit</h2>
-
     <form id="create-form" onsubmit="createProduct(event)">
         <div class="form-row">
             <div class="form-group">
@@ -1460,7 +1572,7 @@
             <button type="submit" class="btn btn-success">
                 💾 Créer le Produit
             </button>
-            <button type="button" class="btn btn-info" onclick="createAndGenerateFiche()">
+            <button type="button" class="btn btn-info" onclick="saveProductAndGenerateFiche('new')">
                 📄 Créer + Générer Fiche HTML
             </button>
             <button type="button" class="btn btn-warning" onclick="resetCreateForm()">
@@ -1470,28 +1582,26 @@
     </form>
 </div>
 
-<!-- Tab: Modifier un Produit -->
+<!-- Onglet MODIFIER UN PRODUIT -->
 <div id="modify-tab" class="tab-content">
     <h2 style="margin-bottom: 20px;">✏️ Modifier un Produit</h2>
-
     <div class="form-group">
         <label>Sélectionner un produit</label>
         <select id="edit-product-select" onchange="loadProductForEdit()">
             <option value="">-- Choisir un produit --</option>
         </select>
     </div>
-
     <div id="edit-form-container" style="display: none;">
         <form id="edit-form" onsubmit="updateProduct(event)">
             <div class="form-row">
                 <div class="form-group">
                     <label>Nom du produit *</label>
-                    <input type="text" id="edit-nom" required>
+                    <input type="text" id="edit-nom" required oninput="autoFillFichePath('edit')">
                 </div>
 
                 <div class="form-group">
                     <label>Catégorie *</label>
-                    <select id="edit-categorie" required onchange="updateCategoryFields('edit')">
+                    <select id="edit-categorie" required onchange="updateCategoryFields('edit');autoFillFichePath('edit')">
                         <option value="">-- Choisir --</option>
                         <option value="DRONE">DRONE</option>
                         <option value="CONSOLE">CONSOLE</option>
@@ -1582,13 +1692,11 @@
                 <button type="button" class="btn btn-danger" onclick="deleteProduct()">
                     🗑️ Supprimer ce produit
                 </button>
-            </div>
-            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
-                <button type="button" class="btn btn-info" onclick="generateFicheFromEdit()">
-                    📄 Générer la fiche HTML
+                <button type="button" class="btn btn-info" onclick="saveProductAndGenerateFiche('edit')" style="margin-left:10px;">
+                    📄 Sauvegarder + Générer Fiche HTML
                 </button>
             </div>
         </form>
     </div>
 </div>
-</div
+</div>
