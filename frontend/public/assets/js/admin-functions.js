@@ -173,14 +173,26 @@ function generateSectionsByCategory(categorie, donneesF = []) {
     let htmlSections = '';
     
     sections.forEach(section => {
-        if (donneesF[section.index] && donneesF[section.index].trim()) {
+    if (donneesF[section.index] && 
+        donneesF[section.index].trim() !== '' && 
+        donneesF[section.index].trim().length > 0) {
+        
+        // Extraire juste le contenu (enlever "📝 Titre\n")
+        let contenu = donneesF[section.index];
+        if (contenu.includes('\n')) {
+            contenu = contenu.split('\n').slice(1).join('\n'); // Vire la première ligne
+        }
+        
+        // Ne rien afficher si le contenu réel est vide
+        if (contenu.trim().length > 0) {
             htmlSections += `
         <div class="section-fiche" style="margin: 20px 0; padding: 15px; border-left: 4px solid #007bff;">
             <h3 style="color: #007bff; margin-bottom: 10px;">${section.titre}</h3>
-            <p style="line-height: 1.6;">${donneesF[section.index].replace(/\n/g, '<br>')}</p>
+            <p style="line-height: 1.6;">${contenu.replace(/\n/g, '<br>')}</p>
         </div>`;
         }
-    });
+    }
+});
 
     return htmlSections || '<p>Informations détaillées à venir...</p>';
 }

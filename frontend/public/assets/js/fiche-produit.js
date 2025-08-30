@@ -77,18 +77,43 @@ function afficherDonneesProduit(produit) {
     if (contentDiv && produit.donnees_fiche && produit.donnees_fiche.length > 0) {
         let html = '';
         
-        // Sections selon la catégorie
-        const sections = getSectionsParCategorie(produit.categorie);
+        // Parcourir directement donnees_fiche sans sections
+produit.donnees_fiche.forEach((contenu, index) => {
+    console.log(`[${index}] "${contenu}" - longueur: ${contenu.length}`);
+    
+    if (contenu && contenu.trim().length > 0) {
+        let titre, texte;
         
-        sections.forEach(section => {
-            if (produit.donnees_fiche[section.index] && produit.donnees_fiche[section.index].trim()) {
-                html += `
-                    <div style="margin: 15px 0;">
-                        <p>${produit.donnees_fiche[section.index].replace(/\\n/g, '<br>').replace(/\n/g, '<br>')}</p>
-                    </div>
-                `;
-            }
-        });
+        // Gérer les \n échappés ET les vrais \n
+        const contenuNettoye = contenu.replace(/\\n/g, '\n');
+        
+        if (contenuNettoye.includes('\n')) {
+            // Format avec emoji: "🧩 Titre\nContenu"
+            const parties = contenuNettoye.split('\n');
+            titre = parties[0];
+            texte = parties.slice(1).join('\n').trim();
+        } else {
+            // Format texte simple: "Description sans emoji"
+            titre = "📝 Description";  // Titre par défaut
+            texte = contenu.trim();
+        }
+        
+        console.log(`  → Titre: "${titre}"`);
+        console.log(`  → Texte: "${texte}" (${texte.length} chars)`);
+        
+        if (texte.length > 0) {
+            console.log(`  ✅ AFFICHÉ`);
+            html += `
+                <div style="margin: 20px 0; text-align: center;">
+                    <h3 style="color: white; margin-bottom: 10px; font-weight: bold;">${titre}</h3>
+                    <p>${texte.replace(/\n/g, '<br>')}</p>
+                </div>
+            `;
+        } else {
+            console.log(`  ❌ IGNORÉ (pas de contenu)`);
+        }
+    }
+});
         
         contentDiv.innerHTML = html || '<p>Informations détaillées à venir...</p>';
     }

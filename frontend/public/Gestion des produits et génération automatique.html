@@ -458,6 +458,8 @@
                 loadStats();
                 loadProducts();
                 setupDragAndDrop();
+                // Ajoute cette ligne pour générer les champs si une catégorie est déjà sélectionnée
+                updateCategoryFields('new');
             });
 
             // Gérer la sélection de fichier HTML
@@ -1061,13 +1063,21 @@
             📋 Données de fiche pour ${category}
         </h3>
         ${fields.map((field, index) => {
-            // 2. Priorité : existingData (édition) > texte déjà saisi > vide
-            let value = '';
-            if (existingData && existingData[index]) {
-                value = existingData[index].split('\n').slice(1).join('\n'); // Ne garde que le texte, pas le label
-            } else if (previousValues[index]) {
-                value = previousValues[index];
-            }
+    // Priorité : existingData (édition) > texte déjà saisi > vide
+    let value = '';
+    if (existingData && existingData[index]) {
+        const contenu = existingData[index];
+        // Gérer les \n échappés
+        const contenuNettoye = contenu.replace(/\\n/g, '\n');
+        
+        if (contenuNettoye.includes('\n') && /^[^\w\s]/.test(contenuNettoye)) {
+            value = contenuNettoye.split('\n').slice(1).join('\n');
+        } else {
+            value = contenu;
+        }
+    } else if (previousValues[index]) {
+        value = previousValues[index];
+    }
             return `
                 <div class="form-group">
                     <label>${field.emoji} ${field.label}</label>
@@ -1409,6 +1419,21 @@
                 const path = `fiches/${catSlug}/${nomSlug}.html`;
                 document.getElementById(`${prefix}-lien`).value = path;
             }
+
+            // ...dans generateFicheHTML(product)...
+const sections = (product.donnees_fiche || [])
+    .filter(section => {
+        // Ne garde que les sections non vides (après le label)
+        const parts = section.split('\n');
+        return parts[1] && parts[1].trim() !== '';
+    })
+    .map(section => {
+        const parts = section.split('\n');
+        return `<section class="fiche-section">
+            <h3>${parts[0]}</h3>
+            <p>${parts[1]}</p>
+        </section>`;
+    }).join('\n');
         </script>
 </body>
 

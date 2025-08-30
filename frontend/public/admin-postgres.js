@@ -282,10 +282,16 @@ class AdminManager {
 
         // 2. Formate chaque champ avec icône + titre + valeur
         data.donnees_fiche = sections.map((section, index) => {
-            const field = document.getElementById(`edit-fiche-${index}`);
-            const value = field ? field.value.trim() : '';
-            return `${section.emoji} ${section.titre}\n${value}`;
-        });
+    const field = document.getElementById(`edit-fiche-${index}`);
+    const value = field ? field.value.trim() : '';
+    
+    // Si vide, on retourne une chaîne vide au lieu de l'icône+titre
+    if (value.length === 0) {
+        return '';
+    }
+    
+    return `${section.emoji} ${section.titre}\n${value}`;
+});
 
         // DEBUG : Affiche ce qui va partir à l’API
         console.log('📝 donnees_fiche à envoyer:', data.donnees_fiche);

@@ -129,65 +129,147 @@ class AdminManager {
     }
 
     // ⭐ GÉNÉRER LES CHAMPS SELON LA CATÉGORIE
-    generateCategoryFields(product) {
-        // Utiliser le vrai conteneur : edit-category-fields
-        const container = document.getElementById('edit-category-fields');
-        if (!container) {
-            console.error('❌ Conteneur edit-category-fields non trouvé !');
-            return;
-        }
-
-        container.innerHTML = '<h3>📝 Données de fiche par catégorie</h3>';
-
-        // Définir les champs selon la catégorie
-        const fieldsMap = {
-            'CONSOLE': [
-                { label: "📝 Description détaillée", id: "edit-fiche-0" },
-                { label: "💰 Prix", id: "edit-fiche-1" },
-                { label: "🧩 Spécifications", id: "edit-fiche-2" },
-                { label: "🖥️ Écran et affichage", id: "edit-fiche-3" },
-                { label: "🕹️ Contrôleurs", id: "edit-fiche-4" },
-                { label: "🌐 Connectivité", id: "edit-fiche-5" },
-                { label: "🎮 Expérience utilisateur", id: "edit-fiche-6" }
-            ],
-            'DRONE': [
-                { label: "📝 Description détaillée", id: "edit-fiche-0" },
-                { label: "💰 Prix", id: "edit-fiche-1" },
-                { label: "🧩 Spécifications", id: "edit-fiche-2" },
-                { label: "🎥 Fonctions vidéo", id: "edit-fiche-3" },
-                { label: "🌐 Connectivité", id: "edit-fiche-4" },
-                { label: "🎮 Expérience utilisateur", id: "edit-fiche-5" }
-            ],
-            'TABLETTE': [
-                { label: "📝 Description détaillée", id: "edit-fiche-0" },
-                { label: "💰 Prix", id: "edit-fiche-1" },
-                { label: "🧩 Spécifications", id: "edit-fiche-2" },
-                { label: "🖥️ Écran et affichage", id: "edit-fiche-3" },
-                { label: "🖊️ Accessoires", id: "edit-fiche-4" },
-                { label: "🌐 Connectivité", id: "edit-fiche-5" },
-                { label: "🎮 Expérience utilisateur", id: "edit-fiche-6" }
-            ]
-        };
-
-        const fields = fieldsMap[product.categorie] || fieldsMap['CONSOLE'];
-        
-        // Créer les champs dynamiquement
-        fields.forEach((field, index) => {
-            const value = product.donnees_fiche && product.donnees_fiche[index] 
-                ? product.donnees_fiche[index] 
-                : '';
-
-            const div = document.createElement('div');
-            div.className = 'form-group';
-            div.innerHTML = `
-                <label>${field.label}</label>
-                <textarea id="${field.id}" rows="3" style="width: 100%; padding: 10px; border: 2px solid #dee2e6; border-radius: 6px;">${value}</textarea>
-            `;
-            container.appendChild(div);
-        });
-
-        console.log(`📝 ${fields.length} champs générés pour ${product.categorie}`);
+generateCategoryFields(product) {
+    const container = document.getElementById('edit-category-fields');
+    if (!container) {
+        console.error('❌ Conteneur edit-category-fields non trouvé !');
+        return;
     }
+
+    const fieldsMap = {
+   'CONSOLE': [
+       { emoji: "📝", titre: "Description détaillée" },
+       { emoji: "💰", titre: "Prix" },
+       { emoji: "🧩", titre: "Spécifications" },
+       { emoji: "🖥️", titre: "Écran et affichage" },
+       { emoji: "🕹️", titre: "Contrôleurs" },
+       { emoji: "🌐", titre: "Connectivité" },
+       { emoji: "🎮", titre: "Expérience utilisateur" }
+   ],
+   'DRONE': [
+       { emoji: "📝", titre: "Description détaillée" },
+       { emoji: "💰", titre: "Prix" },
+       { emoji: "🧩", titre: "Spécifications" },
+       { emoji: "🎥", titre: "Fonctions vidéo" },
+       { emoji: "🌐", titre: "Connectivité" },
+       { emoji: "🎮", titre: "Expérience utilisateur" }
+   ],
+   'TABLETTE': [
+       { emoji: "📝", titre: "Description détaillée" },
+       { emoji: "💰", titre: "Prix" },
+       { emoji: "🧩", titre: "Spécifications" },
+       { emoji: "🖥️", titre: "Écran et affichage" },
+       { emoji: "🖊️", titre: "Accessoires" },
+       { emoji: "🌐", titre: "Connectivité" },
+       { emoji: "🎮", titre: "Expérience utilisateur" }
+   ],
+   'SMARTPHONE': [
+       { emoji: "📝", titre: "Description détaillée" },
+       { emoji: "💰", titre: "Prix" },
+       { emoji: "🧩", titre: "Spécifications" },
+       { emoji: "📸", titre: "Appareil photo" },
+       { emoji: "🌐", titre: "Connectivité" },
+       { emoji: "🎮", titre: "Expérience utilisateur" }
+   ],
+   'PC GAMING': [
+       { emoji: "📝", titre: "Description détaillée" },
+       { emoji: "💰", titre: "Prix" },
+       { emoji: "🧩", titre: "Spécifications" },
+       { emoji: "🎮", titre: "Fonctions gaming" },
+       { emoji: "🌐", titre: "Connectivité" },
+       { emoji: "🎮", titre: "Expérience utilisateur" }
+   ],
+   'SERVEUR': [
+       { emoji: "📝", titre: "Description détaillée" },
+       { emoji: "💰", titre: "Prix" },
+       { emoji: "🧩", titre: "Spécifications" },
+       { emoji: "🖥️", titre: "Performances" },
+       { emoji: "🌐", titre: "Connectivité" },
+       { emoji: "🎮", titre: "Expérience utilisateur" }
+   ],
+   'CASQUE AUDIO': [
+       { emoji: "📝", titre: "Description détaillée" },
+       { emoji: "💰", titre: "Prix" },
+       { emoji: "🧩", titre: "Spécifications" },
+       { emoji: "🎧", titre: "Fonctions audio" },
+       { emoji: "🌐", titre: "Connectivité" },
+       { emoji: "🎮", titre: "Expérience utilisateur" }
+   ],
+   'MONTRE CONNECTE': [
+       { emoji: "📝", titre: "Description détaillée" },
+       { emoji: "💰", titre: "Prix" },
+       { emoji: "🧩", titre: "Spécifications" },
+       { emoji: "⌚", titre: "Sport et santé" },
+       { emoji: "🌐", titre: "Connectivité" },
+       { emoji: "🎮", titre: "Expérience utilisateur" }
+   ]
+};
+
+    const sections = fieldsMap[product.categorie] || fieldsMap['CONSOLE'];
+    
+    let html = '<h3>Données de fiche détaillée</h3>';
+    
+    sections.forEach((section, index) => {
+    let value = '';
+    if (product.donnees_fiche && product.donnees_fiche[index]) {
+        const contenu = product.donnees_fiche[index];
+        
+        // Gérer les \n échappés ET les vrais \n
+        const contenuNettoye = contenu.replace(/\\n/g, '\n');
+        
+        if (contenuNettoye.includes('\n') && /^[^\w\s]/.test(contenuNettoye)) {
+            // Format avec emoji: "📝 Titre\nContenu"
+            value = contenuNettoye.split('\n').slice(1).join('\n');
+        } else {
+            // Format texte simple: "Description sans emoji"
+            value = contenu;
+        }
+    }
+    
+    html += `
+        <div class="form-group">
+            <label>${section.emoji} ${section.titre}</label>
+            <textarea id="edit-fiche-${index}" rows="4">${value}</textarea>
+        </div>
+    `;
+});
+    sections.forEach((section, index) => {
+    console.log(`\n🔍 Index ${index}:`);
+    console.log(`  Section:`, section);
+    console.log(`  Données brutes:`, product.donnees_fiche ? product.donnees_fiche[index] : 'undefined');
+    
+    let value = '';
+    if (product.donnees_fiche && product.donnees_fiche[index]) {
+        const contenu = product.donnees_fiche[index];
+        console.log(`  Contenu original: "${contenu}"`);
+        
+        // Gérer les \n échappés ET les vrais \n
+        const contenuNettoye = contenu.replace(/\\n/g, '\n');
+        console.log(`  Contenu nettoyé: "${contenuNettoye}"`);
+        
+        if (contenuNettoye.includes('\n') && /^[^\w\s]/.test(contenuNettoye)) {
+            // Format avec emoji: "📝 Titre\nContenu"
+            value = contenuNettoye.split('\n').slice(1).join('\n');
+            console.log(`  ✅ Format emoji détecté, valeur extraite: "${value}"`);
+        } else {
+            // Format texte simple: "Description sans emoji"
+            value = contenu;
+            console.log(`  ✅ Format texte brut, valeur: "${value}"`);
+        }
+    } else {
+        console.log(`  ❌ Pas de données à l'index ${index}`);
+    }
+    
+    html += `
+        <div class="form-group">
+            <label>${section.emoji} ${section.titre}</label>
+            <textarea id="edit-fiche-${index}" rows="4">${value}</textarea>
+        </div>
+    `;
+});
+    container.innerHTML = html;
+    console.log('✅ Champs générés avec données existantes');
+}
 
     // ⭐ SAUVEGARDER AVEC FORMATAGE
     async saveToPostgreSQL() {
@@ -282,10 +364,16 @@ class AdminManager {
 
         // 2. Formate chaque champ avec icône + titre + valeur
         data.donnees_fiche = sections.map((section, index) => {
-            const field = document.getElementById(`edit-fiche-${index}`);
-            const value = field ? field.value.trim() : '';
-            return `${section.emoji} ${section.titre}\n${value}`;
-        });
+    const field = document.getElementById(`edit-fiche-${index}`);
+    const value = field ? field.value.trim() : '';
+    
+    // Si vide, on retourne une chaîne vide au lieu de l'icône+titre
+    if (value.length === 0) {
+        return '';
+    }
+    
+    return `${section.emoji} ${section.titre}\n${value}`;
+});
 
         // DEBUG : Affiche ce qui va partir à l’API
         console.log('📝 donnees_fiche à envoyer:', data.donnees_fiche);
