@@ -67,8 +67,6 @@ async function generateFicheHTML(productId) {
     </div>
 
     <script>
-        console.log('Fiche générée pour: ${product.nom}');
-        
         // Fonction pour afficher des détails supplémentaires
         function toggleDetails(section) {
             const element = document.getElementById(section);
@@ -149,7 +147,7 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🌐 Connectivité", index: 4 },
             { titre: "🎮 Confort et utilisation", index: 5 }
         ],
-        'MONTRE CONNECTE': [
+        'MONTRE CONNECTEE': [
             { titre: "📝 Description détaillée", index: 0 },
             { titre: "💰 Prix et disponibilité", index: 1 },
             { titre: "🧩 Spécifications techniques", index: 2 },
@@ -201,15 +199,23 @@ function generateSectionsByCategory(categorie, donneesF = []) {
 async function saveFicheToFolder(html, categorie, fileName) {
     // Déterminer le dossier selon la catégorie
     const folderMap = {
-        'SMARTPHONE': 'smartphone',
-        'TABLETTE': 'tablette', 
-        'PC GAMING': 'pc-gaming',
-        'CONSOLE': 'console',
-        'CASQUE AUDIO': 'casque-audio',
-        'MONTRE CONNECTE': 'montre-connectee',
-        'DRONE': 'drone',
-        'SERVEUR': 'serveur'
-    };
+    'SMARTPHONE': 'smartphone',
+    'TABLETTE': 'tablette', 
+    'PC GAMING': 'pc-gaming',
+    'CONSOLE': 'console',
+    'CASQUE AUDIO': 'casque-audio',
+    'MONTRE CONNECTEE': 'montre-connecteee',
+    'DRONE': 'drone',
+    'SERVEUR': 'serveur',
+    'BOX INTERNET': 'box-internet',
+    'CAMERA': 'camera',
+    'CASQUE VR': 'casque-vr',
+    'ECRAN TV': 'ecran-tv',
+    'IMPRIMANTE 3D': 'imprimante-3d',
+    'PERIPHERIQUES': 'peripheriques',
+    'TABLEAU INTERACTIF': 'tableau-interactif',
+    'VIDEO PROJECTEUR': 'video-projecteur'
+};
     
     const folderName = folderMap[categorie] || categorie.toLowerCase().replace(/\s+/g, '-');
     const fullPath = `fiches/${folderName}/${fileName}`;
@@ -222,7 +228,5 @@ async function saveFicheToFolder(html, categorie, fileName) {
     a.download = fileName;
     a.click();
     URL.revokeObjectURL(url);
-    
-    console.log(`Fiche sauvegardée: ${fullPath}`);
 }
 

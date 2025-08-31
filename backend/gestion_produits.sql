@@ -7,7 +7,7 @@ FROM json_populate_recordset(
   {
     "nom": "Corsair One i500",
     "categorie": "PC GAMING",
-    "image": "assets/images/Corsair One i500 sty.png",
+    "image": "Corsair One i500 sty.png",
     "lien": "fiches/pc-gaming/Corsair One i500.html",
     "description": "PC gaming ultra compact avec RTX 5090 et refroidissement liquide.",
     "top_du_mois": true,
@@ -29,7 +29,7 @@ FROM json_populate_recordset(
     "nom": "Vibox X-215 SG",
     "categorie": "PC GAMING",
     "description": "PC gaming haut de gamme avec éclairage RGB, conçu pour les performances en 4K et la réalité virtuelle.",
-    "image": "assets/images/Vibox X-215 SG stylé.png",
+    "image": "Vibox X-215 SG stylé.png",
     "lien": "fiches/pc-gaming/Vibox X-215 SG.html",
     "top_du_mois": true,
     "prix": "1549.99 €",
@@ -48,7 +48,7 @@ FROM json_populate_recordset(
   {
     "nom": "Asus ROG Strix G18",
     "categorie": "PC GAMING",
-    "image": "assets/images/Asus ROG Strix G18.png",
+    "image": "Asus ROG Strix G18.png",
     "lien": "fiches/pc-gaming/Asus ROG Strix G18.html",
     "description": "PC 18 pouces ultra puissant avec RTX 5070 et écran 240 Hz.",
     "top_du_mois": true,
@@ -69,7 +69,7 @@ FROM json_populate_recordset(
   {
     "nom": "Dell PowerEdge R960",
     "categorie": "SERVEUR",
-    "image": "assets/images/dell-poweredge-r960.png",
+    "image": "dell-poweredge-r960.png",
     "lien": "fiches/serveur/Dell PowerEdge R960.html",
     "description": "Serveur rack 4U avec 4 processeurs et 12 To de RAM.",
     "top_du_mois": false,
@@ -90,7 +90,7 @@ FROM json_populate_recordset(
   {
     "nom": "Dell PowerEdge R760",
     "categorie": "SERVEUR",
-    "image": "assets/images/Dell PowerEdge R760.png",
+    "image": "Dell PowerEdge R760.png",
     "lien": "fiches/serveur/Dell PowerEdge R760.html",
     "description": "Serveur rack 2U ultra performant pour datacenter et virtualisation.",
     "top_du_mois": false,
@@ -111,7 +111,7 @@ FROM json_populate_recordset(
   {
     "nom": "Logitech MX Master 4S",
     "categorie": "PERIPHERIQUES",
-    "image": "assets/images/logitech-mx-master-4s.png",
+    "image": "logitech-mx-master-4s.png",
     "lien": "fiches/peripheriques/Logitech MX Master 4S.html",
     "description": "Souris ergonomique ultra précise pour bureautique et gaming.",
     "top_du_mois": true,
@@ -132,7 +132,7 @@ FROM json_populate_recordset(
   {
     "nom": "SteelSeries Apex Pro TKL Gen 3",
     "categorie": "PERIPHERIQUES",
-    "image": "assets/images/SteelSeries Apex Pro TKL Gen 3.png",
+    "image": "SteelSeries Apex Pro TKL Gen 3.png",
     "lien": "fiches/peripheriques/SteelSeries Apex Pro TKL Gen 3.html",
     "description": "Clavier gaming mécanique ultra réactif avec switches magnétiques ajustables et OLED intégré.",
     "top_du_mois": false,
@@ -153,7 +153,7 @@ FROM json_populate_recordset(
   {
     "nom": "Apple iPad Pro M4",
     "categorie": "TABLETTE",
-    "image": "assets/images/iPad.png",
+    "image": "iPad.png",
     "lien": "fiches/tablette/Apple iPad Pro M4.html",
     "description": "Tablette professionnelle avec puce M4, écran OLED et Face ID.",
     "top_du_mois": false,
@@ -175,7 +175,7 @@ FROM json_populate_recordset(
   {
     "nom": "Samsung Galaxy S25 Ultra",
     "categorie": "SMARTPHONE",
-    "image": "assets/images/Samsung Galaxy S25 U.png",
+    "image": "Samsung Galaxy S25 U.png",
     "lien": "fiches/smartphone/Samsung Galaxy S25 Ultra.html",
     "description": "Smartphone haut de gamme avec zoom x100 et écran AMOLED 120Hz.",
     "top_du_mois": true,
@@ -196,9 +196,9 @@ FROM json_populate_recordset(
   },
   {
     "nom": "Garmin Fénix 8",
-    "categorie": "MONTRE CONNECTE",
-    "image": "assets/images/fénix 8.png",
-    "lien": "fiches/montre-connecte/Garmin Fénix 8.html",
+    "categorie": "MONTRE CONNECTEE",
+    "image": "fénix 8.png",
+    "lien": "fiches/montre-connectee/Garmin Fénix 8.html",
     "description": "Montre GPS multisport avec cartographie et suivi santé complet.",
     "top_du_mois": false,
     "prix": "À partir de 799 €",
@@ -218,7 +218,7 @@ FROM json_populate_recordset(
   {
     "nom": "LG OLED65 G5",
     "categorie": "ECRAN TV",
-    "image": "assets/images/lg.png",
+    "image": "lg.png",
     "lien": "fiches/ecran-tv/LG OLED65 G5.html",
     "description": "TV OLED 4K 65'' avec Dolby Vision, G-Sync et design mural.",
     "top_du_mois": false,
@@ -241,7 +241,7 @@ FROM json_populate_recordset(
   {
     "nom": "LG OLED65 G3",
     "categorie": "ECRAN TV",
-    "image": "assets/images/LG OLED65 G3.png",
+    "image": "LG OLED65 G3.png",
     "lien": "fiches/ecran-tv/LG OLED65 G3.html",
     "description": "Téléviseur OLED EVO 4K ultra-fin avec Dolby Vision et 120Hz.",
     "top_du_mois": false,
@@ -263,7 +263,7 @@ FROM json_populate_recordset(
   {
     "nom": "Insta360 X5",
     "categorie": "CAMERA",
-    "image": "assets/images/Insta X.png",
+    "image": "Insta X.png",
     "lien": "fiches/camera/Insta360 X5.html",
     "description": "Caméra 360 professionnelle pour capture immersive en 8K.",
     "top_du_mois": false,
@@ -284,7 +284,7 @@ FROM json_populate_recordset(
   {
     "nom": "Canon EOS R6 Mark II",
     "categorie": "CAMERA",
-    "image": "assets/images/Canon EOS R6 Mark II.png",
+    "image": "Canon EOS R6 Mark II.png",
     "lien": "fiches/camera/Canon EOS R6 Mark II.html",
     "description": "Appareil photo hybride plein format ultra rapide, idéal pour les créateurs photo/vidéo.",
     "top_du_mois": true,
@@ -305,7 +305,7 @@ FROM json_populate_recordset(
   {
     "nom": "Valerion Vision Master Pro 2",
     "categorie": "VIDEO PROJECTEUR",
-    "image": "assets/images/Valerion Vision Mast.png",
+    "image": "Valerion Vision Mast.png",
     "lien": "fiches/video-projecteur/Valerion Vision Master Pro 2.html",
     "description": "Vidéoprojecteur laser 4K HDR avec 3500 lumens et Android TV intégré.",
     "top_du_mois": false,
@@ -327,7 +327,7 @@ FROM json_populate_recordset(
   {
     "nom": "Epson EH-LS12000B",
     "categorie": "VIDEO PROJECTEUR",
-    "image": "assets/images/Epson EH-LS12000B.png",
+    "image": "Epson EH-LS12000B.png",
     "lien": "fiches/video-projecteur/Epson EH-LS12000B.html",
     "description": "Vidéoprojecteur laser 4K Pro-UHD haut de gamme avec HDR10+ et installation flexible.",
     "top_du_mois": false,
@@ -349,7 +349,7 @@ FROM json_populate_recordset(
   {
     "nom": "Freebox Ultra",
     "categorie": "BOX INTERNET",
-    "image": "assets/images/Freebox Ultra stylé.png",
+    "image": "Freebox Ultra stylé.png",
     "lien": "fiches/box-internet/Freebox Ultra.html",
     "description": "Box ultra rapide avec fibre 8G, WiFi 7 et services TV premium.",
     "top_du_mois": false,
@@ -370,7 +370,7 @@ FROM json_populate_recordset(
   {
     "nom": "Bose QuietComfort 45",
     "categorie": "CASQUE AUDIO",
-    "image": "assets/images/Bose QuietComfort 45.png",
+    "image": "Bose QuietComfort 45.png",
     "lien": "fiches/casque-audio/Bose QuietComfort 45.html",
     "description": "Casque à réduction de bruit actif et autonomie prolongée.",
     "top_du_mois": false,
@@ -392,7 +392,7 @@ FROM json_populate_recordset(
   "nom": "Sony WH-1000XM5",
   "description": "Casque audio haut de gamme à réduction de bruit active, conçu pour une immersion sonore totale et des appels ultra clairs.",
   "categorie": "CASQUE AUDIO",
-  "image": "assets/images/Sony WH-1000XM5.png",
+  "image": "Sony WH-1000XM5.png",
   "lien": "fiches/casque-audio/Sony WH-1000XM5.html",
   "top_du_mois": false,
   "prix": "À partir de 399 €",
@@ -411,7 +411,7 @@ FROM json_populate_recordset(
   {
     "nom": "Samsung Flip Pro 2025",
     "categorie": "TABLEAU INTERACTIF",
-    "image": "assets/images/samsung flip pro.png",
+    "image": "samsung flip pro.png",
     "lien": "fiches/tableau-interactif/Samsung Flip Pro 2025.html",
     "description": "Tableau interactif 75'' tactile avec stylet et écran QLED.",
     "top_du_mois": false,
@@ -432,7 +432,7 @@ FROM json_populate_recordset(
   {
     "nom": "HKMLC Smart Board Explorer Elite Dual 75",
     "categorie": "TABLEAU INTERACTIF",
-    "image": "assets/images/HKMLC Smart Board Explorer Elite Dual 75.png",
+    "image": "HKMLC Smart Board Explorer Elite Dual 75.png",
     "lien": "fiches/tableau-interactif/HKMLC Smart Board Explorer Elite Dual 75.html",
     "description": "Tableau interactif 4K UHD avec double système Android/Windows, idéal pour l’éducation et les entreprises.",
     "top_du_mois": false,
@@ -453,7 +453,7 @@ FROM json_populate_recordset(
   {
     "nom": "Asus ROG Ally X",
     "categorie": "CONSOLE",
-    "image": "assets/images/ROG Ally.png",
+    "image": "ROG Ally.png",
     "lien": "fiches/console/Asus ROG Ally X.html",
     "description": "Console portable Windows puissante et ergonomique pour gamers exigeants.",
     "top_du_mois": false,
@@ -475,7 +475,7 @@ FROM json_populate_recordset(
   {
     "nom": "Meta Quest 3",
     "categorie": "CASQUE VR",
-    "image": "assets/images/Meta Quest 3.png",
+    "image": "Meta Quest 3.png",
     "lien": "fiches/casque-vr/Meta Quest 3.html",
     "description": "Casque de réalité mixte haut de gamme avec passthrough HD.",
     "top_du_mois": false,
@@ -496,7 +496,7 @@ FROM json_populate_recordset(
   {
     "nom": "Creality Ender 5 Neo",
     "categorie": "IMPRIMANTE 3D",
-    "image": "assets/images/imprimante 3D.png",
+    "image": "imprimante 3D.png",
     "lien": "fiches/imprimante-3d/Creality Ender 5 Neo.html",
     "description": "Imprimante 3D précise avec double axe Z et auto-nivellement.",
     "top_du_mois": false,
@@ -517,7 +517,7 @@ FROM json_populate_recordset(
   {
     "nom": "Creality Ender 3 V3",
     "categorie": "IMPRIMANTE 3D",
-    "image": "assets/images/Creality Ender 3 V3 stylé.png",
+    "image": "Creality Ender 3 V3 stylé.png",
     "lien": "fiches/imprimante-3d/Creality Ender 3 V3.html",
     "description": "Imprimante 3D précise avec double axe Z et auto-nivellement.",
     "top_du_mois": false,
@@ -537,7 +537,7 @@ FROM json_populate_recordset(
   {
     "nom": "Creality Halot Mage S 14K",
     "categorie": "IMPRIMANTE 3D",
-    "image": "assets/images/Creality Halot Mage S 14K.png",
+    "image": "Creality Halot Mage S 14K.png",
     "lien": "fiches/imprimante-3d/Creality Halot Mage S 14K.html",
     "description": "Imprimante 3D résine ultra précise avec écran 14K, purification d’air et impression rapide Dynax+.",
     "top_du_mois": false,
@@ -558,7 +558,7 @@ FROM json_populate_recordset(
   {
     "nom": "DJI Mavic 4 Pro",
     "categorie": "DRONE",
-    "image": "assets/images/DJI Mavic 4 Pro styl.png",
+    "image": "DJI Mavic 4 Pro styl.png",
     "lien": "fiches/drone/DJI Mavic 4 Pro.html",
     "description": "Drone ultra stabilisé avec capteurs 360° et caméra 6K.",
     "top_du_mois": false,
@@ -579,7 +579,7 @@ FROM json_populate_recordset(
   {
     "nom": "Skydio X10",
     "categorie": "DRONE",
-    "image": "assets/images/Skydio X10.png",
+    "image": "Skydio X10.png",
     "lien": "fiches/drone/Skydio X10.html",
     "description": "Drone autonome intelligent avec caméra thermique et stabilisation avancée.",
     "top_du_mois": false,
@@ -601,7 +601,7 @@ FROM json_populate_recordset(
   {
     "nom": "DJI Air 3S",
     "categorie": "DRONE",
-    "image": "assets/images/DJI Air 3S.png",
+    "image": "DJI Air 3S.png",
     "lien": "fiches/drone/DJI Air 3S.html",
     "description": "Drone polyvalent pour créateurs de contenu, avec double capteur et détection LiDAR.",
     "top_du_mois": false,
@@ -622,7 +622,7 @@ FROM json_populate_recordset(
   {
     "nom": "Parrot Anafi USA",
     "categorie": "DRONE",
-    "image": "assets/images/Parrot Anafi USA.png",
+    "image": "Parrot Anafi USA.png",
     "lien": "fiches/drone/Parrot Anafi USA.html",
     "description": "Drone professionnel avec zoom x32 et capteur thermique pour missions critiques.",
     "top_du_mois": false,
@@ -643,7 +643,7 @@ FROM json_populate_recordset(
   {
     "nom": "DJI Mini 5 Pro",
     "categorie": "DRONE",
-    "image": "assets/images/DJI Mini 5 Pro.png",
+    "image": "DJI Mini 5 Pro.png",
     "lien": "fiches/drone/DJI Mini 5 Pro.html",
     "description": "Drone ultra-léger avec capteur 1” et détection LiDAR omnidirectionnelle.",
     "top_du_mois": false,
@@ -664,7 +664,7 @@ FROM json_populate_recordset(
   {
     "nom": "Autel Nano+",
     "categorie": "DRONE",
-    "image": "assets/images/Autel Nano+.png",
+    "image": "Autel Nano+.png",
     "lien": "fiches/drone/Autel Nano+.html",
     "description": "Mini drone puissant et nomade, avec capteur 50 MP et zoom x16.",
     "top_du_mois": false,
@@ -685,7 +685,7 @@ FROM json_populate_recordset(
   {
     "nom": "Autel EVO Max 5G",
     "categorie": "DRONE",
-    "image": "assets/images/Autel EVO Max 5G.png",
+    "image": "Autel EVO Max 5G.png",
     "lien": "fiches/drone/Autel EVO Max 5G.html",
     "description": "Drone ultraportable 249 g, capteur CMOS 1” 20 MP, vidéo 5.3K/30 fps HDR, LiDAR omnidirectionnel et 38 min d’autonomie.",
     "top_du_mois": false,
@@ -705,10 +705,10 @@ FROM json_populate_recordset(
   },
   {
     "nom": "Apple Watch Series 9",
-    "categorie": "MONTRE CONNECTE",
+    "categorie": "MONTRE CONNECTEE",
     "description": "Montre intelligente ultra fluide avec gestes tactiles, écran lumineux et puce S9 ultra-rapide.",
-    "image": "assets/images/Apple Watch Series 9 stylé.png",
-    "lien": "fiches/montre-connecte/AppleWatchSeries9.html",
+    "image": "Apple Watch Series 9 stylé.png",
+    "lien": "fiches/montre-connectee/AppleWatchSeries9.html",
     "top_du_mois": false,
     "prix": "449,00 €",
     "fonctionnalites_avancees": [
@@ -725,9 +725,9 @@ FROM json_populate_recordset(
   },
   {
     "nom": "Apple Watch Series 10",
-    "categorie": "MONTRE CONNECTE",
-    "image": "assets/images/Apple Watch Series 10.png",
-    "lien": "fiches/montre-connecte/Apple Watch Series 10.html",
+    "categorie": "MONTRE CONNECTEE",
+    "image": "Apple Watch Series 10.png",
+    "lien": "fiches/montre-connectee/Apple Watch Series 10.html",
     "description": "Montre connectée haut de gamme avec écran plus grand, capteurs santé avancés et autonomie optimisée.",
     "top_du_mois": false,
     "prix": "À partir de 429 €",
@@ -747,7 +747,7 @@ FROM json_populate_recordset(
     "nom": "HONOR 200 Pro",
     "categorie": "SMARTPHONE",
     "description": "Smartphone premium avec caméra portrait IA, design élégant et performances photo impressionnantes.",
-    "image": "assets/images/HONOR 200 Pro stylé.png",
+    "image": "HONOR 200 Pro stylé.png",
     "lien": "fiches/smartphone/HONOR200Pro.html",
     "top_du_mois": false,
     "prix": "799,99 €",
@@ -767,7 +767,7 @@ FROM json_populate_recordset(
     "nom": "PlayStation 5 Slim",
     "categorie": "CONSOLE",
     "description": "Console next-gen compacte, puissante et élégante. Elle réinvente le gaming ultra-performant avec un design plus fin.",
-    "image": "assets/images/PlayStation 5 Slim stylé.png",
+    "image": "PlayStation 5 Slim stylé.png",
     "lien": "fiches/console/PlayStation5Slim.html",
     "top_du_mois": false,
     "prix": "499,00 €",
@@ -786,7 +786,7 @@ FROM json_populate_recordset(
   {
     "nom": "Samsung Galaxy Tab S10 FE",
     "categorie": "TABLETTE",
-    "image": "assets/images/Galaxy Tab S10 FE.png",
+    "image": "Galaxy Tab S10 FE.png",
     "lien": "fiches/tablette/Samsung Galaxy Tab S10 FE.html",
     "description": "Tablette polyvalente avec stylet inclus, parfaite pour le travail et les loisirs.",
     "top_du_mois": false,
@@ -810,7 +810,7 @@ FROM json_populate_recordset(
   {
     "nom": "Microsoft Surface Pro X 2025",
     "categorie": "TABLETTE",
-    "image": "assets/images/Microsoft Surface Pro X 2025.png",
+    "image": "Microsoft Surface Pro X 2025.png",
     "lien": "fiches/tablette/Microsoft Surface Pro X 2025.html",
     "description": "Tablette hybride haut de gamme sous Windows ARM avec stylet et clavier.",
     "top_du_mois": false,
@@ -835,7 +835,7 @@ FROM json_populate_recordset(
     "nom": "Xbox Series X",
     "categorie": "CONSOLE",
     "description": "Console ultra-puissante conçue pour le jeu en 4K, offrant des performances fluides et une immersion totale dans l’univers Xbox.",
-    "image": "assets/images/Xbox Series X.png",
+    "image": "Xbox Series X.png",
     "lien": "fiches/console/Xbox Series X.html",
     "top_du_mois": false,
     "prix": "499,00 €",
@@ -853,7 +853,7 @@ FROM json_populate_recordset(
  {
   "nom": "Nintendo Switch 2 Pro",
   "categorie": "CONSOLE",
-  "image": "assets/images/Nintendo Switch 2 Pro.png",
+  "image": "Nintendo Switch 2 Pro.png",
   "lien": "fiches/console/Nintendo Switch 2 Pro.html",
   "description": "La Nintendo Switch 2 Pro est une console hybride nouvelle génération, alliant puissance de salon et portabilité ultime.",
   "top_du_mois": true,
@@ -877,7 +877,7 @@ FROM json_populate_recordset(
   {
     "nom": "Drone X-Pro 2025",
     "categorie": "DRONE",
-    "image": "assets/images/drone-x-pro-2025.png",
+    "image": "drone-x-pro-2025.png",
     "lien": "fiches/drone/drone-x-pro-2025.html",
     "description": "Drone pliable ultra-portable avec caméra HD, idéal pour capturer des vues aériennes spectaculaires.",
     "top_du_mois": false,
@@ -900,7 +900,7 @@ FROM json_populate_recordset(
   {
     "nom": "Google Pixel 10",
     "categorie": "SMARTPHONE",
-    "image": "assets/images/google-pixel-10.png",
+    "image": "google-pixel-10.png",
     "lien": "fiches/smartphone/google-pixel-10.html",
     "description": "Smartphone haut de gamme de Google intégrant des fonctions IA avancées et un module photo optimisé.",
     "top_du_mois": true,
@@ -923,7 +923,7 @@ FROM json_populate_recordset(
   {
     "nom": "Redmagic Astra",
     "categorie": "TABLETTE",
-    "image": "assets/images/redmagic-astra.png",
+    "image": "redmagic-astra.png",
     "lien": "fiches/tablette/redmagic-astra.html",
     "description": "Tablette gaming haute performance avec écran AMOLED 144 Hz et système de refroidissement actif.",
     "top_du_mois": false,
@@ -947,7 +947,7 @@ FROM json_populate_recordset(
   {
     "nom": "Beyerdynamic Amiron 100",
     "categorie": "CASQUE AUDIO",
-    "image": "assets/images/beyerdynamic-amiron-100.png",
+    "image": "beyerdynamic-amiron-100.png",
     "lien": "fiches/casque-audio/beyerdynamic-amiron-100.html",
     "description": "Casque circum-aural haut de gamme offrant un son haute fidélité avec ANC adaptative.",
     "top_du_mois": false,

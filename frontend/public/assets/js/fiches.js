@@ -5,9 +5,6 @@ const API_URL = (() => {
     const hostname = window.location.hostname;
     const protocol = window.location.protocol;
     const port = '3000';
-    
-    console.log('🔍 Hostname détecté:', hostname);
-    
     // Si localhost ou 127.0.0.1, utiliser localhost explicitement
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
         return 'http://localhost:3000/api';
@@ -16,9 +13,6 @@ const API_URL = (() => {
     // Sinon utiliser l'IP détectée
     return `${protocol}//${hostname}:${port}/api`;
 })();
-
-console.log('🌐 API_URL configurée:', API_URL);
-
 // Variables globales
 let produitsSelectionnes = [];
 let categorieActuelle = '';
@@ -26,8 +20,6 @@ let tousLesProduits = null; // Cache pour tous les produits
 let statsCache = null; // Cache pour les stats
 
 const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-console.log('📱 Détection mobile:', isMobile);
-
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
     // Charger une seule fois tous les produits au démarrage
@@ -70,8 +62,6 @@ async function chargerTousLesProduits() {
         if (data.success) {
             // Limiter sur mobile pour éviter timeout
             tousLesProduits = data.data;
-            
-            console.log(`✅ ${tousLesProduits.length} produits chargés (mobile: ${isMobile})`);
             return tousLesProduits;
         } else {
             throw new Error(data.error || 'Erreur lors du chargement');
@@ -92,8 +82,6 @@ async function chargerTousLesProduits() {
 
 // Afficher les produits d'une catégorie (depuis le cache)
 function afficherProduitsCategorie(categorie) {
-    console.log(`📂 Affichage des produits pour: ${categorie}`);
-    
     // Mettre à jour le titre
     const titreElement = document.getElementById('titre-categorie');
     const descElement = document.getElementById('desc-cat');
@@ -109,7 +97,7 @@ function afficherProduitsCategorie(categorie) {
         'PC GAMING': 'PC gaming haute performance',
         'SERVEUR': 'Serveurs professionnels et solutions d\'hébergement',
         'CASQUE AUDIO': 'Casques audio haute qualité',
-        'MONTRE CONNECTE': 'Montres connectées et trackers d\'activité'
+        'MONTRE CONNECTEE': 'montre-connectee et trackers d\'activité'
     };
     
     descElement.textContent = descriptions[categorie] || `Produits de la catégorie ${categorie}`;
@@ -119,7 +107,6 @@ function afficherProduitsCategorie(categorie) {
        let produitsFiltres = tousLesProduits.filter(p => p.categorie === categorie);
         if (isMobile && produitsFiltres.length > 10) {
             produitsFiltres = produitsFiltres.slice(0, 10);
-            console.log('📱 Limité à 10 produits pour mobile');
         }
         afficherProduits(produitsFiltres);
     } else {
@@ -159,26 +146,17 @@ function afficherProduits(produits) {
     
     zonefiches.innerHTML = (Array.isArray(produits) ? produits : []).map(produit => {
         // ✅ CORRECTION ICI - Gérer le double chemin
-       let imageUrl = produit.image_data || produit.image || '';
-
-// Nettoyer l'URL de l'image
+       let imageUrl = produit.image || '';
 if (imageUrl) {
-    // Supprimer le "/" au début s'il existe
     if (imageUrl.startsWith('/')) {
         imageUrl = imageUrl.substring(1);
     }
-    
-    // Si ce n'est pas une URL complète et ne commence pas par "assets/images/"
-    if (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:') && !imageUrl.startsWith('assets/images/')) {
+    if (!imageUrl.startsWith('http') && !imageUrl.startsWith('assets/images/')) {
         imageUrl = `assets/images/${imageUrl}`;
     }
 } else {
-    // Si pas d'image, utiliser placeholder
     imageUrl = 'assets/images/placeholder.png';
 }
-
-console.log('🖼️ Image URL pour', produit.nom, ':', imageUrl);
-        
         let ficheUrl = '#';
 if (produit.lien) {
     if (produit.lien.startsWith('http')) {
@@ -198,11 +176,10 @@ if (produit.lien) {
 
                 <input type="checkbox" class="produit-checkbox" data-id="${produit.id}" data-nom="${produit.nom}">
 
-                <img src="${encodeURI(imageUrl)}" alt="${produit.nom}" 
+                <img src="${imageUrl}" alt="${produit.nom}" 
                      onerror="this.onerror=null; this.src='assets/images/placeholder.png';">
 
-                <div class="overlay-text-produit">${produit.nom}</div>
-
+<div class="overlay-text-produit">${produit.titre_affiche || produit.nom}</div>
                 <p class="info">${produit.description || 'Description non disponible'}</p>
 
                 <p class="info" style="color: #667eea; font-weight: bold;">
@@ -352,7 +329,7 @@ async function comparerProduits() {
             <div class="comparaison-grid">
                 ${produitsDetails.map(p => `
                     <div class="fiche-comparaison">
-                        <img src="${p.image || p.image_data || 'frontend/public/assets/images/placeholder.png'}" 
+                        <img src="${p.image || p.image || 'frontend/public/assets/images/placeholder.png'}" 
                              alt="${p.nom}">
                         <h4>${p.nom}</h4>
                         <p class="info"><strong>Prix:</strong> ${p.prix || 'N/C'}</p>
@@ -428,8 +405,8 @@ async function afficherDetailsModal(produitId) {
                     <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
                     <h2>${produit.nom}</h2>
                     
-                    ${produit.image || produit.image_data ? `
-                        <img src="${produit.image || produit.image_data}" alt="${produit.nom}" style="max-width: 100%; margin: 20px 0;">
+                    ${produit.image || produit.image ? `
+                        <img src="${produit.image || produit.image}" alt="${produit.nom}" style="max-width: 100%; margin: 20px 0;">
                     ` : ''}
                     
                     <p><strong>Catégorie:</strong> ${produit.categorie}</p>
@@ -468,7 +445,7 @@ function formatCategorieName(categorie) {
         'PC GAMING': 'PC Gaming',
         'SERVEUR': 'Serveurs',
         'CASQUE AUDIO': 'Casques Audio',
-        'MONTRE CONNECTE': 'Montres Connectées'
+        'MONTRE CONNECTEE': 'montre-connectee'
     };
     return noms[categorie] || categorie;
 }
@@ -482,7 +459,7 @@ function getCategorieIcon(categorie) {
         'PC GAMING': '💻',
         'SERVEUR': '🖥️',
         'CASQUE AUDIO': '🎧',
-        'MONTRE CONNECTE': '⌚'
+        'MONTRE CONNECTEE': '⌚'
     };
     return icons[categorie] || '📦';
 }

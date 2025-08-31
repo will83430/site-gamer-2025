@@ -19,8 +19,6 @@ let categoriesAvecTop = new Set();
 
 // Initialisation au chargement
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Initialisation page Top du Mois');
-    
     // Afficher la date du mois si l'élément existe
     afficherDateMois();
     
@@ -49,8 +47,6 @@ function afficherDateMois() {
 // Charger tous les produits depuis PostgreSQL
 async function chargerProduitsDepuisBDD() {
     try {
-        console.log('📊 Chargement des produits depuis PostgreSQL...');
-        
         const response = await fetch(`${API_URL}/produits`);
         const data = await response.json();
         
@@ -69,13 +65,8 @@ async function chargerProduitsDepuisBDD() {
                     }
                 }
             });
-            
-            console.log(`✅ ${data.data.length} produits chargés`);
-            console.log('📂 Catégories avec produits vedettes:', Array.from(categoriesAvecTop));
-            
             // Afficher le nombre de produits par catégorie
             Object.keys(produitsParCategorie).forEach(cat => {
-                console.log(`   ${cat}: ${produitsParCategorie[cat].length} produits`);
             });
             
         } else {
@@ -89,8 +80,6 @@ async function chargerProduitsDepuisBDD() {
 
 // Mettre à jour les badges vedettes sur les catégories
 function mettreAJourBadgesVedettes() {
-    console.log('🌟 Mise à jour des badges vedettes...');
-    
     // Pour chaque carte de catégorie
     document.querySelectorAll('.category-card').forEach(card => {
         const categorie = card.dataset.category;
@@ -142,8 +131,6 @@ function mettreAJourBadgesVedettes() {
 
 // Configurer les liens des catégories
 function configurerLiensCategories() {
-    console.log('🔗 Configuration des liens de catégories...');
-    
     document.querySelectorAll('.category-card').forEach(card => {
         const categorie = card.dataset.category;
         
@@ -354,7 +341,6 @@ async function verifierConnexionServeur() {
         const data = await response.json();
         
         if (data.success) {
-            console.log('✅ Serveur PostgreSQL connecté');
             afficherNotification('Connexion au serveur réussie!', 'success');
             return true;
         }
@@ -370,7 +356,6 @@ verifierConnexionServeur();
 
 // Rafraîchir les données toutes les 30 secondes
 setInterval(async () => {
-    console.log('🔄 Rafraîchissement des données...');
     await chargerProduitsDepuisBDD();
     mettreAJourBadgesVedettes();
 }, 30000);

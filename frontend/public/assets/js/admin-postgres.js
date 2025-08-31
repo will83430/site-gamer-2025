@@ -8,8 +8,6 @@ class AdminManager {
     }
 
     async init() {
-        console.log('🚀 Interface admin PostgreSQL - VERSION FINALE');
-        
         await this.loadStats();
         await this.loadProducts();
         this.setupEventListeners();
@@ -26,8 +24,6 @@ class AdminManager {
                 document.getElementById('total-products').textContent = stats.total_products || 0;
                 document.getElementById('total-categories').textContent = stats.total_categories || 0;
                 document.getElementById('featured-products').textContent = stats.featured_products || 0;
-                
-                console.log('✅ Stats PostgreSQL:', stats);
             }
         } catch (error) {
             console.error('❌ Erreur stats:', error);
@@ -43,7 +39,6 @@ class AdminManager {
             if (result.success) {
                 this.currentProducts = result.data;
                 this.populateProductSelect();
-                console.log(`✅ ${this.currentProducts.length} produits chargés`);
             }
         } catch (error) {
             console.error('❌ Erreur chargement produits:', error);
@@ -102,7 +97,6 @@ class AdminManager {
                 this.currentEditingProduct = result.data;
                 this.populateEditForm(result.data);
                 document.getElementById('edit-form').style.display = 'block';
-                console.log('✅ Produit chargé:', result.data.nom);
             }
         } catch (error) {
             console.error('❌ Erreur chargement produit:', error);
@@ -195,7 +189,7 @@ generateCategoryFields(product) {
        { emoji: "🌐", titre: "Connectivité" },
        { emoji: "🎮", titre: "Expérience utilisateur" }
    ],
-   'MONTRE CONNECTE': [
+   'MONTRE CONNECTEE': [
        { emoji: "📝", titre: "Description détaillée" },
        { emoji: "💰", titre: "Prix" },
        { emoji: "🧩", titre: "Spécifications" },
@@ -234,30 +228,19 @@ generateCategoryFields(product) {
     `;
 });
     sections.forEach((section, index) => {
-    console.log(`\n🔍 Index ${index}:`);
-    console.log(`  Section:`, section);
-    console.log(`  Données brutes:`, product.donnees_fiche ? product.donnees_fiche[index] : 'undefined');
-    
     let value = '';
     if (product.donnees_fiche && product.donnees_fiche[index]) {
         const contenu = product.donnees_fiche[index];
-        console.log(`  Contenu original: "${contenu}"`);
-        
         // Gérer les \n échappés ET les vrais \n
         const contenuNettoye = contenu.replace(/\\n/g, '\n');
-        console.log(`  Contenu nettoyé: "${contenuNettoye}"`);
-        
         if (contenuNettoye.includes('\n') && /^[^\w\s]/.test(contenuNettoye)) {
             // Format avec emoji: "📝 Titre\nContenu"
             value = contenuNettoye.split('\n').slice(1).join('\n');
-            console.log(`  ✅ Format emoji détecté, valeur extraite: "${value}"`);
         } else {
             // Format texte simple: "Description sans emoji"
             value = contenu;
-            console.log(`  ✅ Format texte brut, valeur: "${value}"`);
         }
     } else {
-        console.log(`  ❌ Pas de données à l'index ${index}`);
     }
     
     html += `
@@ -268,7 +251,6 @@ generateCategoryFields(product) {
     `;
 });
     container.innerHTML = html;
-    console.log('✅ Champs générés avec données existantes');
 }
 
     // ⭐ SAUVEGARDER AVEC FORMATAGE
@@ -279,11 +261,7 @@ generateCategoryFields(product) {
         }
 
         try {
-            console.log('💾 Sauvegarde avec formatage...');
-            
             const formData = this.collectFormData();
-            console.log('📤 Données à sauvegarder:', formData);
-            
             const response = await fetch(`${this.apiBaseUrl}/produits/${this.currentEditingProduct.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -307,8 +285,6 @@ generateCategoryFields(product) {
 
     // ⭐ COLLECTE AVEC FORMATAGE AUTOMATIQUE
     collectFormData() {
-        console.log('🎯 CollectFormData FINAL avec formatage');
-
         const data = {
             id: this.currentEditingProduct.id,
             nom: document.getElementById('edit-nom').value,
@@ -328,8 +304,6 @@ generateCategoryFields(product) {
             .filter(line => line.length > 0);
 
         // ⭐ FORMATAGE FINAL AVEC ICÔNES + TITRES
-        console.log('🎯 Formatage pour catégorie:', data.categorie);
-        
         // 1. Récupère la catégorie pour savoir quels champs utiliser
         const categorie = document.getElementById('edit-categorie').value;
         const fieldsMap = {
@@ -376,8 +350,6 @@ generateCategoryFields(product) {
 });
 
         // DEBUG : Affiche ce qui va partir à l’API
-        console.log('📝 donnees_fiche à envoyer:', data.donnees_fiche);
-
         return data;
     }
 
@@ -395,8 +367,6 @@ generateCategoryFields(product) {
                 this.saveToPostgreSQL();
             });
         }
-
-        console.log('⚙️ Événements configurés');
     }
 
     // Messages d'erreur
@@ -414,13 +384,11 @@ generateCategoryFields(product) {
         if (resultDiv) {
             resultDiv.innerHTML = `<div style="color: green; padding: 10px; background: #efe;">✅ ${message}</div>`;
         }
-        console.log('✅', message);
     }
 }
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🎯 Initialisation AdminManager FINAL');
     window.adminManager = new AdminManager();
 });
 

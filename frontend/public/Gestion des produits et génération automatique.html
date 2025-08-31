@@ -32,13 +32,6 @@
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-
-        h1 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
         /* Tabs Navigation */
         .tabs {
             display: flex;
@@ -549,7 +542,7 @@
                 showMessage(`✅ Fiche sélectionnée: ${path}`, 'success');
             }
 
-            // Initialiser la colonne image_data si nécessaire
+            // Initialiser la colonne image si nécessaire
             async function initImageColumn() {
                 try {
                     await fetch(`${API_URL}/init-image-column`, { method: 'POST' });
@@ -615,22 +608,16 @@
                 }
 
                 tbody.innerHTML = products.map(product => {
-                    let imageUrl = product.image_data || product.image || product.image_url || '';
-
-                    // Nettoyer l'URL de l'image
+                    let imageUrl = product.image || '';
                     if (imageUrl) {
-                        // Supprimer le "/" au début s'il existe
                         if (imageUrl.startsWith('/')) {
                             imageUrl = imageUrl.substring(1);
                         }
-
-                        // Si ce n'est pas une URL complète et ne commence pas par "assets/images/"
-                        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:') && !imageUrl.startsWith('assets/images/')) {
+                        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('assets/images/')) {
                             imageUrl = `assets/images/${imageUrl}`;
                         }
                     } else {
-                        // Placeholder SVG si pas d'image
-                        imageUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23ddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E📦%3C/text%3E%3C/svg%3E';
+                        imageUrl = 'data:image/svg+xml,...'; // ou placeholder
                     }
 
                     const imageHtml = imageUrl
@@ -699,13 +686,15 @@
 
                 const productData = {
                     nom: document.getElementById('new-nom').value,
+                    titre_affiche: document.getElementById('new-titre-affiche').value, // <-- ajout ici
                     categorie: document.getElementById('new-categorie').value,
                     prix: document.getElementById('new-prix').value,
                     description: document.getElementById('new-description').value,
                     lien: document.getElementById('new-lien').value,
                     top_du_mois: document.getElementById('new-top').value === 'true',
                     fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
-                    donnees_fiche: collectCategoryData('new')
+                    donnees_fiche: collectCategoryData('new'),
+                    titre_affiche: document.getElementById('new-titre-affiche').value // <-- AJOUT ICI
                 };
                 // Créer un produit ET générer sa fiche HTML
                 // Créer un produit ET générer sa fiche HTML
@@ -722,7 +711,7 @@
                     };
 
                     if (currentImageData['new']) {
-                        productData.image_data = currentImageData['new'];
+                        productData.image = currentImageData['new'];
                     }
 
                     if (!productData.nom || !productData.categorie) {
@@ -773,7 +762,7 @@
 
                 // Ajouter l'image si présente
                 if (currentImageData['new']) {
-                    productData.image_data = currentImageData['new'];
+                    productData.image = currentImageData['new'];
                 }
 
                 try {
@@ -839,8 +828,8 @@
                 document.getElementById('edit-fonctionnalites').value = fonctionnalites;
 
                 // Afficher l'image existante avec nettoyage du chemin
-                if (product.image_url || product.image || product.image_data) {
-                    let imageUrl = product.image_data || product.image || product.image_url || '';
+                if (product.image_url || product.image || product.image) {
+                    let imageUrl = product.image || product.image || product.image_url || '';
 
                     // Nettoyer l'URL de l'image (même logique que displayProducts)
                     if (imageUrl) {
@@ -878,6 +867,7 @@
 
                 const productData = {
                     nom: document.getElementById('edit-nom').value,
+                    titre_affiche: document.getElementById('edit-titre-affiche').value, // <-- ajout ici
                     categorie: document.getElementById('edit-categorie').value,
                     prix: document.getElementById('edit-prix').value,
                     description: document.getElementById('edit-description').value,
@@ -889,7 +879,7 @@
 
                 // Ajouter l'image si présente
                 if (currentImageData['edit']) {
-                    productData.image_data = currentImageData['edit'];
+                    productData.image = currentImageData['edit'];
                 }
 
                 try {
@@ -1124,7 +1114,7 @@
                     'CASQUE AUDIO': [
                         { emoji: "🎧", label: "Fonctions audio", placeholder: "Drivers, fréquence..." }
                     ],
-                    'MONTRE CONNECTE': [
+                    'MONTRE CONNECTEE': [
                         { emoji: "⌚", label: "Sport et santé", placeholder: "Capteurs, autonomie..." }
                     ]
                 };
@@ -1346,7 +1336,14 @@
                     donnees_fiche: collectCategoryData(prefix)
                 };
                 if (currentImageData[prefix]) {
-                    productData.image_data = currentImageData[prefix];
+                    // Si c'est du base64 (upload), on prend le nom du fichier sélectionné
+                    const fileInput = document.getElementById(`${prefix}-image-file`);
+                    if (fileInput && fileInput.files[0]) {
+                        // On ne garde que le nom du fichier sélectionné
+                        productData.image = fileInput.files[0].name;
+                    } else if (currentImageData[prefix]) {
+                        productData.image = currentImageData[prefix];
+                    }
                 }
 
                 // Validation
@@ -1512,7 +1509,7 @@ const sections = (product.donnees_fiche || [])
                     <option value="PC GAMING">PC GAMING</option>
                     <option value="SERVEUR">SERVEUR</option>
                     <option value="CASQUE AUDIO">CASQUE AUDIO</option>
-                    <option value="MONTRE CONNECTE">MONTRE CONNECTE</option>
+                    <option value="MONTRE CONNECTEE">MONTRE CONNECTEE</option>
                     <option value="CASQUE VR">CASQUE VR</option>
                     <option value="IMPRIMANTE 3D">IMPRIMANTE 3D</option>
                     <option value="ECRAN TV">ECRAN TV</option>
@@ -1583,6 +1580,11 @@ const sections = (product.donnees_fiche || [])
             <textarea id="new-fonctionnalites" rows="5"></textarea>
         </div>
 
+        <div class="form-group">
+            <label>Titre affiché (optionnel)</label>
+            <input type="text" id="new-titre-affiche" placeholder="Ex: Asus ROG Strix G18">
+        </div>
+
         <div id="new-category-fields">
             <!-- Les champs spécifiques à la catégorie seront ajoutés ici -->
         </div>
@@ -1629,7 +1631,7 @@ const sections = (product.donnees_fiche || [])
                         <option value="PC GAMING">PC GAMING</option>
                         <option value="SERVEUR">SERVEUR</option>
                         <option value="CASQUE AUDIO">CASQUE AUDIO</option>
-                        <option value="MONTRE CONNECTE">MONTRE CONNECTE</option>
+                        <option value="MONTRE CONNECTEE">MONTRE CONNECTEE</option>
                         <option value="CASQUE VR">CASQUE VR</option>
                         <option value="IMPRIMANTE 3D">IMPRIMANTE 3D</option>
                         <option value="ECRAN TV">ECRAN TV</option>
@@ -1698,6 +1700,17 @@ const sections = (product.donnees_fiche || [])
             <div class="form-group">
                 <label>Fonctionnalités avancées (une par ligne)</label>
                 <textarea id="edit-fonctionnalites" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Titre
+                <label>Fonctionnalités avancées (une par ligne)</label>
+                <textarea id="edit-fonctionnalites" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Titre affiché (optionnel)</label>
+                <input type="text" id="edit-titre-affiche" placeholder="Ex: Asus ROG Strix G18">
             </div>
 
             <div id="edit-category-fields">

@@ -5,14 +5,8 @@ const API_URL = 'http://localhost:3000/api';
 
 // FONCTION PRINCIPALE - Une seule fonction qui fait tout
 async function chargerDonneesProduit() {
-    console.log('🔄 Chargement des données produit...');
-    
     // 1. Récupérer automatiquement le nom du produit
-    const nomProduit = document.querySelector('h1')?.textContent?.trim() || 
-                       window.location.pathname.split('/').pop().replace('.html', '');
-    
-    console.log(`📄 Produit recherché: ${nomProduit}`);
-    
+    const nomProduit = window.location.pathname.split('/').pop().replace('.html', '');
     try {
         // 2. Charger UNIQUEMENT depuis PostgreSQL
         const response = await fetch(`${API_URL}/produits`);
@@ -25,7 +19,6 @@ async function chargerDonneesProduit() {
             );
             
             if (produit) {
-                console.log('✅ Produit trouvé:', produit);
                 afficherDonneesProduit(produit);
             } else {
                 console.warn(`⚠️ Produit "${nomProduit}" non trouvé dans la base`);
@@ -43,8 +36,6 @@ async function chargerDonneesProduit() {
 
 // FONCTION D'AFFICHAGE - Affiche les données du produit
 function afficherDonneesProduit(produit) {
-    console.log('🎨 Affichage des données...');
-    
     // 1. Badge top du mois
     if (produit.top_du_mois) {
         const badge = document.getElementById('badge-top-mois');
@@ -66,11 +57,12 @@ function afficherDonneesProduit(produit) {
     }
     
     // 3. Image
-    const img = document.querySelector('.gallery img, .img-centree');
-    if (img && (produit.image_data || produit.image)) {
-        img.src = produit.image_data || produit.image;
-        img.onerror = () => img.src = '../../assets/images/placeholder.png';
-    }
+    const img = document.querySelector('.gallery img');
+if (img && produit.image) {
+    img.src = `/assets/images/${produit.image}`;
+    img.onerror = () => img.src = '/assets/images/placeholder.png';
+    console.log('🖼️ Image affichée :', img.src);
+}
     
     // 4. Contenu principal (sections organisées)
     const contentDiv = document.getElementById('product-content');
@@ -79,8 +71,6 @@ function afficherDonneesProduit(produit) {
         
         // Parcourir directement donnees_fiche sans sections
 produit.donnees_fiche.forEach((contenu, index) => {
-    console.log(`[${index}] "${contenu}" - longueur: ${contenu.length}`);
-    
     if (contenu && contenu.trim().length > 0) {
         let titre, texte;
         
@@ -97,12 +87,7 @@ produit.donnees_fiche.forEach((contenu, index) => {
             titre = "📝 Description";  // Titre par défaut
             texte = contenu.trim();
         }
-        
-        console.log(`  → Titre: "${titre}"`);
-        console.log(`  → Texte: "${texte}" (${texte.length} chars)`);
-        
         if (texte.length > 0) {
-            console.log(`  ✅ AFFICHÉ`);
             html += `
                 <div style="margin: 20px 0; text-align: center;">
                     <h3 style="color: white; margin-bottom: 10px; font-weight: bold;">${titre}</h3>
@@ -110,7 +95,6 @@ produit.donnees_fiche.forEach((contenu, index) => {
                 </div>
             `;
         } else {
-            console.log(`  ❌ IGNORÉ (pas de contenu)`);
         }
     }
 });

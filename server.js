@@ -29,7 +29,6 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // 1. D'ABORD servir le dossier frontend/public/assets pour /assets
 const assetsPath = path.join(__dirname, 'frontend', 'public', 'assets');
-console.log('📁 Dossier assets configuré:', assetsPath);
 app.use('/assets', express.static(assetsPath, {
   maxAge: '1d' // Cache 1 jour
 }));
@@ -52,30 +51,23 @@ app.use(express.static(__dirname));
 // GET - Récupérer tous les produits
 app.get('/api/produits', async (req, res) => {
   try {
-    console.log('📊 GET /api/produits');
-
     const result = await pool.query(`
       SELECT 
-        id, nom, categorie, description, image, image_data, lien, 
-        top_du_mois, prix, fonctionnalites_avancees, donnees_fiche
+        id, nom, categorie, description, image, lien, 
+        top_du_mois, prix, fonctionnalites_avancees, donnees_fiche, titre_affiche
       FROM produits 
       ORDER BY categorie, nom
     `);
 
     // Traiter les images pour ajouter image_url
     const productsWithImages = result.rows.map(product => {
-      // Ajouter image_url basé sur image ou image_data
-      if (product.image_data) {
-        product.image_url = product.image_data;
-      } else if (product.image) {
-        // S'assurer que le chemin commence par /
-        product.image_url = product.image.startsWith('/') ? product.image : '/' + product.image;
+      if (product.image) {
+        product.image_url = `/assets/images/${product.image}`;
+      } else {
+        product.image_url = '/assets/images/placeholder.png';
       }
       return product;
     });
-
-    console.log(`✅ ${result.rows.length} produits récupérés`);
-
     res.json({
       success: true,
       data: productsWithImages,
@@ -95,8 +87,6 @@ app.get('/api/produits', async (req, res) => {
 app.get('/api/produits/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`🔍 GET /api/produits/${id}`);
-
     const result = await pool.query(
       'SELECT * FROM produits WHERE id = $1',
       [id]
@@ -112,10 +102,10 @@ app.get('/api/produits/:id', async (req, res) => {
     const product = result.rows[0];
 
     // Ajouter image_url
-    if (product.image_data) {
-      product.image_url = product.image_data;
+    if (product.image) {
+      product.image_url = product.image;
     } else if (product.image) {
-      product.image_url = product.image.startsWith('/') ? product.image : '/' + product.image;
+      product.image_url = product.image.startsWith('/') ? product.image : '/assets/images/' + product.image;
     }
 
     res.json({
@@ -136,12 +126,10 @@ app.get('/api/produits/:id', async (req, res) => {
 app.post('/api/produits', async (req, res) => {
   try {
     const {
-      nom, categorie, description, image, image_data, lien,
-      top_du_mois, prix, fonctionnalites_avancees, donnees_fiche
+      nom, categorie, description, image, lien,
+      top_du_mois, prix, fonctionnalites_avancees, donnees_fiche,
+      titre_affiche // <-- Ajout ici
     } = req.body;
-
-    console.log(`➕ POST /api/produits - Création: ${nom}`);
-
     if (!nom) {
       return res.status(400).json({
         success: false,
@@ -163,22 +151,22 @@ app.post('/api/produits', async (req, res) => {
 
     const query = `
       INSERT INTO produits 
-      (id, nom, categorie, description, image, image_data, lien, top_du_mois, prix, fonctionnalites_avancees, donnees_fiche)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      (id, nom, categorie, description, image, lien, top_du_mois, prix, fonctionnalites_avancees, donnees_fiche, titre_affiche)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING *
     `;
 
     const params = [
       nextId,
       nom, categorie || null, description || null,
-      image || null, image_data || null, lien || null,
+      image || null, image || null, lien || null,
       top_du_mois || false, prix || null,
-      fonctionnalites_avancees || [], donnees_fiche || []
+      fonctionnalites_avancees || [], donnees_fiche || [],
+      titre_affiche || null // <-- Ajout ici
     ];
 
     const result = await pool.query(query, params);
-
-    console.log(`✅ Produit créé avec l'ID ${nextId}`);
+    console.log(result.rows[0]); // Ajoute cette ligne juste après le SELECT
 
     res.status(201).json({
       success: true,
@@ -200,12 +188,10 @@ app.put('/api/produits/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      nom, categorie, description, image, image_data, lien,
-      top_du_mois, prix, fonctionnalites_avancees, donnees_fiche
+      nom, categorie, description, image, lien,
+      top_du_mois, prix, fonctionnalites_avancees, donnees_fiche,
+      titre_affiche // <-- Ajout ici
     } = req.body;
-
-    console.log(`✏️ PUT /api/produits/${id}`);
-
     // Vérifier si le produit existe
     const checkResult = await pool.query(
       'SELECT id FROM produits WHERE id = $1',
@@ -219,11 +205,11 @@ app.put('/api/produits/:id', async (req, res) => {
       });
     }
 
-    // Vérifier si la colonne image_data existe
+    // Vérifier si la colonne image existe
     const columnCheck = await pool.query(`
       SELECT column_name 
       FROM information_schema.columns 
-      WHERE table_name = 'produits' AND column_name = 'image_data'
+      WHERE table_name = 'produits' AND column_name = 'image'
     `);
 
     let query, params;
@@ -232,16 +218,17 @@ app.put('/api/produits/:id', async (req, res) => {
       query = `
         UPDATE produits 
         SET nom = $1, categorie = $2, description = $3, image = $4,
-            image_data = $5, lien = $6, top_du_mois = $7, prix = $8, 
-            fonctionnalites_avancees = $9, donnees_fiche = $10
-        WHERE id = $11
+            image = $5, lien = $6, top_du_mois = $7, prix = $8, 
+            fonctionnalites_avancees = $9, donnees_fiche = $10, titre_affiche = $11
+        WHERE id = $12
         RETURNING *
       `;
       params = [
         nom, categorie || null, description || null,
-        image || null, image_data || null, lien || null,
+        image || null, image || null, lien || null,
         top_du_mois || false, prix || null,
         fonctionnalites_avancees || [], donnees_fiche || [],
+        titre_affiche || null, // <-- Ajout ici
         id
       ];
     } else {
@@ -249,23 +236,21 @@ app.put('/api/produits/:id', async (req, res) => {
         UPDATE produits 
         SET nom = $1, categorie = $2, description = $3, image = $4,
             lien = $5, top_du_mois = $6, prix = $7, 
-            fonctionnalites_avancees = $8, donnees_fiche = $9
-        WHERE id = $10
+            fonctionnalites_avancees = $8, donnees_fiche = $9, titre_affiche = $10
+        WHERE id = $11
         RETURNING *
       `;
       params = [
         nom, categorie || null, description || null,
-        image || image_data || null, lien || null,
+        image || image || null, lien || null,
         top_du_mois || false, prix || null,
         fonctionnalites_avancees || [], donnees_fiche || [],
+        titre_affiche || null, // <-- Ajout ici
         id
       ];
     }
 
     const result = await pool.query(query, params);
-
-    console.log(`✅ Produit ${id} mis à jour`);
-
     res.json({
       success: true,
       data: result.rows[0],
@@ -285,8 +270,6 @@ app.put('/api/produits/:id', async (req, res) => {
 app.delete('/api/produits/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`🗑️ DELETE /api/produits/${id}`);
-
     const result = await pool.query(
       'DELETE FROM produits WHERE id = $1 RETURNING nom',
       [id]
@@ -298,9 +281,6 @@ app.delete('/api/produits/:id', async (req, res) => {
         error: 'Produit non trouvé'
       });
     }
-
-    console.log(`✅ Produit "${result.rows[0].nom}" supprimé`);
-
     res.json({
       success: true,
       message: `Produit "${result.rows[0].nom}" supprimé avec succès`
@@ -319,8 +299,6 @@ app.delete('/api/produits/:id', async (req, res) => {
 app.post('/api/generate-fiche/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`📄 Génération fiche pour produit ID: ${id}`);
-
     // Récupérer le produit depuis PostgreSQL
     const result = await pool.query('SELECT * FROM produits WHERE id = $1', [id]);
     if (result.rows.length === 0) {
@@ -373,11 +351,11 @@ function generateFicheHTML(product) {
 </head>
 <body>
     <div class="entete">
-        <img src="/assets/images/gaming.png" alt="Gaming">
-        <a href="javascript:history.back()">← Retour</a>
-    </div>
+    <img src="../../frontend/public/assets/images/gaming.png" alt="Gaming">
+    <a href="javascript:history.back()">← Retour</a>
+</div>
 
-    <h1>${product.nom}</h1>
+    <h1>${product.titre_affiche || product.nom}</h1>
     <div id="badge-top-mois"></div>
     <p class="description">Chargement de la description...</p>
 
@@ -403,18 +381,18 @@ function generateFicheHTML(product) {
     </style>
 
     <footer class="footer">
-        <img src="/assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
-        <div class="footer-links">
-            <div class="footer-item">
-                <img src="/assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
-                <a href="/index.html">Accueil</a>
-            </div>
-            <div class="footer-item">
-                <img src="/assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
-                <a href="/top-du-mois.html">Vitrine</a>
-            </div>
+    <img src="../../frontend/public/assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
+    <div class="footer-links">
+        <div class="footer-item">
+            <img src="../../frontend/public/assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+            <a href="../../frontend/public/index.html">Accueil</a>
         </div>
-    </footer>
+        <div class="footer-item">
+            <img src="../../frontend/public/assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+            <a href="../../frontend/public/top-du-mois.html">Vitrine</a>
+        </div>
+    </div>
+</footer>
 
     <script src="/assets/js/utils.js"></script>
     <script src="/assets/js/fiche-produit.js"></script>
@@ -425,8 +403,6 @@ function generateFicheHTML(product) {
 // GET - Statistiques
 app.get('/api/stats', async (req, res) => {
   try {
-    console.log('📈 GET /api/stats');
-
     const stats = await pool.query(`
       SELECT
         COUNT(DISTINCT id) AS total_products,
@@ -503,25 +479,9 @@ app.get('/api/test', (req, res) => {
 // ========== DÉMARRAGE DU SERVEUR ==========
 
 app.listen(port, async () => {
-  console.log('');
-  console.log('╔════════════════════════════════════════════╗');
-  console.log('║   🚀 SERVEUR POSTGRESQL DÉMARRÉ            ║');
-  console.log('╚════════════════════════════════════════════╝');
-  console.log('');
-  console.log(`📡 API: http://localhost:${port}/api`);
-  console.log(`🖥️  Site: http://localhost:${port}`);
-  console.log('');
-  console.log('📁 Dossiers configurés:');
-  console.log(`   Assets: ${assetsPath}`);
-  console.log(`   Frontend: ${frontendPath}`);
-  console.log(`   Fiches: ${fichesPath}`);
-  console.log('');
-
   // Test connexion PostgreSQL
   try {
     const result = await pool.query('SELECT COUNT(*) FROM produits');
-    console.log(`✅ PostgreSQL connecté`);
-    console.log(`📦 ${result.rows[0].count} produits dans la base`);
   } catch (err) {
     console.error('❌ Erreur PostgreSQL:', err.message);
   }
@@ -529,17 +489,15 @@ app.listen(port, async () => {
   // Vérifier que les images sont accessibles
   const testImagePath = path.join(assetsPath, 'images',);
   if (fs.existsSync(testImagePath)) {
-    console.log('✅ Image test trouvée: ' + testImagePath);
   } else {
-    console.log('⚠️ Image test non trouvée');
   }
 
-  console.log('');
+  // Ajoute ce message :
+  console.log(`🚀 Serveur démarré sur http://localhost:${port}`);
 });
 
 // Gestion propre de l'arrêt
 process.on('SIGINT', async () => {
-  console.log('\n👋 Arrêt du serveur...');
   await pool.end();
   process.exit(0);
 });

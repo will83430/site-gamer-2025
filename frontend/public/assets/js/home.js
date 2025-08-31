@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Gestion des erreurs de chargement
         video.addEventListener('error', function() {
-            console.log('Erreur de chargement vidéo:', this.src);
             // Optionnel: remplacer par une image de fallback
         });
 
