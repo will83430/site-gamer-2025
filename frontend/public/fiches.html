@@ -20,14 +20,16 @@
     <h1 id="titre-categorie" class="titre-categorie">Chargement...</h1>
     <p class="description" id="desc-cat"></p>
 
-    <div id="zone-fiches" class="produits-grid"></div>
+    <div id="zone-fiches" class="produits-grid">
+      <img src="${p.image ? '/assets/images/' + p.image : '/assets/images/placeholder.png'}" alt="${p.titre_affiche || p.nom}">
+      <h4>${p.titre_affiche || p.nom}</h4>
+    </div>
 
     <button id="btn-comparer" class="btn btn-comparer">
       Comparer les produits sélectionnés
     </button>
 
-    <div id="zone-comparaison" class="zone-comparaison hidden">
-      <h2 class="comparaison-titre">Produits Comparés</h2>
+    <div id="zone-comparaison">
       <div id="comparaison-content"></div>
     </div>
     

@@ -326,28 +326,59 @@ async function comparerProduits() {
         
         // Créer les cartes de comparaison en utilisant les classes CSS existantes
         comparaisonContent.innerHTML = `
-            <div class="comparaison-grid">
-                ${produitsDetails.map(p => `
-                    <div class="fiche-comparaison">
-                        <img src="${p.image || p.image || 'frontend/public/assets/images/placeholder.png'}" 
-                             alt="${p.nom}">
-                        <h4>${p.nom}</h4>
-                        <p class="info"><strong>Prix:</strong> ${p.prix || 'N/C'}</p>
-                        <p class="info"><strong>Catégorie:</strong> ${p.categorie || 'N/C'}</p>
-                        <p class="info">${p.description || 'Description non disponible'}</p>
-                        ${p.top_du_mois ? '<p class="vedette-badge" style="background: #ffd700; color: #333; display: inline-block; padding: 5px 10px; border-radius: 5px;">⭐ Top du mois</p>' : ''}
-                        ${p.fonctionnalites_avancees && p.fonctionnalites_avancees.length > 0 ? `
-                            <ul style="text-align: left; padding-left: 20px; margin-top: 10px;">
-                                ${p.fonctionnalites_avancees.slice(0, 5).map(f => `<li style="font-size: 0.9em;">${f}</li>`).join('')}
-                            </ul>
-                        ` : ''}
-                    </div>
-                `).join('')}
-            </div>
-            <button id="btn-fermer-comparaison" class="btn btn-comparer" onclick="fermerComparaison()">
-    Fermer la comparaison
-</button>
-        `;
+    <div class="comparaison-grid">
+        ${produitsDetails.map(p => {
+            // Gestion du chemin d'image comme dans afficherProduits()
+            let imageUrl = p.image || '';
+            if (imageUrl) {
+                if (imageUrl.startsWith('/')) {
+                    imageUrl = imageUrl.substring(1);
+                }
+                if (!imageUrl.startsWith('http') && !imageUrl.startsWith('assets/images/')) {
+                    imageUrl = `assets/images/${imageUrl}`;
+                }
+            } else {
+                imageUrl = 'assets/images/placeholder.png';
+            }
+            
+            return `
+                <div class="fiche-comparaison">
+                    <img src="${imageUrl}" 
+                         alt="${p.titre_affiche || p.nom}" 
+                         onerror="this.onerror=null;this.src='assets/images/placeholder.png';">
+                    <h4>${p.titre_affiche || p.nom}</h4>
+                    <p class="info"><strong>Prix:</strong> ${p.prix || 'N/C'}</p>
+                    <p class="info"><strong>Catégorie:</strong> ${p.categorie || 'N/C'}</p>
+                    <p class="info">${p.description || 'Description non disponible'}</p>
+                    ${p.top_du_mois ? `
+    <div class="vedette-badge" style="
+        position: absolute;
+        top: 10px;
+        left: 10px; /* Changé de right à left */
+        background: #ffd700;
+        color: #333;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        z-index: 10;
+    ">
+        ⭐ Top du mois
+    </div>
+` : ''}
+                    ${p.fonctionnalites_avancees && p.fonctionnalites_avancees.length > 0 ? `
+                        <ul>
+                            ${p.fonctionnalites_avancees.slice(0, 5).map(f => `<li>${f}</li>`).join('')}
+                        </ul>
+                    ` : ''}
+                </div>
+            `;
+        }).join('')}
+    </div>
+    <button id="btn-fermer-comparaison" class="btn btn-comparer" onclick="fermerComparaison()">
+        Fermer la comparaison
+    </button>
+`;
         
         // Afficher la zone de comparaison
         zoneComparaison.classList.remove('hidden');
@@ -405,9 +436,10 @@ async function afficherDetailsModal(produitId) {
                     <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
                     <h2>${produit.nom}</h2>
                     
-                    ${produit.image || produit.image ? `
-                        <img src="${produit.image || produit.image}" alt="${produit.nom}" style="max-width: 100%; margin: 20px 0;">
-                    ` : ''}
+                    ${produit.image ? `
+    <img src="/assets/images/${produit.image}" alt="${produit.titre_affiche || produit.nom}" style="max-width: 100%; margin: 20px 0;" 
+         onerror="this.onerror=null;this.src='/assets/images/placeholder.png';">
+` : ''}
                     
                     <p><strong>Catégorie:</strong> ${produit.categorie}</p>
                     <p><strong>Prix:</strong> ${produit.prix || 'Non communiqué'}</p>

@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs'); // IMPORTANT !
 const compression = require('compression'); // 🔥 AJOUTE CETTE LIGNE
+const assetsPath = path.join(__dirname, 'frontend/public/assets');
 
 const app = express();
 const port = 3000;
@@ -28,10 +29,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // ========== SERVIR LES FICHIERS STATIQUES - ORDRE IMPORTANT ! ==========
 
 // 1. D'ABORD servir le dossier frontend/public/assets pour /assets
-const assetsPath = path.join(__dirname, 'frontend', 'public', 'assets');
-app.use('/assets', express.static(assetsPath, {
-  maxAge: '1d' // Cache 1 jour
-}));
+app.use('/assets', express.static(path.join(__dirname, 'frontend/public/assets')));
 
 // 2. Servir aussi frontend/public pour les fichiers HTML
 const frontendPath = path.join(__dirname, 'frontend', 'public');
@@ -487,7 +485,7 @@ app.listen(port, async () => {
   }
 
   // Vérifier que les images sont accessibles
-  const testImagePath = path.join(assetsPath, 'images',);
+  const testImagePath = path.join(assetsPath, 'images');
   if (fs.existsSync(testImagePath)) {
   } else {
   }
