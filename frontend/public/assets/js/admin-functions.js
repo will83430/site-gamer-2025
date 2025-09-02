@@ -95,7 +95,9 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🧩 Spécifications techniques", index: 2 },
             { titre: "🎥 Fonctions vidéo et photo", index: 3 },
             { titre: "🌐 Connectivité", index: 4 },
-            { titre: "🎮 Expérience utilisateur", index: 5 }
+            { titre: "🎮 Expérience utilisateur", index: 5 },
+            { titre: "🛡️ Garantie et support", index: 6 },
+            { titre: "📦 Accessoires inclus", index: 7 }
         ],
         'CONSOLE': [
             { titre: "📝 Description détaillée", index: 0 },
@@ -104,7 +106,9 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🖥️ Écran et affichage", index: 3 },
             { titre: "🕹️ Contrôleurs et interaction", index: 4 },
             { titre: "🌐 Connectivité", index: 5 },
-            { titre: "🎮 Expérience de jeu", index: 6 }
+            { titre: "🎮 Expérience de jeu", index: 6 },
+            { titre: "🛡️ Garantie et support", index: 7 },
+            { titre: "📦 Contenu de la boîte", index: 8 }
         ],
         'TABLETTE': [
             { titre: "📝 Description détaillée", index: 0 },
@@ -113,7 +117,9 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🖥️ Écran et affichage", index: 3 },
             { titre: "🖊️ Accessoires et interaction", index: 4 },
             { titre: "🌐 Connectivité", index: 5 },
-            { titre: "🎮 Applications et usages", index: 6 }
+            { titre: "🎮 Applications et usages", index: 6 },
+            { titre: "🔋 Autonomie", index: 7 },
+            { titre: "🛡️ Garantie et support", index: 8 }
         ],
         'SMARTPHONE': [
             { titre: "📝 Description détaillée", index: 0 },
@@ -121,7 +127,10 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🧩 Spécifications techniques", index: 2 },
             { titre: "📸 Appareil photo", index: 3 },
             { titre: "🌐 Connectivité", index: 4 },
-            { titre: "🎮 Expérience utilisateur", index: 5 }
+            { titre: "🎮 Expérience utilisateur", index: 5 },
+            { titre: "🔋 Autonomie", index: 6 },
+            { titre: "🛡️ Garantie et support", index: 7 },
+            { titre: "📦 Contenu de la boîte", index: 8 }
         ],
         'PC GAMING': [
             { titre: "📝 Description détaillée", index: 0 },
@@ -129,7 +138,10 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🧩 Spécifications techniques", index: 2 },
             { titre: "🎮 Performances gaming", index: 3 },
             { titre: "🌐 Connectivité", index: 4 },
-            { titre: "🎮 Expérience utilisateur", index: 5 }
+            { titre: "🎮 Expérience utilisateur", index: 5 },
+            { titre: "🔋 Gestion thermique", index: 6 },
+            { titre: "🛡️ Garantie et support", index: 7 },
+            { titre: "📦 Accessoires inclus", index: 8 }
         ],
         'SERVEUR': [
             { titre: "📝 Description détaillée", index: 0 },
@@ -137,7 +149,9 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🧩 Spécifications techniques", index: 2 },
             { titre: "🖥️ Performances et virtualisation", index: 3 },
             { titre: "🌐 Connectivité réseau", index: 4 },
-            { titre: "🎮 Gestion et monitoring", index: 5 }
+            { titre: "🎮 Gestion et monitoring", index: 5 },
+            { titre: "🔒 Sécurité et redondance", index: 6 },
+            { titre: "🛡️ Garantie et support", index: 7 }
         ],
         'CASQUE AUDIO': [
             { titre: "📝 Description détaillée", index: 0 },
@@ -145,7 +159,9 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🧩 Spécifications techniques", index: 2 },
             { titre: "🎧 Fonctions audio", index: 3 },
             { titre: "🌐 Connectivité", index: 4 },
-            { titre: "🎮 Confort et utilisation", index: 5 }
+            { titre: "🎮 Confort et utilisation", index: 5 },
+            { titre: "🔋 Autonomie", index: 6 },
+            { titre: "🛡️ Garantie et support", index: 7 }
         ],
         'MONTRE CONNECTEE': [
             { titre: "📝 Description détaillée", index: 0 },
@@ -153,7 +169,85 @@ function generateSectionsByCategory(categorie, donneesF = []) {
             { titre: "🧩 Spécifications techniques", index: 2 },
             { titre: "⌚ Fonctions sport et santé", index: 3 },
             { titre: "🌐 Connectivité", index: 4 },
-            { titre: "🎮 Applications et autonomie", index: 5 }
+            { titre: "🎮 Applications et autonomie", index: 5 },
+            { titre: "🔋 Autonomie", index: 6 },
+            { titre: "🛡️ Garantie et support", index: 7 }
+        ],
+        'CAMERA': [
+            { titre: "📝 Description détaillée", index: 0 },
+            { titre: "💰 Prix et disponibilité", index: 1 },
+            { titre: "🧩 Spécifications techniques", index: 2 },
+            { titre: "🎥 Fonctions vidéo et photo", index: 3 },
+            { titre: "🌐 Connectivité", index: 4 },
+            { titre: "🎮 Expérience utilisateur", index: 5 },
+            { titre: "🔋 Autonomie", index: 6 },
+            { titre: "🛡️ Garantie et support", index: 7 },
+            { titre: "📦 Accessoires inclus", index: 8 }
+        ],
+        'PERIPHERIQUES': [
+            { titre: "📝 Description détaillée", index: 0 },
+            { titre: "💰 Prix et disponibilité", index: 1 },
+            { titre: "🧩 Spécifications techniques", index: 2 },
+            { titre: "🎛️ Fonctions avancées", index: 3 },
+            { titre: "🌐 Connectivité", index: 4 },
+            { titre: "🎮 Expérience utilisateur", index: 5 },
+            { titre: "🛡️ Garantie et support", index: 6 },
+            { titre: "📦 Contenu de la boîte", index: 7 },
+            { titre: "🔋 Autonomie", index: 8 }
+        ],
+        'CASQUE VR': [
+            { titre: "📝 Description détaillée", index: 0 },
+            { titre: "💰 Prix et disponibilité", index: 1 },
+            { titre: "🧩 Spécifications techniques", index: 2 },
+            { titre: "🕹️ Contrôleurs et interaction", index: 3 },
+            { titre: "🌐 Connectivité", index: 4 },
+            { titre: "🎮 Expérience immersive", index: 5 },
+            { titre: "🛡️ Garantie et support", index: 6 }
+        ],
+        'IMPRIMANTE 3D': [
+            { titre: "📝 Description détaillée", index: 0 },
+            { titre: "💰 Prix et disponibilité", index: 1 },
+            { titre: "🧩 Spécifications techniques", index: 2 },
+            { titre: "🖨️ Fonctions d’impression", index: 3 },
+            { titre: "🌐 Connectivité", index: 4 },
+            { titre: "🎮 Expérience utilisateur", index: 5 },
+            { titre: "🛡️ Garantie et support", index: 6 }
+        ],
+        'ECRAN TV': [
+            { titre: "📝 Description détaillée", index: 0 },
+            { titre: "💰 Prix et disponibilité", index: 1 },
+            { titre: "🧩 Spécifications techniques", index: 2 },
+            { titre: "🖥️ Écran et affichage", index: 3 },
+            { titre: "🌐 Connectivité", index: 4 },
+            { titre: "🎮 Expérience utilisateur", index: 5 },
+            { titre: "🛡️ Garantie et support", index: 6 }
+        ],
+        'VIDEO PROJECTEUR': [
+            { titre: "📝 Description détaillée", index: 0 },
+            { titre: "💰 Prix et disponibilité", index: 1 },
+            { titre: "🧩 Spécifications techniques", index: 2 },
+            { titre: "🎥 Fonctions vidéo", index: 3 },
+            { titre: "🌐 Connectivité", index: 4 },
+            { titre: "🎮 Expérience utilisateur", index: 5 },
+            { titre: "🛡️ Garantie et support", index: 6 }
+        ],
+        'BOX INTERNET': [
+            { titre: "📝 Description détaillée", index: 0 },
+            { titre: "💰 Prix et disponibilité", index: 1 },
+            { titre: "🧩 Spécifications techniques", index: 2 },
+            { titre: "🌐 Connectivité", index: 3 },
+            { titre: "🎮 Expérience utilisateur", index: 4 },
+            { titre: "🛡️ Garantie et support", index: 5 }
+        ],
+        'TABLEAU INTERACTIF': [
+            { titre: "📝 Description détaillée", index: 0 },
+            { titre: "💰 Prix et disponibilité", index: 1 },
+            { titre: "🧩 Spécifications techniques", index: 2 },
+            { titre: "🖥️ Écran et affichage", index: 3 },
+            { titre: "🖊️ Accessoires et interaction", index: 4 },
+            { titre: "🌐 Connectivité", index: 5 },
+            { titre: "🎮 Expérience utilisateur", index: 6 },
+            { titre: "🛡️ Garantie et support", index: 7 }
         ]
     };
 

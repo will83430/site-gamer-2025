@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Freebox Ultra</title>
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -56,7 +56,7 @@
 
     <!-- Scripts avec les bons chemins -->
     <script src="/assets/js/utils.js"></script>
-    <script src="/assets/js/fiche-produit.js"></script>
+    <script src="/assets/js/fiche-produit.min.js"></script>
     
     <!-- Script de debug pour voir ce qui se passe -->
     <script>
@@ -65,7 +65,7 @@
         // Vérifier si les scripts sont chargés
         setTimeout(() => {
             if (typeof ficheProduit === 'undefined') {
-                console.error('❌ fiche-produit.js n\'est pas chargé !');
+                console.error('❌ fiche-produit.min.js n\'est pas chargé !');
                 console.log('Tentative de chargement manuel...');
                 
                 // Charger manuellement les données si le script ne fonctionne pas
@@ -94,7 +94,7 @@
                         `;
                     });
             } else {
-                console.log('✅ fiche-produit.js est chargé');
+                console.log('✅ fiche-produit.min.js est chargé');
             }
         }, 1000);
         

@@ -59,7 +59,12 @@ function afficherDonneesProduit(produit) {
     // 3. Image
     const img = document.querySelector('.gallery img');
 if (img && produit.image) {
-    img.src = `/assets/images/${produit.image}`;
+    // Nettoyage du chemin de l'image
+    let imagePath = produit.image;
+    if (imagePath.includes('assets/images/assets/images/')) {
+        imagePath = imagePath.replace('assets/images/assets/images/', 'assets/images/');
+    }
+    img.src = imagePath;
     img.onerror = () => img.src = '/assets/images/placeholder.png';
     console.log('🖼️ Image affichée :', img.src);
 }

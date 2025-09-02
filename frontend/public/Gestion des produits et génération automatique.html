@@ -686,7 +686,7 @@
 
                 const productData = {
                     nom: document.getElementById('new-nom').value,
-                    titre_affiche: document.getElementById('new-titre-affiche').value, // <-- ajout ici
+                    titre_affiche: document.getElementById('new-titre-affiche').value, // <-- AJOUT ICI
                     categorie: document.getElementById('new-categorie').value,
                     prix: document.getElementById('new-prix').value,
                     description: document.getElementById('new-description').value,
@@ -694,13 +694,13 @@
                     top_du_mois: document.getElementById('new-top').value === 'true',
                     fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
                     donnees_fiche: collectCategoryData('new'),
-                    titre_affiche: document.getElementById('new-titre-affiche').value // <-- AJOUT ICI
                 };
                 // Créer un produit ET générer sa fiche HTML
                 // Créer un produit ET générer sa fiche HTML
                 async function createAndGenerateFiche() {
                     const productData = {
                         nom: document.getElementById('new-nom').value,
+                        titre_affiche: document.getElementById('new-titre-affiche').value,
                         categorie: document.getElementById('new-categorie').value,
                         prix: document.getElementById('new-prix').value,
                         description: document.getElementById('new-description').value,
@@ -1084,50 +1084,132 @@
 
             // Obtenir les champs spécifiques à une catégorie
             function getCategorySpecificFields(category) {
-                const baseFields = [
-                    { emoji: "📝", label: "Description détaillée", placeholder: "Description complète du produit" },
-                    { emoji: "💰", label: "Prix", placeholder: "Ex: 1299€ - Prix compétitif" },
-                    { emoji: "🧩", label: "Spécifications matérielles", placeholder: "Processeur, RAM, stockage..." }
-                ];
+    const baseFields = [
+        { emoji: "📝", label: "Description détaillée", placeholder: "Description complète du produit" },
+        { emoji: "💰", label: "Prix", placeholder: "Ex: 1299€ - Prix compétitif" },
+        { emoji: "🧩", label: "Spécifications matérielles", placeholder: "Processeur, RAM, stockage..." }
+    ];
 
-                const categorySpecific = {
-                    'DRONE': [
-                        { emoji: "🎥", label: "Fonctions vidéo", placeholder: "Résolution, stabilisation..." }
-                    ],
-                    'CONSOLE': [
-                        { emoji: "🖥️", label: "Écran et affichage", placeholder: "Résolution, taux..." },
-                        { emoji: "🕹️", label: "Contrôleurs", placeholder: "Manettes, accessoires..." }
-                    ],
-                    'TABLETTE': [
-                        { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution..." },
-                        { emoji: "🖊️", label: "Accessoires", placeholder: "Stylet, clavier..." }
-                    ],
-                    'SMARTPHONE': [
-                        { emoji: "📸", label: "Appareil photo", placeholder: "Capteurs, modes..." }
-                    ],
-                    'PC GAMING': [
-                        { emoji: "🎮", label: "Fonctions gaming", placeholder: "GPU, FPS, RGB..." }
-                    ],
-                    'SERVEUR': [
-                        { emoji: "🖥️", label: "Performances", placeholder: "Coeurs, virtualisation..." }
-                    ],
-                    'CASQUE AUDIO': [
-                        { emoji: "🎧", label: "Fonctions audio", placeholder: "Drivers, fréquence..." }
-                    ],
-                    'MONTRE CONNECTEE': [
-                        { emoji: "⌚", label: "Sport et santé", placeholder: "Capteurs, autonomie..." }
-                    ]
-                };
+    const categorySpecific = {
+        'DRONE': [
+            { emoji: "🎥", label: "Fonctions vidéo et photo", placeholder: "Résolution, stabilisation, modes photo..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Bluetooth, radio..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Pilotage, application mobile..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Accessoires inclus", placeholder: "Batteries, hélices, sacoche..." }
+        ],
+        'CONSOLE': [
+            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Résolution, taux de rafraîchissement..." },
+            { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, accessoires..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Ethernet, Bluetooth..." },
+            { emoji: "🎮", label: "Expérience de jeu", placeholder: "Interface, exclusivités..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Manettes, câbles..." }
+        ],
+        'TABLETTE': [
+            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, technologie..." },
+            { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, clavier..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, 4G/5G, Bluetooth..." },
+            { emoji: "🎮", label: "Applications et usages", placeholder: "Productivité, jeux..." },
+            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'SMARTPHONE': [
+            { emoji: "📸", label: "Appareil photo", placeholder: "Nombre de capteurs, résolution..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "5G, Wi-Fi, Bluetooth..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, OS..." },
+            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Chargeur, câble..." }
+        ],
+        'PC GAMING': [
+            { emoji: "🎮", label: "Performances gaming", placeholder: "GPU, CPU, FPS..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Ethernet, Bluetooth..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Refroidissement, bruit..." },
+            { emoji: "🔋", label: "Gestion thermique", placeholder: "Ventilation, watercooling..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Accessoires inclus", placeholder: "Souris, clavier..." }
+        ],
+        'SERVEUR': [
+            { emoji: "🖥️", label: "Performances et virtualisation", placeholder: "CPU, RAM, hyperviseur..." },
+            { emoji: "🌐", label: "Connectivité réseau", placeholder: "Ethernet, fibre..." },
+            { emoji: "🎮", label: "Gestion et monitoring", placeholder: "Logiciels, alertes..." },
+            { emoji: "🔒", label: "Sécurité et redondance", placeholder: "RAID, alimentation..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'CASQUE AUDIO': [
+            { emoji: "🎧", label: "Fonctions audio", placeholder: "ANC, spatialisation..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, filaire..." },
+            { emoji: "🎮", label: "Confort et utilisation", placeholder: "Poids, coussinets..." },
+            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'MONTRE CONNECTEE': [
+            { emoji: "⌚", label: "Fonctions sport et santé", placeholder: "Cardio, GPS, sommeil..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, Wi-Fi..." },
+            { emoji: "🎮", label: "Applications et autonomie", placeholder: "App store, batterie..." },
+            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'CAMERA': [
+            { emoji: "🎥", label: "Fonctions vidéo et photo", placeholder: "Résolution, formats, modes..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Bluetooth..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, ergonomie..." },
+            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Accessoires inclus", placeholder: "Objectifs, câbles..." }
+        ],
+        'PERIPHERIQUES': [
+            { emoji: "🎛️", label: "Fonctions avancées", placeholder: "Macros, RGB, capteurs..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, sans fil..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Ergonomie, confort..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Accessoires inclus..." },
+            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." }
+        ],
+        'CASQUE VR': [
+            { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, capteurs..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, Wi-Fi..." },
+            { emoji: "🎮", label: "Expérience immersive", placeholder: "Champ de vision, confort..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'IMPRIMANTE 3D': [
+            { emoji: "🖨️", label: "Fonctions d’impression", placeholder: "Technologie, matériaux..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "USB, Wi-Fi..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, calibration..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'ECRAN TV': [
+            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, HDR..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "HDMI, Wi-Fi..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, télécommande..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'VIDEO PROJECTEUR': [
+            { emoji: "🎥", label: "Fonctions vidéo", placeholder: "Résolution, luminosité..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "HDMI, Wi-Fi..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Installation, réglages..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'BOX INTERNET': [
+            { emoji: "🌐", label: "Connectivité", placeholder: "Ethernet, Wi-Fi..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, installation..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ],
+        'TABLEAU INTERACTIF': [
+            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution..." },
+            { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, support..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, HDMI..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, ergonomie..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+        ]
+    };
 
-                const specificFields = categorySpecific[category] || [];
-
-                return [
-                    ...baseFields,
-                    ...specificFields,
-                    { emoji: "🌐", label: "Connectivité", placeholder: "WiFi, Bluetooth, apps..." },
-                    { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, facilité..." }
-                ];
-            }
+    return [
+        ...baseFields,
+        ...(categorySpecific[category] || [])
+    ];
+}
 
             // Collecter les données de catégorie AVEC LABELS ET ICÔNES
             function collectCategoryData(prefix) {
@@ -1324,9 +1406,14 @@
                 const prefix = isEdit ? 'edit' : 'new';
                 const id = isEdit ? currentEditingId : null;
 
-                // Récupération des données du formulaire
+                let titreAfficheValue = document.getElementById(`${prefix}-titre-affiche`).value.trim();
+                if (!titreAfficheValue) {
+                    titreAfficheValue = formatTitreAffiche(document.getElementById(`${prefix}-nom`).value);
+                }
+
                 const productData = {
                     nom: document.getElementById(`${prefix}-nom`).value,
+                    titre_affiche: titreAfficheValue,
                     categorie: document.getElementById(`${prefix}-categorie`).value,
                     prix: document.getElementById(`${prefix}-prix`).value,
                     description: document.getElementById(`${prefix}-description`).value,
@@ -1431,6 +1518,17 @@ const sections = (product.donnees_fiche || [])
             <p>${parts[1]}</p>
         </section>`;
     }).join('\n');
+
+
+function formatTitreAffiche(nom) {
+    return nom
+        .replace(/-/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
         </script>
 </body>
 
@@ -1698,12 +1796,6 @@ const sections = (product.donnees_fiche || [])
             </div>
 
             <div class="form-group">
-                <label>Fonctionnalités avancées (une par ligne)</label>
-                <textarea id="edit-fonctionnalites" rows="5"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Titre
                 <label>Fonctionnalités avancées (une par ligne)</label>
                 <textarea id="edit-fonctionnalites" rows="5"></textarea>
             </div>
