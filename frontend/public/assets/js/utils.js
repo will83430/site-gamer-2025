@@ -2,7 +2,6 @@
 
 // Configuration globale
 const CONFIG = {
-    API_URL: 'http://localhost:3000/api',
     DEFAULT_IMAGE: 'assets/images/placeholder.png',
     ITEMS_PER_PAGE: 12
 };

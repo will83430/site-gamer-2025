@@ -46,16 +46,30 @@ app.use(express.static(__dirname));
 
 // ========== ROUTES API ==========
 
+
+
+// GET - Récupérer tous les produits
 // GET - Récupérer tous les produits
 app.get('/api/produits', async (req, res) => {
   try {
-    const result = await pool.query(`
+    const { categorie } = req.query;
+    
+    let query = `
       SELECT 
         id, nom, categorie, description, image, lien, 
         top_du_mois, prix, fonctionnalites_avancees, donnees_fiche, titre_affiche
       FROM produits 
-      ORDER BY categorie, nom
-    `);
+    `;
+    let params = [];
+    
+    if (categorie) {
+      query += ` WHERE categorie = $1`;
+      params.push(categorie);
+    }
+    
+    query += ` ORDER BY categorie, nom`;
+    
+    const result = await pool.query(query, params);
 
     // Traiter les images pour ajouter image_url
     const productsWithImages = result.rows.map(product => {
@@ -350,8 +364,7 @@ function generateFicheHTML(product) {
     <p class="description">Chargement de la description...</p>
 
     <div class="gallery">
-        <img src="/assets/images/placeholder.png" alt="${product.nom}" class="img-centree" onerror="this.src='/assets/images/placeholder.png'">
-    </div>
+<img src="/assets/images/${product.image || 'placeholder.png'}" alt="${product.nom}" class="img-centree" onerror="this.src='/assets/images/placeholder.png'"></div>
     
     <div class="lightbox" id="lightbox">
         <img id="lightbox-img" src="" alt="Zoom">

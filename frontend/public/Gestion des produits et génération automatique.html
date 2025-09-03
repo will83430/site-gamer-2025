@@ -32,6 +32,7 @@
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
+
         /* Tabs Navigation */
         .tabs {
             display: flex;
@@ -452,22 +453,29 @@
                 loadProducts();
                 setupDragAndDrop();
                 updateCategoryFields('new');
-                
-                // Écouteurs pour le titre automatique (une seule fois)
-    document.getElementById('new-nom').addEventListener('input', function() {
-        const titreField = document.getElementById('new-titre-affiche');
-        if (!titreField.value.trim()) {
-            titreField.value = formatTitreAffiche(this.value);
-        }
-    });
 
-    document.getElementById('edit-nom').addEventListener('input', function() {
-        const titreField = document.getElementById('edit-titre-affiche');
-        if (!titreField.value.trim()) {
-            titreField.value = formatTitreAffiche(this.value);
-        }
-    });
-});
+                // Écouteurs pour le titre automatique - CORRECTION
+                const newNomInput = document.getElementById('new-nom');
+                const editNomInput = document.getElementById('edit-nom');
+
+                if (newNomInput) {
+                    newNomInput.addEventListener('input', function () {
+                        const titreField = document.getElementById('new-titre-affiche');
+                        if (titreField && !titreField.value.trim()) {
+                            titreField.value = formatTitreAffiche(this.value);
+                        }
+                    });
+                }
+
+                if (editNomInput) {
+                    editNomInput.addEventListener('input', function () {
+                        const titreField = document.getElementById('edit-titre-affiche');
+                        if (titreField && !titreField.value.trim()) {
+                            titreField.value = formatTitreAffiche(this.value);
+                        }
+                    });
+                }
+            });
 
             // Gérer la sélection de fichier HTML
             function handleFicheSelect(event, prefix) {
@@ -701,7 +709,7 @@
                 // Récupérer les valeurs
                 const nom = document.getElementById('new-nom').value;
                 let titreAffiche = document.getElementById('new-titre-affiche').value.trim();
-                
+
                 // Si titre_affiche est vide, le générer automatiquement à partir du nom
                 if (!titreAffiche) {
                     titreAffiche = formatTitreAffiche(nom);
@@ -722,12 +730,12 @@
                 };
 
                 // Ajouter l'image si présente
-if (currentImageData['new']) {
-    const fileInput = document.getElementById('new-image-file');
-    if (fileInput && fileInput.files[0]) {
-        productData.image = fileInput.files[0].name;
-    }
-}
+                if (currentImageData['new']) {
+                    const fileInput = document.getElementById('new-image-file');
+                    if (fileInput && fileInput.files[0]) {
+                        productData.image = fileInput.files[0].name;
+                    }
+                }
 
                 try {
                     const response = await fetch(`${API_URL}/produits`, {
@@ -759,7 +767,18 @@ if (currentImageData['new']) {
 
                 if (!productId) {
                     document.getElementById('edit-form-container').style.display = 'none';
+                    // AJOUT: Nettoyer les données d'image quand on désélectionne
+                    delete currentImageData['edit'];
+                    if (modernUpload.edit) {
+                        modernUpload.edit.removePreview();
+                    }
                     return;
+                }
+
+                // AJOUT: Nettoyer avant de charger un nouveau produit
+                delete currentImageData['edit'];
+                if (modernUpload.edit) {
+                    modernUpload.edit.removePreview();
                 }
 
                 try {
@@ -770,6 +789,15 @@ if (currentImageData['new']) {
                         currentEditingId = productId;
                         populateEditForm(data.data);
                         document.getElementById('edit-form-container').style.display = 'block';
+
+                        // AJOUT: Forcer le rafraîchissement du titre après le chargement
+                        setTimeout(() => {
+                            const editNom = document.getElementById('edit-nom').value;
+                            const editTitre = document.getElementById('edit-titre-affiche');
+                            if (editTitre && !editTitre.value.trim() && editNom.trim()) {
+                                editTitre.value = formatTitreAffiche(editNom);
+                            }
+                        }, 100);
                     }
                 } catch (error) {
                     console.error('Erreur chargement:', error);
@@ -780,6 +808,7 @@ if (currentImageData['new']) {
             // Remplir le formulaire d'édition
             function populateEditForm(product) {
                 document.getElementById('edit-nom').value = product.nom || '';
+                document.getElementById('edit-titre-affiche').value = product.titre_affiche || ''; // AJOUT
                 document.getElementById('edit-categorie').value = product.categorie || '';
                 document.getElementById('edit-prix').value = product.prix || '';
                 document.getElementById('edit-description').value = product.description || '';
@@ -791,33 +820,36 @@ if (currentImageData['new']) {
                     : '';
                 document.getElementById('edit-fonctionnalites').value = fonctionnalites;
 
-                // Afficher l'image existante avec nettoyage du chemin
-                if (product.image_url || product.image || product.image) {
-                    let imageUrl = product.image || product.image || product.image_url || '';
+                // Afficher l'image existante
+if (product.image) {
+    let imageUrl = product.image;
+    let imageFileName = product.image;
 
-                    // Nettoyer l'URL de l'image (même logique que displayProducts)
-                    if (imageUrl) {
-                        // Supprimer le "/" au début s'il existe
-                        if (imageUrl.startsWith('/')) {
-                            imageUrl = imageUrl.substring(1);
-                        }
+    // Extraire juste le nom du fichier pour currentImageData
+    if (imageUrl.startsWith('assets/images/')) {
+        imageFileName = imageUrl.replace('assets/images/', '');
+        // Pour l'affichage, garder le chemin complet
+        imageUrl = imageUrl;
+    } else if (imageUrl.startsWith('/')) {
+        imageFileName = imageUrl.substring(1);
+        imageUrl = `assets/images/${imageFileName}`;
+    } else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:')) {
+        // Juste un nom de fichier
+        imageFileName = imageUrl;
+        imageUrl = `assets/images/${imageUrl}`;
+    }
 
-                        // Si ce n'est pas une URL complète et ne commence pas par "assets/images/"
-                        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:') && !imageUrl.startsWith('assets/images/')) {
-                            imageUrl = `assets/images/${imageUrl}`;
-                        }
-                    }
+    const editUploadArea = document.getElementById('edit-upload-area');
+    const editImagePreview = document.getElementById('edit-image-preview');
+    const editPreviewImg = document.getElementById('edit-preview-img');
 
-
-                    const editUploadArea = document.getElementById('edit-upload-area');
-                    const editImagePreview = document.getElementById('edit-image-preview');
-                    const editPreviewImg = document.getElementById('edit-preview-img');
-
-                    if (editUploadArea) editUploadArea.style.display = 'none';
-                    if (editImagePreview) editImagePreview.style.display = 'block';
-                    if (editPreviewImg) editPreviewImg.src = imageUrl;
-                    currentImageData['edit'] = imageUrl;
-                }
+    if (editUploadArea) editUploadArea.style.display = 'none';
+    if (editImagePreview) editImagePreview.style.display = 'block';
+    if (editPreviewImg) editPreviewImg.src = imageUrl;
+    
+    // IMPORTANT: Stocker juste le nom du fichier
+    currentImageData['edit'] = imageFileName;
+}
 
                 updateCategoryFields('edit', product.donnees_fiche);
                 autoFillFichePath('edit');
@@ -832,7 +864,7 @@ if (currentImageData['new']) {
                 // Récupérer les valeurs
                 const nom = document.getElementById('edit-nom').value;
                 let titreAffiche = document.getElementById('edit-titre-affiche').value.trim();
-                
+
                 // Si titre_affiche est vide, le générer automatiquement
                 if (!titreAffiche) {
                     titreAffiche = formatTitreAffiche(nom);
@@ -855,9 +887,22 @@ if (currentImageData['new']) {
 if (currentImageData['edit']) {
     const fileInput = document.getElementById('edit-image-file');
     if (fileInput && fileInput.files[0]) {
+        // Nouveau fichier - juste le nom
         productData.image = fileInput.files[0].name;
-    } else if (typeof currentImageData['edit'] === 'string' && !currentImageData['edit'].startsWith('data:')) {
-        productData.image = currentImageData['edit'];
+    } else if (typeof currentImageData['edit'] === 'string' && 
+               currentImageData['edit'].trim() && 
+               !currentImageData['edit'].startsWith('data:')) {
+        // Image existante - nettoyer le nom
+        let imageName = currentImageData['edit'];
+        
+        if (imageName.startsWith('assets/images/')) {
+            imageName = imageName.replace('assets/images/', '');
+        }
+        if (imageName.startsWith('/')) {
+            imageName = imageName.substring(1);
+        }
+        
+        productData.image = imageName;
     }
 }
 
@@ -1032,22 +1077,22 @@ if (currentImageData['edit']) {
             📋 Données de fiche pour ${category}
         </h3>
         ${fields.map((field, index) => {
-    // Priorité : existingData (édition) > texte déjà saisi > vide
-    let value = '';
-    if (existingData && existingData[index]) {
-        const contenu = existingData[index];
-        // Gérer les \n échappés
-        const contenuNettoye = contenu.replace(/\\n/g, '\n');
-        
-        if (contenuNettoye.includes('\n') && /^[^\w\s]/.test(contenuNettoye)) {
-            value = contenuNettoye.split('\n').slice(1).join('\n');
-        } else {
-            value = contenu;
-        }
-    } else if (previousValues[index]) {
-        value = previousValues[index];
-    }
-            return `
+                    // Priorité : existingData (édition) > texte déjà saisi > vide
+                    let value = '';
+                    if (existingData && existingData[index]) {
+                        const contenu = existingData[index];
+                        // Gérer les \n échappés
+                        const contenuNettoye = contenu.replace(/\\n/g, '\n');
+
+                        if (contenuNettoye.includes('\n') && /^[^\w\s]/.test(contenuNettoye)) {
+                            value = contenuNettoye.split('\n').slice(1).join('\n');
+                        } else {
+                            value = contenu;
+                        }
+                    } else if (previousValues[index]) {
+                        value = previousValues[index];
+                    }
+                    return `
                 <div class="form-group">
                     <label>${field.emoji} ${field.label}</label>
                     <textarea 
@@ -1057,138 +1102,138 @@ if (currentImageData['edit']) {
                     >${value}</textarea>
                 </div>
             `;
-        }).join('')}
+                }).join('')}
     `;
             }
 
             // Obtenir les champs spécifiques à une catégorie
             function getCategorySpecificFields(category) {
-    const baseFields = [
-        { emoji: "📝", label: "Description détaillée", placeholder: "Description complète du produit" },
-        { emoji: "💰", label: "Prix", placeholder: "Ex: 1299€ - Prix compétitif" },
-        { emoji: "🧩", label: "Spécifications matérielles", placeholder: "Processeur, RAM, stockage..." }
-    ];
+                const baseFields = [
+                    { emoji: "📝", label: "Description détaillée", placeholder: "Description complète du produit" },
+                    { emoji: "💰", label: "Prix", placeholder: "Ex: 1299€ - Prix compétitif" },
+                    { emoji: "🧩", label: "Spécifications matérielles", placeholder: "Processeur, RAM, stockage..." }
+                ];
 
-    const categorySpecific = {
-        'DRONE': [
-            { emoji: "🎥", label: "Fonctions vidéo et photo", placeholder: "Résolution, stabilisation, modes photo..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Bluetooth, radio..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Pilotage, application mobile..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
-            { emoji: "📦", label: "Accessoires inclus", placeholder: "Batteries, hélices, sacoche..." }
-        ],
-        'CONSOLE': [
-            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Résolution, taux de rafraîchissement..." },
-            { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, accessoires..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Ethernet, Bluetooth..." },
-            { emoji: "🎮", label: "Expérience de jeu", placeholder: "Interface, exclusivités..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
-            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Manettes, câbles..." }
-        ],
-        'TABLETTE': [
-            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, technologie..." },
-            { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, clavier..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, 4G/5G, Bluetooth..." },
-            { emoji: "🎮", label: "Applications et usages", placeholder: "Productivité, jeux..." },
-            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'SMARTPHONE': [
-            { emoji: "📸", label: "Appareil photo", placeholder: "Nombre de capteurs, résolution..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "5G, Wi-Fi, Bluetooth..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, OS..." },
-            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
-            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Chargeur, câble..." }
-        ],
-        'PC GAMING': [
-            { emoji: "🎮", label: "Performances gaming", placeholder: "GPU, CPU, FPS..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Ethernet, Bluetooth..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Refroidissement, bruit..." },
-            { emoji: "🔋", label: "Gestion thermique", placeholder: "Ventilation, watercooling..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
-            { emoji: "📦", label: "Accessoires inclus", placeholder: "Souris, clavier..." }
-        ],
-        'SERVEUR': [
-            { emoji: "🖥️", label: "Performances et virtualisation", placeholder: "CPU, RAM, hyperviseur..." },
-            { emoji: "🌐", label: "Connectivité réseau", placeholder: "Ethernet, fibre..." },
-            { emoji: "🎮", label: "Gestion et monitoring", placeholder: "Logiciels, alertes..." },
-            { emoji: "🔒", label: "Sécurité et redondance", placeholder: "RAID, alimentation..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'CASQUE AUDIO': [
-            { emoji: "🎧", label: "Fonctions audio", placeholder: "ANC, spatialisation..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, filaire..." },
-            { emoji: "🎮", label: "Confort et utilisation", placeholder: "Poids, coussinets..." },
-            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'MONTRE CONNECTEE': [
-            { emoji: "⌚", label: "Fonctions sport et santé", placeholder: "Cardio, GPS, sommeil..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, Wi-Fi..." },
-            { emoji: "🎮", label: "Applications et autonomie", placeholder: "App store, batterie..." },
-            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'CAMERA': [
-            { emoji: "🎥", label: "Fonctions vidéo et photo", placeholder: "Résolution, formats, modes..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Bluetooth..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, ergonomie..." },
-            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
-            { emoji: "📦", label: "Accessoires inclus", placeholder: "Objectifs, câbles..." }
-        ],
-        'PERIPHERIQUES': [
-            { emoji: "🎛️", label: "Fonctions avancées", placeholder: "Macros, RGB, capteurs..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, sans fil..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Ergonomie, confort..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
-            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Accessoires inclus..." },
-            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." }
-        ],
-        'CASQUE VR': [
-            { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, capteurs..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, Wi-Fi..." },
-            { emoji: "🎮", label: "Expérience immersive", placeholder: "Champ de vision, confort..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'IMPRIMANTE 3D': [
-            { emoji: "🖨️", label: "Fonctions d’impression", placeholder: "Technologie, matériaux..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "USB, Wi-Fi..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, calibration..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'ECRAN TV': [
-            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, HDR..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "HDMI, Wi-Fi..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, télécommande..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'VIDEO PROJECTEUR': [
-            { emoji: "🎥", label: "Fonctions vidéo", placeholder: "Résolution, luminosité..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "HDMI, Wi-Fi..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Installation, réglages..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'BOX INTERNET': [
-            { emoji: "🌐", label: "Connectivité", placeholder: "Ethernet, Wi-Fi..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, installation..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ],
-        'TABLEAU INTERACTIF': [
-            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution..." },
-            { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, support..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, HDMI..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, ergonomie..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
-        ]
-    };
+                const categorySpecific = {
+                    'DRONE': [
+                        { emoji: "🎥", label: "Fonctions vidéo et photo", placeholder: "Résolution, stabilisation, modes photo..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Bluetooth, radio..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Pilotage, application mobile..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                        { emoji: "📦", label: "Accessoires inclus", placeholder: "Batteries, hélices, sacoche..." }
+                    ],
+                    'CONSOLE': [
+                        { emoji: "🖥️", label: "Écran et affichage", placeholder: "Résolution, taux de rafraîchissement..." },
+                        { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, accessoires..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Ethernet, Bluetooth..." },
+                        { emoji: "🎮", label: "Expérience de jeu", placeholder: "Interface, exclusivités..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                        { emoji: "📦", label: "Contenu de la boîte", placeholder: "Manettes, câbles..." }
+                    ],
+                    'TABLETTE': [
+                        { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, technologie..." },
+                        { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, clavier..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, 4G/5G, Bluetooth..." },
+                        { emoji: "🎮", label: "Applications et usages", placeholder: "Productivité, jeux..." },
+                        { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'SMARTPHONE': [
+                        { emoji: "📸", label: "Appareil photo", placeholder: "Nombre de capteurs, résolution..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "5G, Wi-Fi, Bluetooth..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, OS..." },
+                        { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                        { emoji: "📦", label: "Contenu de la boîte", placeholder: "Chargeur, câble..." }
+                    ],
+                    'PC GAMING': [
+                        { emoji: "🎮", label: "Performances gaming", placeholder: "GPU, CPU, FPS..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Ethernet, Bluetooth..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Refroidissement, bruit..." },
+                        { emoji: "🔋", label: "Gestion thermique", placeholder: "Ventilation, watercooling..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                        { emoji: "📦", label: "Accessoires inclus", placeholder: "Souris, clavier..." }
+                    ],
+                    'SERVEUR': [
+                        { emoji: "🖥️", label: "Performances et virtualisation", placeholder: "CPU, RAM, hyperviseur..." },
+                        { emoji: "🌐", label: "Connectivité réseau", placeholder: "Ethernet, fibre..." },
+                        { emoji: "🎮", label: "Gestion et monitoring", placeholder: "Logiciels, alertes..." },
+                        { emoji: "🔒", label: "Sécurité et redondance", placeholder: "RAID, alimentation..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'CASQUE AUDIO': [
+                        { emoji: "🎧", label: "Fonctions audio", placeholder: "ANC, spatialisation..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, filaire..." },
+                        { emoji: "🎮", label: "Confort et utilisation", placeholder: "Poids, coussinets..." },
+                        { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'MONTRE CONNECTEE': [
+                        { emoji: "⌚", label: "Fonctions sport et santé", placeholder: "Cardio, GPS, sommeil..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, Wi-Fi..." },
+                        { emoji: "🎮", label: "Applications et autonomie", placeholder: "App store, batterie..." },
+                        { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'CAMERA': [
+                        { emoji: "🎥", label: "Fonctions vidéo et photo", placeholder: "Résolution, formats, modes..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Bluetooth..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, ergonomie..." },
+                        { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                        { emoji: "📦", label: "Accessoires inclus", placeholder: "Objectifs, câbles..." }
+                    ],
+                    'PERIPHERIQUES': [
+                        { emoji: "🎛️", label: "Fonctions avancées", placeholder: "Macros, RGB, capteurs..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, sans fil..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Ergonomie, confort..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                        { emoji: "📦", label: "Contenu de la boîte", placeholder: "Accessoires inclus..." },
+                        { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." }
+                    ],
+                    'CASQUE VR': [
+                        { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, capteurs..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, Wi-Fi..." },
+                        { emoji: "🎮", label: "Expérience immersive", placeholder: "Champ de vision, confort..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'IMPRIMANTE 3D': [
+                        { emoji: "🖨️", label: "Fonctions d’impression", placeholder: "Technologie, matériaux..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "USB, Wi-Fi..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, calibration..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'ECRAN TV': [
+                        { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, HDR..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "HDMI, Wi-Fi..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, télécommande..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'VIDEO PROJECTEUR': [
+                        { emoji: "🎥", label: "Fonctions vidéo", placeholder: "Résolution, luminosité..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "HDMI, Wi-Fi..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Installation, réglages..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'BOX INTERNET': [
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Ethernet, Wi-Fi..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, installation..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ],
+                    'TABLEAU INTERACTIF': [
+                        { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution..." },
+                        { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, support..." },
+                        { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, HDMI..." },
+                        { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, ergonomie..." },
+                        { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+                    ]
+                };
 
-    return [
-        ...baseFields,
-        ...(categorySpecific[category] || [])
-    ];
-}
+                return [
+                    ...baseFields,
+                    ...(categorySpecific[category] || [])
+                ];
+            }
 
             // Collecter les données de catégorie AVEC LABELS ET ICÔNES
             function collectCategoryData(prefix) {
@@ -1205,11 +1250,17 @@ if (currentImageData['edit']) {
                 return data;
             }
 
-            // Réinitialiser le formulaire de création
             function resetCreateForm() {
                 document.getElementById('create-form').reset();
                 document.getElementById('new-category-fields').innerHTML = '';
-                removeImage('new');
+
+                // AJOUT: Nettoyer complètement les données d'image
+                delete currentImageData['new'];
+
+                // Réinitialiser la zone d'upload moderne
+                if (modernUpload.new) {
+                    modernUpload.new.removePreview();
+                }
             }
 
             // Afficher un message
@@ -1360,9 +1411,18 @@ if (currentImageData['edit']) {
                     this.previewContainer.innerHTML = '';
                     this.fileInput.value = '';
                     this.currentFile = null;
+
+                    // CORRECTION: Nettoyer complètement les données
                     delete currentImageData[this.prefix];
-                    showMessage(`🗑️ Image supprimée`, 'warning');
+
+                    // Réafficher la zone d'upload
+                    const uploadZone = document.getElementById(`${this.prefix}-upload-zone`);
+                    if (uploadZone) {
+                        uploadZone.style.display = 'block';
+                    }
+
                 }
+
             }
 
             // Initialisation des uploaders modernes
@@ -1404,11 +1464,25 @@ if (currentImageData['edit']) {
                 if (currentImageData[prefix]) {
     const fileInput = document.getElementById(`${prefix}-image-file`);
     if (fileInput && fileInput.files[0]) {
-        // Nouveau fichier sélectionné - stocker le nom du fichier
+        // Nouveau fichier sélectionné - stocker JUSTE le nom du fichier
         productData.image = fileInput.files[0].name;
-    } else if (typeof currentImageData[prefix] === 'string' && !currentImageData[prefix].startsWith('data:')) {
-        // Nom de fichier existant (pas de base64)
-        productData.image = currentImageData[prefix];
+    } else if (typeof currentImageData[prefix] === 'string' && 
+               currentImageData[prefix].trim() && 
+               !currentImageData[prefix].startsWith('data:')) {
+        // Image existante - nettoyer pour ne garder que le nom du fichier
+        let imageName = currentImageData[prefix];
+        
+        // Supprimer le chemin assets/images/ s'il existe
+        if (imageName.startsWith('assets/images/')) {
+            imageName = imageName.replace('assets/images/', '');
+        }
+        
+        // Supprimer le / au début s'il existe
+        if (imageName.startsWith('/')) {
+            imageName = imageName.substring(1);
+        }
+        
+        productData.image = imageName;
     }
 }
 
@@ -1455,7 +1529,6 @@ if (currentImageData['edit']) {
                         showMessage(`✅ Produit ${isEdit ? 'modifié' : 'créé'} mais erreur fiche: ${ficheData.error}`, 'warning');
                     }
 
-                    // 3. Nettoyer et recharger
                     if (!isEdit) resetCreateForm();
                     loadProducts();
                     loadStats();
@@ -1484,42 +1557,42 @@ if (currentImageData['edit']) {
             }
 
             // ...dans generateFicheHTML(product)...
-const sections = (product.donnees_fiche || [])
-    .filter(section => {
-        // Ne garde que les sections non vides (après le label)
-        const parts = section.split('\n');
-        return parts[1] && parts[1].trim() !== '';
-    })
-    .map(section => {
-        const parts = section.split('\n');
-        return `<section class="fiche-section">
+            const sections = (product.donnees_fiche || [])
+                .filter(section => {
+                    // Ne garde que les sections non vides (après le label)
+                    const parts = section.split('\n');
+                    return parts[1] && parts[1].trim() !== '';
+                })
+                .map(section => {
+                    const parts = section.split('\n');
+                    return `<section class="fiche-section">
             <h3>${parts[0]}</h3>
             <p>${parts[1]}</p>
         </section>`;
-    }).join('\n');
+                }).join('\n');
 
 
-function formatTitreAffiche(nom) {
-    if (!nom) return '';
-    
-    // Liste d'acronymes et termes à garder en majuscules
-    const keepUppercase = ['EOS', 'RAM', 'SSD', 'HDD', 'CPU', 'GPU', 'LED', 'LCD', 'HDR', 'USB', 'HD', 'UHD', 'FHD', '4K', '8K', 'PS5', 'PS4', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
-    
-    return nom
-        .replace(/-/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .split(' ')
-        .map(word => {
-            // Vérifier si le mot (en majuscules) est dans la liste à conserver en majuscules
-            if (keepUppercase.includes(word.toUpperCase())) {
-                return word.toUpperCase();
+            function formatTitreAffiche(nom) {
+                if (!nom) return '';
+
+                // Liste d'acronymes et termes à garder en majuscules
+                const keepUppercase = ['EOS', 'RAM', 'SSD', 'HDD', 'CPU', 'GPU', 'LED', 'LCD', 'HDR', 'USB', 'HD', 'UHD', 'FHD', '4K', '8K', 'PS5', 'PS4', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+
+                return nom
+                    .replace(/-/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .split(' ')
+                    .map(word => {
+                        // Vérifier si le mot (en majuscules) est dans la liste à conserver en majuscules
+                        if (keepUppercase.includes(word.toUpperCase())) {
+                            return word.toUpperCase();
+                        }
+                        // Sinon, appliquer la capitalisation standard
+                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                    })
+                    .join(' ');
             }
-            // Sinon, appliquer la capitalisation standard
-            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-        })
-        .join(' ');
-}
         </script>
 </body>
 
@@ -1671,7 +1744,13 @@ function formatTitreAffiche(nom) {
 
         <div class="form-group">
             <label>Titre affiché (optionnel)</label>
-            <input type="text" id="new-titre-affiche" placeholder="Ex: Asus ROG Strix G18">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="new-titre-affiche" placeholder="Ex: Asus ROG Strix G18" style="flex: 1;">
+                <button type="button" class="btn btn-info"
+                    onclick="document.getElementById('new-titre-affiche').value = formatTitreAffiche(document.getElementById('new-nom').value)">
+                    🔄 Auto
+                </button>
+            </div>
         </div>
 
         <div id="new-category-fields">
@@ -1711,7 +1790,8 @@ function formatTitreAffiche(nom) {
 
                 <div class="form-group">
                     <label>Catégorie *</label>
-                    <select id="edit-categorie" required onchange="updateCategoryFields('edit');autoFillFichePath('edit')">
+                    <select id="edit-categorie" required
+                        onchange="updateCategoryFields('edit');autoFillFichePath('edit')">
                         <option value="">-- Choisir --</option>
                         <option value="DRONE">DRONE</option>
                         <option value="CONSOLE">CONSOLE</option>
@@ -1793,7 +1873,13 @@ function formatTitreAffiche(nom) {
 
             <div class="form-group">
                 <label>Titre affiché (optionnel)</label>
-                <input type="text" id="edit-titre-affiche" placeholder="Ex: Asus ROG Strix G18">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="edit-titre-affiche" placeholder="Ex: Asus ROG Strix G18" style="flex: 1;">
+                    <button type="button" class="btn btn-info"
+                        onclick="document.getElementById('edit-titre-affiche').value = formatTitreAffiche(document.getElementById('edit-nom').value)">
+                        🔄 Auto
+                    </button>
+                </div>
             </div>
 
             <div id="edit-category-fields">
@@ -1807,7 +1893,8 @@ function formatTitreAffiche(nom) {
                 <button type="button" class="btn btn-danger" onclick="deleteProduct()">
                     🗑️ Supprimer ce produit
                 </button>
-                <button type="button" class="btn btn-info" onclick="saveProductAndGenerateFiche('edit')" style="margin-left:10px;">
+                <button type="button" class="btn btn-info" onclick="saveProductAndGenerateFiche('edit')"
+                    style="margin-left:10px;">
                     📄 Sauvegarder + Générer Fiche HTML
                 </button>
             </div>
