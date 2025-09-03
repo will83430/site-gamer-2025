@@ -16,7 +16,7 @@ const API_URL = (() => {
 // Variables globales
 let produitsSelectionnes = [];
 let categorieActuelle = '';
-let tousLesProduits = null; // Cache pour tous les produits
+let tousLesProduits = []; // Cache pour tous les produits
 let statsCache = null; // Cache pour les stats
 
 const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -41,76 +41,101 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Charger TOUS les produits UNE SEULE FOIS et les mettre en cache
 async function chargerTousLesProduits() {
-    // Si déjà en cache, ne pas recharger
-    if (tousLesProduits !== null) {
-        return tousLesProduits;
+    console.log('🔄 Chargement des produits...');
+    
+    // 1. Essayer le cache en premier
+    const cachedProduits = cacheManager.get('produits');
+    if (cachedProduits) {
+        tousLesProduits = cachedProduits;
+        console.log(`✅ ${cachedProduits.length} produits chargés depuis le cache`);
+        return;
     }
     
+    // 2. Si pas de cache, charger depuis l'API
     try {
+        const startTime = performance.now();
+        const response = await fetch(`${API_URL}/produits`);
         
-        // Timeout plus long pour mobile
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 secondes
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
         
-        const response = await fetch(`${API_URL}/produits`, {
-            signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
         const data = await response.json();
+        const loadTime = Math.round(performance.now() - startTime);
         
-        if (data.success) {
-            // Limiter sur mobile pour éviter timeout
+        if (data.success && Array.isArray(data.data)) {
             tousLesProduits = data.data;
-            return tousLesProduits;
+            
+            // 3. Sauvegarder en cache
+            cacheManager.set('produits', data.data);
+            
+            console.log(`🌐 ${data.data.length} produits chargés depuis l'API (${loadTime}ms)`);
         } else {
-            throw new Error(data.error || 'Erreur lors du chargement');
+            throw new Error('Format de données invalide');
         }
         
     } catch (error) {
-        if (error.name === 'AbortError') {
-            console.error('⏰ Timeout - chargement trop long');
-            afficherErreur('Connexion trop lente. Réessayez en WiFi.');
-        } else {
-            console.error('❌ Erreur lors du chargement des produits:', error);
-            afficherErreur('Impossible de charger les produits depuis la base de données');
+        console.error('❌ Erreur chargement produits:', error);
+        
+        // 4. Fallback: essayer un cache expiré en cas d'erreur réseau
+        const expiredCache = localStorage.getItem(cacheManager.generateKey('produits'));
+        if (expiredCache) {
+            try {
+                const fallbackData = JSON.parse(expiredCache);
+                tousLesProduits = fallbackData.data;
+                console.log('🔄 Utilisation du cache expiré comme fallback');
+                return;
+            } catch (e) {}
         }
-        tousLesProduits = []; 
-        return [];
+        
+        // 5. Si tout échoue, données par défaut
+        tousLesProduits = [];
+        afficherErreurChargement(error.message);
     }
 }
 
 // Afficher les produits d'une catégorie (depuis le cache)
 function afficherProduitsCategorie(categorie) {
+    const cacheKey = `categorie-${categorie.toLowerCase()}`;
+    
+    // Vérifier cache
+    const cachedCategory = cacheManager.get('categories', categorie.toLowerCase());
+    if (cachedCategory) {
+        console.log(`📂 Catégorie "${categorie}" depuis cache`);
+        
+        // Utiliser la fonction d'affichage qui existe
+        if (typeof afficherProduitsAvecPagination === 'function') {
+            afficherProduitsAvecPagination(cachedCategory);
+        } else {
+            afficherProduits(cachedCategory);
+        }
+        
+        // Mettre à jour le titre si l'élément existe
+        const titreElement = document.getElementById('titre-categorie');
+        if (titreElement) {
+            titreElement.textContent = formatTitreCategorie(categorie);
+        }
+        return;
+    }
+    
+    // Filtrer et mettre en cache
+    const produitsFilters = tousLesProduits.filter(p => 
+        p.categorie && p.categorie.toLowerCase() === categorie.toLowerCase()
+    );
+    
+    cacheManager.set('categories', produitsFilters, categorie.toLowerCase());
+    
+    // Afficher les produits
+    if (typeof afficherProduitsAvecPagination === 'function') {
+        afficherProduitsAvecPagination(produitsFilters);
+    } else {
+        afficherProduits(produitsFilters);
+    }
+    
     // Mettre à jour le titre
     const titreElement = document.getElementById('titre-categorie');
-    const descElement = document.getElementById('desc-cat');
-    
-    titreElement.textContent = formatCategorieName(categorie);
-    
-    // Description par catégorie
-    const descriptions = {
-        'DRONE': 'Découvrez notre gamme de drones professionnels et de loisir',
-        'CONSOLE': 'Les dernières consoles de jeux vidéo',
-        'TABLETTE': 'Tablettes tactiles pour tous les usages',
-        'SMARTPHONE': 'Smartphones dernière génération',
-        'PC GAMING': 'PC gaming haute performance',
-        'SERVEUR': 'Serveurs professionnels et solutions d\'hébergement',
-        'CASQUE AUDIO': 'Casques audio haute qualité',
-        'MONTRE CONNECTEE': 'montre-connectee et trackers d\'activité'
-    };
-    
-    descElement.textContent = descriptions[categorie] || `Produits de la catégorie ${categorie}`;
-    
-    // Filtrer les produits depuis le cache (pas de nouvelle requête !)
-   if (tousLesProduits && tousLesProduits.length > 0) {
-       let produitsFiltres = tousLesProduits.filter(p => p.categorie === categorie);
-        if (isMobile && produitsFiltres.length > 10) {
-            produitsFiltres = produitsFiltres.slice(0, 10);
-        }
-        afficherProduits(produitsFiltres);
-    } else {
-        afficherProduits([]);
+    if (titreElement) {
+        titreElement.textContent = formatTitreCategorie(categorie);
     }
 }
 
@@ -533,6 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chargerProduits(categorie);
 });
 
+
 // Ajouter cette fonction au début du fichier
 function initLazyLoading() {
     // Vérifier support navigateur
@@ -682,15 +708,47 @@ function changerPage(page) {
 
 // Modifier les fonctions existantes pour utiliser la pagination
 function afficherProduitsCategorie(categorie) {
+    const cacheKey = `categorie-${categorie.toLowerCase()}`;
+    
+    // Vérifier cache
+    const cachedCategory = cacheManager.get('categories', categorie.toLowerCase());
+    if (cachedCategory) {
+        console.log(`📂 Catégorie "${categorie}" depuis cache`);
+        
+        // Utiliser la fonction d'affichage qui existe
+        if (typeof afficherProduitsAvecPagination === 'function') {
+            afficherProduitsAvecPagination(cachedCategory);
+        } else {
+            afficherProduits(cachedCategory);
+        }
+        
+        // Mettre à jour le titre si l'élément existe
+        const titreElement = document.getElementById('titre-categorie');
+        if (titreElement) {
+            titreElement.textContent = formatTitreCategorie(categorie);
+        }
+        return;
+    }
+    
+    // Filtrer et mettre en cache
     const produitsFilters = tousLesProduits.filter(p => 
-        p.categorie.toLowerCase() === categorie.toLowerCase()
+        p.categorie && p.categorie.toLowerCase() === categorie.toLowerCase()
     );
     
-    // Utiliser la pagination au lieu de afficherProduits
-    afficherProduitsAvecPagination(produitsFilters);
+    cacheManager.set('categories', produitsFilters, categorie.toLowerCase());
     
-    document.getElementById('titre-categorie').textContent = 
-        formatTitreCategorie(categorie);
+    // Afficher les produits
+    if (typeof afficherProduitsAvecPagination === 'function') {
+        afficherProduitsAvecPagination(produitsFilters);
+    } else {
+        afficherProduits(produitsFilters);
+    }
+    
+    // Mettre à jour le titre
+    const titreElement = document.getElementById('titre-categorie');
+    if (titreElement) {
+        titreElement.textContent = formatTitreCategorie(categorie);
+    }
 }
 
 function rechercherProduits() {
@@ -711,9 +769,179 @@ function rechercherProduits() {
         produit.categorie.toLowerCase().includes(terme)
     );
     
-    // Utiliser la pagination pour les résultats
+    // Utiliser la pagination for resultats
     afficherProduitsAvecPagination(resultats);
     
     document.getElementById('titre-categorie').textContent = 
         `Résultats pour "${terme}" (${resultats.length})`;
+}
+
+// Cache intelligent pour les recherches
+const searchCache = new Map();
+const SEARCH_CACHE_SIZE = 50;
+
+function rechercherProduits() {
+    const terme = document.getElementById('search-input').value.toLowerCase().trim();
+    const cacheKey = `search-${terme}`;
+    
+    if (!terme) {
+        if (categorieActuelle) {
+            afficherProduitsCategorie(categorieActuelle);
+        } else {
+            afficherProduitsAvecPagination(tousLesProduits);
+        }
+        return;
+    }
+    
+    // 1. Vérifier le cache de recherche en mémoire
+    if (searchCache.has(cacheKey)) {
+        const cachedResults = searchCache.get(cacheKey);
+        console.log(`🔍 Recherche "${terme}" depuis cache mémoire (${cachedResults.length} résultats)`);
+        afficherResultatsRecherche(terme, cachedResults);
+        return;
+    }
+    
+    // 2. Vérifier le cache localStorage
+    const cachedSearch = cacheManager.get('search', terme);
+    if (cachedSearch) {
+        console.log(`🔍 Recherche "${terme}" depuis cache localStorage`);
+        // Ajouter au cache mémoire
+        if (searchCache.size >= SEARCH_CACHE_SIZE) {
+            const firstKey = searchCache.keys().next().value;
+            searchCache.delete(firstKey);
+        }
+        searchCache.set(cacheKey, cachedSearch);
+        
+        afficherResultatsRecherche(terme, cachedSearch);
+        return;
+    }
+    
+    // 3. Effectuer la recherche
+    const startTime = performance.now();
+    const resultats = tousLesProduits.filter(produit => 
+        produit.nom.toLowerCase().includes(terme) ||
+        (produit.description && produit.description.toLowerCase().includes(terme)) ||
+        (produit.categorie && produit.categorie.toLowerCase().includes(terme)) ||
+        (produit.titre_affiche && produit.titre_affiche.toLowerCase().includes(terme))
+    );
+    
+    const searchTime = Math.round(performance.now() - startTime);
+    console.log(`🔍 Recherche "${terme}" effectuée (${searchTime}ms, ${resultats.length} résultats)`);
+    
+    // 4. Mettre en cache les résultats
+    cacheManager.set('search', resultats, terme);
+    
+    // Cache mémoire
+    if (searchCache.size >= SEARCH_CACHE_SIZE) {
+        const firstKey = searchCache.keys().next().value;
+        searchCache.delete(firstKey);
+    }
+    searchCache.set(cacheKey, resultats);
+    
+    afficherResultatsRecherche(terme, resultats);
+}
+
+function afficherResultatsRecherche(terme, resultats) {
+    afficherProduitsAvecPagination(resultats);
+    document.getElementById('titre-categorie').textContent = 
+        `Résultats pour "${terme}" (${resultats.length})`;
+}
+
+// Ajouter ces fonctions de debug/gestion
+function afficherStatsCache() {
+    const stats = cacheManager.getStats();
+    
+    console.group('📊 Statistiques du Cache');
+    console.log(`💾 Taille totale: ${stats.totalSize} KB`);
+    console.log(`📦 Entrées: ${stats.entriesCount}`);
+    console.log(`📊 Quota utilisé: ${stats.quotaUsed}%`);
+    console.log('🏷️ Par type:', stats.typeStats);
+    console.groupEnd();
+    
+    // Afficher dans l'interface si besoin
+    if (document.getElementById('cache-stats')) {
+        document.getElementById('cache-stats').innerHTML = `
+            <div class="cache-stats">
+                <h4>📊 Cache Stats</h4>
+                <p>💾 ${stats.totalSize} KB utilisés</p>
+                <p>📦 ${stats.entriesCount} entrées</p>
+                <p>📊 ${stats.quotaUsed}% du quota</p>
+                <button onclick="cacheManager.clearAll(); location.reload();">
+                    🗑️ Vider le cache
+                </button>
+            </div>
+        `;
+    }
+}
+
+// Force refresh (bypass cache)
+function forceRefresh() {
+    console.log('🔄 Force refresh - invalidation du cache...');
+    
+    cacheManager.invalidate('produits');
+    cacheManager.invalidate('categories');
+    cacheManager.invalidate('search');
+    
+    // Vider aussi le cache mémoire
+    searchCache.clear();
+    
+    location.reload();
+}
+
+// Fonction pour précharger les données importantes
+async function prechargerDonnees() {
+    // Précharger les catégories populaires
+    const categoriesPopulaires = ['smartphones', 'pc-gaming', 'casques-audio'];
+    
+    for (const cat of categoriesPopulaires) {
+        if (!cacheManager.get('categories', cat)) {
+            const produits = tousLesProduits.filter(p => 
+                p.categorie.toLowerCase() === cat
+            );
+            if (produits.length > 0) {
+                cacheManager.set('categories', produits, cat);
+                console.log(`🎯 Précache: ${cat} (${produits.length} produits)`);
+            }
+        }
+    }
+}
+
+// Initialisation améliorée
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🚀 Initialisation avec cache intelligent...');
+    
+    // GARDEZ votre logique existante mais avec les améliorations cache
+    await chargerTousLesProduits();
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    categorieActuelle = urlParams.get('categorie') || '';
+    
+    if (categorieActuelle) {
+        afficherProduitsCategorie(categorieActuelle);
+    } else {
+        // VOTRE CODE EXISTANT (gardez ce que vous aviez)
+        afficherToutesCategories(); // ou afficherProduits(tousLesProduits) selon votre code
+    }
+    
+    setupEventListeners();
+    
+    // NOUVELLES LIGNES à ajouter :
+    setTimeout(prechargerDonnees, 1000);
+    
+    setTimeout(() => {
+        if (window.location.hostname === 'localhost') {
+            afficherStatsCache();
+        }
+    }, 2000);
+});
+
+// Ajouter cette fonction manquante
+function formatTitreCategorie(categorie) {
+    if (!categorie) return 'Tous les produits';
+    
+    // Capitaliser la première lettre et remplacer les tirets
+    return categorie
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
 }
