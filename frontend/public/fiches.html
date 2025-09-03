@@ -7,6 +7,10 @@
   <title>Produits par Catégorie - Exploration du Matériel Numérique</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <link href="assets/css/styles.css" rel="stylesheet">
+
+  <!-- NOUVEAU: Charger le cache manager en premier -->
+  <script src="assets/js/cache-manager.js"></script>
+  <script src="assets/js/fiches.min.js"></script>
 </head>
 
 <body class="fiches-page">
@@ -21,9 +25,12 @@
     <p class="description" id="desc-cat"></p>
 
     <div id="zone-fiches" class="produits-grid">
-      <img src="${p.image ? '/assets/images/' + p.image : '/assets/images/placeholder.png'}" alt="${p.titre_affiche || p.nom}">
-      <h4>${p.titre_affiche || p.nom}</h4>
+<img src="/assets/images/placeholder.png" alt="Chargement...">      
+<h4>${p.titre_affiche || p.nom}</h4>
     </div>
+
+    <!-- NOUVEAU : Conteneur pour la pagination -->
+<div id="pagination-container"></div>
 
     <button id="btn-comparer" class="btn btn-comparer">
       Comparer les produits sélectionnés
@@ -54,7 +61,12 @@
 
   <!-- Scripts -->
   <script src="assets/js/utils.js"></script>
-  <script src="assets/js/fiches.js"></script>
+
+  <!-- Ajouter dans la barre de recherche ou le footer -->
+<div class="cache-controls" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
+    <button onclick="afficherStatsCache()" title="Voir stats cache">📊</button>
+    <button onclick="forceRefresh()" title="Actualiser">🔄</button>
+</div>
 </body>
 
 </html>

@@ -8,7 +8,11 @@
     "dev": "nodemon server.js",
     "setup": "npm install",
     "db:init": "psql -U postgres -d gamer_2025 -f backend/schema.sql",
-    "db:populate": "psql -U postgres -d gamer_2025 -f backend/gestion_produits.sql"
+    "db:populate": "psql -U postgres -d gamer_2025 -f backend/gestion_produits.sql",
+    "build:css": "cleancss -o frontend/public/assets/css/styles.min.css frontend/public/assets/css/styles.css",
+    "build:js": "terser frontend/public/assets/js/fiches.js -o frontend/public/assets/js/fiches.min.js && terser frontend/public/assets/js/fiche-produit.js -o frontend/public/assets/js/fiche-produit.min.js",
+    "build:all": "npm run build:css && npm run build:js",
+    "clean": "rm -rf frontend/public/assets/css/*.min.css frontend/public/assets/js/*.min.js"
   },
   "dependencies": {
     "compression": "^1.8.1",
@@ -18,7 +22,9 @@
     "pg": "^8.16.3"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "clean-css-cli": "^5.6.3",
+    "nodemon": "^3.0.2",
+    "terser": "^5.44.0"
   },
   "keywords": [
     "gaming",
@@ -27,5 +33,10 @@
     "products"
   ],
   "author": "Ton nom",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "private": true
 }
+

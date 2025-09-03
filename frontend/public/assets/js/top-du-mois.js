@@ -90,7 +90,7 @@ function mettreAJourBadgesVedettes() {
             if (overlayText && !overlayText.querySelector('.vedette-badge')) {
                 const badge = document.createElement('span');
                 badge.className = 'vedette-badge';
-                badge.innerHTML = '🔥 TOP';
+                badge.innerHTML = '⭐ TOP';
                 badge.style.cssText = `
                     background: linear-gradient(45deg, #ff6b6b, #ffd700);
                     color: white;

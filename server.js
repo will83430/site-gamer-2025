@@ -46,16 +46,30 @@ app.use(express.static(__dirname));
 
 // ========== ROUTES API ==========
 
+
+
+// GET - Récupérer tous les produits
 // GET - Récupérer tous les produits
 app.get('/api/produits', async (req, res) => {
   try {
-    const result = await pool.query(`
+    const { categorie } = req.query;
+    
+    let query = `
       SELECT 
         id, nom, categorie, description, image, lien, 
         top_du_mois, prix, fonctionnalites_avancees, donnees_fiche, titre_affiche
       FROM produits 
-      ORDER BY categorie, nom
-    `);
+    `;
+    let params = [];
+    
+    if (categorie) {
+      query += ` WHERE categorie = $1`;
+      params.push(categorie);
+    }
+    
+    query += ` ORDER BY categorie, nom`;
+    
+    const result = await pool.query(query, params);
 
     // Traiter les images pour ajouter image_url
     const productsWithImages = result.rows.map(product => {
@@ -85,10 +99,13 @@ app.get('/api/produits', async (req, res) => {
 app.get('/api/produits/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query(
-      'SELECT * FROM produits WHERE id = $1',
-      [id]
-    );
+    const result = await pool.query(`
+      SELECT 
+        p.*,
+        COALESCE(p.titre_affiche, p.nom) as titre_affiche
+      FROM produits p 
+      WHERE p.id = $1
+    `, [id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -99,11 +116,13 @@ app.get('/api/produits/:id', async (req, res) => {
 
     const product = result.rows[0];
 
-    // Ajouter image_url
+    // Correction du chemin de l'image
     if (product.image) {
-      product.image_url = product.image;
-    } else if (product.image) {
-      product.image_url = product.image.startsWith('/') ? product.image : '/assets/images/' + product.image;
+      // Supprime assets/images/ s'il existe déjà dans le chemin
+      const cleanImage = product.image.replace(/^assets\/images\//, '');
+      product.image_url = `/assets/images/${cleanImage}`;
+    } else {
+      product.image_url = '/assets/images/placeholder.png';
     }
 
     res.json({
@@ -147,21 +166,27 @@ app.post('/api/produits', async (req, res) => {
 
     const nextId = `prod_${maxIdResult.rows[0].next_id}`;
 
-    const query = `
-      INSERT INTO produits 
-      (id, nom, categorie, description, image, lien, top_du_mois, prix, fonctionnalites_avancees, donnees_fiche, titre_affiche)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-      RETURNING *
-    `;
+    // Juste avant const params = [...]
+    const titreAfficheFinal = titre_affiche && titre_affiche.trim() !== ''
+        ? titre_affiche 
+        : slugToTitreAffiche(nom);
 
     const params = [
       nextId,
       nom, categorie || null, description || null,
-      image || null, image || null, lien || null,
+      image || null,
+      lien || null,
       top_du_mois || false, prix || null,
       fonctionnalites_avancees || [], donnees_fiche || [],
-      titre_affiche || null // <-- Ajout ici
+      titreAfficheFinal
     ];
+
+    const query = `
+      INSERT INTO produits 
+      (id, nom, categorie, description, image, lien, top_du_mois, prix, fonctionnalites_avancees, donnees_fiche, titre_affiche)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      RETURNING *
+    `;
 
     const result = await pool.query(query, params);
     console.log(result.rows[0]); // Ajoute cette ligne juste après le SELECT
@@ -188,65 +213,39 @@ app.put('/api/produits/:id', async (req, res) => {
     const {
       nom, categorie, description, image, lien,
       top_du_mois, prix, fonctionnalites_avancees, donnees_fiche,
-      titre_affiche // <-- Ajout ici
+      titre_affiche
     } = req.body;
-    // Vérifier si le produit existe
-    const checkResult = await pool.query(
-      'SELECT id FROM produits WHERE id = $1',
-      [id]
-    );
 
-    if (checkResult.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        error: 'Produit non trouvé'
-      });
-    }
+    // Simplification de la requête UPDATE
+    const query = `
+      UPDATE produits 
+      SET nom = $1, 
+          categorie = $2, 
+          description = $3, 
+          image = $4,        /* Une seule fois */
+          lien = $5, 
+          top_du_mois = $6, 
+          prix = $7, 
+          fonctionnalites_avancees = $8, 
+          donnees_fiche = $9,
+          titre_affiche = $10
+      WHERE id = $11
+      RETURNING *
+    `;
 
-    // Vérifier si la colonne image existe
-    const columnCheck = await pool.query(`
-      SELECT column_name 
-      FROM information_schema.columns 
-      WHERE table_name = 'produits' AND column_name = 'image'
-    `);
-
-    let query, params;
-
-    if (columnCheck.rows.length > 0) {
-      query = `
-        UPDATE produits 
-        SET nom = $1, categorie = $2, description = $3, image = $4,
-            image = $5, lien = $6, top_du_mois = $7, prix = $8, 
-            fonctionnalites_avancees = $9, donnees_fiche = $10, titre_affiche = $11
-        WHERE id = $12
-        RETURNING *
-      `;
-      params = [
-        nom, categorie || null, description || null,
-        image || null, image || null, lien || null,
-        top_du_mois || false, prix || null,
-        fonctionnalites_avancees || [], donnees_fiche || [],
-        titre_affiche || null, // <-- Ajout ici
-        id
-      ];
-    } else {
-      query = `
-        UPDATE produits 
-        SET nom = $1, categorie = $2, description = $3, image = $4,
-            lien = $5, top_du_mois = $6, prix = $7, 
-            fonctionnalites_avancees = $8, donnees_fiche = $9, titre_affiche = $10
-        WHERE id = $11
-        RETURNING *
-      `;
-      params = [
-        nom, categorie || null, description || null,
-        image || image || null, lien || null,
-        top_du_mois || false, prix || null,
-        fonctionnalites_avancees || [], donnees_fiche || [],
-        titre_affiche || null, // <-- Ajout ici
-        id
-      ];
-    }
+    const params = [
+      nom, 
+      categorie || null, 
+      description || null,
+      image || null,       /* Une seule fois */
+      lien || null,
+      top_du_mois || false, 
+      prix || null,
+      fonctionnalites_avancees || [], 
+      donnees_fiche || [],
+      titre_affiche || null,
+      id
+    ];
 
     const result = await pool.query(query, params);
     res.json({
@@ -305,6 +304,13 @@ app.post('/api/generate-fiche/:id', async (req, res) => {
 
     const product = result.rows[0];
 
+    // Avant de générer le HTML
+    console.log('Données produit pour génération fiche:', {
+      id: product.id,
+      nom: product.nom,
+      titre_affiche: product.titre_affiche
+    });
+
     // Générer le HTML avec votre template
     const html = generateFicheHTML(product);
 
@@ -342,8 +348,8 @@ function generateFicheHTML(product) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>${product.nom} - Fiche Produit</title>
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <title>${product.titre_affiche || product.nom} - Fiche Produit</title>
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -353,13 +359,12 @@ function generateFicheHTML(product) {
     <a href="javascript:history.back()">← Retour</a>
 </div>
 
-    <h1>${product.titre_affiche || product.nom}</h1>
+    <h1 class="product-title">${product.titre_affiche || product.nom}</h1>
     <div id="badge-top-mois"></div>
     <p class="description">Chargement de la description...</p>
 
     <div class="gallery">
-        <img src="/assets/images/placeholder.png" alt="${product.nom}" class="img-centree" onerror="this.src='/assets/images/placeholder.png'">
-    </div>
+<img src="/assets/images/${product.image || 'placeholder.png'}" alt="${product.nom}" class="img-centree" onerror="this.src='/assets/images/placeholder.png'"></div>
     
     <div class="lightbox" id="lightbox">
         <img id="lightbox-img" src="" alt="Zoom">
@@ -393,7 +398,7 @@ function generateFicheHTML(product) {
 </footer>
 
     <script src="/assets/js/utils.js"></script>
-    <script src="/assets/js/fiche-produit.js"></script>
+    <script src="/assets/js/fiche-produit.min.js"></script>
 </body>
 </html>`;
 }
@@ -499,3 +504,15 @@ process.on('SIGINT', async () => {
   await pool.end();
   process.exit(0);
 });
+
+// ...avant INSERT ou UPDATE...
+function slugToTitreAffiche(slug) {
+    if (!slug) return '';
+    return slug
+        .replace(/-/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
