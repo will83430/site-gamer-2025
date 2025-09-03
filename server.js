@@ -152,12 +152,10 @@ app.post('/api/produits', async (req, res) => {
 
     const nextId = `prod_${maxIdResult.rows[0].next_id}`;
 
-    const query = `
-      INSERT INTO produits 
-      (id, nom, categorie, description, image, lien, top_du_mois, prix, fonctionnalites_avancees, donnees_fiche, titre_affiche)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-      RETURNING *
-    `;
+    // Juste avant const params = [...]
+    const titreAfficheFinal = titre_affiche && titre_affiche.trim() !== ''
+        ? titre_affiche 
+        : slugToTitreAffiche(nom);
 
     const params = [
       nextId,
@@ -166,8 +164,15 @@ app.post('/api/produits', async (req, res) => {
       lien || null,
       top_du_mois || false, prix || null,
       fonctionnalites_avancees || [], donnees_fiche || [],
-      titre_affiche || null
+      titreAfficheFinal
     ];
+
+    const query = `
+      INSERT INTO produits 
+      (id, nom, categorie, description, image, lien, top_du_mois, prix, fonctionnalites_avancees, donnees_fiche, titre_affiche)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      RETURNING *
+    `;
 
     const result = await pool.query(query, params);
     console.log(result.rows[0]); // Ajoute cette ligne juste après le SELECT
@@ -486,3 +491,15 @@ process.on('SIGINT', async () => {
   await pool.end();
   process.exit(0);
 });
+
+// ...avant INSERT ou UPDATE...
+function slugToTitreAffiche(slug) {
+    if (!slug) return '';
+    return slug
+        .replace(/-/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}

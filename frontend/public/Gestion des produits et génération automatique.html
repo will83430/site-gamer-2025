@@ -451,9 +451,23 @@
                 loadStats();
                 loadProducts();
                 setupDragAndDrop();
-                // Ajoute cette ligne pour générer les champs si une catégorie est déjà sélectionnée
                 updateCategoryFields('new');
-            });
+                
+                // Écouteurs pour le titre automatique (une seule fois)
+    document.getElementById('new-nom').addEventListener('input', function() {
+        const titreField = document.getElementById('new-titre-affiche');
+        if (!titreField.value.trim()) {
+            titreField.value = formatTitreAffiche(this.value);
+        }
+    });
+
+    document.getElementById('edit-nom').addEventListener('input', function() {
+        const titreField = document.getElementById('edit-titre-affiche');
+        if (!titreField.value.trim()) {
+            titreField.value = formatTitreAffiche(this.value);
+        }
+    });
+});
 
             // Gérer la sélection de fichier HTML
             function handleFicheSelect(event, prefix) {
@@ -684,9 +698,20 @@
             async function createProduct(event) {
                 event.preventDefault();
 
+                // Récupérer les valeurs
+                const nom = document.getElementById('new-nom').value;
+                let titreAffiche = document.getElementById('new-titre-affiche').value.trim();
+                
+                // Si titre_affiche est vide, le générer automatiquement à partir du nom
+                if (!titreAffiche) {
+                    titreAffiche = formatTitreAffiche(nom);
+                    // Optionnel : remplir le champ dans l'interface pour que l'utilisateur voie
+                    document.getElementById('new-titre-affiche').value = titreAffiche;
+                }
+
                 const productData = {
-                    nom: document.getElementById('new-nom').value,
-                    titre_affiche: document.getElementById('new-titre-affiche').value, // <-- AJOUT ICI
+                    nom: nom,
+                    titre_affiche: titreAffiche, // Maintenant toujours rempli
                     categorie: document.getElementById('new-categorie').value,
                     prix: document.getElementById('new-prix').value,
                     description: document.getElementById('new-description').value,
@@ -695,75 +720,14 @@
                     fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
                     donnees_fiche: collectCategoryData('new'),
                 };
-                // Créer un produit ET générer sa fiche HTML
-                // Créer un produit ET générer sa fiche HTML
-                async function createAndGenerateFiche() {
-                    const productData = {
-                        nom: document.getElementById('new-nom').value,
-                        titre_affiche: document.getElementById('new-titre-affiche').value,
-                        categorie: document.getElementById('new-categorie').value,
-                        prix: document.getElementById('new-prix').value,
-                        description: document.getElementById('new-description').value,
-                        lien: document.getElementById('new-lien').value,
-                        top_du_mois: document.getElementById('new-top').value === 'true',
-                        fonctionnalites_avancees: document.getElementById('new-fonctionnalites').value.split('\n').filter(f => f.trim()),
-                        donnees_fiche: collectCategoryData('new')
-                    };
-
-                    if (currentImageData['new']) {
-                        productData.image = currentImageData['new'];
-                    }
-
-                    if (!productData.nom || !productData.categorie) {
-                        showMessage('⚠️ Nom et catégorie sont obligatoires', 'warning');
-                        return;
-                    }
-
-                    try {
-                        // 1. Créer le produit
-                        const createResponse = await fetch(`${API_URL}/produits`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(productData)
-                        });
-
-                        const createData = await createResponse.json();
-                        if (!createData.success) {
-                            showMessage('❌ Erreur création: ' + createData.error, 'danger');
-                            return;
-                        }
-
-                        const productId = createData.data.id;
-
-                        // 2. Générer la fiche HTML
-                        const ficheResponse = await fetch(`${API_URL}/generate-fiche/${productId}`, {
-                            method: 'POST'
-                        });
-
-                        const ficheData = await ficheResponse.json();
-                        if (ficheData.success) {
-                            showMessage(`✅ Produit créé ET fiche générée: ${ficheData.path}`, 'success');
-                        } else {
-                            showMessage(`✅ Produit créé mais erreur fiche: ${ficheData.error}`, 'warning');
-                        }
-
-                        // 3. Nettoyer et recharger
-                        resetCreateForm();
-                        loadProducts();
-                        loadStats();
-
-                    } catch (error) {
-                        console.error('Erreur:', error);
-                        showMessage('❌ Erreur lors du processus', 'danger');
-                    }
-                }
-
-
 
                 // Ajouter l'image si présente
-                if (currentImageData['new']) {
-                    productData.image = currentImageData['new'];
-                }
+if (currentImageData['new']) {
+    const fileInput = document.getElementById('new-image-file');
+    if (fileInput && fileInput.files[0]) {
+        productData.image = fileInput.files[0].name;
+    }
+}
 
                 try {
                     const response = await fetch(`${API_URL}/produits`, {
@@ -865,9 +829,19 @@
 
                 if (!currentEditingId) return;
 
+                // Récupérer les valeurs
+                const nom = document.getElementById('edit-nom').value;
+                let titreAffiche = document.getElementById('edit-titre-affiche').value.trim();
+                
+                // Si titre_affiche est vide, le générer automatiquement
+                if (!titreAffiche) {
+                    titreAffiche = formatTitreAffiche(nom);
+                    document.getElementById('edit-titre-affiche').value = titreAffiche;
+                }
+
                 const productData = {
-                    nom: document.getElementById('edit-nom').value,
-                    titre_affiche: document.getElementById('edit-titre-affiche').value, // <-- ajout ici
+                    nom: nom,
+                    titre_affiche: titreAffiche, // Maintenant toujours rempli
                     categorie: document.getElementById('edit-categorie').value,
                     prix: document.getElementById('edit-prix').value,
                     description: document.getElementById('edit-description').value,
@@ -878,9 +852,14 @@
                 };
 
                 // Ajouter l'image si présente
-                if (currentImageData['edit']) {
-                    productData.image = currentImageData['edit'];
-                }
+if (currentImageData['edit']) {
+    const fileInput = document.getElementById('edit-image-file');
+    if (fileInput && fileInput.files[0]) {
+        productData.image = fileInput.files[0].name;
+    } else if (typeof currentImageData['edit'] === 'string' && !currentImageData['edit'].startsWith('data:')) {
+        productData.image = currentImageData['edit'];
+    }
+}
 
                 try {
                     const response = await fetch(`${API_URL}/produits/${currentEditingId}`, {
@@ -1357,7 +1336,7 @@
                 </div>
             `;
 
-                        currentImageData[this.prefix] = e.target.result;
+                        currentImageData[this.prefix] = file.name;
                     };
                     reader.readAsDataURL(file);
                 }
@@ -1423,15 +1402,15 @@
                     donnees_fiche: collectCategoryData(prefix)
                 };
                 if (currentImageData[prefix]) {
-                    // Si c'est du base64 (upload), on prend le nom du fichier sélectionné
-                    const fileInput = document.getElementById(`${prefix}-image-file`);
-                    if (fileInput && fileInput.files[0]) {
-                        // On ne garde que le nom du fichier sélectionné
-                        productData.image = fileInput.files[0].name;
-                    } else if (currentImageData[prefix]) {
-                        productData.image = currentImageData[prefix];
-                    }
-                }
+    const fileInput = document.getElementById(`${prefix}-image-file`);
+    if (fileInput && fileInput.files[0]) {
+        // Nouveau fichier sélectionné - stocker le nom du fichier
+        productData.image = fileInput.files[0].name;
+    } else if (typeof currentImageData[prefix] === 'string' && !currentImageData[prefix].startsWith('data:')) {
+        // Nom de fichier existant (pas de base64)
+        productData.image = currentImageData[prefix];
+    }
+}
 
                 // Validation
                 if (!productData.nom || !productData.categorie) {
@@ -1521,12 +1500,24 @@ const sections = (product.donnees_fiche || [])
 
 
 function formatTitreAffiche(nom) {
+    if (!nom) return '';
+    
+    // Liste d'acronymes et termes à garder en majuscules
+    const keepUppercase = ['EOS', 'RAM', 'SSD', 'HDD', 'CPU', 'GPU', 'LED', 'LCD', 'HDR', 'USB', 'HD', 'UHD', 'FHD', '4K', '8K', 'PS5', 'PS4', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+    
     return nom
         .replace(/-/g, ' ')
         .replace(/\s+/g, ' ')
         .trim()
         .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .map(word => {
+            // Vérifier si le mot (en majuscules) est dans la liste à conserver en majuscules
+            if (keepUppercase.includes(word.toUpperCase())) {
+                return word.toUpperCase();
+            }
+            // Sinon, appliquer la capitalisation standard
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
         .join(' ');
 }
         </script>
