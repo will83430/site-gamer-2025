@@ -1,0 +1,24 @@
+# Dépendances Node.js
+node_modules/
+
+# Dossiers et fichiers de configuration éditeur
+.vscode/
+.cache/
+
+# Fichiers temporaires, exports, scripts de génération et logs
+arbo.txt
+export_produits_actuels.json
+produits_propres.json
+fiches_for_ai.json.js
+gen-assets-list.js
+gen-cache-list.js
+test-json.js
+*.log
+*.backup
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Autres fichiers à ignorer
+*.tmp

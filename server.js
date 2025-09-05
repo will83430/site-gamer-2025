@@ -43,6 +43,23 @@ if (fs.existsSync(fichesPath)) {
 
 // 4. Servir la racine pour index.html, etc.
 app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'frontend', 'public')));
+
+// Servir index.html à la racine
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'public', 'index.html'));
+});
+
+// Servir les autres fichiers HTML du dossier frontend/public
+app.get('/:page', (req, res) => {
+  const page = req.params.page;
+  const filePath = path.join(__dirname, 'frontend', 'public', page);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Page non trouvée');
+  }
+});
 
 // ========== ROUTES API ==========
 
@@ -516,3 +533,14 @@ function slugToTitreAffiche(slug) {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
 }
+
+// Servir les fiches HTML générées dynamiquement
+app.get('/fiches/:category/:fiche', (req, res) => {
+  const { category, fiche } = req.params;
+  const filePath = path.join(__dirname, 'fiches', category, fiche);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Fiche non trouvée');
+  }
+});
