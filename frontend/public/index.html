@@ -15,6 +15,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/assets/css/styles.min.css?v=123">
+    <link rel="manifest" href="manifest.json">
   </head>
 
   <body>
@@ -87,6 +88,13 @@
 </footer>
 
     <script src="assets/js/home.js"></script>
-      <script src="../assets/js/lazy-loading.js"></script>
-</body>
+      <script src="assets/js/lazy-loading.js"></script>
+      <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('assets/js/sw.js')
+    .then(() => console.log('Service worker enregistré'))
+    .catch(err => console.error('Erreur SW', err));
+}
+</script>
+  </body>
 </html>
