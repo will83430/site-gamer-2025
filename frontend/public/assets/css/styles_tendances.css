@@ -1,0 +1,722 @@
+/* === VARIABLES === */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --accent-color: #667eea;
+    --text-dark: #333;
+    --text-light: #666;
+    --border-color: #e1e5e9;
+    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+    --card-bg: #ffffff;
+}
+
+/* === LAYOUT PRINCIPAL === */
+body {
+  font-family: "Manrope", sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Manrope", sans-serif;
+  font-size: 1em;
+  background-color: #1f2039;
+  background-image: url("../images/un-logo-au-centre.png");
+  background-size: cover;
+  /* Ajuste l'image pour couvrir tout l'écran */
+  background-position: center;
+  /* Centre l'image */
+  background-repeat: no-repeat;
+  /* Empêche la répétition */
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Ajustez l'opacité */
+  z-index: -1;
+}
+
+/* ====================================
+   STYLES COMMUNS
+   ==================================== */
+
+/* En-tête */
+.entete {
+  background-color: rgb(132, 132, 146);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  background-size: cover;
+  max-width: 100%;
+  height: 125px;
+  /* Ajustez cette valeur selon votre besoin */
+  overflow: hidden;
+  /* Évite les débordements si le contenu est trop grand */
+  ;
+  height: auto;
+  max-height: 100vh;
+  /* Ajuste à l’écran */
+}
+
+
+.entete img {
+  max-width: 100%;
+  max-height: 100px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-fit: contain;
+  padding-left: 0px;
+  object-fit: fill;
+}
+
+.lien-entete,
+.lien-top {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+  align-self: flex-start;
+  margin-left: 0;
+  text-decoration: none;
+  font-size: 18px;
+  color: #242424;
+}
+
+.lien-entete:hover,
+.lien-top:hover {
+  color: var(--primary-color);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.home-link, .products-link {
+    text-decoration: none;
+    color: var(--accent-color);
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
+    transition: all 0.3s ease;
+}
+
+.home-link:hover, .products-link:hover {
+    background: var(--primary-gradient);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* === HERO SECTION === */
+.hero-tendances {
+    background: var(--primary-gradient);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+    margin-bottom: 40px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  font-size: 3.5em;
+  color: rgb(166, 180, 252);
+  margin: 40px 0 20px 0;
+  font-family: "Montserrat", sans-serif;
+  text-shadow: 5px 5px 0px rgb(166, 180, 252, 0.2);
+}
+
+p {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin: 20px auto;
+  max-width: 800px;
+  line-height: 1.8;
+  color: white;
+}
+
+.intro {
+  max-width: 800px;
+  margin: 20px auto 40px auto;
+  padding: 0 20px;
+}
+/* === NAVIGATION SECTIONS === */
+.tendances-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+.nav-btn {
+    background: white;
+    border: 2px solid var(--border-color);
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+.nav-btn:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.nav-btn.active {
+    background: var(--primary-gradient);
+    color: white;
+    border-color: transparent;
+    box-shadow: var(--shadow);
+}
+
+/* === CONTAINER PRINCIPAL === */
+.container-tendances {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    
+    /* VOTRE IMAGE EXISTANTE */
+    background-image: url("../images/fond-container-tendance.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Overlay pour la lisibilité */
+    position: relative;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+}
+
+/* Overlay semi-transparent pour la lisibilité */
+.container-tendances::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    z-index: -1;
+}
+
+.section-tendances {
+    display: none;
+    padding: 40px;
+    animation: fadeInUp 0.6s ease;
+}
+
+.section-tendances.active {
+    display: block;
+}
+
+.section-tendances h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #667eea !important;
+    -webkit-text-fill-color: initial !important; /* Annule la transparence */
+    background: none !important; /* Annule le gradient */
+}
+
+/* Style pour que les émojis restent visibles */
+.section-tendances h2::before {
+    -webkit-text-fill-color: initial !important;
+    color: initial !important;
+}
+
+/* === ACTUALITÉS === */
+.actualites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+/* AJOUTEZ dans votre styles_tendances.css */
+.actualites-grid {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.actualite-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.actualite-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(102,126,234,0.2);
+}
+
+.actualite-card.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0;
+}
+
+.card-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.featured .card-image {
+    height: auto;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.actualite-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+}
+
+.badge.hot {
+    background: var(--secondary-gradient);
+    animation: pulse 2s infinite;
+}
+
+.card-content {
+    padding: 25px;
+    
+}
+
+.date {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.card-content h3 {
+    margin: 0 0 15px 0;
+    color: var(--text-dark);
+    font-size: 1.3rem;
+    line-height: 1.3;
+}
+
+.card-content p {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* === TECHNOLOGIES === */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.tech-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.tech-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(102,126,234,0.2);
+}
+
+.tech-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.tech-card h3 {
+    margin: 0 0 20px 0;
+    color: var(--text-dark);
+    font-size: 1.4rem;
+}
+
+/* Couleur spécifique pour les paragraphes des tech-cards */
+.tech-card p {
+    color: #666666 !important; /* Gris foncé */
+    /* ou */
+    color: var(--text-light) !important; /* Si vous utilisez les variables CSS */
+    /* ou */
+    color: #333333 !important; /* Gris très foncé */
+    /* ou */
+    color: #555555 !important; /* Gris moyen */
+}
+
+/* Si vous voulez différencier le texte en gras */
+.tech-card p strong {
+    color: #333333 !important;
+    font-weight: 600;
+}
+
+/* Alternative sans !important si votre CSS global est moins spécifique */
+.tech-card p {
+    color: #666666;
+}
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.progress {
+    height: 100%;
+    background: var(--primary-gradient);
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+/* === MARCHÉ === */
+.marche-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    color: var(--text-light);
+    margin-bottom: 10px;
+}
+
+.stat-trend {
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.stat-trend.up {
+    background: rgba(46,204,113,0.1);
+    color: #2ecc71;
+}
+
+.market-insights {
+    background: rgba(102,126,234,0.05);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(102,126,234,0.1);
+    color: rgb(166, 180, 252);
+}
+
+.insights-grid {
+    display: grid;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.insight-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.insight-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.insight-item h4 {
+    margin: 0 0 10px 0;
+color: #e2e8f0;}
+
+.insight-item p {
+    margin: 0;
+color: #cbd5e0;
+    line-height: 1.6;
+    text-align: left !important;
+}
+
+/* === PRÉDICTIONS === */
+.predictions-timeline {
+    display: grid;
+    gap: 30px;
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 30px;
+    align-items: center;
+    padding: 25px;
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.timeline-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(102,126,234,0.2);
+}
+
+.timeline-year {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    text-align: center;
+    padding: 15px;
+    background: rgba(102,126,234,0.1);
+    border-radius: 10px;
+}
+
+.timeline-content h3 {
+    margin: 0 0 10px 0;
+    color: var(--text-dark);
+}
+
+.timeline-content p {
+    margin: 0 0 15px 0;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.probability {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* ====================================
+   PIED DE PAGE
+   ==================================== */
+
+.footer {
+
+  background-color: rgb(166, 180, 252);
+  backdrop-filter: blur(10px);
+}
+
+.footer-banner {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background-color: white;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: row;
+  /* aligne les .footer-item horizontalement */
+  justify-content: flex-start;
+  /* commence l’alignement à gauche */
+  align-items: center;
+  /* aligne les .footer-item verticalement au centre */
+  gap: 40px;
+  /* espace entre les .footer-item */
+  margin-top: 0px;
+  width: 100%;
+  flex-wrap: nowrap;
+  /* empêche le retour à la ligne */
+}
+
+.footer-item {
+  display: flex;
+  flex-direction: row;
+  /* image à gauche, lien à droite */
+  align-items: center;
+  /* aligne image et lien verticalement */
+  gap: 10px;
+  white-space: nowrap;
+  /* empêche le lien de passer à la ligne */
+}
+
+.footer-icon {
+  width: 35px;
+  height: 35px;
+}
+
+.footer-item a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+.footer-item a:hover {
+  color: rgb(77, 0, 128);
+  text-decoration: underline;
+}
+/* AJOUTEZ dans styles_tendances.css */
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(102,126,234,0.3);
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader-content {
+    text-align: center;
+    color: #667eea;
+    font-weight: 600;
+}
+
+.loader-content p {
+    margin: 0;
+    font-size: 14px;
+}
+/* === ANIMATIONS === */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .actualite-card.featured {
+        grid-template-columns: 1fr;
+    }
+    
+    .timeline-item {
+        grid-template-columns: 80px 1fr;
+        gap: 20px;
+    }
+    
+    .timeline-year {
+        font-size: 1.5rem;
+    }
+    
+    .section-tendances {
+        padding: 20px;
+    }
+    
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
