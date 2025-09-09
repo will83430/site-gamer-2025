@@ -1,179 +1,375 @@
-# Site Gamer 2025
+# 🎮 Site Gamer 2025 - Comparateur de Produits Gaming
 
-Site web de présentation d'équipements technologiques avec système de fiches produits et connexion PostgreSQL.
+Un site web moderne de comparaison et gestion de produits gaming avec interface d'administration complète et base de données PostgreSQL.
 
-## 🎯 Fonctionnalités principales
+## 📋 Table des matières
 
-- **Catalogue produits** : Base de données PostgreSQL
-- **Page fiches** : Navigation par catégories
-- **Dashboard admin** : Gestion complète des produits
-- **Design responsive** : Compatible mobile et desktop
+- [Aperçu du projet](#-aperçu-du-projet)
+- [Fonctionnalités](#-fonctionnalités)
+- [Technologies utilisées](#-technologies-utilisées)
+- [Structure du projet](#-structure-du-projet)
+- [Installation](#-installation)
+- [Configuration de la base de données](#️-configuration-de-la-base-de-données)
+- [Utilisation](#-utilisation)
+- [API](#-api)
+- [Interface d'administration](#interface-dadministration)
+- [Contribution](#-contribution)
+
+## 🎯 Aperçu du projet
+
+Site web professionnel dédié aux produits gaming permettant :
+
+- Consultation et comparaison de produits
+- Gestion administrative complète
+- Interface utilisateur moderne et responsive
+- Système de filtrage et recherche avancée
+- **Base de données PostgreSQL** pour la persistance
+
+## ✨ Fonctionnalités
+
+### 🌐 Frontend Public
+
+- **Catalogue produits** : Affichage en grille moderne avec fiches détaillées
+- **Système de comparaison** : Comparaison jusqu'à 4 produits simultanément
+- **Filtrage avancé** : Par catégorie, prix, marque, etc.
+- **Recherche intelligente** : Recherche en temps réel
+- **Interface responsive** : Compatible mobile/tablette/desktop
+- **Animations modernes** : Transitions fluides et effets visuels
+
+### 🔧 Backend d'Administration
+
+- **Gestion produits** : CRUD complet (Créer, Lire, Modifier, Supprimer)
+- **Upload d'images** : Drag & drop moderne avec prévisualisation
+- **Gestion catégories** : Système de catégories dynamiques
+- **Interface intuitive** : Dashboard moderne avec onglets
+- **Validation** : Contrôles de saisie et messages d'erreur
+- **Persistance PostgreSQL** : Base de données relationnelle robuste
+
+## 🛠 Technologies utilisées
+
+### Frontend
+
+- **HTML5** - Structure sémantique
+- **CSS3** - Styling moderne (Grid, Flexbox, animations)
+- **JavaScript ES6+** - Logique interactive
+- **Responsive Design** - Compatible tous écrans
+
+### Backend
+
+- **Node.js** - Serveur backend
+- **Express.js** - Framework web
+- **PostgreSQL** - Base de données relationnelle
+- **pg** - Driver PostgreSQL pour Node.js
+- **Multer** - Gestion upload fichiers
+
+### Base de données
+
+- **PostgreSQL 13+** - SGBD principal
+- **pgAdmin** - Interface d'administration (optionnel)
 
 ## 📁 Structure du projet
 
-```
+```text
 site-gamer-2025/
-├── frontend/public/
-│   ├── assets/          
-│   │   ├── images/      # Images produits
-│   │   ├── categories/  # Images catégories  
-│   │   ├── css/         # Styles CSS
-│   │   └── js/          # Scripts JavaScript
-│   │       ├── fiches.js
-│   │       ├── fiche-produit.js
-│   │       └── utils.js
-│   ├── pages/
-│   │   └── fiches.html  # Page principale des fiches
-│   ├── fiches-produits/ # Fiches HTML générées (legacy)
-│   ├── index.html       # Page d'accueil
-│   └── admin.html       # Dashboard admin
-├── fiches/              # Fiches produits organisées par catégorie
-│   ├── drone/
-│   ├── console/
-│   ├── tablette/
-│   └── ...
-├── server.js            # Serveur Node.js avec PostgreSQL
-├── package.json         # Dépendances Node.js
-└── README.md
+├── frontend/
+│   └── public/
+│       ├── assets/
+│       │   ├── css/
+│       │   │   ├── admin-styles.css     # Styles administration
+│       │   │   ├── style.css            # Styles principaux
+│       │   │   └── styles.min.css       # Styles minifiés
+│       │   ├── images/                  # Images produits
+│       │   └── js/
+│       │       ├── admin-gestion-produits.js  # Logique admin
+│       │       ├── fiches.min.js        # Logique fiches produits
+│       │       └── script.js            # Scripts généraux
+│       ├── fiches.html                 # Page catalogue produits
+│       ├── index.html                  # Page d'accueil
+│       └── Gestion des produits et génération automatique.html  # Admin
+└── backend/
+    ├── server.js                       # Serveur Express
+    ├── database/
+    │   ├── config.js                   # Configuration PostgreSQL
+    │   ├── schema.sql                  # Schéma base de données
+    │   └── migrations/                 # Scripts de migration
+    ├── routes/
+    │   ├── produits.js                 # Routes API produits
+    │   └── upload.js                   # Routes upload images
+    ├── models/
+    │   └── Produit.js                  # Modèle produit
+    ├── package.json                    # Dépendances Node.js
+    ├── .env                           # Variables d'environnement
+    └── uploads/                        # Dossier uploads
 ```
 
-## 🚀 Installation rapide
+## 🚀 Installation
 
-### 1. Cloner le projet
-```bash
-git clone [votre-repo]
-cd site-gamer-2025
+### Prérequis
+
+- **Node.js** (version 14+)
+- **PostgreSQL** (version 13+)
+- **npm** ou **yarn**
+- Navigateur moderne
+
+### Étapes d'installation
+
+1. **Cloner le repository**
+
+   ```bash
+   git clone https://github.com/votre-username/site-gamer-2025.git
+   cd site-gamer-2025
+   ```
+
+2. **Installer PostgreSQL**
+
+   ```bash
+   # Ubuntu/Debian
+   sudo apt install postgresql postgresql-contrib
+   
+   # macOS (avec Homebrew)
+   brew install postgresql
+   
+   # Windows : Télécharger depuis postgresql.org
+   ```
+
+3. **Installer les dépendances backend**
+
+   ```bash
+   cd backend
+   npm install
+   ```
+
+4. **Configurer les variables d'environnement**
+
+   ```bash
+   cp .env.example .env
+   # Éditer .env avec vos paramètres PostgreSQL
+   ```
+
+## 🗄️ Configuration de la base de données
+
+### Variables d'environnement (.env)
+
+```env
+# Base de données PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=site_gamer_2025
+DB_USER=votre_utilisateur
+DB_PASSWORD=votre_mot_de_passe
+
+# Serveur
+PORT=3000
+NODE_ENV=development
+
+# Upload
+UPLOAD_PATH=./uploads
+MAX_FILE_SIZE=5242880
 ```
 
-### 2. Installation des dépendances (si utilisation du serveur)
-```bash
-npm install
-```
+### Initialisation de la base
 
-### 3. Lancer le projet
+1. **Créer la base de données**
 
-**Avec serveur Node.js et PostgreSQL**
-```bash
-# Lancer le serveur
-node server.js
+   ```sql
+   -- Connectez-vous à PostgreSQL
+   psql -U postgres
+   
+   -- Créer la base
+   CREATE DATABASE site_gamer_2025;
+   CREATE USER votre_utilisateur WITH PASSWORD 'votre_mot_de_passe';
+   GRANT ALL PRIVILEGES ON DATABASE site_gamer_2025 TO votre_utilisateur;
+   ```
 
-# Le site sera accessible sur
-http://localhost:3000
-```
+2. **Exécuter le schéma**
 
-### 4. Pages principales
-- Page d'accueil : `http://localhost:3000`
-- Page fiches : `http://localhost:3000/frontend/public/pages/fiches.html`
-- Dashboard admin : `http://localhost:3000/admin.html`
+   ```bash
+   psql -U votre_utilisateur -d site_gamer_2025 -f database/schema.sql
+   ```
 
-## ⚙️ Configuration
-
-### Base de données PostgreSQL
-
-Configurez vos identifiants dans `server.js` :
-
-```javascript
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'votre_mot_de_passe',
-  port: 5432,
-});
-```
-
-## 📊 Format des données
-
-Structure dans PostgreSQL (table `produits`) :
+### Schéma de la base (database/schema.sql)
 
 ```sql
+-- Table des produits
 CREATE TABLE produits (
-  id SERIAL PRIMARY KEY,
-  nom VARCHAR(255) NOT NULL,
-  categorie VARCHAR(100),
-  prix VARCHAR(50),
-  description TEXT,
-  image VARCHAR(500),
-  image_data TEXT, -- Pour base64
-  lien VARCHAR(500),
-  top_du_mois BOOLEAN DEFAULT false,
-  fonctionnalites_avancees TEXT[],
-  donnees_fiche TEXT[]
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    prix VARCHAR(50),
+    categorie VARCHAR(100),
+    description TEXT,
+    image VARCHAR(255),
+    fonctionnalites_avancees TEXT[], -- Array PostgreSQL
+    top_du_mois BOOLEAN DEFAULT FALSE,
+    titre_affiche VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Index pour les recherches
+CREATE INDEX idx_produits_categorie ON produits(categorie);
+CREATE INDEX idx_produits_nom ON produits(nom);
+CREATE INDEX idx_produits_top ON produits(top_du_mois);
+
+-- Trigger pour updated_at
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_produits_updated_at 
+    BEFORE UPDATE ON produits 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
 ```
 
-## 🛠️ Développement
+## 🌐 API
 
-### Fichiers principaux
+### Endpoints disponibles
 
-- `server.js` : Serveur Node.js avec API PostgreSQL
-- `admin.html` : Dashboard administrateur
-- `pages/fiches.html` : Page principale des fiches produits
-- `assets/js/fiches.js` : Logique de la page fiches
-- `assets/js/fiche-produit.js` : Logique des fiches individuelles
-- `assets/css/styles.css` : Styles principaux
+```javascript
+// Récupérer tous les produits
+GET /api/produits
+// Filtres : ?categorie=xxx&search=xxx&top_du_mois=true
 
-### Ajouter une catégorie
+// Récupérer un produit par ID
+GET /api/produits/:id
 
-1. Créer le dossier dans `/fiches/nouvelle-categorie/`
-2. Ajouter les produits dans PostgreSQL via l'admin
-3. Générer les fiches HTML depuis le dashboard
+// Créer un nouveau produit
+POST /api/produits
+Content-Type: multipart/form-data
 
-### API Endpoints (avec serveur)
+// Modifier un produit
+PUT /api/produits/:id
+Content-Type: multipart/form-data
 
-- `GET /api/produits` : Liste tous les produits
-- `GET /api/produits/:id` : Détails d'un produit
-- `POST /api/produits` : Créer un produit
-- `PUT /api/produits/:id` : Modifier un produit
-- `DELETE /api/produits/:id` : Supprimer un produit
+// Supprimer un produit
+DELETE /api/produits/:id
 
-## 📦 Sauvegarde
+// Upload d'image
+POST /api/upload
+Content-Type: multipart/form-data
 
-### PostgreSQL
-- Export via pgAdmin : Click droit sur la base > Backup
-- En ligne de commande : `pg_dump -U postgres -d postgres > backup.sql`
-- Restauration : `psql -U postgres -d postgres < backup.sql`
+// Récupérer les catégories
+GET /api/categories
+```
 
-## 🚀 Déploiement
+### Exemple de requête SQL
 
-### Production avec serveur Node.js
+```javascript
+// Recherche avec filtres
+const query = `
+  SELECT * FROM produits 
+  WHERE 
+    ($1::text IS NULL OR categorie ILIKE $1) 
+    AND ($2::text IS NULL OR nom ILIKE $2 OR description ILIKE $2)
+    AND ($3::boolean IS NULL OR top_du_mois = $3)
+  ORDER BY created_at DESC
+  LIMIT $4 OFFSET $5
+`;
+
+const values = [
+  categorie ? `%${categorie}%` : null,
+  search ? `%${search}%` : null,
+  top_du_mois || null,
+  limit || 50,
+  offset || 0
+];
+```
+
+## 💻 Utilisation
+
+### Démarrage
+
 ```bash
-# Installation des dépendances
-npm install
+# Démarrer PostgreSQL
+sudo service postgresql start
 
-# Lancer avec PM2 (recommandé)
-npm install -g pm2
-pm2 start server.js --name site-gamer
+# Démarrer le serveur Node.js
+cd backend
+npm start
 
-# Ou avec Node directement
-node server.js
+# Ou en mode développement
+npm run dev
 ```
 
-### Hébergeurs compatibles
-- Heroku (avec add-on PostgreSQL)
-- Railway
-- Render
-- VPS avec Node.js et PostgreSQL
+### Accès
 
-## 🔧 Dépannage
+- **Frontend** : `http://localhost:3000`
+- **Admin** : `http://localhost:3000/Gestion des produits et génération automatique.html`
+- **API** : `http://localhost:3000/api`
 
-### Le serveur ne démarre pas
-- Vérifier PostgreSQL est lancé
-- Vérifier les identifiants dans `server.js`
-- Port 3000 disponible
+## 🔧 Scripts utiles
 
-### Les images ne s'affichent pas
-- Vérifier les chemins dans la base de données
-- Les images doivent être dans `/frontend/public/assets/images/`
+```bash
+# Sauvegarde de la base
+pg_dump -U votre_utilisateur site_gamer_2025 > backup.sql
 
-### Erreur CORS
-- Le serveur inclut déjà les headers CORS
-- En local, utiliser `localhost` et non `127.0.0.1`
+# Restauration
+psql -U votre_utilisateur site_gamer_2025 < backup.sql
 
-## 📄 Licence
+# Logs PostgreSQL
+tail -f /var/log/postgresql/postgresql-13-main.log
 
-MIT
+# Connexion directe
+psql -U votre_utilisateur -d site_gamer_2025
+```
+
+## 🎯 Avantages PostgreSQL
+
+✅ **Performance** : Requêtes complexes optimisées  
+✅ **Fiabilité** : ACID compliance  
+✅ **Évolutivité** : Support millions d'enregistrements  
+✅ **Types avancés** : Arrays, JSON, UUID...  
+✅ **Recherche** : Full-text search intégré  
+✅ **Sauvegarde** : Système de backup robuste  
+
+## Interface d'administration
+
+### Fonctionnalités principales
+
+- **Dashboard moderne** : Interface claire avec onglets
+- **Gestion CRUD** : Création, lecture, modification, suppression
+- **Upload avancé** : Drag & drop avec prévisualisation
+- **Validation** : Contrôles en temps réel
+- **Messages** : Feedback utilisateur instantané
+- **Responsive** : Compatible tous écrans
+
+### Classes principales
+
+```javascript
+// Gestion moderne des uploads
+class ModernImageUpload {
+  constructor(prefix)
+  setupEventListeners()
+  handleFiles(files)
+  createPreview(file)
+  removePreview()
+}
+
+// Fonctions principales
+createProduct(event)     // Création produit
+editProduct(id)         // Modification produit
+deleteProduct(id)       // Suppression produit
+displayProducts()       // Affichage liste
+```
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Commit les changements (`git commit -m 'Ajout nouvelle fonctionnalité'`)
+4. Push sur la branche (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrir une Pull Request
+
+## 📝 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ---
 
-*Projet Site Gamer 2025*
+**Version actuelle : 2.0.0** | **Dernière mise à jour : Septembre 2025**
+
+**🚀 Migré vers PostgreSQL pour plus de performance et fiabilité !**

@@ -22,7 +22,20 @@ const pool = new Pool({
 });
 
 // Middleware
-app.use(cors());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -50,22 +63,106 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'public', 'index.html'));
 });
 
-// Servir les autres fichiers HTML du dossier frontend/public
-app.get('/:page', (req, res) => {
-  const page = req.params.page;
-  const filePath = path.join(__dirname, 'frontend', 'public', page);
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else {
-    res.status(404).send('Page non trouvée');
+// ========== ROUTES API - PLACEZ TOUT CECI AVANT LES ROUTES GÉNÉRIQUES ==========
+
+// Route pour initialiser la colonne image
+app.post('/api/init-image-column', async (req, res) => {
+  try {
+    // Vérifier si la colonne existe déjà
+    const checkColumn = await pool.query(`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'produits' AND column_name = 'image'
+    `);
+    
+    if (checkColumn.rows.length === 0) {
+      // Ajouter la colonne si elle n'existe pas
+      await pool.query('ALTER TABLE produits ADD COLUMN image VARCHAR(255)');
+      res.json({ success: true, message: 'Colonne image ajoutée avec succès' });
+    } else {
+      res.json({ success: true, message: 'Colonne image déjà présente' });
+    }
+  } catch (error) {
+    console.error('❌ Erreur init colonne:', error);
+    res.json({ success: true, message: 'Colonne OK (erreur ignorée)' });
+  }
+});
+
+// Route de test
+app.get('/api/test', (req, res) => {
+  res.json({
+    success: true,
+    message: 'API PostgreSQL fonctionne!',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// GET - Statistiques
+app.get('/api/stats', async (req, res) => {
+  try {
+    const stats = await pool.query(`
+      SELECT
+        COUNT(DISTINCT id) AS total_products,
+        COUNT(DISTINCT CASE WHEN categorie IS NOT NULL AND categorie != '' THEN categorie END) AS total_categories,
+        COUNT(*) FILTER (WHERE top_du_mois = TRUE) AS featured_products
+      FROM produits
+    `);
+
+    res.json({
+      success: true,
+      stats: stats.rows[0]
+    });
+
+  } catch (error) {
+    console.error('❌ Erreur stats:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Liste des fiches
+app.get('/api/fiches-list', (req, res) => {
+  try {
+    const fichesDir = path.join(__dirname, 'fiches');
+    const fiches = [];
+    
+    if (fs.existsSync(fichesDir)) {
+      const categories = fs.readdirSync(fichesDir, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name);
+      
+      categories.forEach(category => {
+        const categoryPath = path.join(fichesDir, category);
+        const files = fs.readdirSync(categoryPath)
+          .filter(file => file.endsWith('.html'));
+        
+        files.forEach(file => {
+          fiches.push({
+            name: file,
+            path: `fiches/${category}/${file}`,
+            category: category
+          });
+        });
+      });
+    }
+    
+    res.json({
+      success: true,
+      fiches: fiches
+    });
+  } catch (error) {
+    console.error('❌ Erreur liste fiches:', error);
+    res.json({
+      success: true,
+      fiches: []
+    });
   }
 });
 
 // ========== ROUTES API ==========
 
-
-
-// GET - Récupérer tous les produits
 // GET - Récupérer tous les produits
 app.get('/api/produits', async (req, res) => {
   try {
@@ -97,6 +194,7 @@ app.get('/api/produits', async (req, res) => {
       }
       return product;
     });
+    
     res.json({
       success: true,
       data: productsWithImages,
@@ -359,8 +457,6 @@ app.post('/api/generate-fiche/:id', async (req, res) => {
 
 // Fonction de génération du template HTML
 function generateFicheHTML(product) {
-  // On met le nom du produit dans le <title> et <h1>
-  // Le JS se charge de tout charger dynamiquement via l'API
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -401,15 +497,15 @@ function generateFicheHTML(product) {
     </style>
 
     <footer class="footer">
-    <img src="../../frontend/public/assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
+    <img src="/assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
     <div class="footer-links">
         <div class="footer-item">
-            <img src="../../frontend/public/assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
-            <a href="../../frontend/public/index.html">Accueil</a>
+            <img src="/assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+            <a href="/index.html">Accueil</a>
         </div>
         <div class="footer-item">
-            <img src="../../frontend/public/assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
-            <a href="../../frontend/public/top-du-mois.html">Vitrine</a>
+            <img src="/assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+            <a href="/top-du-mois.html">Vitrine</a>
         </div>
     </div>
 </footer>
@@ -419,47 +515,6 @@ function generateFicheHTML(product) {
 </body>
 </html>`;
 }
-
-// GET - Statistiques
-app.get('/api/stats', async (req, res) => {
-  try {
-    const stats = await pool.query(`
-      SELECT
-        COUNT(DISTINCT id) AS total_products,
-        COUNT(DISTINCT categorie) AS total_categories,
-        COUNT(*) FILTER (WHERE top_du_mois = TRUE) AS featured_products
-      FROM produits
-    `);
-
-    res.json({
-      success: true,
-      stats: stats.rows[0]
-    });
-
-  } catch (error) {
-    console.error('❌ Erreur stats:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
-app.post('/api/init-image-column', (req, res) => {
-  res.json({ success: true, message: 'Colonne OK' });
-});
-app.get('/api/fiches-list', (req, res) => {
-  res.json({
-    success: true,
-    fiches: [
-      { name: "exemple.html", path: "fiches/exemple.html", category: "test" }
-    ]
-  });
-});
-
-app.post('/api/generate-fiche/:id', async (req, res) => {
-    res.json({ success: false, error: 'Endpoint à implémenter' });
-});
 
 // Supprimer la fiche HTML locale d'un produit
 app.delete('/api/fiches/:id', async (req, res) => {
@@ -487,17 +542,107 @@ app.delete('/api/fiches/:id', async (req, res) => {
     }
 });
 
-// Route de test
-app.get('/api/test', (req, res) => {
-  res.json({
-    success: true,
-    message: 'API PostgreSQL fonctionne!',
-    timestamp: new Date().toISOString()
-  });
+// Route pour prévisualiser une fiche générée - VERSION AMÉLIORÉE
+app.get('/api/preview-fiche/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        console.log('🔍 Preview fiche pour ID:', productId);
+        
+        // Récupérer les infos du produit
+        const result = await pool.query('SELECT * FROM produits WHERE id = $1', [productId]);
+        
+        if (result.rows.length === 0) {
+            console.log('❌ Produit non trouvé pour ID:', productId);
+            return res.json({ success: false, error: 'Produit non trouvé' });
+        }
+        
+        const product = result.rows[0];
+        console.log('📦 Produit trouvé:', product.nom);
+        
+        if (!product.lien) {
+            console.log('❌ Aucun lien de fiche pour:', product.nom);
+            return res.json({ success: false, error: 'Aucun lien de fiche défini pour ce produit' });
+        }
+        
+        // Nettoyer le chemin
+        let cleanPath = product.lien;
+        if (cleanPath.startsWith('/')) {
+            cleanPath = cleanPath.substring(1);
+        }
+        
+        const fichePath = path.join(__dirname, 'public', cleanPath);
+        console.log('📁 Chemin fichier:', fichePath);
+        
+        // Vérifier si le fichier existe
+        if (fs.existsSync(fichePath)) {
+            console.log('✅ Fichier trouvé, lecture...');
+            const html = fs.readFileSync(fichePath, 'utf8');
+            res.json({ success: true, html: html });
+        } else {
+            console.log('❌ Fichier non trouvé:', fichePath);
+            
+            // Essayer quelques variantes de chemin
+            const alternatives = [
+                path.join(__dirname, 'public', 'fiches', path.basename(cleanPath)),
+                path.join(__dirname, 'fiches', cleanPath),
+                path.join(__dirname, cleanPath)
+            ];
+            
+            let found = false;
+            for (const alt of alternatives) {
+                if (fs.existsSync(alt)) {
+                    console.log('✅ Fichier trouvé dans:', alt);
+                    const html = fs.readFileSync(alt, 'utf8');
+                    return res.json({ success: true, html: html });
+                }
+            }
+            
+            res.json({ 
+                success: false, 
+                error: `Fichier de fiche non trouvé: ${product.lien}. Vérifiez que le fichier existe.` 
+            });
+        }
+        
+    } catch (error) {
+        console.error('❌ Erreur preview fiche:', error);
+        res.json({ success: false, error: error.message });
+    }
 });
 
-// ========== DÉMARRAGE DU SERVEUR ==========
+// ========== ROUTES GÉNÉRIQUES - DOIVENT ÊTRE À LA TOUTE FIN ==========
 
+// Servir les fiches HTML générées dynamiquement
+app.get('/fiches/:category/:fiche', (req, res) => {
+  const { category, fiche } = req.params;
+  const filePath = path.join(__dirname, 'fiches', category, fiche);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Fiche non trouvée');
+  }
+});
+
+// Servir les autres fichiers HTML du dossier frontend/public
+/*
+app.get('/:page', (req, res) => {
+  const page = req.params.page;
+  
+  // IMPORTANT: Ignorer les requêtes API qui ont échoué
+  if (page.startsWith('api')) {
+    return res.status(404).json({ success: false, error: 'Route API non trouvée' });
+  }
+  
+  const filePath = path.join(__dirname, 'frontend', 'public', page);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Page non trouvée');
+  }
+});
+*/
+
+// ========== DÉMARRAGE DU SERVEUR ==========
+// Démarrage du serveur
 app.listen(port, async () => {
   // Test connexion PostgreSQL
   try {
@@ -533,14 +678,3 @@ function slugToTitreAffiche(slug) {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
 }
-
-// Servir les fiches HTML générées dynamiquement
-app.get('/fiches/:category/:fiche', (req, res) => {
-  const { category, fiche } = req.params;
-  const filePath = path.join(__dirname, 'fiches', category, fiche);
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else {
-    res.status(404).send('Fiche non trouvée');
-  }
-});
