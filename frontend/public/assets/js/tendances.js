@@ -9,11 +9,11 @@ class TendancesDataManager {
 
     async updateNews() {
         console.log('🔄 Mise à jour des actualités...');
-        
+
         try {
             const newsData = await this.fetchGamingNews();
             const actualitesGrid = document.querySelector('.actualites-grid');
-            
+
             if (actualitesGrid && newsData) {
                 actualitesGrid.innerHTML = this.generateNewsHTML(newsData);
                 console.log('✅ Actualités mises à jour !');
@@ -25,17 +25,17 @@ class TendancesDataManager {
 
     async updateTechProgress() {
         console.log('🔄 Mise à jour des technologies...');
-        
+
         try {
             const techData = await this.fetchTechData();
             const progressBars = document.querySelectorAll('#technologies .progress');
-            
+
             progressBars.forEach((bar, index) => {
                 if (techData[index]) {
                     this.animateProgressUpdate(bar, techData[index].progress);
                 }
             });
-            
+
             console.log('✅ Technologies mises à jour !');
         } catch (error) {
             console.error('❌ Erreur technologies:', error);
@@ -44,17 +44,17 @@ class TendancesDataManager {
 
     async updateMarketStats() {
         console.log('🔄 Mise à jour du marché...');
-        
+
         try {
             const marketData = await this.fetchMarketData();
             const statValues = document.querySelectorAll('.stat-value');
-            
+
             statValues.forEach((stat, index) => {
                 if (marketData[index]) {
                     this.animateStatUpdate(stat, marketData[index].value);
                 }
             });
-            
+
             console.log('✅ Marché mis à jour !');
         } catch (error) {
             console.error('❌ Erreur marché:', error);
@@ -63,17 +63,17 @@ class TendancesDataManager {
 
     async updatePredictions() {
         console.log('🔄 Mise à jour des prédictions...');
-        
+
         try {
             const predictionsData = await this.fetchPredictionsData();
             const probabilityElements = document.querySelectorAll('.probability');
-            
+
             probabilityElements.forEach((prob, index) => {
                 if (predictionsData[index]) {
                     this.animateProbabilityUpdate(prob, predictionsData[index].probability);
                 }
             });
-            
+
             console.log('✅ Prédictions mises à jour !');
         } catch (error) {
             console.error('❌ Erreur prédictions:', error);
@@ -83,24 +83,149 @@ class TendancesDataManager {
     // === MÉTHODES DE DONNÉES ===
 
     async fetchGamingNews() {
-        // Simulation d'actualités dynamiques
         const now = new Date();
+        const path = window.location.pathname;
+
+        if (path.includes('drone')) {
+            // Actualités drones fixes
+            const topics = [
+                {
+                    title: "DJI FPV 2 : La Révolution du Vol Immersif",
+                    description: "Le nouveau DJI FPV 2 offre une expérience de vol ultra-immersive avec une caméra 8K et une portée record.",
+                    video: "https://www.youtube.com/embed/rXZ47PwevE0", // <-- AJOUTE CETTE LIGNE
+                    tags: ["FPV", "DJI", "8K"],
+                    hot: true
+                },
+                {
+                    title: "Livraison par Drone : Amazon étend son service",
+                    description: "Amazon annonce l’expansion de la livraison par drone dans 10 nouveaux pays, promettant des délais record.",
+                    image: "assets/images/drone-livraison.jpg",
+                    tags: ["Livraison", "Amazon"]
+                },
+                {
+                    title: "IA embarquée : Les drones deviennent autonomes",
+                    description: "Les nouveaux drones intègrent des IA capables d’éviter les obstacles et de filmer de façon intelligente.",
+                    image: "assets/images/drone-ia.jpg",
+                    tags: ["IA", "Autonomie"]
+                },
+                {
+                    title: "Courses de Drones : Le FPV explose en popularité",
+                    description: "Les compétitions de drones FPV attirent de plus en plus de pilotes et de spectateurs à travers le monde.",
+                    image: "assets/images/drone-course.jpg",
+                    tags: ["Course", "FPV"]
+                }
+            ];
+
+            return topics.map((topic, index) => ({
+                id: Date.now() + index,
+                title: topic.title,
+                description: topic.description,
+                image: topic.image,
+                video: topic.video, // <-- AJOUTE CETTE LIGNE
+                date: (() => {
+                    const d = new Date(now - (index * 3600000));
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    const str = d.toLocaleDateString('fr-FR', options);
+                    return str.replace(/ ([a-z])/, (m, l) => ' ' + l.toUpperCase());
+                })(),
+                tags: topic.tags,
+                hot: topic.hot || false
+            }));
+        }
+        if (path.includes('smartphone')) {
+            // Actualités smartphone fixes
+            const topics = [
+                {
+                    title: "Galaxy Z Fold 6 : Le pliable devient la norme",
+                    description: "Samsung dévoile son nouveau smartphone pliable avec écran 8 pouces et autonomie record.",
+                    image: "assets/images/smartphone-fold.jpg",
+                    tags: ["Pliable", "Samsung", "8 pouces"],
+                    hot: true
+                },
+                {
+                    title: "iPhone 17 Pro : L’IA au cœur de l’expérience",
+                    description: "Apple intègre une puce IA dédiée pour la photo, la sécurité et la gestion de l’énergie.",
+                    image: "assets/images/iphone-17.jpg",
+                    tags: ["Apple", "IA"]
+                },
+                {
+                    title: "Xiaomi HyperCharge : 100% en 5 minutes",
+                    description: "Xiaomi lance la recharge la plus rapide du marché, 100% en 5 minutes chrono.",
+                    image: "assets/images/xiaomi-hypercharge.jpg",
+                    tags: ["Xiaomi", "Batterie"]
+                },
+                {
+                    title: "Google Pixel 9 : Android 15 et photo boostée",
+                    description: "Le Pixel 9 mise sur l’IA et un nouveau capteur photo pour séduire les créateurs de contenu.",
+                    image: "assets/images/google-pixel-9.jpg",
+                    tags: ["Google", "Photo"]
+                }
+            ];
+            return topics.map((topic, index) => ({
+                id: Date.now() + index,
+                title: topic.title,
+                description: topic.description,
+                image: topic.image,
+                date: (() => {
+                    const d = new Date(now - (index * 3600000));
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    const str = d.toLocaleDateString('fr-FR', options);
+                    return str.replace(/ ([a-z])/, (m, l) => ' ' + l.toUpperCase());
+                })(),
+                tags: topic.tags,
+                hot: topic.hot || false
+            }));
+        }
+
+        // Par défaut : gaming
+        // Actualités gaming fixes
         const topics = [
-            { title: "NVIDIA RTX 5090", brand: "NVIDIA", category: "GPU" },
-            { title: "AMD Zen 6", brand: "AMD", category: "CPU" },
-            { title: "Intel Arc B-Series", brand: "Intel", category: "GPU" },
-            { title: "DDR6 RAM", brand: "JEDEC", category: "Memory" },
-            { title: "PCIe 6.0", brand: "PCI-SIG", category: "Standard" }
+            {
+                title: "NVIDIA RTX 5090 : Performances Révolutionnaires",
+                description: "La nouvelle RTX 5090 pulvérise tous les records avec 50% de performance en plus.",
+                image: "assets/images/rtx-5070.jpeg",
+                tags: ["GPU", "NVIDIA", "RTX"],
+                hot: true
+            },
+            {
+                title: "AMD Zen 6 : Architecture Révolutionnaire",
+                description: "Les processeurs Zen 6 arrivent avec une efficacité énergétique record.",
+                image: "assets/images/amd-ryzen-series-9000.jpeg",
+                tags: ["CPU", "AMD"]
+            },
+            {
+                title: "Intel Arc B-Series : Nouvelle Génération",
+                description: "Intel lance la série Arc B avec des performances solides pour concurrencer AMD et NVIDIA.",
+                image: "assets/images/intel-arc.jpg",
+                tags: ["GPU", "Intel"]
+            },
+            {
+                title: "DDR6 RAM : Vitesse Inédite",
+                description: "La DDR6 promet des vitesses de transfert jamais vues pour booster les PC gaming.",
+                image: "assets/images/ddr6.jpg",
+                tags: ["Memory", "DDR6"]
+            },
+            {
+                title: "PCIe 6.0 : Doublement de la Bande Passante",
+                description: "Le PCIe 6.0 double la bande passante pour des transferts ultra-rapides.",
+                image: "assets/images/Pcie6.png",
+                tags: ["Standard", "PCIe"]
+            }
         ];
 
         return topics.map((topic, index) => ({
             id: Date.now() + index,
-            title: `${topic.title} : ${this.getRandomAdjective()} ${this.getRandomFeature()}`,
-            description: this.generateDescription(topic),
-            image: this.getImageForTopic(topic, index),
-            date: new Date(now - (index * 3600000)).toLocaleDateString('fr-FR'),
-            tags: [topic.category, topic.brand],
-            hot: index === 0
+            title: topic.title,
+            description: topic.description,
+            image: topic.image, // <-- ici, pour la vidéo, c'est undefined
+            date: (() => {
+                const d = new Date(now - (index * 3600000));
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const str = d.toLocaleDateString('fr-FR', options);
+                return str.replace(/ ([a-z])/, (m, l) => ' ' + l.toUpperCase());
+            })(),
+            tags: topic.tags,
+            hot: topic.hot || false
         }));
     }
 
@@ -120,7 +245,7 @@ class TendancesDataManager {
         // Simulation données marché
         const base = [287.2, 3.4, 1.8, 2.1];
         const suffixes = ['B€', 'B', 'B', 'B'];
-        
+
         return base.map((value, index) => ({
             value: `${(value + Math.random() * (value * 0.1)).toFixed(1)}${suffixes[index]}`
         }));
@@ -151,7 +276,7 @@ class TendancesDataManager {
             "DDR6": 'assets/images/ddr6.jpg',
             "PCIe 6.0": 'assets/images/Pcie6.png'
         };
-        
+
         // Chercher l'image par le titre du topic
         return imageMap[topic.title] || 'assets/images/placeholder.png';
     }
@@ -159,7 +284,7 @@ class TendancesDataManager {
     getRandomAdjective() {
         const adjectives = [
             "Performances Révolutionnaires",
-            "Innovation Majeure", 
+            "Innovation Majeure",
             "Nouvelle Génération",
             "Avancée Spectaculaire",
             "Technologie Disruptive",
@@ -173,7 +298,7 @@ class TendancesDataManager {
         const features = [
             "qui Change la Donne",
             "pour les Gamers",
-            "Ultra-Performante", 
+            "Ultra-Performante",
             "du Futur",
             "Révolutionnaire",
             "Inédite",
@@ -197,11 +322,20 @@ class TendancesDataManager {
     generateNewsHTML(newsData) {
         return newsData.map((news, index) => `
             <article class="actualite-card ${index === 0 ? 'featured' : ''}">
-                <div class="card-image">
-                    <img src="${news.image}" alt="${news.title}" 
-                         onerror="this.src='assets/images/placeholder.png'">
-                    ${news.hot ? '<span class="badge hot">🔥 HOT</span>' : ''}
-                </div>
+                ${news.video
+                ? `<div class="card-video">
+                            <iframe width="100%" height="200" src="${news.video}" 
+                                title="${news.title}" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                            ${news.hot ? '<span class="badge hot">🔥 HOT</span>' : ''}
+                       </div>`
+                : `<div class="card-image">
+                            <img src="${news.image}" alt="${news.title}" 
+                                 onerror="this.src='assets/images/placeholder.png'">
+                            ${news.hot ? '<span class="badge hot">🔥 HOT</span>' : ''}
+                       </div>`
+            }
                 <div class="card-content">
                     <span class="date">${news.date}</span>
                     <h3>${news.title}</h3>
@@ -217,7 +351,7 @@ class TendancesDataManager {
     animateProgressUpdate(progressBar, newWidth) {
         progressBar.style.transition = 'width 1s ease';
         progressBar.style.width = `${newWidth.toFixed(0)}%`;
-        
+
         // Mettre à jour le texte
         const card = progressBar.closest('.tech-card');
         const adoptionText = card.querySelector('p strong');
@@ -229,12 +363,12 @@ class TendancesDataManager {
     animateStatUpdate(element, newValue) {
         element.style.transform = 'scale(0.8)';
         element.style.opacity = '0.5';
-        
+
         setTimeout(() => {
             element.textContent = newValue;
             element.style.transform = 'scale(1.1)';
             element.style.opacity = '1';
-            
+
             setTimeout(() => {
                 element.style.transform = 'scale(1)';
             }, 200);
@@ -244,12 +378,12 @@ class TendancesDataManager {
     animateProbabilityUpdate(element, newProbability) {
         element.style.transform = 'scale(0.9)';
         element.style.opacity = '0.6';
-        
+
         setTimeout(() => {
             element.textContent = `Probabilité: ${newProbability.toFixed(0)}%`;
             element.style.transform = 'scale(1.05)';
             element.style.opacity = '1';
-            
+
             setTimeout(() => {
                 element.style.transform = 'scale(1)';
             }, 200);
@@ -277,12 +411,12 @@ class TendancesManager {
         navButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetSection = btn.getAttribute('data-section');
-                
+
                 // NOUVEAU : Mettre à jour les données avant d'afficher
                 this.updateSectionData(targetSection);
-                
+
                 this.switchSection(targetSection);
-                
+
                 // Update active button
                 navButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
@@ -294,33 +428,33 @@ class TendancesManager {
     async updateSectionData(sectionName) {
         // Afficher un loader
         this.showSectionLoader(sectionName);
-        
+
         try {
-            switch(sectionName) {
+            switch (sectionName) {
                 case 'actualites':
                     await this.dataManager.updateNews();
                     console.log('📰 Actualités mises à jour !');
                     break;
-                    
+
                 case 'technologies':
                     await this.dataManager.updateTechProgress();
                     console.log('⚡ Technologies mises à jour !');
                     break;
-                    
+
                 case 'marche':
                     await this.dataManager.updateMarketStats();
                     console.log('📊 Marché mis à jour !');
                     break;
-                    
+
                 case 'predictions':
                     await this.dataManager.updatePredictions();
                     console.log('🔮 Prédictions mises à jour !');
                     break;
             }
-            
+
             // Notification de succès
             this.showUpdateSuccess(sectionName);
-            
+
         } catch (error) {
             console.log('❌ Erreur mise à jour:', error);
             this.showUpdateError(sectionName);
@@ -355,7 +489,7 @@ class TendancesManager {
                 z-index: 10;
                 border-radius: 15px;
             `;
-            
+
             targetSection.style.position = 'relative';
             targetSection.appendChild(loader);
         }
@@ -391,13 +525,13 @@ class TendancesManager {
         const notification = document.createElement('div');
         notification.className = `update-notification ${type}`;
         notification.textContent = message;
-        
+
         const colors = {
             success: 'linear-gradient(135deg, #10b981, #059669)',
             error: 'linear-gradient(135deg, #ef4444, #dc2626)',
             info: 'linear-gradient(135deg, #667eea, #764ba2)'
         };
-        
+
         notification.style.cssText = `
             position: fixed;
             top: 20px;
@@ -414,14 +548,14 @@ class TendancesManager {
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         `;
-        
+
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateY(0)';
         }, 100);
-        
+
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateY(-20px)';
@@ -431,7 +565,7 @@ class TendancesManager {
 
     switchSection(sectionName) {
         const sections = document.querySelectorAll('.section-tendances');
-        
+
         // Hide all sections
         sections.forEach(section => {
             section.classList.remove('active');
@@ -443,7 +577,7 @@ class TendancesManager {
             if (targetSection) {
                 targetSection.classList.add('active');
                 this.currentSection = sectionName;
-                
+
                 // Special animations for each section
                 this.animateSection(sectionName);
             }
@@ -451,7 +585,7 @@ class TendancesManager {
     }
 
     animateSection(sectionName) {
-        switch(sectionName) {
+        switch (sectionName) {
             case 'technologies':
                 this.animateProgressBars();
                 break;
@@ -483,7 +617,7 @@ class TendancesManager {
             setTimeout(() => {
                 const finalValue = stat.textContent;
                 const isNumber = !isNaN(parseFloat(finalValue));
-                
+
                 if (isNumber) {
                     this.countUpAnimation(stat, parseFloat(finalValue));
                 } else {
@@ -504,7 +638,7 @@ class TendancesManager {
         const originalText = element.textContent;
         const suffix = originalText.replace(/[\d.,]/g, '');
         const numTarget = parseFloat(originalText.replace(/[^\d.,]/g, ''));
-        
+
         let current = 0;
         const increment = numTarget / 30;
         const timer = setInterval(() => {
@@ -513,7 +647,7 @@ class TendancesManager {
                 current = numTarget;
                 clearInterval(timer);
             }
-            
+
             element.textContent = current.toFixed(1) + suffix;
         }, 50);
     }
@@ -524,7 +658,7 @@ class TendancesManager {
             setTimeout(() => {
                 item.style.opacity = '0';
                 item.style.transform = 'translateX(-50px)';
-                
+
                 setTimeout(() => {
                     item.style.transition = 'all 0.6s ease';
                     item.style.opacity = '1';
@@ -557,11 +691,11 @@ class TendancesManager {
 
     loadLatestData() {
         // Simulation de chargement de données en temps réel
-        console.log('🔥 Tendances Gaming chargées !');
-        
+        console.log('🔥 Tendances chargées !');
+
         // Mise à jour des dates
         this.updateDates();
-        
+
         // Animation d'entrée
         setTimeout(() => {
             document.body.style.opacity = '1';
@@ -571,7 +705,7 @@ class TendancesManager {
     updateDates() {
         const dateElements = document.querySelectorAll('.date');
         const today = new Date();
-        
+
         dateElements.forEach((el, index) => {
             const date = new Date(today);
             date.setDate(today.getDate() - index * 2);
@@ -584,12 +718,13 @@ class TendancesManager {
     }
 }
 
-// Initialisation
+// Instanciation et initialisation du manager
+window.tendancesManager = new TendancesManager();
+
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Initialisation Tendances Gaming...');
-    
+    console.log('🚀 Initialisation Tendances...');
     try {
-        new TendancesManager();
+        tendancesManager.dataManager.updateNews(); // <-- AJOUTE CETTE LIGNE
         console.log('✅ TendancesManager initialisé !');
     } catch (error) {
         console.error('❌ Erreur initialisation:', error);
