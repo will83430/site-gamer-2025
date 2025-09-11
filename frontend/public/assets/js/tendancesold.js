@@ -32,7 +32,7 @@ class TendancesDataManager {
 
             progressBars.forEach((bar, index) => {
                 if (techData[index]) {
-                    this.animateProgressUpdate(bar, techData[index].taux_adoption);
+                    this.animateProgressUpdate(bar, techData[index].progress);
                 }
             });
 
@@ -47,16 +47,14 @@ class TendancesDataManager {
 
         try {
             const marketData = await this.fetchMarketData();
-            const marketGrid = document.querySelector('.marche-grid');
-            if (marketGrid && marketData) {
-                marketGrid.innerHTML = marketData.map(stat => `
-                    <div class="stat-card">
-                        <span class="stat-label">${stat.label}</span>
-                        <span class="stat-value">${stat.valeur}</span>
-                        <span class="stat-tendance ${stat.tendance}">${stat.tendance === 'up' ? '▲' : stat.tendance === 'down' ? '▼' : ''}</span>
-                    </div>
-                `).join('');
-            }
+            const statValues = document.querySelectorAll('.stat-value');
+
+            statValues.forEach((stat, index) => {
+                if (marketData[index]) {
+                    this.animateStatUpdate(stat, marketData[index].value);
+                }
+            });
+
             console.log('✅ Marché mis à jour !');
         } catch (error) {
             console.error('❌ Erreur marché:', error);
@@ -72,7 +70,7 @@ class TendancesDataManager {
 
             probabilityElements.forEach((prob, index) => {
                 if (predictionsData[index]) {
-                    this.animateProbabilityUpdate(prob, predictionsData[index].probabilite);
+                    this.animateProbabilityUpdate(prob, predictionsData[index].probability);
                 }
             });
 
@@ -85,60 +83,183 @@ class TendancesDataManager {
     // === MÉTHODES DE DONNÉES ===
 
     async fetchGamingNews() {
+        const now = new Date();
         const path = window.location.pathname;
-        let categorie = 'gaming';
-        if (path.includes('drone')) categorie = 'drone';
-        if (path.includes('smartphone')) categorie = 'smartphone';
 
-        const res = await fetch(`http://localhost:3000/api/${categorie}/actualites`);
-        const data = await res.json();
-        // Adapter le format si besoin (ex: transformer tags de string à array si nécessaire)
-        return data.map(news => ({
-            ...news,
-            tags: Array.isArray(news.tags) ? news.tags : (news.tags ? news.tags.replace(/[{}"]/g, '').split(',') : []),
-            date: new Date(news.date_publication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
-            hot: news.hot
+        if (path.includes('drone')) {
+            // Actualités drones fixes
+            const topics = [
+                {
+                    title: "DJI FPV 2 : La Révolution du Vol Immersif",
+                    description: "Le nouveau DJI FPV 2 offre une expérience de vol ultra-immersive avec une caméra 8K et une portée record.",
+                    video: "https://www.youtube.com/embed/rXZ47PwevE0", // <-- AJOUTE CETTE LIGNE
+                    tags: ["FPV", "DJI", "8K"],
+                    hot: true
+                },
+                {
+                    title: "Livraison par Drone : Amazon étend son service",
+                    description: "Amazon annonce l’expansion de la livraison par drone dans 10 nouveaux pays, promettant des délais record.",
+                    image: "assets/images/drone-livraison.jpg",
+                    tags: ["Livraison", "Amazon"]
+                },
+                {
+                    title: "IA embarquée : Les drones deviennent autonomes",
+                    description: "Les nouveaux drones intègrent des IA capables d’éviter les obstacles et de filmer de façon intelligente.",
+                    image: "assets/images/drone-ia.jpg",
+                    tags: ["IA", "Autonomie"]
+                },
+                {
+                    title: "Courses de Drones : Le FPV explose en popularité",
+                    description: "Les compétitions de drones FPV attirent de plus en plus de pilotes et de spectateurs à travers le monde.",
+                    image: "assets/images/drone-course.jpg",
+                    tags: ["Course", "FPV"]
+                }
+            ];
+
+            return topics.map((topic, index) => ({
+                id: Date.now() + index,
+                title: topic.title,
+                description: topic.description,
+                image: topic.image,
+                video: topic.video, // <-- AJOUTE CETTE LIGNE
+                date: (() => {
+                    const d = new Date(now - (index * 3600000));
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    const str = d.toLocaleDateString('fr-FR', options);
+                    return str.replace(/ ([a-z])/, (m, l) => ' ' + l.toUpperCase());
+                })(),
+                tags: topic.tags,
+                hot: topic.hot || false
+            }));
+        }
+        if (path.includes('smartphone')) {
+            // Actualités smartphone fixes
+            const topics = [
+                {
+                    title: "Galaxy Z Fold 6 : Le pliable devient la norme",
+                    description: "Samsung dévoile son nouveau smartphone pliable avec écran 8 pouces et autonomie record.",
+                    image: "assets/images/smartphone-fold.jpg",
+                    tags: ["Pliable", "Samsung", "8 pouces"],
+                    hot: true
+                },
+                {
+                    title: "iPhone 17 Pro : L’IA au cœur de l’expérience",
+                    description: "Apple intègre une puce IA dédiée pour la photo, la sécurité et la gestion de l’énergie.",
+                    image: "assets/images/iphone-17.jpg",
+                    tags: ["Apple", "IA"]
+                },
+                {
+                    title: "Xiaomi HyperCharge : 100% en 5 minutes",
+                    description: "Xiaomi lance la recharge la plus rapide du marché, 100% en 5 minutes chrono.",
+                    image: "assets/images/xiaomi-hypercharge.jpg",
+                    tags: ["Xiaomi", "Batterie"]
+                },
+                {
+                    title: "Google Pixel 9 : Android 15 et photo boostée",
+                    description: "Le Pixel 9 mise sur l’IA et un nouveau capteur photo pour séduire les créateurs de contenu.",
+                    image: "assets/images/google-pixel-9.jpg",
+                    tags: ["Google", "Photo"]
+                }
+            ];
+            return topics.map((topic, index) => ({
+                id: Date.now() + index,
+                title: topic.title,
+                description: topic.description,
+                image: topic.image,
+                date: (() => {
+                    const d = new Date(now - (index * 3600000));
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    const str = d.toLocaleDateString('fr-FR', options);
+                    return str.replace(/ ([a-z])/, (m, l) => ' ' + l.toUpperCase());
+                })(),
+                tags: topic.tags,
+                hot: topic.hot || false
+            }));
+        }
+
+        // Par défaut : gaming
+        // Actualités gaming fixes
+        const topics = [
+            {
+                title: "NVIDIA RTX 5090 : Performances Révolutionnaires",
+                description: "La nouvelle RTX 5090 pulvérise tous les records avec 50% de performance en plus.",
+                image: "assets/images/rtx-5070.jpeg",
+                tags: ["GPU", "NVIDIA", "RTX"],
+                hot: true
+            },
+            {
+                title: "AMD Zen 6 : Architecture Révolutionnaire",
+                description: "Les processeurs Zen 6 arrivent avec une efficacité énergétique record.",
+                image: "assets/images/amd-ryzen-series-9000.jpeg",
+                tags: ["CPU", "AMD"]
+            },
+            {
+                title: "Intel Arc B-Series : Nouvelle Génération",
+                description: "Intel lance la série Arc B avec des performances solides pour concurrencer AMD et NVIDIA.",
+                image: "assets/images/intel-arc.jpg",
+                tags: ["GPU", "Intel"]
+            },
+            {
+                title: "DDR6 RAM : Vitesse Inédite",
+                description: "La DDR6 promet des vitesses de transfert jamais vues pour booster les PC gaming.",
+                image: "assets/images/ddr6.jpg",
+                tags: ["Memory", "DDR6"]
+            },
+            {
+                title: "PCIe 6.0 : Doublement de la Bande Passante",
+                description: "Le PCIe 6.0 double la bande passante pour des transferts ultra-rapides.",
+                image: "assets/images/Pcie6.png",
+                tags: ["Standard", "PCIe"]
+            }
+        ];
+
+        return topics.map((topic, index) => ({
+            id: Date.now() + index,
+            title: topic.title,
+            description: topic.description,
+            image: topic.image, // <-- ici, pour la vidéo, c'est undefined
+            date: (() => {
+                const d = new Date(now - (index * 3600000));
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const str = d.toLocaleDateString('fr-FR', options);
+                return str.replace(/ ([a-z])/, (m, l) => ' ' + l.toUpperCase());
+            })(),
+            tags: topic.tags,
+            hot: topic.hot || false
         }));
     }
 
     async fetchTechData() {
-        const path = window.location.pathname;
-        let categorie = 'gaming';
-        if (path.includes('drone')) categorie = 'drone';
-        if (path.includes('smartphone')) categorie = 'smartphone';
-
-        const res = await fetch(`http://localhost:3000/api/${categorie}/technologies`);
-        return await res.json();
+        // Simulation évolution technologique
+        return [
+            { progress: Math.min(100, 75 + Math.random() * 10) }, // Gaming 8K
+            { progress: Math.min(100, 90 + Math.random() * 5) },  // IA Gaming
+            { progress: Math.min(100, 60 + Math.random() * 15) }, // Cloud Gaming
+            { progress: Math.min(100, 45 + Math.random() * 20) }, // VR/AR
+            { progress: Math.min(100, 30 + Math.random() * 25) }, // SSD Quantique
+            { progress: Math.min(100, 85 + Math.random() * 8) }   // Ray Tracing
+        ];
     }
 
     async fetchMarketData() {
-        const path = window.location.pathname;
-        let categorie = 'gaming';
-        if (path.includes('drone')) categorie = 'drone';
-        if (path.includes('smartphone')) categorie = 'smartphone';
+        // Simulation données marché
+        const base = [287.2, 3.4, 1.8, 2.1];
+        const suffixes = ['B€', 'B', 'B', 'B'];
 
-        const res = await fetch(`http://localhost:3000/api/${categorie}/marche`);
-        return await res.json();
-    }
-
-    async fetchInsightsData() {
-        const path = window.location.pathname;
-        let categorie = 'gaming';
-        if (path.includes('drone')) categorie = 'drone';
-        if (path.includes('smartphone')) categorie = 'smartphone';
-
-        const res = await fetch(`http://localhost:3000/api/${categorie}/insights`);
-        return await res.json();
+        return base.map((value, index) => ({
+            value: `${(value + Math.random() * (value * 0.1)).toFixed(1)}${suffixes[index]}`
+        }));
     }
 
     async fetchPredictionsData() {
-        const path = window.location.pathname;
-        let categorie = 'gaming';
-        if (path.includes('drone')) categorie = 'drone';
-        if (path.includes('smartphone')) categorie = 'smartphone';
-
-        const res = await fetch(`http://localhost:3000/api/${categorie}/predictions`);
-        return await res.json();
+        // Simulation nouvelles probabilités
+        return [
+            { probability: Math.min(95, 85 + Math.random() * 8) },  // 2026
+            { probability: Math.min(85, 78 + Math.random() * 6) },  // 2027
+            { probability: Math.min(80, 72 + Math.random() * 7) },  // 2028
+            { probability: Math.min(75, 65 + Math.random() * 9) },  // 2029
+            { probability: Math.min(60, 45 + Math.random() * 12) }  // 2030
+        ];
     }
 
     // === MÉTHODES UTILITAIRES ===
@@ -210,14 +331,14 @@ class TendancesDataManager {
                             ${news.hot ? '<span class="badge hot">🔥 HOT</span>' : ''}
                        </div>`
                 : `<div class="card-image">
-                            <img src="assets/images/${news.image}" alt="${news.title}" 
+                            <img src="${news.image}" alt="${news.title}" 
                                  onerror="this.src='assets/images/placeholder.png'">
                             ${news.hot ? '<span class="badge hot">🔥 HOT</span>' : ''}
                        </div>`
             }
                 <div class="card-content">
                     <span class="date">${news.date}</span>
-                    <h3>${news.titre}</h3>
+                    <h3>${news.title}</h3>
                     <p>${news.description}</p>
                     <div class="tags">
                         ${news.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
@@ -227,16 +348,15 @@ class TendancesDataManager {
         `).join('');
     }
 
-    animateProgressUpdate(progressBar, taux) {
+    animateProgressUpdate(progressBar, newWidth) {
         progressBar.style.transition = 'width 1s ease';
-        const value = (typeof taux === 'number' && !isNaN(taux)) ? taux : 0;
-        progressBar.style.width = value + '%';
+        progressBar.style.width = `${newWidth.toFixed(0)}%`;
 
         // Mettre à jour le texte
         const card = progressBar.closest('.tech-card');
-        const adoptionText = card ? card.querySelector('p strong') : null;
+        const adoptionText = card.querySelector('p strong');
         if (adoptionText) {
-            adoptionText.textContent = `Adoption: ${value.toFixed(0)}%`;
+            adoptionText.textContent = `Adoption: ${newWidth.toFixed(0)}%`;
         }
     }
 
@@ -260,8 +380,7 @@ class TendancesDataManager {
         element.style.opacity = '0.6';
 
         setTimeout(() => {
-            const value = (typeof newProbability === 'number' && !isNaN(newProbability)) ? newProbability : 0;
-            element.textContent = `probabilite: ${value.toFixed(0)}%`;
+            element.textContent = `Probabilité: ${newProbability.toFixed(0)}%`;
             element.style.transform = 'scale(1.05)';
             element.style.opacity = '1';
 

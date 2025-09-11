@@ -609,6 +609,73 @@ app.get('/api/preview-fiche/:id', async (req, res) => {
     }
 });
 
+// Helper pour récupérer l'id catégorie
+async function getCategoryId(nom) {
+  console.log(`[LOG] Recherche de l'id pour la catégorie : ${nom}`);
+  const { rows } = await pool.query('SELECT id FROM categories WHERE nom = $1', [nom]);
+  if (rows.length === 0) {
+    console.warn(`[WARN] Catégorie non trouvée : ${nom}`);
+  }
+  return rows[0]?.id;
+}
+
+// Exemple pour la route actualités
+app.get('/api/:categorie/actualites', async (req, res) => {
+  const cat = req.params.categorie;
+  console.log(`[API] GET /api/${cat}/actualites`);
+  const catId = await getCategoryId(cat);
+  if (!catId) {
+    console.error(`[ERROR] Catégorie inconnue : ${cat}`);
+    return res.status(404).json({ error: 'Catégorie inconnue' });
+  }
+  try {
+    const { rows } = await pool.query(
+      'SELECT * FROM actualites WHERE categorie_id = $1 ORDER BY date_publication DESC', [catId]
+    );
+    console.log(`[DB] ${rows.length} actualités trouvées pour ${cat}`);
+    res.json(rows);
+  } catch (err) {
+    console.error(`[DB ERROR]`, err);
+    res.status(500).json({ error: 'Erreur BDD' });
+  }
+});
+
+// Technologies
+app.get('/api/:categorie/technologies', async (req, res) => {
+  const catId = await getCategoryId(req.params.categorie);
+  const { rows } = await pool.query(
+    'SELECT * FROM technologies WHERE categorie_id = $1', [catId]
+  );
+  res.json(rows);
+});
+
+// Marché
+app.get('/api/:categorie/marche', async (req, res) => {
+  const catId = await getCategoryId(req.params.categorie);
+  const { rows } = await pool.query(
+    'SELECT * FROM marche WHERE categorie_id = $1', [catId]
+  );
+  res.json(rows);
+});
+
+// Insights
+app.get('/api/:categorie/insights', async (req, res) => {
+  const catId = await getCategoryId(req.params.categorie);
+  const { rows } = await pool.query(
+    'SELECT * FROM insights WHERE categorie_id = $1', [catId]
+  );
+  res.json(rows);
+});
+
+// Prédictions
+app.get('/api/:categorie/predictions', async (req, res) => {
+  const catId = await getCategoryId(req.params.categorie);
+  const { rows } = await pool.query(
+    'SELECT * FROM predictions WHERE categorie_id = $1 ORDER BY annee', [catId]
+  );
+  res.json(rows);
+});
+
 // ========== ROUTES GÉNÉRIQUES - DOIVENT ÊTRE À LA TOUTE FIN ==========
 
 // Servir les fiches HTML générées dynamiquement
