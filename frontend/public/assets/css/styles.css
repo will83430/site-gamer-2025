@@ -913,3 +913,31 @@ img[data-src] {
     background-size: cover;
     background-position: center;
 }
+
+/* ====================================
+   AJOUT DES STYLES DE TENDANCES
+   ==================================== */
+
+.tendances-btn-top {
+    display: flex;
+    justify-content: flex-end;
+    margin: 18px 32px 0 0;
+}
+.btn-tendances-top {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s;
+}
+.btn-tendances-top:hover {
+    background: linear-gradient(90deg, #764ba2, #667eea);
+    color: #fff;
+}
