@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Tendances - Admin</title>
+  <link rel="stylesheet" href="assets/css/admin-styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header moderne -->
+    <div class="header">
+      <h1 style="display: flex; align-items: center; gap: 12px;">
+        <span>🚀</span>
+        <span>Dashboard Tendances</span>
+      </h1>
+      <p style="color: #666;">Gestion centralisée des actualités, technologies, marché, insights et prédictions</p>
+    </div>
+
+    <!-- Stats cards -->
+    <div class="stats-grid" id="stats-zone"></div>
+
+    <!-- Onglets -->
+    <div class="tabs" style="margin-top: 10px;">
+      <button class="tab-btn active" data-type="actualites">📰 Actualités</button>
+      <button class="tab-btn" data-type="technologies">💡 Technologies</button>
+      <button class="tab-btn" data-type="marche">📊 Marché</button>
+      <button class="tab-btn" data-type="insights">🔎 Insights</button>
+      <button class="tab-btn" data-type="predictions">🔮 Prédictions</button>
+    </div>
+
+    <!-- Un seul tableau dynamique -->
+    <div class="tab-content active" id="tab-content">
+      <div class="stats-grid" id="stats-zone"></div>
+      <div style="margin-bottom: 20px; display: flex; gap: 15px; align-items: center;">
+        <label for="categorie-select" style="margin-bottom: 0;">Catégorie :</label>
+        <select id="categorie-select" style="max-width: 220px;"></select>
+        <button class="btn btn-success" id="btn-add">➕ Ajouter</button>
+      </div>
+      <div id="message-container"></div>
+      <div style="overflow-x: auto;">
+        <table class="tendance-table products-table" style="min-width: 700px;">
+          <thead>
+            <tr id="tendances-header"></tr>
+          </thead>
+          <tbody id="tendances-list">
+            <tr><td colspan="5" style="text-align:center;">Chargement...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ajouter/Modifier moderne -->
+  <div id="tendance-modal" class="modal">
+    <div class="modal-content" style="max-width: 480px; border-radius: 18px;">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title" style="margin-bottom: 18px; color: #667eea;">Ajouter</h2>
+      <form id="tendance-form">
+        <input type="hidden" id="tendance-id" />
+        <input type="hidden" id="tendance-type" />
+        <div class="form-group">
+          <label for="tendance-titre">Titre *</label>
+          <input type="text" id="tendance-titre" required />
+        </div>
+        <div class="form-group">
+          <label for="tendance-description">Description *</label>
+          <textarea id="tendance-description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="tendance-image">Image (URL ou nom de fichier)</label>
+          <input type="text" id="tendance-image" placeholder="Ex: images/monimage.jpg" />
+        </div>
+        <div class="form-group">
+          <label for="tendance-date">Date de publication</label>
+          <input type="date" id="tendance-date" />
+        </div>
+        <div class="form-group">
+          <label for="tendance-tags">Tags (séparés par des virgules)</label>
+          <input type="text" id="tendance-tags" placeholder="Ex: innovation, gaming, 2025" />
+        </div>
+        <div class="form-group" id="form-extra"></div>
+        <div style="margin-top: 18px; display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" class="btn btn-warning" onclick="closeModal()">Annuler</button>
+          <button type="submit" class="btn btn-success">Valider</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/admin-tendances-dashboard.js"></script>
+</body>
+</html>

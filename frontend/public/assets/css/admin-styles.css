@@ -470,6 +470,18 @@ input[type="file"] {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+/* Styles pour les images dans la section tendances */
+.tendance-img {
+  max-width: 60px;
+  max-height: 45px;
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -561,4 +573,26 @@ input[type="file"] {
     font-size: 16px !important;
     font-weight: 600 !important;
     margin-bottom: 15px !important;
+}
+
+/* ...admin-styles.css... */
+.btn-action {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 18px;
+  background: #f8f9fa;
+  color: #555;
+  border: 1px solid #e0e0e0;
+  margin: 0 2px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-action:hover {
+  background: #ececff;
+  color: #667eea;
+  box-shadow: 0 2px 8px rgba(102,126,234,0.08);
+  border-color: #667eea;
 }
