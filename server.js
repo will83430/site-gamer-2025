@@ -16,7 +16,7 @@ app.use(compression()); // Compression gzip
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'postgres',
+  database: 'gamer_2025',
   password: 'Wilfried!1985',
   port: 5432,
 });

@@ -27,7 +27,6 @@ const columnsMap = {
   marche: [
     { key: 'label', label: 'Titre', render: t => `<strong>${t.label || ''}</strong>` },
     { key: 'valeur', label: 'Valeur', render: t => t.valeur || '' },
-    { key: 'tendance', label: 'Tendance', render: t => t.tendance || '' },
     { key: 'icone', label: 'Icône', render: t => {
         if (!t.icone) return '';
         if (t.icone.endsWith('.png') || t.icone.endsWith('.jpg') || t.icone.endsWith('.jpeg') || t.icone.endsWith('.svg')) {
@@ -36,6 +35,7 @@ const columnsMap = {
         return t.icone;
       }
     },
+    { key: 'tendance', label: 'Tendance', render: t => t.tendance || '' },
     { key: 'actions', label: 'Actions', render: (t, type) => actionBtns(type, t.id) }
   ],
   insights: [
@@ -62,6 +62,7 @@ const columnsMap = {
         return t.icone;
       }
     },
+    { key: 'probabilite', label: 'Probabilité', render: t => t.probabilite !== undefined && t.probabilite !== null && t.probabilite !== '' ? t.probabilite + ' %' : '' },
     { key: 'actions', label: 'Actions', render: (t, type) => actionBtns(type, t.id) }
   ]
 };
@@ -106,9 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTendances(currentType);
   });
   document.getElementById('btn-add').addEventListener('click', () => showAddModal(currentType));
+  document.getElementById('btn-preview').addEventListener('click', previewTendancesPage);
   document.getElementById('tendance-form').onsubmit = submitTendance;
   // Initial load
   switchTab('actualites');
+// Ouvre la page tendances correspondante à la catégorie sélectionnée
+function previewTendancesPage() {
+  const select = document.getElementById('categorie-select');
+  if (!select) return;
+  let cat = select.value;
+  if (!cat) return;
+  // Format du nom de fichier : tendances-<categorie>.html
+  // On remplace les espaces/accents/majuscules par des tirets et minuscules
+  let file = 'tendances-' + cat.toLowerCase().replace(/ /g, '-').replace(/é/g, 'e').replace(/è/g, 'e').replace(/ê/g, 'e').replace(/à/g, 'a').replace(/â/g, 'a').replace(/î/g, 'i').replace(/ô/g, 'o').replace(/û/g, 'u').replace(/ç/g, 'c') + '.html';
+  window.open(file, '_blank');
+}
 });
 
 function switchTab(type) {
@@ -187,41 +200,86 @@ function loadTendances(type) {
 }
 
 function showAddModal(type) {
+
   document.getElementById('modal-title').textContent = 'Ajouter';
   document.getElementById('tendance-form').reset();
   document.getElementById('tendance-id').value = '';
   document.getElementById('tendance-type').value = type;
   document.getElementById('tendance-modal').style.display = 'block';
+
+  // Masquer/afficher dynamiquement les champs selon le type
+  // Champs du formulaire principal
+  const champsPrincipaux = [
+    'tendance-titre',
+    'tendance-description',
+    'tendance-image',
+    'tendance-date',
+    'tendance-tags'
+  ];
+  // Par défaut, tout afficher
+  champsPrincipaux.forEach(id => {
+    const group = document.getElementById(id)?.closest('.form-group');
+    if (group) group.style.display = '';
+  });
+
   let extra = '';
-  if(type === 'actualites' || type === 'technologies') {
+  if(type === 'technologies') {
+    // Masquer les champs non pertinents
+    ['tendance-titre','tendance-image','tendance-date','tendance-tags'].forEach(id => {
+      const group = document.getElementById(id)?.closest('.form-group');
+      if (group) group.style.display = 'none';
+    });
+    // Remplacer le champ titre par Nom
     extra = `
       <label for="tech-nom">Nom *</label>
       <input type="text" id="tech-nom" required />
+      <label for="tech-description">Description *</label>
+      <textarea id="tech-description" required></textarea>
       <label for="tech-icone">Icône</label>
       <input type="text" id="tech-icone" />
       <label for="tech-taux">Taux adoption (%)</label>
       <input type="number" id="tech-taux" min="0" max="100" />
     `;
   }
+  if(type === 'marche') {
+    // Masquer les champs non pertinents
+    ['tendance-titre','tendance-description','tendance-image','tendance-date','tendance-tags'].forEach(id => {
+      const group = document.getElementById(id)?.closest('.form-group');
+      if (group) group.style.display = 'none';
+    });
+    extra = `
+      <label for="marche-label">Titre *</label>
+      <input type="text" id="marche-label" required />
+      <label for="marche-valeur">Valeur</label>
+      <input type="text" id="marche-valeur" />
+      <label for="marche-tendance">Tendance</label>
+      <input type="text" id="marche-tendance" />
+      <label for="marche-icone">Icône</label>
+      <input type="text" id="marche-icone" />
+    `;
+  }
   if(type === 'insights') {
+    // Masquer les champs non pertinents (y compris titre et description)
+    ['tendance-titre','tendance-description','tendance-image','tendance-date','tendance-tags'].forEach(id => {
+      const group = document.getElementById(id)?.closest('.form-group');
+      if (group) group.style.display = 'none';
+    });
     extra = `
       <label for="insight-titre">Titre *</label>
       <input type="text" id="insight-titre" required />
+      <label for="insight-description">Description *</label>
+      <textarea id="insight-description" required></textarea>
       <label for="insight-icone">Icône</label>
       <input type="text" id="insight-icone" />
     `;
   }
-    if(type === 'marche') {
-      extra = `
-        <label for="marche-label">Titre *</label>
-        <input type="text" id="marche-label" required />
-        <label for="marche-valeur">Valeur</label>
-        <input type="text" id="marche-valeur" />
-        <label for="marche-icone">Icône</label>
-        <input type="text" id="marche-icone" />
-      `;
-    }
+
   if(type === 'predictions') {
+    // Masquer tous les champs principaux
+    ['tendance-titre','tendance-description','tendance-image','tendance-date','tendance-tags'].forEach(id => {
+      const group = document.getElementById(id)?.closest('.form-group');
+      if (group) group.style.display = 'none';
+    });
     extra = `
       <label for="pred-annee">Année *</label>
       <input type="number" id="pred-annee" required />
