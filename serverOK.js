@@ -16,7 +16,7 @@ app.use(compression()); // Compression gzip
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'gamer_2025',
+  database: 'postgres',
   password: 'Wilfried!1985',
   port: 5432,
 });
@@ -619,154 +619,61 @@ async function getCategoryId(nom) {
   return rows[0]?.id;
 }
 
-// ================== API TENDANCES (CRUD) ==================
-
-// GET tendances par catégorie (ex: /api/tendances/serveur)
-app.get('/api/tendances/:categorie', async (req, res) => {
-  try {
-    const cat = req.params.categorie;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-    if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const { rows } = await pool.query(
-      'SELECT * FROM actualites WHERE categorie_id = $1 ORDER BY date_publication DESC', [catId]
-    );
-    // Pour compatibilité front : transformer tags string -> array si besoin
-    rows.forEach(r => {
-      if (typeof r.tags === 'string') {
-        r.tags = r.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
-      }
-    });
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
-  }
-});
-
-// POST ajouter une tendance
-app.post('/api/tendances', async (req, res) => {
-  try {
-    const { titre, description, image, date_publication, tags, categorie } = req.body;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [categorie.toLowerCase()]);
-    if (!catRows.length) return res.status(400).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const result = await pool.query(
-      `INSERT INTO actualites (titre, description, image, date_publication, tags, categorie_id)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, catId]
-    );
-    res.json({ success: true, tendance: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur ajout tendance' });
-  }
-});
-
-// PUT modifier une tendance
-app.put('/api/tendances/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { titre, description, image, date_publication, tags } = req.body;
-    await pool.query(
-      `UPDATE actualites SET titre=$1, description=$2, image=$3, date_publication=$4, tags=$5 WHERE id=$6`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, id]
-    );
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur modification tendance' });
-  }
-});
-
-// DELETE supprimer une tendance
-app.delete('/api/tendances/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await pool.query('DELETE FROM actualites WHERE id=$1', [id]);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur suppression tendance' });
-  }
-});
-
-// ================== ROUTES SECTIONNÉES POUR AFFICHAGE DYNAMIQUE (FRONT) ==================
-// Actualités
+// Exemple pour la route actualités
 app.get('/api/:categorie/actualites', async (req, res) => {
   const cat = req.params.categorie;
-  const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-  if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-  const catId = catRows[0].id;
+  console.log(`[API] GET /api/${cat}/actualites`);
+  const catId = await getCategoryId(cat);
+  if (!catId) {
+    console.error(`[ERROR] Catégorie inconnue : ${cat}`);
+    return res.status(404).json({ error: 'Catégorie inconnue' });
+  }
   try {
     const { rows } = await pool.query(
       'SELECT * FROM actualites WHERE categorie_id = $1 ORDER BY date_publication DESC', [catId]
     );
-    rows.forEach(r => {
-      if (typeof r.tags === 'string') {
-        r.tags = r.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
-      }
-    });
+    console.log(`[DB] ${rows.length} actualités trouvées pour ${cat}`);
     res.json(rows);
   } catch (err) {
+    console.error(`[DB ERROR]`, err);
     res.status(500).json({ error: 'Erreur BDD' });
   }
 });
+
 // Technologies
 app.get('/api/:categorie/technologies', async (req, res) => {
-  const cat = req.params.categorie;
-  const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-  if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-  const catId = catRows[0].id;
-  try {
-    const { rows } = await pool.query(
-      'SELECT * FROM technologies WHERE categorie_id = $1', [catId]
-    );
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
-  }
+  const catId = await getCategoryId(req.params.categorie);
+  const { rows } = await pool.query(
+    'SELECT * FROM technologies WHERE categorie_id = $1', [catId]
+  );
+  res.json(rows);
 });
+
 // Marché
 app.get('/api/:categorie/marche', async (req, res) => {
-  const cat = req.params.categorie;
-  const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-  if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-  const catId = catRows[0].id;
-  try {
-    const { rows } = await pool.query(
-      'SELECT * FROM marche WHERE categorie_id = $1', [catId]
-    );
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
-  }
+  const catId = await getCategoryId(req.params.categorie);
+  const { rows } = await pool.query(
+    'SELECT * FROM marche WHERE categorie_id = $1', [catId]
+  );
+  res.json(rows);
 });
+
 // Insights
 app.get('/api/:categorie/insights', async (req, res) => {
-  const cat = req.params.categorie;
-  const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-  if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-  const catId = catRows[0].id;
-  try {
-    const { rows } = await pool.query(
-      'SELECT * FROM insights WHERE categorie_id = $1', [catId]
-    );
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
-  }
+  const catId = await getCategoryId(req.params.categorie);
+  const { rows } = await pool.query(
+    'SELECT * FROM insights WHERE categorie_id = $1', [catId]
+  );
+  res.json(rows);
 });
+
 // Prédictions
 app.get('/api/:categorie/predictions', async (req, res) => {
-  const cat = req.params.categorie;
-  const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-  if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-  const catId = catRows[0].id;
-  try {
-    const { rows } = await pool.query(
-      'SELECT * FROM predictions WHERE categorie_id = $1 ORDER BY annee', [catId]
-    );
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
-  }
+  const catId = await getCategoryId(req.params.categorie);
+  const { rows } = await pool.query(
+    'SELECT * FROM predictions WHERE categorie_id = $1 ORDER BY annee', [catId]
+  );
+  res.json(rows);
 });
 
 // ========== ROUTES GÉNÉRIQUES - DOIVENT ÊTRE À LA TOUTE FIN ==========
@@ -782,233 +689,24 @@ app.get('/fiches/:category/:fiche', (req, res) => {
   }
 });
 
-// ================== API TECHNOLOGIES (CRUD) ==================
-app.get('/api/technologies/:categorie', async (req, res) => {
-  try {
-    const cat = req.params.categorie;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-    if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const { rows } = await pool.query('SELECT * FROM technologies WHERE categorie_id = $1', [catId]);
-    rows.forEach(r => {
-      if (typeof r.tags === 'string') {
-        r.tags = r.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
-      }
-    });
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
+// Servir les autres fichiers HTML du dossier frontend/public
+/*
+app.get('/:page', (req, res) => {
+  const page = req.params.page;
+  
+  // IMPORTANT: Ignorer les requêtes API qui ont échoué
+  if (page.startsWith('api')) {
+    return res.status(404).json({ success: false, error: 'Route API non trouvée' });
+  }
+  
+  const filePath = path.join(__dirname, 'frontend', 'public', page);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Page non trouvée');
   }
 });
-app.post('/api/technologies', async (req, res) => {
-  try {
-    const { titre, description, image, date_publication, tags, categorie } = req.body;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [categorie.toLowerCase()]);
-    if (!catRows.length) return res.status(400).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const result = await pool.query(
-      `INSERT INTO technologies (titre, description, image, date_publication, tags, categorie_id)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, catId]
-    );
-    res.json({ success: true, tendance: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur ajout technologie' });
-  }
-});
-app.put('/api/technologies/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { titre, description, image, date_publication, tags } = req.body;
-    await pool.query(
-      `UPDATE technologies SET titre=$1, description=$2, image=$3, date_publication=$4, tags=$5 WHERE id=$6`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, id]
-    );
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur modification technologie' });
-  }
-});
-app.delete('/api/technologies/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await pool.query('DELETE FROM technologies WHERE id=$1', [id]);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur suppression technologie' });
-  }
-});
-
-// ================== API MARCHE (CRUD) ==================
-app.get('/api/marche/:categorie', async (req, res) => {
-  try {
-    const cat = req.params.categorie;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-    if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const { rows } = await pool.query('SELECT * FROM marche WHERE categorie_id = $1', [catId]);
-    rows.forEach(r => {
-      if (typeof r.tags === 'string') {
-        r.tags = r.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
-      }
-    });
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
-  }
-});
-app.post('/api/marche', async (req, res) => {
-  try {
-    const { titre, description, image, date_publication, tags, categorie } = req.body;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [categorie.toLowerCase()]);
-    if (!catRows.length) return res.status(400).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const result = await pool.query(
-      `INSERT INTO marche (titre, description, image, date_publication, tags, categorie_id)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, catId]
-    );
-    res.json({ success: true, tendance: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur ajout marche' });
-  }
-});
-app.put('/api/marche/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { titre, description, image, date_publication, tags } = req.body;
-    await pool.query(
-      `UPDATE marche SET titre=$1, description=$2, image=$3, date_publication=$4, tags=$5 WHERE id=$6`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, id]
-    );
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur modification marche' });
-  }
-});
-app.delete('/api/marche/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await pool.query('DELETE FROM marche WHERE id=$1', [id]);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur suppression marche' });
-  }
-});
-
-// ================== API INSIGHTS (CRUD) ==================
-app.get('/api/insights/:categorie', async (req, res) => {
-  try {
-    const cat = req.params.categorie;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-    if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const { rows } = await pool.query('SELECT * FROM insights WHERE categorie_id = $1', [catId]);
-    rows.forEach(r => {
-      if (typeof r.tags === 'string') {
-        r.tags = r.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
-      }
-    });
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
-  }
-});
-app.post('/api/insights', async (req, res) => {
-  try {
-    const { titre, description, image, date_publication, tags, categorie } = req.body;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [categorie.toLowerCase()]);
-    if (!catRows.length) return res.status(400).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const result = await pool.query(
-      `INSERT INTO insights (titre, description, image, date_publication, tags, categorie_id)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, catId]
-    );
-    res.json({ success: true, tendance: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur ajout insight' });
-  }
-});
-app.put('/api/insights/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { titre, description, image, date_publication, tags } = req.body;
-    await pool.query(
-      `UPDATE insights SET titre=$1, description=$2, image=$3, date_publication=$4, tags=$5 WHERE id=$6`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, id]
-    );
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur modification insight' });
-  }
-});
-app.delete('/api/insights/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await pool.query('DELETE FROM insights WHERE id=$1', [id]);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur suppression insight' });
-  }
-});
-
-// ================== API PREDICTIONS (CRUD) ==================
-app.get('/api/predictions/:categorie', async (req, res) => {
-  try {
-    const cat = req.params.categorie;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
-    if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const { rows } = await pool.query('SELECT * FROM predictions WHERE categorie_id = $1', [catId]);
-    rows.forEach(r => {
-      if (typeof r.tags === 'string') {
-        r.tags = r.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
-      }
-    });
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur BDD' });
-  }
-});
-app.post('/api/predictions', async (req, res) => {
-  try {
-    const { titre, description, image, date_publication, tags, categorie } = req.body;
-    const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [categorie.toLowerCase()]);
-    if (!catRows.length) return res.status(400).json({ error: 'Catégorie inconnue' });
-    const catId = catRows[0].id;
-    const result = await pool.query(
-      `INSERT INTO predictions (titre, description, image, date_publication, tags, categorie_id)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, catId]
-    );
-    res.json({ success: true, tendance: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur ajout prediction' });
-  }
-});
-app.put('/api/predictions/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { titre, description, image, date_publication, tags } = req.body;
-    await pool.query(
-      `UPDATE predictions SET titre=$1, description=$2, image=$3, date_publication=$4, tags=$5 WHERE id=$6`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, id]
-    );
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur modification prediction' });
-  }
-});
-app.delete('/api/predictions/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await pool.query('DELETE FROM predictions WHERE id=$1', [id]);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur suppression prediction' });
-  }
-});
+*/
 
 // ========== DÉMARRAGE DU SERVEUR ==========
 // Démarrage du serveur

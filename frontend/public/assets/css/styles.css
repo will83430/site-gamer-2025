@@ -487,8 +487,8 @@ input[type="checkbox"].produit-checkbox {
   box-shadow: var(--box-shadow);
   padding: 15px;
   text-align: center;
-    width: 100% !important;
-  max-width: none !important;  /* ne dépasse jamais 300px */
+  width: 100% !important;
+  max-width: 300px !important;
   margin: 0 auto;
   min-height: 360px;
   display: flex;
@@ -501,37 +501,23 @@ input[type="checkbox"].produit-checkbox {
   transform: translateY(-5px);
 }
 
-.fiche-comparaison img {
-  height: 160px;
-  object-fit: cover;
-  background-color: #eee;
-  border-radius: var(--border-radius);
-  margin-bottom: 12px;
-  width: 100%;
-}
-
-.fiche-comparaison h4 {
-  color: var(--text-dark);
-  margin: 8px 0;
+.fiche-comparaison .overlay-text-produit {
+  padding: 8px 0;
   font-size: 1.1rem;
   font-weight: 700;
+  color: var(--text-dark);
   min-height: 48px;
-  padding: 8px 0;
 }
 
-.btn-details {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: var(--transition);
+.fiche-comparaison .info {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin: 5px 0;
 }
 
-.btn-details:hover {
-  background-color: var(--primary-hover);
+.fiche-comparaison ul {
+  font-size: 0.9em;
+  margin: 10px 0;
 }
 
 /* ====================================
@@ -926,4 +912,32 @@ img[data-src] {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999'%3EChargement...%3C/text%3E%3C/svg%3E");
     background-size: cover;
     background-position: center;
+}
+
+/* ====================================
+   AJOUT DES STYLES DE TENDANCES
+   ==================================== */
+
+.tendances-btn-top {
+    display: flex;
+    justify-content: flex-end;
+    margin: 18px 32px 0 0;
+}
+.btn-tendances-top {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s;
+}
+.btn-tendances-top:hover {
+    background: linear-gradient(90deg, #764ba2, #667eea);
+    color: #fff;
 }

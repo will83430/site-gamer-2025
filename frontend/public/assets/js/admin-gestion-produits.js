@@ -1332,8 +1332,8 @@ function showImageModal(imageUrl, productName) {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         background: rgba(0,0,0,0.8);
         display: flex;
         justify-content: center;
@@ -1343,10 +1343,10 @@ function showImageModal(imageUrl, productName) {
     `;
     
     modal.innerHTML = `
-        <div style="position: relative; max-width: 90%; max-height: 90%;">
+        <div style="position: relative; max-width: 90vw; max-height: 90vh;">
             <img src="${imageUrl}" 
                  alt="${productName}" 
-                 style="max-width: 100%; max-height: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                 style="max-width: 90vw; max-height: 90vh; width: auto; height: auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain; background: #fff;">
             <div style="position: absolute; top: -40px; left: 0; color: white; font-size: 18px; font-weight: bold;">
                 📷 ${productName}
             </div>
