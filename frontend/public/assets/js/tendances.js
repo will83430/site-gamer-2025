@@ -15,6 +15,7 @@ class TendancesDataManager {
     }
 
     generateNewsHTML(newsData) {
+         console.log('🟢 Données reçues pour generateNewsHTML:', newsData);
         return newsData.map((news, index) => `
             <article class="actualite-card ${index === 0 ? 'featured' : ''}">
                 ${news.video
@@ -160,48 +161,213 @@ class TendancesDataManager {
     // === FETCH DATA ===
     async fetchGamingNews() {
         const path = window.location.pathname;
-        const match = path.match(/tendances-([a-z\-]+)\.html/);
+        const fullUrl = window.location.href;
+        
+        console.log('🌍 URL complète:', fullUrl);
+        console.log('📍 Pathname:', path);
+        
+        // Plusieurs patterns possibles
+        let match = path.match(/tendances-([a-z\-]+)\.html/);
+        if (!match) {
+            // Essayer avec le chemin complet frontend/public
+            match = path.match(/frontend\/public\/tendances-([a-z\-]+)\.html/);
+        }
+        if (!match) {
+            // Essayer juste le nom de fichier à la fin
+            match = path.match(/([a-z\-]+)\.html$/);
+            if (match && match[1].startsWith('tendances-')) {
+                match[1] = match[1].replace('tendances-', '');
+            } else {
+                match = null;
+            }
+        }
+        
         let categorie = match ? match[1] : 'gaming';
-        const res = await fetch(`http://localhost:3000/api/${categorie}/actualites`);
-        const data = await res.json();
-        return data.map(news => ({
-            ...news,
-            tags: Array.isArray(news.tags) ? news.tags : (news.tags ? news.tags.replace(/[{}"]/g, '').split(',') : []),
-            date: new Date(news.date_publication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
-            hot: news.hot
-        }));
+        
+        // Force imprimante-3d si on est sur cette page
+        if (fullUrl.includes('imprimante-3d') || path.includes('imprimante-3d')) {
+            categorie = 'imprimante-3d';
+        }
+        
+        console.log('🔍 Match result:', match);
+        console.log('🔍 Catégorie détectée:', categorie);
+        console.log('🌐 URL API:', `http://localhost:3000/api/${categorie}/actualites`);
+        
+        try {
+            const res = await fetch(`http://localhost:3000/api/${categorie}/actualites`);
+            console.log('📡 Status Response:', res.status);
+            
+            if (!res.ok) {
+                console.error('❌ Erreur HTTP:', res.status, res.statusText);
+                return [];
+            }
+            
+            const data = await res.json();
+            console.log('📊 Données API reçues:', data);
+            
+            if (!Array.isArray(data)) {
+                console.warn('⚠️ Les données ne sont pas un tableau:', data);
+                return [];
+            }
+            
+            return data.map(news => ({
+                ...news,
+                tags: Array.isArray(news.tags) ? news.tags : (news.tags ? news.tags.replace(/[{}"]/g, '').split(',') : []),
+                date: new Date(news.date_publication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
+                hot: news.hot
+            }));
+        } catch (error) {
+            console.error('❌ Erreur fetch actualités:', error);
+            return [];
+        }
     }
 
     async fetchTechData() {
         const path = window.location.pathname;
-        const match = path.match(/tendances-([a-z\-]+)\.html/);
+        const fullUrl = window.location.href;
+        
+        let match = path.match(/tendances-([a-z\-]+)\.html/);
+        if (!match) match = path.match(/frontend\/public\/tendances-([a-z\-]+)\.html/);
+        if (!match) {
+            match = path.match(/([a-z\-]+)\.html$/);
+            if (match && match[1].startsWith('tendances-')) {
+                match[1] = match[1].replace('tendances-', '');
+            } else {
+                match = null;
+            }
+        }
+        
         let categorie = match ? match[1] : 'gaming';
-        const res = await fetch(`http://localhost:3000/api/${categorie}/technologies`);
-        return await res.json();
+        if (fullUrl.includes('imprimante-3d') || path.includes('imprimante-3d')) {
+            categorie = 'imprimante-3d';
+        }
+        
+        console.log('🔍 Fetching technologies pour:', categorie);
+        
+        try {
+            const res = await fetch(`http://localhost:3000/api/${categorie}/technologies`);
+            if (!res.ok) {
+                console.error('❌ Erreur HTTP technologies:', res.status);
+                return [];
+            }
+            const data = await res.json();
+            console.log('📊 Technologies reçues:', data);
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('❌ Erreur fetch technologies:', error);
+            return [];
+        }
     }
 
     async fetchMarketData() {
         const path = window.location.pathname;
-        const match = path.match(/tendances-([a-z\-]+)\.html/);
+        const fullUrl = window.location.href;
+        
+        let match = path.match(/tendances-([a-z\-]+)\.html/);
+        if (!match) match = path.match(/frontend\/public\/tendances-([a-z\-]+)\.html/);
+        if (!match) {
+            match = path.match(/([a-z\-]+)\.html$/);
+            if (match && match[1].startsWith('tendances-')) {
+                match[1] = match[1].replace('tendances-', '');
+            } else {
+                match = null;
+            }
+        }
+        
         let categorie = match ? match[1] : 'gaming';
-        const res = await fetch(`http://localhost:3000/api/${categorie}/marche`);
-        return await res.json();
+        if (fullUrl.includes('imprimante-3d') || path.includes('imprimante-3d')) {
+            categorie = 'imprimante-3d';
+        }
+        
+        console.log('🔍 Fetching marché pour:', categorie);
+        
+        try {
+            const res = await fetch(`http://localhost:3000/api/${categorie}/marche`);
+            if (!res.ok) {
+                console.error('❌ Erreur HTTP marché:', res.status);
+                return [];
+            }
+            const data = await res.json();
+            console.log('📊 Marché reçu:', data);
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('❌ Erreur fetch marché:', error);
+            return [];
+        }
     }
 
     async fetchInsightsData() {
         const path = window.location.pathname;
-        const match = path.match(/tendances-([a-z\-]+)\.html/);
+        const fullUrl = window.location.href;
+        
+        let match = path.match(/tendances-([a-z\-]+)\.html/);
+        if (!match) match = path.match(/frontend\/public\/tendances-([a-z\-]+)\.html/);
+        if (!match) {
+            match = path.match(/([a-z\-]+)\.html$/);
+            if (match && match[1].startsWith('tendances-')) {
+                match[1] = match[1].replace('tendances-', '');
+            } else {
+                match = null;
+            }
+        }
+        
         let categorie = match ? match[1] : 'gaming';
-        const res = await fetch(`http://localhost:3000/api/${categorie}/insights`);
-        return await res.json();
+        if (fullUrl.includes('imprimante-3d') || path.includes('imprimante-3d')) {
+            categorie = 'imprimante-3d';
+        }
+        
+        console.log('🔍 Fetching insights pour:', categorie);
+        
+        try {
+            const res = await fetch(`http://localhost:3000/api/${categorie}/insights`);
+            if (!res.ok) {
+                console.error('❌ Erreur HTTP insights:', res.status);
+                return [];
+            }
+            const data = await res.json();
+            console.log('📊 Insights reçus:', data);
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('❌ Erreur fetch insights:', error);
+            return [];
+        }
     }
 
     async fetchPredictionsData() {
         const path = window.location.pathname;
-        const match = path.match(/tendances-([a-z\-]+)\.html/);
+        const fullUrl = window.location.href;
+        
+        let match = path.match(/tendances-([a-z\-]+)\.html/);
+        if (!match) match = path.match(/frontend\/public\/tendances-([a-z\-]+)\.html/);
+        if (!match) {
+            match = path.match(/([a-z\-]+)\.html$/);
+            if (match && match[1].startsWith('tendances-')) {
+                match[1] = match[1].replace('tendances-', '');
+            } else {
+                match = null;
+            }
+        }
+        
         let categorie = match ? match[1] : 'gaming';
-        const res = await fetch(`http://localhost:3000/api/${categorie}/predictions`);
-        return await res.json();
+        if (fullUrl.includes('imprimante-3d') || path.includes('imprimante-3d')) {
+            categorie = 'imprimante-3d';
+        }
+        
+        console.log('🔍 Fetching prédictions pour:', categorie);
+        
+        try {
+            const res = await fetch(`http://localhost:3000/api/${categorie}/predictions`);
+            if (!res.ok) {
+                console.error('❌ Erreur HTTP prédictions:', res.status);
+                return [];
+            }
+            const data = await res.json();
+            console.log('📊 Prédictions reçues:', data);
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('❌ Erreur fetch prédictions:', error);
+            return [];
+        }
     }
 }
 
