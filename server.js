@@ -1012,7 +1012,7 @@ app.delete('/api/predictions/:id', async (req, res) => {
 
 // ========== DÉMARRAGE DU SERVEUR ==========
 // Démarrage du serveur
-app.listen(port, async () => {
+app.listen(port, '0.0.0.0', async () => {
   // Test connexion PostgreSQL
   try {
     const result = await pool.query('SELECT COUNT(*) FROM produits');

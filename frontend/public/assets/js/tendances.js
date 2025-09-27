@@ -1,3 +1,7 @@
+const API_HOST = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+  ? 'http://localhost:3000'
+  : 'http://192.168.1.235:3000'; // Mets ici l’IP de ton PC
+
 class TendancesDataManager {
     // === ACTUALITÉS ===
     async updateNews() {
@@ -191,10 +195,10 @@ class TendancesDataManager {
         
         console.log('🔍 Match result:', match);
         console.log('🔍 Catégorie détectée:', categorie);
-        console.log('🌐 URL API:', `http://localhost:3000/api/${categorie}/actualites`);
+        console.log('🌐 URL API:', `${API_HOST}/api/${categorie}/actualites`);
         
         try {
-            const res = await fetch(`http://localhost:3000/api/${categorie}/actualites`);
+            const res = await fetch(`${API_HOST}/api/${categorie}/actualites`);
             console.log('📡 Status Response:', res.status);
             
             if (!res.ok) {
@@ -245,7 +249,7 @@ class TendancesDataManager {
         console.log('🔍 Fetching technologies pour:', categorie);
         
         try {
-            const res = await fetch(`http://localhost:3000/api/${categorie}/technologies`);
+            const res = await fetch(`${API_HOST}/api/${categorie}/technologies`);
             if (!res.ok) {
                 console.error('❌ Erreur HTTP technologies:', res.status);
                 return [];
@@ -282,7 +286,7 @@ class TendancesDataManager {
         console.log('🔍 Fetching marché pour:', categorie);
         
         try {
-            const res = await fetch(`http://localhost:3000/api/${categorie}/marche`);
+            const res = await fetch(`${API_HOST}/api/${categorie}/marche`);
             if (!res.ok) {
                 console.error('❌ Erreur HTTP marché:', res.status);
                 return [];
@@ -319,7 +323,7 @@ class TendancesDataManager {
         console.log('🔍 Fetching insights pour:', categorie);
         
         try {
-            const res = await fetch(`http://localhost:3000/api/${categorie}/insights`);
+            const res = await fetch(`${API_HOST}/api/${categorie}/insights`);
             if (!res.ok) {
                 console.error('❌ Erreur HTTP insights:', res.status);
                 return [];
@@ -356,7 +360,7 @@ class TendancesDataManager {
         console.log('🔍 Fetching prédictions pour:', categorie);
         
         try {
-            const res = await fetch(`http://localhost:3000/api/${categorie}/predictions`);
+            const res = await fetch(`${API_HOST}/api/${categorie}/predictions`);
             if (!res.ok) {
                 console.error('❌ Erreur HTTP prédictions:', res.status);
                 return [];
@@ -454,3 +458,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('❌ Erreur initialisation:', error);
     }
 });
+
+function debugLog(msg) {
+  const el = document.getElementById('debug');
+  if (el) el.innerHTML += `<div>${msg}</div>`;
+}

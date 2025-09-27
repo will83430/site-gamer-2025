@@ -25,11 +25,15 @@ Site web professionnel dédié aux produits gaming permettant :
 - Système de filtrage et recherche avancée
 - **Base de données PostgreSQL** pour la persistance
 
+
 ## ✨ Fonctionnalités
+
 
 ### 🌐 Frontend Public
 
 - **Catalogue produits** : Affichage en grille moderne avec fiches détaillées
+- **Pages tendances par catégorie** : Actualités, technologies, marché, insights et prédictions pour chaque univers (ex : vidéo projecteur, périphériques, etc.)
+- **Navigation dynamique** : Accès rapide aux tendances de chaque catégorie via des pages dédiées
 - **Système de comparaison** : Comparaison jusqu'à 4 produits simultanément
 - **Filtrage avancé** : Par catégorie, prix, marque, etc.
 - **Recherche intelligente** : Recherche en temps réel
@@ -67,6 +71,7 @@ Site web professionnel dédié aux produits gaming permettant :
 - **PostgreSQL 13+** - SGBD principal
 - **pgAdmin** - Interface d'administration (optionnel)
 
+
 ## 📁 Structure du projet
 
 ```text
@@ -85,6 +90,7 @@ site-gamer-2025/
 │       │       └── script.js            # Scripts généraux
 │       ├── fiches.html                 # Page catalogue produits
 │       ├── index.html                  # Page d'accueil
+│       ├── tendances-<categorie>.html  # Pages tendances dynamiques (ex : tendances-video-projecteur.html)
 │       └── Gestion des produits et génération automatique.html  # Admin
 └── backend/
     ├── server.js                       # Serveur Express
@@ -225,9 +231,76 @@ CREATE TRIGGER update_produits_updated_at
     EXECUTE FUNCTION update_updated_at_column();
 ```
 
+
 ## 🌐 API
 
+
+
+
 ### Endpoints disponibles
+
+// Récupérer les tendances d'une catégorie
+
+GET /api/[categorie]/actualites
+GET /api/[categorie]/technologies
+GET /api/[categorie]/marche
+GET /api/[categorie]/insights
+GET /api/[categorie]/predictions
+
+## 🗂️ Pages tendances par catégorie
+
+Chaque page `tendances-[categorie].html` affiche dynamiquement :
+
+- Actualités
+- Technologies
+- Données de marché
+- Insights
+- Prédictions
+
+Les données sont récupérées via les endpoints `/api/[categorie]/...` et affichées automatiquement.
+
+**Exemple d’URL :**
+
+`/tendances-video-projecteur.html` → `/api/video-projecteur/actualites`, etc.
+
+**Exemple de structure HTML :**
+
+```html
+<h1>Tendances Vidéo Projecteur 2025</h1>
+<div class="tendances-nav">
+   <button data-section="actualites">Actualités</button>
+   <button data-section="technologies">Technologies</button>
+   <button data-section="marche">Marché</button>
+   <button data-section="predictions">Prédictions</button>
+</div>
+```
+
+
+## 🗃️ Schéma relationnel simplifié
+
+- `categories` (id, nom)
+- `actualites` (id, titre, description, image, date_publication, tags, categorie_id)
+- `technologies` (id, nom, description, icone, taux_adoption, categorie_id)
+- `marche` (id, label, valeur, icone, tendance, categorie_id)
+- `insights` (id, titre, description, icone, categorie_id)
+- `predictions` (id, titre, description, annee, probabilite, icone, categorie_id)
+- `produits` (id, nom, ...)
+
+
+## 🛡️ Bonnes pratiques
+
+- Toujours insérer au moins 4 entrées par section pour chaque catégorie pour un affichage optimal.
+- Si le champ `icone` est vide, une icône par défaut est affichée côté JS.
+- Les pages tendances sont générées dynamiquement et consomment l’API REST.
+
+
+## 🤝 Contribution aux tendances
+
+Pour ajouter une nouvelle catégorie ou de nouvelles tendances :
+
+1. Ajouter la catégorie dans la table `categories`
+2. Insérer les données dans les tables `actualites`, `technologies`, `marche`, `insights`, `predictions` avec le bon `categorie_id`
+3. Créer la page `tendances-[categorie].html` dans `frontend/public/`
 
 ```javascript
 // Récupérer tous les produits
@@ -256,7 +329,24 @@ Content-Type: multipart/form-data
 GET /api/categories
 ```
 
+
+
 ### Exemple de requête SQL
+
+## 📊 Initialisation des données tendances
+
+
+Pour chaque catégorie, il est possible d'insérer rapidement 4 actualités, 4 technologies, 4 données marché, 4 insights et 4 prédictions via des scripts SQL. Cela permet d'avoir un affichage complet sur toutes les pages tendances dès l'installation.
+
+Exemple :
+
+```sql
+INSERT INTO actualites (titre, description, image, date_publication, tags, categorie_id) VALUES
+('Epson lance l’EH-LS12000B', 'Un projecteur laser 4K ultra lumineux pour le home cinéma.', 'epson-eh-ls12000b.jpg', '2025-09-12', '{Epson,laser,4K}', 16),
+('Valerion Vision Master Pro 2', 'Le projecteur portable le plus compact avec batterie intégrée.', 'valerion-vision-master-pro-2.jpg', '2025-08-20', '{Valerion,portable,batterie}', 16),
+('Xiaomi Mi Smart Projector 3', 'Un projecteur intelligent avec Android TV intégré.', 'xiaomi-mi-smart-projector-3.jpg', '2025-07-10', '{Xiaomi,Android TV,smart}', 16),
+('Sony VPL-XW7000ES', 'Sony repousse les limites de la projection 8K pour les salles premium.', 'sony-vpl-xw7000es.jpg', '2025-06-25', '{Sony,8K,premium}', 16);
+```
 
 ```javascript
 // Recherche avec filtres
