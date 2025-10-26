@@ -8,7 +8,8 @@ const compression = require('compression'); // 🔥 AJOUTE CETTE LIGNE
 const assetsPath = path.join(__dirname, 'frontend/public/assets');
 
 const app = express();
-const port = 3000;
+// Allow overriding the port via environment variable to avoid EADDRINUSE conflicts
+const port = process.env.PORT || 3000;
 
 app.use(compression()); // Compression gzip
 
@@ -465,11 +466,26 @@ function generateFicheHTML(product) {
     <link rel="stylesheet" href="/assets/css/styles.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      /* Petit style local pour bouton Retour (s'assure d'être dans le thème même si CSS global ne le contient pas) */
+      .nav-back {
+        background: white;
+        border: 2px solid #e1e5e9;
+        padding: 10px 18px;
+        border-radius: 25px;
+        font-weight: 600;
+        color: #242424;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.25s ease;
+      }
+      .nav-back:hover { border-color: #667eea; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    </style>
 </head>
 <body>
     <div class="entete">
     <img src="../../frontend/public/assets/images/gaming.png" alt="Gaming">
-    <a href="javascript:history.back()">← Retour</a>
+    <a class="nav-back" href="javascript:history.back()">← Retour</a>
 </div>
 
     <h1 class="product-title">${product.titre_affiche || product.nom}</h1>

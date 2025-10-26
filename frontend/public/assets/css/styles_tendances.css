@@ -255,6 +255,23 @@ p {
     border-color: transparent;
     box-shadow: var(--shadow);
 }
+/* Bouton Retour stylisé comme .nav-btn mais ne participe pas à la navigation JS */
+.nav-back {
+    background: white;
+    border: 2px solid var(--border-color);
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+.nav-back:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
 
 /* === CONTAINER PRINCIPAL === */
 .container-tendances {

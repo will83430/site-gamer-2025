@@ -159,6 +159,25 @@ em {
     max-width: 150px
 }
 
+.nav-back {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    color: #242424; /* même rendu que .lien-top / .lien-entete */
+    text-decoration: none;
+    border-radius: 0;
+    font-weight: 600;
+    transition: var(--transition);
+    align-self: flex-start;
+    margin-left: 0;
+    font-size: 18px;
+}
+
+.nav-back:hover {
+    color: var(--primary-color);
+}
+
 .btn-comparer {
     display: block;
     margin: 30px auto;

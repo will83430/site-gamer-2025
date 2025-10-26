@@ -457,6 +457,23 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
         console.error('❌ Erreur initialisation:', error);
     }
+
+    // --- Ajouter dynamiquement un bouton 'Retour' à la suite des boutons de navigation ---
+    try {
+        const nav = document.querySelector('.tendances-nav');
+        if (nav && !document.getElementById('btn-retour')) {
+            const retour = document.createElement('button');
+            retour.type = 'button';
+            retour.id = 'btn-retour';
+            retour.className = 'nav-back';
+            retour.title = 'Retour';
+            retour.innerHTML = '← Retour';
+            retour.addEventListener('click', () => window.history.back());
+            nav.appendChild(retour);
+        }
+    } catch (e) {
+        console.warn('Impossible d\'ajouter le bouton Retour dynamiquement:', e);
+    }
 });
 
 function debugLog(msg) {
