@@ -111,6 +111,25 @@ function mettreAJourBadgesVedettes() {
                 bloc.style.border = '3px solid #ffd700';
                 bloc.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.5)';
             }
+            // Ajouter un petit badge flottant 'Top' en haut à gauche
+            if (!card.querySelector('.badge-top-month')) {
+                const badgeTop = document.createElement('div');
+                badgeTop.className = 'badge-top-month';
+                badgeTop.textContent = 'Top • Nov.';
+                badgeTop.style.cssText = `
+                  position: absolute;
+                  top: 8px;
+                  left: 8px;
+                  background: linear-gradient(90deg,#f093fb,#667eea);
+                  color: white;
+                  padding: 6px 10px;
+                  border-radius: 12px;
+                  font-weight: 800;
+                  font-size: 12px;
+                  box-shadow: 0 6px 18px rgba(102,126,234,0.18);
+                `;
+                card.querySelector('.bloc').appendChild(badgeTop);
+            }
         }
     });
     
