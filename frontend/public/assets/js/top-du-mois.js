@@ -245,16 +245,19 @@ function afficherApercu(categorie, element) {
   contenuHTML += `<div style="margin-top: 10px; font-size: 12px; color: #aaa;">Cliquez pour voir tous les ${produits.length} produits →</div>`;
   apercu.innerHTML = contenuHTML;
 
-  const rect = element.getBoundingClientRect();
-  apercu.style.left = rect.right + 10 + "px";
-  apercu.style.top = rect.top + "px";
+ const rect = element.getBoundingClientRect();
+const scrollTop = window.scrollY || document.documentElement.scrollTop;
+const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+apercu.style.left = scrollLeft + rect.right + 10 + "px";
+apercu.style.top = scrollTop + rect.top + "px";
 
   document.body.appendChild(apercu);
 
   const apercuRect = apercu.getBoundingClientRect();
-  if (apercuRect.right > window.innerWidth) {
-    apercu.style.left = rect.left - apercuRect.width - 10 + "px";
-  }
+  if (scrollLeft + apercuRect.right > window.innerWidth) {
+  apercu.style.left = scrollLeft + rect.left - apercuRect.width - 10 + "px";
+}
 }
 
 // =========================

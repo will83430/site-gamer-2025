@@ -1028,6 +1028,24 @@ app.delete('/api/predictions/:id', async (req, res) => {
 
 // ========== DÉMARRAGE DU SERVEUR ==========
 // Démarrage du serveur
+// Endpoint pour exposer la configuration LLM (modèle / rollout)
+app.get('/api/llm-config', (req, res) => {
+  try {
+    const model = process.env.OPENAI_MODEL || 'gpt-5';
+    const enabled = (process.env.GPT5_ENABLED || 'false').toLowerCase() === 'true';
+    const rollout = parseInt(process.env.GPT5_ROLLOUT || '0', 10);
+
+    res.json({
+      success: true,
+      model,
+      enabled,
+      rollout_percent: isNaN(rollout) ? 0 : Math.max(0, Math.min(100, rollout))
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.listen(port, '0.0.0.0', async () => {
   // Test connexion PostgreSQL
   try {
