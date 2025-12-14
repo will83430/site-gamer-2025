@@ -20,6 +20,9 @@ const pool = new Pool({
   database: 'gamer_2025',
   password: 'Wilfried!1985',
   port: 5432,
+  max: 20,
+  idleTimeoutMillis: 1000,
+  connectionTimeoutMillis: 2000,
 });
 
 // Middleware
@@ -185,6 +188,7 @@ app.get('/api/produits', async (req, res) => {
     query += ` ORDER BY categorie, nom`;
     
     const result = await pool.query(query, params);
+    console.log(`✅ Produits récupérés: ${result.rows.length}`);
 
     // Traiter les images pour ajouter image_url
     const productsWithImages = result.rows.map(product => {
@@ -467,19 +471,17 @@ function generateFicheHTML(product) {
     <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-      /* Petit style local pour bouton Retour (s'assure d'être dans le thème même si CSS global ne le contient pas) */
+      /* Style du bouton Retour - sans fond, sans effet hover */
       .nav-back {
-        background: white;
-        border: 2px solid #e1e5e9;
-        padding: 10px 18px;
-        border-radius: 25px;
+        background: transparent;
+        border: none;
+        padding: 8px 0;
         font-weight: 600;
-        color: #242424;
+        color: #333;
         text-decoration: none;
         display: inline-block;
-        transition: all 0.25s ease;
+        font-size: 16px;
       }
-      .nav-back:hover { border-color: #667eea; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>

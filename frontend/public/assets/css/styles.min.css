@@ -174,10 +174,6 @@ em {
     font-size: 18px;
 }
 
-.nav-back:hover {
-    color: var(--primary-color);
-}
-
 .btn-comparer {
     display: block;
     margin: 30px auto;

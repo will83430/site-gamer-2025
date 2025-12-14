@@ -267,11 +267,6 @@ p {
     color: var(--text-dark);
     font-size: 1rem;
 }
-.nav-back:hover {
-    border-color: var(--accent-color);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
-}
 
 /* === CONTAINER PRINCIPAL === */
 .container-tendances {
