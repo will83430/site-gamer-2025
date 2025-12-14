@@ -2,6 +2,41 @@
 
 Un site web moderne de comparaison et gestion de produits gaming avec interface d'administration complète et base de données PostgreSQL.
 
+## 📈 Dernières Mises à Jour
+
+**🎉 Version 2.1.0 - Décembre 2025**
+
+### 🗃️ Optimisation Base de Données
+- ✅ **Nettoyage automatique** : Suppression de 14 doublons (73→59 produits)
+- ✅ **Standardisation** : 16 catégories normalisées en MAJUSCULES 
+- ✅ **Enrichissement complet** : 12 nouveaux produits avec données détaillées
+- ✅ **Sections spécialisées** : Adaptation par catégorie (🎵 Audio, 🎮 Gaming, 📸 Photo, etc.)
+
+### 🆕 Nouveaux Produits 2025
+- **Sony A7 V** (Caméra) - Hybride 61MP avec vidéo 8K
+- **Xiaomi 15 Ultra** (Smartphone) - Système Leica 4 capteurs
+- **MSI Titan 18 HX** (PC Gaming) - RTX 5090, écran Mini LED 4K
+- **Samsung QN900D Neo QLED 8K** (TV) - 75" avec processeur IA
+- **OnePlus Pad 2** (Tablette) - 144Hz, Snapdragon 8 Gen 3
+- **Bambu Lab X1 Carbon Combo** (Imprimante 3D) - Multi-couleurs IA
+- **Huawei Watch GT 5 Pro** (Montre) - Titane, autonomie 14 jours
+- **Razer BlackWidow V4 Pro 75%** (Clavier) - Switches mécaniques
+- **Google Pixel 10** (Smartphone) - Tensor G4, IA avancée
+- **DJI Neo 2** (Drone) - Ultra-compact, pilotage gestuel
+- **Lenovo Legion Go S** (Console) - Portable gaming 144Hz
+- **Sennheiser Momentum 5** (Casque) - ANC adaptative, 60h autonomie
+
+### 🛠️ Améliorations Techniques
+- 📜 **Scripts optimisés** : Conservation des utilitaires, suppression des temporaires
+- 🔧 **Outils de maintenance** : Vérification état BDD, ajout produits manquants
+- 💾 **Interface admin** : Gestion complète avec upload d'images
+
+### 📊 État Actuel
+- **59 produits** avec données complètes
+- **16 catégories** standardisées 
+- **Interface d'administration** professionnelle
+- **Base PostgreSQL** optimisée et nettoyée
+
 ## 📋 Table des matières
 
 - [Aperçu du projet](#-aperçu-du-projet)
@@ -460,6 +495,17 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ---
 
-**Version actuelle : 2.0.0** | **Dernière mise à jour : Septembre 2025**
+**Version actuelle : 2.1.0** | **Dernière mise à jour : 14 Décembre 2025**
 
-**🚀 Migré vers PostgreSQL pour plus de performance et fiabilité !**
+**🚀 Base de données PostgreSQL optimisée avec 59 produits enrichis !**
+
+### 📈 Prochaines Évolutions
+- **Janvier 2025** : Intégration nouvelles catégories (AR/VR, IoT Gaming)
+- **Q1 2025** : Système de comparaison avancé multi-critères
+- **Q2 2025** : API publique pour intégrations tierces
+- **Q3 2025** : Recommandations IA basées sur profils utilisateurs
+
+### 🔗 Liens Utiles
+- **Interface Admin** : [Gestion complète](http://localhost:3000/Gestion%20des%20produits%20et%20génération%20automatique.html)
+- **API Documentation** : [Endpoints disponibles](http://localhost:3000/api)
+- **Database Health** : Utiliser `node scripts/verify-database-state.js`
