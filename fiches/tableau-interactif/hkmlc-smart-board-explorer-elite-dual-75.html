@@ -2,34 +2,46 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>HKMLC Smart Board Explorer Elite Dual 75</title>
+    <title>HKMLC Smart Board Explorer Elite Dual 75 - Fiche Produit</title>
     <link rel="stylesheet" href="/assets/css/styles.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      /* Petit style local pour bouton Retour (s'assure d'être dans le thème même si CSS global ne le contient pas) */
+      .nav-back {
+        background: white;
+        border: 2px solid #e1e5e9;
+        padding: 10px 18px;
+        border-radius: 25px;
+        font-weight: 600;
+        color: #242424;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.25s ease;
+      }
+      .nav-back:hover { border-color: #667eea; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    </style>
 </head>
 <body>
     <div class="entete">
-        <img src="/assets/images/gaming.png" alt="Gaming">
+    <img src="../../frontend/public/assets/images/gaming.png" alt="Gaming">
     <a class="nav-back" href="javascript:history.back()">← Retour</a>
-    </div>
+</div>
 
-    <h1>HKMLC Smart Board Explorer Elite Dual 75</h1>
-
+    <h1 class="product-title">HKMLC Smart Board Explorer Elite Dual 75</h1>
     <div id="badge-top-mois"></div>
-
-    <p class="description">Tableau interactif 4K UHD avec double système Android/Windows, idéal pour l’enseignement, les réunions et la collaboration hybride.</p>
+    <p class="description">Chargement de la description...</p>
 
     <div class="gallery">
-        <img src="/assets/images/placeholder.png" alt="hkmlc-smart-board-explorer-elite-dual-75" class="img-centree">
-    </div>
-     <div class="lightbox" id="lightbox">
+<img src="/assets/images/hkmlc-smart-board-explorer-elite-dual-75.png" alt="hkmlc-smart-board-explorer-elite-dual-75" class="img-centree" onerror="this.src='/assets/images/placeholder.png'"></div>
+    
+    <div class="lightbox" id="lightbox">
         <img id="lightbox-img" src="" alt="Zoom">
     </div>
 
-    <!-- Le contenu sera rempli automatiquement depuis PostgreSQL -->
     <div id="product-content">
         <p style="text-align: center; color: #666;">
-            <span class="spinner" style="display: inline-block; width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+            <span style="display: inline-block; width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></span>
             Chargement des données...
         </p>
     </div>
@@ -41,15 +53,15 @@
     </style>
 
     <footer class="footer">
-    <img src="../../frontend/public/assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
+    <img src="/assets/images/banniere-pied.png" alt="Bannière" class="footer-banner">
     <div class="footer-links">
         <div class="footer-item">
-            <img src="../../frontend/public/assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
-            <a href="../../frontend/public/index.html">Accueil</a>
+            <img src="/assets/images/logo-blanc.png" alt="Accueil" class="footer-icon">
+            <a href="/index.html">Accueil</a>
         </div>
         <div class="footer-item">
-            <img src="../../frontend/public/assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
-            <a href="../../frontend/public/top-du-mois.html">Vitrine</a>
+            <img src="/assets/images/logo-dokk-blanc.png" alt="Multibloc" class="footer-icon">
+            <a href="/top-du-mois.html">Vitrine</a>
         </div>
     </div>
 </footer>
