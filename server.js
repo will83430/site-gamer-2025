@@ -978,12 +978,7 @@ app.get('/api/predictions/:categorie', async (req, res) => {
     const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [cat.toLowerCase()]);
     if (!catRows.length) return res.status(404).json({ error: 'Catégorie inconnue' });
     const catId = catRows[0].id;
-    const { rows } = await pool.query('SELECT * FROM predictions WHERE categorie_id = $1', [catId]);
-    rows.forEach(r => {
-      if (typeof r.tags === 'string') {
-        r.tags = r.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
-      }
-    });
+    const { rows } = await pool.query('SELECT * FROM predictions WHERE categorie_id = $1 ORDER BY annee', [catId]);
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: 'Erreur BDD' });
@@ -991,14 +986,18 @@ app.get('/api/predictions/:categorie', async (req, res) => {
 });
 app.post('/api/predictions', async (req, res) => {
   try {
-    const { titre, description, image, date_publication, tags, categorie } = req.body;
+    const { annee, titre, description, icone, probabilite, categorie } = req.body;
     const { rows: catRows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [categorie.toLowerCase()]);
     if (!catRows.length) return res.status(400).json({ error: 'Catégorie inconnue' });
     const catId = catRows[0].id;
+
+    const anneeInt = annee === '' || annee === undefined ? null : parseInt(annee, 10);
+    const probInt = probabilite === '' || probabilite === undefined ? null : parseInt(probabilite, 10);
+
     const result = await pool.query(
-      `INSERT INTO predictions (titre, description, image, date_publication, tags, categorie_id)
+      `INSERT INTO predictions (annee, titre, description, icone, probabilite, categorie_id)
        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, catId]
+      [anneeInt, titre, description || null, icone || null, probInt, catId]
     );
     res.json({ success: true, tendance: result.rows[0] });
   } catch (err) {
@@ -1008,10 +1007,12 @@ app.post('/api/predictions', async (req, res) => {
 app.put('/api/predictions/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { titre, description, image, date_publication, tags } = req.body;
+    const { annee, titre, description, icone, probabilite } = req.body;
+    const anneeInt = annee === '' || annee === undefined ? null : parseInt(annee, 10);
+    const probInt = probabilite === '' || probabilite === undefined ? null : parseInt(probabilite, 10);
     await pool.query(
-      `UPDATE predictions SET titre=$1, description=$2, image=$3, date_publication=$4, tags=$5 WHERE id=$6`,
-      [titre, description, image, date_publication, `{${tags.join(',')}}`, id]
+      `UPDATE predictions SET annee=$1, titre=$2, description=$3, icone=$4, probabilite=$5 WHERE id=$6`,
+      [anneeInt, titre, description || null, icone || null, probInt, id]
     );
     res.json({ success: true });
   } catch (err) {

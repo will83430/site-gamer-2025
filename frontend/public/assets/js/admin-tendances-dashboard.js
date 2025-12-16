@@ -52,6 +52,7 @@ const columnsMap = {
     { key: 'actions', label: 'Actions', render: (t, type) => actionBtns(type, t.id) }
   ],
   predictions: [
+    { key: 'annee', label: 'Année', render: t => t.annee || '' },
     { key: 'titre', label: 'Titre', render: t => `<strong>${t.titre || ''}</strong>` },
     { key: 'description', label: 'Description', render: t => t.description || '' },
     { key: 'icone', label: 'Icône', render: t => {
@@ -341,9 +342,17 @@ function editTendance(type, id) {
     `;
   }
   if(type === 'predictions') {
+    ['tendance-titre','tendance-description','tendance-image','tendance-date','tendance-tags'].forEach(id => {
+      const group = document.getElementById(id)?.closest('.form-group');
+      if (group) group.style.display = 'none';
+    });
     extra = `
       <label for="pred-annee">Année *</label>
       <input type="number" id="pred-annee" required value="${t.annee || ''}" />
+      <label for="pred-titre">Titre *</label>
+      <input type="text" id="pred-titre" required value="${t.titre || ''}" />
+      <label for="pred-description">Description</label>
+      <input type="text" id="pred-description" value="${t.description || ''}" />
       <label for="pred-icone">Icône</label>
       <input type="text" id="pred-icone" value="${t.icone || ''}" />
       <label for="pred-probabilite">Probabilité (%)</label>
@@ -358,7 +367,7 @@ function submitTendance(e) {
   e.preventDefault();
   const id = document.getElementById('tendance-id').value;
   const type = document.getElementById('tendance-type').value;
-  const body = {
+  let body = {
     titre: document.getElementById('tendance-titre').value,
     description: document.getElementById('tendance-description').value,
     image: document.getElementById('tendance-image').value,
@@ -378,6 +387,16 @@ function submitTendance(e) {
     body.valeur = document.getElementById('marche-valeur').value;
     body.tendance = document.getElementById('marche-tendance').value;
     body.icone = document.getElementById('marche-icone').value;
+  }
+  if(type === 'predictions') {
+    body = {
+      annee: document.getElementById('pred-annee').value === '' ? null : Number(document.getElementById('pred-annee').value),
+      titre: document.getElementById('pred-titre').value,
+      description: document.getElementById('pred-description').value,
+      icone: document.getElementById('pred-icone').value,
+      probabilite: document.getElementById('pred-probabilite').value === '' ? null : Number(document.getElementById('pred-probabilite').value),
+      categorie: state[type].categorie
+    };
   }
   const url = id 
     ? `/api/${apiMap[type]}/${id}` 
