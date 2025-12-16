@@ -57,7 +57,7 @@ class TendancesDataManager {
             if (techGrid && techData) {
                 techGrid.innerHTML = techData.map(tech => `
                     <div class="tech-card">
-                        <div class="tech-icon">${tech.icone}</div>
+                        <div class="tech-icon">${this.getIconEmoji(tech.icone)}</div>
                         <h3>${tech.nom}</h3>
                         <div class="progress-bar">
                             <div class="progress" style="width: 0%"></div>
@@ -94,7 +94,7 @@ class TendancesDataManager {
             if (marketGrid && marketData) {
                 marketGrid.innerHTML = marketData.map(stat => {
                     // Utilise l'icône de la BDD ou une icône par défaut
-                    const icon = stat.icone || '💰';
+                    const icon = this.getIconEmoji(stat.icone) || '💰';
 
                     return `
                         <div class="stat-card">
@@ -136,6 +136,87 @@ class TendancesDataManager {
     }
 
     // === PRÉDICTIONS ===
+    getIconEmoji(iconName) {
+        const iconMap = {
+            // Icônes prédictions
+            'drone': '🚁',
+            'package': '📦',
+            'network': '🌐',
+            'camera': '📷',
+            'satellite': '🛰️',
+            '8k': '📺',
+            'brain': '🧠',
+            'phone-fold': '📱',
+            'battery': '🔋',
+            'cloud': '☁️',
+            'vr-headset': '🥽',
+            'quantum': '⚛️',
+            '6g': '📡',
+            'gamepad': '🎮',
+            'tablet': '📱',
+            'fold': '📋',
+            'leaf': '🌿',
+            'translate': '🌍',
+            'sound-wave': '🎵',
+            '3d': '🎭',
+            'heartbeat': '💓',
+            'fingerprint': '👆',
+            'hologram': '✨',
+            'droplet': '💧',
+            'cube': '🧊',
+            'box': '📦',
+            'zap': '⚡',
+            'book': '📚',
+            'tv': '📺',
+            'eye': '👁️',
+            'printer': '🖨️',
+            'metal': '🔩',
+            'recycle': '♻️',
+            'chip': '💾',
+            'keyboard': '⌨️',
+            'mouse': '🖱️',
+            'sparkle': '✨',
+            'hand': '🤚',
+            'mic': '🎤',
+            // Icônes marché
+            'money': '💰',
+            'building': '🏢',
+            'home': '🏠',
+            'phone': '📱',
+            'laptop': '💻',
+            'apple': '🍏',
+            'android': '🤖',
+            'signal': '📶',
+            'trophy': '🏆',
+            'flag': '🏁',
+            'wheat': '🌾',
+            'list': '📋',
+            'watch': '⌚',
+            'headphones': '🎧',
+            'server': '🖥️',
+            'link': '🔗',
+            'globe': '🌍',
+            'france': '🇫🇷',
+            'euro': '💶',
+            'meta': '🅼',
+            'lg': '🅻',
+            'creality': '🅲',
+            'chart': '📊',
+            'school': '🏫',
+            'dollar': '💸',
+            // Icônes technologies
+            'cpu': '🖥️',
+            'monitor': '🖥️',
+            'refresh': '🔄',
+            'wind': '💨',
+            'shield': '🛡️',
+            'pen': '✏️',
+            'bluetooth': '📶',
+            '4k': '📺'
+        };
+        return iconMap[iconName] || '🔮';
+    }
+
     async updatePredictions() {
         console.log('🔄 Mise à jour des prédictions...');
         try {
@@ -147,7 +228,7 @@ class TendancesDataManager {
                         <span class="timeline-year">${pred.annee}</span>
                         <div class="timeline-content">
                             <div class="timeline-header">
-                                <span class="timeline-icon">${pred.icone}</span>
+                                <span class="timeline-icon">${this.getIconEmoji(pred.icone)}</span>
                                 <h3>${pred.titre}</h3>
                             </div>
                             <p>${pred.description}</p>

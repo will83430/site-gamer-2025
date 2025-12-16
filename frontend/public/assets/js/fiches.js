@@ -257,6 +257,19 @@ function afficherListeCategories(categories) {
 
 // Configurer les écouteurs d'événements
 function setupEventListeners() {
+    // Bouton voir les tendances
+    const btnTendances = document.getElementById('btn-tendances-categorie');
+    if (btnTendances) {
+        btnTendances.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (categorieActuelle) {
+                // Convertir la catégorie en format URL (ex: pc-gaming)
+                const urlCategorie = categorieActuelle.toLowerCase().replace(/\s+/g, '-');
+                window.location.href = `tendances-${urlCategorie}.html`;
+            }
+        });
+    }
+    
     // Bouton retour amélioré
     const btnRetour = document.getElementById('btn-retour');
     if (btnRetour) {
