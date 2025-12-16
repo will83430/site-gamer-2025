@@ -38,6 +38,10 @@ async function chargerDonneesProduit() {
 
 // FONCTION D'AFFICHAGE - Affiche les données du produit
 function afficherDonneesProduit(produit) {
+    const titleEl = document.querySelector('.product-title');
+    if (titleEl) {
+        titleEl.textContent = produit.titre_affiche || produit.nom;
+    }
     // 1. Badge top du mois
     if (produit.top_du_mois) {
         const badge = document.getElementById('badge-top-mois');
@@ -60,16 +64,22 @@ function afficherDonneesProduit(produit) {
     
     // 3. Image
     const img = document.querySelector('.gallery img');
-if (img && produit.image) {
-    // Nettoyage du chemin de l'image
-    let imagePath = produit.image;
-    if (imagePath.includes('assets/images/assets/images/')) {
-        imagePath = imagePath.replace('assets/images/assets/images/', 'assets/images/');
+    if (img) {
+        let imagePath = '';
+        if (produit.image_url) {
+            // Utiliser l'URL absolue fournie par l'API
+            imagePath = produit.image_url;
+        } else if (produit.image) {
+            // Construire un chemin absolu vers les assets
+            const clean = produit.image.replace(/^assets\/images\//, '');
+            imagePath = `/assets/images/${clean}`;
+        } else {
+            imagePath = '/assets/images/placeholder.png';
+        }
+        img.src = imagePath;
+        img.onerror = () => img.src = '/assets/images/placeholder.png';
+        console.log('🖼️ Image affichée :', img.src);
     }
-    img.src = imagePath;
-    img.onerror = () => img.src = '/assets/images/placeholder.png';
-    console.log('🖼️ Image affichée :', img.src);
-}
     
     // 4. Contenu principal (sections organisées)
     const contentDiv = document.getElementById('product-content');
@@ -91,16 +101,22 @@ produit.donnees_fiche.forEach((contenu, index) => {
             texte = parties.slice(1).join('\n').trim();
         } else {
             // Format texte simple: "Description sans emoji"
-            titre = "📝 Description";  // Titre par défaut
+            // Ne pas ajouter de titre par défaut pour éviter les doublons
+            titre = '';
             texte = contenu.trim();
         }
         if (texte.length > 0) {
-            html += `
+            if (titre) {
+                html += `
                 <div style="margin: 20px 0; text-align: center;">
                     <h3 style="color: white; margin-bottom: 10px; font-weight: bold;">${titre}</h3>
                     <p>${texte.replace(/\n/g, '<br>')}</p>
                 </div>
             `;
+            } else {
+                // Pas de titre, affiche juste le texte en paragraphe normal
+                html += `<p>${texte.replace(/\n/g, '<br>')}</p>`;
+            }
         } else {
         }
     }

@@ -4,7 +4,20 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 
 ## 📈 Dernières Mises à Jour
 
-**🎉 Version 2.1.0 - Décembre 2025**
+**🎉 Version 2.2.0 - 17 Décembre 2025**
+
+### ⭐ Sélection Top du Mois - Décembre 2025
+- ✅ **Mise à jour automatique** : 4 nouveaux produits récents sélectionnés
+- 🎯 **Apple Vision Pro** (Casque VR) - 3 699 €
+- 🥽 **Meta Quest 3S** (Casque VR) - 329 €
+- 🚁 **DJI Neo 2** (Drone) - 249 €
+- ⌚ **Huawei Watch GT 5 Pro** (Montre) - 399 €
+
+### 🎨 Optimisations Interface
+- ✅ **Comparaison produits** : Affichage corrigé avec mise en page uniforme
+- ✅ **Cartes comparaison** : 320px × 400px avec 3 critères maximum
+- ✅ **Images optimisées** : object-fit contain avec padding pour meilleur rendu
+- ✅ **Textes centrés** : Titres et prix alignés au centre des cartes
 
 ### 🗃️ Optimisation Base de Données
 - ✅ **Nettoyage automatique** : Suppression de 14 doublons (73→59 produits)
@@ -20,7 +33,7 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 - **OnePlus Pad 2** (Tablette) - 144Hz, Snapdragon 8 Gen 3
 - **Bambu Lab X1 Carbon Combo** (Imprimante 3D) - Multi-couleurs IA
 - **Huawei Watch GT 5 Pro** (Montre) - Titane, autonomie 14 jours
-- **Razer BlackWidow V4 Pro 75%** (Clavier) - Switches mécaniques
+- **Razer BlackWidow V4 Pro** (Clavier) - Switches mécaniques
 - **Google Pixel 10** (Smartphone) - Tensor G4, IA avancée
 - **DJI Neo 2** (Drone) - Ultra-compact, pilotage gestuel
 - **Lenovo Legion Go S** (Console) - Portable gaming 144Hz
@@ -29,11 +42,13 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 ### 🛠️ Améliorations Techniques
 - 📜 **Scripts optimisés** : Conservation des utilitaires, suppression des temporaires
 - 🔧 **Outils de maintenance** : Vérification état BDD, ajout produits manquants
-- 💾 **Interface admin** : Gestion complète avec upload d'images
+- 💾 **Interface admin** : Gestion complète avec upload d'images et bouton suppression
+- 🎨 **CSS/JS minifiés** : Fichiers de production optimisés (styles.min.css, fiches.min.js)
 
 ### 📊 État Actuel
-- **59 produits** avec données complètes
+- **61 produits** avec données complètes
 - **16 catégories** standardisées 
+- **4 produits** en vedette (Top du mois)
 - **Interface d'administration** professionnelle
 - **Base PostgreSQL** optimisée et nettoyée
 

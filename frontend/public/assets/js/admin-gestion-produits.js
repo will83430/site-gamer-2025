@@ -1588,5 +1588,26 @@ class ModernImageUpload {
     }
 }
 
+// Fonction pour supprimer l'image (appelée depuis le HTML)
+function removeImage(prefix) {
+    if (modernUpload[prefix]) {
+        modernUpload[prefix].removePreview();
+    } else {
+        // Fallback si l'uploader n'est pas initialisé
+        const previewContainer = document.getElementById(`${prefix}-preview-container`);
+        const uploadZone = document.getElementById(`${prefix}-upload-zone`);
+        const fileInput = document.getElementById(`${prefix}-image-file`);
+        const imageActions = document.getElementById(`${prefix}-image-actions`);
+        
+        if (previewContainer) previewContainer.innerHTML = '';
+        if (uploadZone) uploadZone.style.display = 'block';
+        if (fileInput) fileInput.value = '';
+        if (imageActions) imageActions.style.display = 'none';
+        
+        delete currentImageData[prefix];
+        showMessage('🗑️ Image supprimée', 'info');
+    }
+}
+
 // Initialisation des uploaders modernes
 const modernUpload = {};

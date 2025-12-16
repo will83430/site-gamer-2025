@@ -20,14 +20,20 @@ let tousLesProduits = []; // Cache pour tous les produits
 let statsCache = null; // Cache pour les stats
 
 const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// Récupère la catégorie depuis l'URL en acceptant cat ou categorie
+function getCategorieFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('categorie') || urlParams.get('cat') || '';
+}
+
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
     // Charger une seule fois tous les produits au démarrage
     await chargerTousLesProduits();
     
     // Récupérer la catégorie depuis l'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    categorieActuelle = urlParams.get('categorie') || '';
+    categorieActuelle = getCategorieFromUrl();
     
     if (categorieActuelle) {
         afficherProduitsCategorie(categorieActuelle);
@@ -170,17 +176,17 @@ function afficherProduits(produits) {
     }
     
     zonefiches.innerHTML = (Array.isArray(produits) ? produits : []).map(produit => {
-        // Gestion de l'image avec lazy loading
-        let imageUrl = produit.image || '';
-        if (imageUrl) {
-            if (imageUrl.startsWith('/')) {
-                imageUrl = imageUrl.substring(1);
-            }
-            if (!imageUrl.startsWith('http') && !imageUrl.startsWith('assets/images/')) {
-                imageUrl = `assets/images/${imageUrl}`;
-            }
+        // Gestion de l'image avec lazy loading (priorité à image_url de l'API)
+        let imageUrl = '';
+        if (produit.image_url) {
+            // Utiliser directement l'URL absolue fournie par l'API
+            imageUrl = produit.image_url;
+        } else if (produit.image) {
+            // Construire un chemin absolu cohérent
+            const clean = produit.image.replace(/^assets\/images\//, '');
+            imageUrl = `/assets/images/${clean}`;
         } else {
-            imageUrl = 'assets/images/placeholder.png';
+            imageUrl = '/assets/images/placeholder.png';
         }
 
         // Image placeholder pendant le chargement
@@ -190,6 +196,10 @@ function afficherProduits(produits) {
                 <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#999">Chargement...</text>
             </svg>
         `);
+
+        const productLink = produit.lien
+            ? (produit.lien.startsWith('/') ? produit.lien : `/${produit.lien}`)
+            : '#';
 
         return `
             <div class="fiche-produit" data-id="${produit.id}" 
@@ -209,12 +219,10 @@ function afficherProduits(produits) {
                 <input type="checkbox" class="produit-checkbox" data-id="${produit.id}" data-nom="${produit.nom}">
 
                 <!-- IMAGE LAZY LOADING -->
-                <img src="${placeholderUrl}" 
-                     data-src="${imageUrl}" 
+                 <img src="${imageUrl}" 
                      alt="${produit.nom}" 
-                     class="lazy"
                      style="width: 100%; height: 200px; object-fit: cover; background: #f0f0f0;"
-                     onerror="this.onerror=null; this.src='assets/images/placeholder.png';">
+                     onerror="this.onerror=null; this.src='/assets/images/placeholder.png';">
 
                 <div class="overlay-text-produit">${produit.titre_affiche || produit.nom}</div>
                 <p class="info">${produit.description || 'Description non disponible'}</p>
@@ -226,16 +234,14 @@ function afficherProduits(produits) {
                     </ul>
                 ` : ''}
 
-                <a href="${produit.lien || '#'}" class="btn btn-details">Voir la fiche</a>
+                <a href="${productLink}" class="btn btn-details">Voir la fiche</a>
             </div>
         `;
     }).join('');
 
     // Initialiser lazy loading après rendu
     setupComparisonCheckboxes();
-    setTimeout(() => {
-        initLazyLoading();
-    }, 100);
+    // Lazy loading désactivé temporairement pour fiabiliser l'affichage des images
 }
 
 // Afficher la liste des catégories
@@ -410,7 +416,7 @@ async function comparerProduits() {
 ` : ''}
                     ${p.fonctionnalites_avancees && p.fonctionnalites_avancees.length > 0 ? `
                         <ul>
-                            ${p.fonctionnalites_avancees.slice(0, 5).map(f => `<li>${f}</li>`).join('')}
+                            ${p.fonctionnalites_avancees.slice(0, 3).map(f => `<li>${f}</li>`).join('')}
                         </ul>
                     ` : ''}
                 </div>
@@ -424,6 +430,7 @@ async function comparerProduits() {
         
         // Afficher la zone de comparaison
         zoneComparaison.classList.remove('hidden');
+        zoneComparaison.style.display = 'block';
         
         // Scroller vers la comparaison
         zoneComparaison.scrollIntoView({ behavior: 'smooth' });
@@ -438,6 +445,7 @@ async function comparerProduits() {
 function fermerComparaison() {
     const zoneComparaison = document.getElementById('zone-comparaison');
     zoneComparaison.classList.add('hidden');
+    zoneComparaison.style.display = 'none';
     
     // Décocher toutes les checkboxes
     document.querySelectorAll('.produit-checkbox').forEach(cb => cb.checked = false);
@@ -566,8 +574,7 @@ async function chargerProduits(categorie = null) {
 
 // Auto-lancement
 document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const categorie = urlParams.get('categorie');
+    const categorie = getCategorieFromUrl();
     chargerProduits(categorie);
 });
 
@@ -926,8 +933,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // GARDEZ votre logique existante mais avec les améliorations cache
     await chargerTousLesProduits();
     
-    const urlParams = new URLSearchParams(window.location.search);
-    categorieActuelle = urlParams.get('categorie') || '';
+    categorieActuelle = getCategorieFromUrl();
     
     if (categorieActuelle) {
         afficherProduitsCategorie(categorieActuelle);
