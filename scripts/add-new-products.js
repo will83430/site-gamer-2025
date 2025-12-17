@@ -160,7 +160,7 @@ const products = [
     prix: '249.99€',
     description: 'Clavier mécanique gaming compact 75% avec switches Gen-3, écran OLED, molette et RGB Chroma pour setup minimaliste ultime.',
     titre_affiche: 'Razer BlackWidow V4 Pro 75%',
-    lien: 'fiches/peripheriques/razer-blackwidow-v4-pro-75-.html',
+    lien: 'fiches/peripheriques/razer-blackwidow-v4-pro.html',
     image: 'razer-blackwidow-v4-pro-75.png',
     donnees_fiche: ['Format 75% compact', 'Switches Razer Gen-3', 'Écran OLED', 'Molette multifonction'],
     fonctionnalites_avancees: ['RGB Chroma 16.8M couleurs', 'Repose-poignets magnétique', 'Polling 8000Hz', 'HyperSpeed Wireless'],

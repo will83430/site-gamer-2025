@@ -29,7 +29,7 @@ UPDATE produits SET lien = 'fiches/casque-audio/sennheiser-momentum-5.html' WHER
 UPDATE produits SET lien = 'fiches/ecran-tv/samsung-qn900d-neo-qled-8k.html' WHERE lien = 'https://www.samsung.com';
 UPDATE produits SET lien = 'fiches/camera/sony-a7-v.html' WHERE lien = 'https://www.sony.com';
 UPDATE produits SET lien = 'fiches/imprimante-3d/bambu-lab-x1-carbon-combo.html' WHERE lien = 'https://www.bambulab.com';
-UPDATE produits SET lien = 'fiches/peripheriques/razer-blackwidow-v4-pro-75-.html' WHERE lien = 'https://www.razer.com';
+UPDATE produits SET lien = 'fiches/peripheriques/razer-blackwidow-v4-pro.html' WHERE lien = 'https://www.razer.com';
 
 -- 4️⃣ Corriger les noms de fichiers avec espaces/majuscules
 UPDATE produits SET lien = 'fiches/video-projecteur/valerion-vision-master-pro-2.html' WHERE lien = 'fiches/video-projecteur/Valerion Vision Master Pro 2.html';
