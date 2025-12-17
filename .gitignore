@@ -22,3 +22,14 @@ Thumbs.db
 
 # Autres fichiers à ignorer
 *.tmp
+
+# Backups et brouillons locaux
+backup_gamer_2025.sql
+CLEANUP-SUMMARY.md
+check-prod1.js
+restore-backup.js
+scripts/check-prod1.js
+scripts/check-prod50.js
+scripts/tmp-list-incomplete.js
+scripts/quick-check-db.js
+scripts/fiches/
