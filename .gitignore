@@ -33,3 +33,5 @@ scripts/check-prod50.js
 scripts/tmp-list-incomplete.js
 scripts/quick-check-db.js
 scripts/fiches/
+scripts/*.js
+scripts/*.sql
