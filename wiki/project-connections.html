@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture 3 : Flow en U</title>
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        /* Styles spécifiques au diagramme interactif */
+        body { overflow-x: hidden; }
+        .header { padding: 30px; }
+        .header h1 { font-size: 2.5em; color: white; margin-bottom: 10px; }
+        .subtitle { font-size: 1.1em; opacity: 0.9; }
+        .container { max-width: 1800px; margin: 0 auto; padding: 40px 20px; }
+        .diagram-container { position: relative; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 15px; padding: 40px; margin-bottom: 40px; min-height: 900px; height: 900px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); }
+        .node { position: absolute; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid; border-radius: 12px; padding: 15px 20px; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); z-index: 10; min-width: 150px; text-align: center; }
+        .node:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5); z-index: 100; }
+        .node.centered:hover { transform: translateX(-50%) scale(1.1) translateY(-5px); }
+        .node-icon { font-size: 2em; margin-bottom: 8px; filter: drop-shadow(0 0 10px currentColor); }
+        .node-title { font-weight: 600; font-size: 0.95em; margin-bottom: 5px; }
+        .node-desc { font-size: 0.75em; opacity: 0.7; }
+        .node-server { border-color: #f39c12; color: #f39c12; }
+        .node-database { border-color: #3498db; color: #3498db; }
+        .node-frontend { border-color: #e74c3c; color: #e74c3c; }
+        .node-api { border-color: #2ecc71; color: #2ecc71; }
+        .node-script { border-color: #9b59b6; color: #9b59b6; }
+        .node-file { border-color: #1abc9c; color: #1abc9c; }
+        #connections-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .connection-line { stroke-width: 1.5; fill: none; opacity: 0.3; transition: all 0.3s; }
+        .connection-line.highlight { opacity: 1; stroke-width: 3; filter: drop-shadow(0 0 8px currentColor); }
+        .connection-arrow { fill: currentColor; opacity: 0.3; transition: all 0.3s; }
+        .connection-arrow.highlight { opacity: 1; filter: drop-shadow(0 0 8px currentColor); }
+        .tooltip { position: fixed; background: rgba(0, 0, 0, 0.95); color: white; padding: 12px 16px; border-radius: 8px; font-size: 0.9em; pointer-events: none; z-index: 1000; opacity: 0; transition: opacity 0.2s; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); border: 1px solid rgba(102, 126, 234, 0.5); max-width: 300px; }
+        .tooltip.show { opacity: 1; }
+        .tooltip-title { font-weight: 700; font-size: 1.1em; margin-bottom: 5px; }
+        .tooltip-desc { opacity: 0.8; line-height: 1.4; }
+        .info-panel { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 12px; padding: 20px; max-width: 300px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); z-index: 100; }
+        .info-panel h3 { color: #667eea; margin-bottom: 10px; font-size: 1.1em; }
+        .info-panel p { font-size: 0.85em; line-height: 1.5; opacity: 0.8; margin-bottom: 8px; }
+        .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.8em; }
+        .legend-color { width: 12px; height: 12px; border-radius: 2px; }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); } 50% { box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6); } }
+        .node.active { animation: pulse 1.5s infinite; }
+        .detail-panel { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 12px; padding: 25px; max-width: 400px; max-height: 70vh; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); z-index: 200; overflow-y: auto; display: none; }
+        .detail-panel.active { display: block; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .detail-panel h2 { color: #667eea; margin-bottom: 15px; font-size: 1.3em; display: flex; align-items: center; gap: 10px; }
+        .detail-section { margin-bottom: 20px; }
+        .detail-section-title { color: #2ecc71; font-weight: 600; margin-bottom: 8px; font-size: 1em; }
+        .detail-content { font-size: 0.85em; line-height: 1.6; opacity: 0.85; }
+        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .endpoint-list { background: rgba(102, 126, 234, 0.1); border-left: 3px solid #667eea; padding: 12px; border-radius: 6px; margin: 8px 0; font-family: 'Courier New', monospace; font-size: 0.8em; }
+        .endpoint-item { margin: 5px 0; color: #2ecc71; }
+        .endpoint-item .method { color: #f39c12; font-weight: 600; }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: #667eea; border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1.2em; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .close-btn:hover { background: #764ba2; transform: rotate(90deg); }
+        .related-nodes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .related-node-tag { background: rgba(102, 126, 234, 0.2); border: 1px solid #667eea; padding: 4px 10px; border-radius: 15px; font-size: 0.75em; cursor: pointer; transition: all 0.2s; }
+        .related-node-tag:hover { background: rgba(102, 126, 234, 0.4); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(102, 126, 234, 0.1); }
+        ::-webkit-scrollbar-thumb { background: #667eea; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #764ba2; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔄 Architecture 3 : Flow en U (Production)</h1>
+        <p class="subtitle">Flux de production compact - Connexions courtes</p>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="scripts.html">⚙️ Scripts</a>
+        <a href="troubleshooting.html">🔧 Dépannage</a>
+        <a href="changelog.html">📝 Changelog</a>
+    </nav>
+
+    <div class="container">
+        <div class="diagram-container" id="diagram">
+            <svg id="connections-svg"></svg>
+            <div class="node node-frontend" style="top: 100px; left: 100px;"><div class="node-icon">🌐</div><div class="node-title">Pages HTML</div><div class="node-desc">Frontend</div></div>
+            <div class="node node-frontend" style="top: 100px; left: 300px;"><div class="node-icon">🎨</div><div class="node-title">Assets</div><div class="node-desc">CSS/JS</div></div>
+            <div class="node node-api" style="top: 100px; right: 300px;"><div class="node-icon">📦</div><div class="node-title">API Produits</div><div class="node-desc">CRUD</div></div>
+            <div class="node node-api" style="top: 100px; right: 100px;"><div class="node-icon">🔥</div><div class="node-title">API Tendances</div><div class="node-desc">CRUD</div></div>
+            <div class="node node-file" style="top: 250px; left: 100px;"><div class="node-icon">📦</div><div class="node-title">package.json</div><div class="node-desc">Config</div></div>
+            <div class="node node-api" style="top: 250px; right: 300px;"><div class="node-icon">📄</div><div class="node-title">API Fiches</div><div class="node-desc">API</div></div>
+            <div class="node node-server centered" style="top: 400px; left: 50%; transform: translateX(-50%);"><div class="node-icon">🖥️</div><div class="node-title">server.js</div><div class="node-desc">Serveur Express</div></div>
+            <div class="node node-file" style="top: 250px; right: 100px;"><div class="node-icon">📁</div><div class="node-title">Fiches/</div><div class="node-desc">Output</div></div>
+            <div class="node node-database centered" style="top: 550px; left: 50%; transform: translateX(-50%);"><div class="node-icon">🐘</div><div class="node-title">PostgreSQL</div><div class="node-desc">gamer_2025</div></div>
+            <div class="node node-file" style="top: 550px; left: 200px;"><div class="node-icon">🗄️</div><div class="node-title">SQL Data</div><div class="node-desc">Seed</div></div>
+            <div class="node node-script" style="top: 700px; left: 200px;"><div class="node-icon">🔄</div><div class="node-title">Generate</div><div class="node-desc">Script</div></div>
+            <div class="node node-script centered" style="top: 700px; left: 50%; transform: translateX(-50%);"><div class="node-icon">✅</div><div class="node-title">Verify</div><div class="node-desc">Script</div></div>
+            <div class="node node-script" style="top: 700px; right: 200px;"><div class="node-icon">🔧</div><div class="node-title">Normalize</div><div class="node-desc">Script</div></div>
+        </div>
+        <div class="info-panel">
+            <h3>🎯 Architecture Projet</h3>
+            <p>Cliquez sur les composants pour voir les détails</p>
+            <p style="margin-top: 10px;"><a href="project-details.html" style="color: #2ecc71; text-decoration: none;">📋 Doc Détaillée</a> | <a href="wiki.html" style="color: #2ecc71; text-decoration: none;">🏠 Wiki Home</a></p>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background: #e74c3c;"></div>Frontend</div>
+                <div class="legend-item"><div class="legend-color" style="background: #2ecc71;"></div>API</div>
+                <div class="legend-item"><div class="legend-color" style="background: #f39c12;"></div>Server</div>
+                <div class="legend-item"><div class="legend-color" style="background: #3498db;"></div>Database</div>
+                <div class="legend-item"><div class="legend-color" style="background: #1abc9c;"></div>Files</div>
+                <div class="legend-item"><div class="legend-color" style="background: #9b59b6;"></div>Scripts</div>
+            </div>
+        </div>
+        <div class="detail-panel" id="detailPanel">
+            <button class="close-btn" onclick="closeDetailPanel()">×</button>
+            <h2 id="detailTitle"></h2>
+            <div id="detailContent"></div>
+        </div>
+    </div>
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-title"></div>
+        <div class="tooltip-desc"></div>
+    </div>
+    <script>
+        // Définition des connexions entre composants
+        const connections = [
+            { from: 'Pages HTML', to: 'API Produits', color: '#2ecc71' },
+            { from: 'Assets', to: 'API Tendances', color: '#2ecc71' },
+            { from: 'API Produits', to: 'API Fiches', color: '#2ecc71' },
+            { from: 'API Tendances', to: 'API Fiches', color: '#2ecc71' },
+            { from: 'package.json', to: 'server.js', color: '#1abc9c' },
+            { from: 'API Fiches', to: 'server.js', color: '#2ecc71' },
+            { from: 'API Fiches', to: 'Fiches/', color: '#1abc9c' },
+            { from: 'server.js', to: 'PostgreSQL', color: '#3498db' },
+            { from: 'SQL Data', to: 'PostgreSQL', color: '#3498db' },
+            { from: 'PostgreSQL', to: 'Generate', color: '#9b59b6' },
+            { from: 'PostgreSQL', to: 'Verify', color: '#9b59b6' },
+            { from: 'PostgreSQL', to: 'Normalize', color: '#9b59b6' },
+            { from: 'Generate', to: 'Fiches/', color: '#9b59b6' }
+        ];
+
+        // Fonction pour obtenir le centre d'un élément
+        function getCenter(el) {
+            const rect = el.getBoundingClientRect();
+            const container = document.getElementById('diagram').getBoundingClientRect();
+            return {
+                x: rect.left + rect.width / 2 - container.left,
+                y: rect.top + rect.height / 2 - container.top
+            };
+        }
+
+        // Fonction pour dessiner les connexions
+        function drawConnections() {
+            const svg = document.getElementById('connections-svg');
+            svg.innerHTML = '';
+
+            connections.forEach(conn => {
+                const fromEl = Array.from(document.querySelectorAll('.node')).find(el => 
+                    el.querySelector('.node-title').textContent === conn.from
+                );
+                const toEl = Array.from(document.querySelectorAll('.node')).find(el => 
+                    el.querySelector('.node-title').textContent === conn.to
+                );
+
+                if (fromEl && toEl) {
+                    const from = getCenter(fromEl);
+                    const to = getCenter(toEl);
+
+                    // Créer une courbe Bézier pour la connexion
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    const midY = (from.y + to.y) / 2;
+                    const d = `M ${from.x} ${from.y} Q ${from.x} ${midY}, ${(from.x + to.x) / 2} ${midY} T ${to.x} ${to.y}`;
+                    
+                    path.setAttribute('d', d);
+                    path.setAttribute('class', 'connection-line');
+                    path.setAttribute('stroke', conn.color);
+                    path.setAttribute('data-from', conn.from);
+                    path.setAttribute('data-to', conn.to);
+                    svg.appendChild(path);
+
+                    // Ajouter une flèche
+                    const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    const angle = Math.atan2(to.y - from.y, to.x - from.x);
+                    const arrowSize = 8;
+                    const points = [
+                        [to.x, to.y],
+                        [to.x - arrowSize * Math.cos(angle - Math.PI / 6), to.y - arrowSize * Math.sin(angle - Math.PI / 6)],
+                        [to.x - arrowSize * Math.cos(angle + Math.PI / 6), to.y - arrowSize * Math.sin(angle + Math.PI / 6)]
+                    ].map(p => p.join(',')).join(' ');
+                    
+                    arrow.setAttribute('points', points);
+                    arrow.setAttribute('class', 'connection-arrow');
+                    arrow.setAttribute('fill', conn.color);
+                    svg.appendChild(arrow);
+                }
+            });
+        }
+
+        // Descriptions détaillées des composants
+        const nodeDetails = {
+            'Pages HTML': { desc: '17 pages HTML statiques servant le frontend du site', connections: 'Requêtes vers les APIs' },
+            'Assets': { desc: 'CSS minifiés, JavaScript et images optimisées', connections: 'Styles et scripts utilisés par les pages' },
+            'API Produits': { desc: 'CRUD complet pour gérer les produits gaming', connections: 'Traite les requêtes HTTP GET/POST/PUT/DELETE' },
+            'API Tendances': { desc: 'Gestion des tendances et insights du marché', connections: 'Interface avec la base de données' },
+            'API Fiches': { desc: 'Génération automatique des fiches produits HTML', connections: 'Crée les fichiers statiques dans fiches/' },
+            'package.json': { desc: 'Configuration npm avec dépendances Express, pg, compression', connections: 'Définit les scripts et modules du projet' },
+            'server.js': { desc: 'Serveur Express central sur port 3000', connections: 'Gère le routing, CORS, compression et connexion DB' },
+            'Fiches/': { desc: '16 catégories de fiches produits générées', connections: 'Contenu HTML statique accessible publiquement' },
+            'PostgreSQL': { desc: 'Base de données gamer_2025 avec tables produits, catégories, tendances', connections: 'Stockage persistant de toutes les données' },
+            'SQL Data': { desc: 'Seed data avec 61 produits et données initiales', connections: 'Script d\'insertion pour peupler la DB' },
+            'Generate': { desc: 'Scripts de génération massive de fiches', connections: 'Hit /api/generate-fiche/:id pour chaque produit' },
+            'Verify': { desc: 'Vérification de l\'intégrité et cohérence des données', connections: 'Contrôles qualité sur la base' },
+            'Normalize': { desc: '9 scripts de normalisation par catégorie', connections: 'Uniformise les formats et structure des données' }
+        };
+
+        // Informations complètes pour le panneau détaillé
+        const detailData = {
+            'Pages HTML': {
+                icon: '🌐',
+                type: 'Frontend',
+                description: 'Ensemble des pages HTML statiques qui constituent l\'interface utilisateur du site gamer',
+                files: ['index.html', 'pages de catégories (16)', 'pages de tendances', 'pages produits'],
+                endpoints: [],
+                scripts: []
+            },
+            'Assets': {
+                icon: '🎨',
+                type: 'Frontend',
+                description: 'Ressources statiques : CSS compilé/minifié, JavaScript optimisé et images',
+                files: ['styles.min.css', 'fiche-produit.min.js', 'images/'],
+                stats: '~245KB en gzip',
+                endpoints: ['/assets/css/', '/assets/js/', '/assets/images/'],
+                scripts: ['npm run build:css', 'npm run build:js', 'npm run clean']
+            },
+            'API Produits': {
+                icon: '📦',
+                type: 'API REST',
+                description: 'Interface CRUD pour gérer complètement les produits gaming',
+                endpoints: [
+                    { method: 'GET', path: '/api/produits', desc: 'Lister tous les produits avec filtres optionnels' },
+                    { method: 'GET', path: '/api/produits?categorie=drone', desc: 'Filtrer par catégorie' },
+                    { method: 'POST', path: '/api/produits', desc: 'Créer un nouveau produit (auto-ID prod_*) ' },
+                    { method: 'PUT', path: '/api/produits/:id', desc: 'Mettre à jour tous les champs' },
+                    { method: 'DELETE', path: '/api/produits/:id', desc: 'Supprimer un produit' }
+                ],
+                fields: ['id (prod_*)', 'nom', 'categorie', 'description', 'prix_*', 'image', 'top_du_mois', 'titre_affiche', 'fonctionnalites_avancees[]', 'donnees_fiche[]']
+            },
+            'API Tendances': {
+                icon: '🔥',
+                type: 'API REST',
+                description: 'Gestion des contenus éditoriaux par catégorie (actualités, technologies, marché, insights, prédictions)',
+                endpoints: [
+                    { method: 'GET', path: '/api/:categorie/actualites', desc: 'Actualités de la catégorie' },
+                    { method: 'GET', path: '/api/:categorie/technologies', desc: 'Technologies émergentes' },
+                    { method: 'GET', path: '/api/:categorie/marche', desc: 'Analyses de marché' },
+                    { method: 'GET', path: '/api/:categorie/insights', desc: 'Insights et analyses' },
+                    { method: 'GET', path: '/api/:categorie/predictions', desc: 'Prédictions futures' },
+                    { method: 'POST', path: '/api/:categorie/:type', desc: 'Créer un article' },
+                    { method: 'PUT', path: '/api/:categorie/:type/:id', desc: 'Mettre à jour' },
+                    { method: 'DELETE', path: '/api/:categorie/:type/:id', desc: 'Supprimer' }
+                ],
+                categories: ['drone', 'camera', 'smartphone', 'tablette', 'pc-gaming', 'console', 'casque-vr', 'ecran-tv', 'video-projecteur', 'montre-connectee', 'tablette', 'peripheriques', 'imprimante-3d', 'serveur', 'box-internet', 'casque-audio']
+            },
+            'API Fiches': {
+                icon: '📄',
+                type: 'API REST',
+                description: 'Génération dynamique et gestion des fiches produits HTML statiques',
+                endpoints: [
+                    { method: 'POST', path: '/api/generate-fiche/:id', desc: 'Générer/régénérer une fiche' },
+                    { method: 'DELETE', path: '/api/fiches/:id', desc: 'Supprimer une fiche' },
+                    { method: 'GET', path: '/api/preview-fiche/:id', desc: 'Aperçu HTML de la fiche' }
+                ],
+                outputPath: 'fiches/<categorie-slug>/<product-slug>.html',
+                template: 'Utilise styles.min.css et fiche-produit.min.js'
+            },
+            'package.json': {
+                icon: '📦',
+                type: 'Configuration',
+                description: 'Fichier de configuration Node.js avec dépendances et scripts npm',
+                dependencies: ['express', 'pg (PostgreSQL)', 'compression', 'cors'],
+                scripts: [
+                    'npm start → Production',
+                    'npm run dev → Développement avec nodemon',
+                    'npm run build:css → Minifier CSS',
+                    'npm run build:js → Minifier JS',
+                    'npm run clean → Nettoyer les fichiers minifiés'
+                ]
+            },
+            'server.js': {
+                icon: '🖥️',
+                type: 'Serveur Express',
+                description: 'Serveur Express central qui orchestre toutes les API et le routage',
+                port: '3000',
+                hostname: '0.0.0.0',
+                features: [
+                    '✓ Compression GZIP automatique',
+                    '✓ CORS permissif pour toutes les routes',
+                    '✓ Connexion PostgreSQL persistante',
+                    '✓ Routage statique: /assets → /frontend/public → /fiches',
+                    '✓ API REST complète pour produits et tendances',
+                    '✓ Génération dynamique de fiches',
+                    '✓ Gestion d\'erreurs 404'
+                ]
+            },
+            'Fiches/': {
+                icon: '📁',
+                type: 'Output Directory',
+                description: 'Dossier contenant les fiches produits générées en HTML statique',
+                structure: ['16 dossiers par catégorie', 'Fiches HTML statiques pour chaque produit'],
+                categories: ['box-internet', 'camera', 'casque-audio', 'casque-vr', 'console', 'drone', 'ecran-tv', 'imprimante-3d', 'montre-connectee', 'pc-gaming', 'peripheriques', 'serveur', 'smartphone', 'tableau-interactif', 'tablette', 'video-projecteur'],
+                accessPath: '/fiches/<categorie>/<produit>.html'
+            },
+            'PostgreSQL': {
+                icon: '🐘',
+                type: 'Base de Données',
+                description: 'PostgreSQL - Base de données de production gamer_2025',
+                database: 'gamer_2025',
+                user: 'postgres',
+                tables: [
+                    'produits (61 produits avec images, prix, specs)',
+                    'categories (16 catégories de gaming)',
+                    'tendances_actualites, tendances_technologies, tendances_marche, tendances_insights, tendances_predictions'
+                ],
+                backups: ['backup_gamer_2025.sql', 'restore-backup.js']
+            },
+            'SQL Data': {
+                icon: '🗄️',
+                type: 'Data Seed',
+                description: 'Scripts et fichiers SQL pour initialiser la base de données',
+                files: ['backend/gestion_produits.sql', 'backend/schema.sql'],
+                dataPoints: ['61 produits gaming complets', 'Données de prix par format', 'Spécifications techniques', 'Données de génération de fiches'],
+                scripts: [
+                    'reinit-db.js → Réinitialiser la DB',
+                    'restore-db.js → Restaurer depuis backup'
+                ]
+            },
+            'Generate': {
+                icon: '🔄',
+                type: 'Scripts de Production',
+                description: 'Scripts pour générer les fiches statiques à partir des données DB',
+                scripts: [
+                    'generate-all-new-fiches.js → POST /api/generate-fiche/:id pour chaque produit',
+                    'generate-new-products.js → Génération directe depuis DB (prod_50-61)',
+                    'regenerate-all-fiches.js → Regénérer toutes les fiches',
+                    'regenerate-fiches-top.js → Regénérer seulement top_du_mois',
+                    'regenerate-normalized-fiches.js → Fiches normalisées'
+                ],
+                usage: 'node scripts/generate-*.js'
+            },
+            'Verify': {
+                icon: '✅',
+                type: 'Scripts de Validation',
+                description: 'Scripts pour vérifier l\'intégrité et la cohérence des données',
+                scripts: [
+                    'verify-database-state.js → Contrôles qualité complets',
+                    'quick-check-db.js → Vérification rapide de connectivité',
+                    'quick-check.js → Sanity checks généraux',
+                    'check-schemas.js → Validation des schémas'
+                ],
+                checks: [
+                    '✓ Présence de tous les produits',
+                    '✓ Validité des formats de prix',
+                    '✓ Intégrité des catégories',
+                    '✓ Chemins absolus des images',
+                    '✓ Espaces dans les URLs'
+                ]
+            },
+            'Normalize': {
+                icon: '🔧',
+                type: 'Scripts de Normalisation',
+                description: 'Scripts de normalisation des données par catégorie',
+                scripts: [
+                    'normalize-camera.js', 'normalize-casque-vr.js', 'normalize-drone.js',
+                    'normalize-ecran-tv.js', 'normalize-montre-connectee.js', 'normalize-smartphone.js',
+                    'normalize-tablette.js', 'normalize-video-projecteur.js', 'normalize-remaining-categories.js'
+                ],
+                purpose: 'Uniformiser formats, prix, spécifications et structure des données par catégorie'
+            }
+        };
+
+        function closeDetailPanel() {
+            const panel = document.getElementById('detailPanel');
+            panel.classList.remove('active');
+            nodes.forEach(n => n.classList.remove('active'));
+        }
+
+        function showDetailPanel(nodeName) {
+            const details = detailData[nodeName];
+            if (!details) return;
+
+            const panel = document.getElementById('detailPanel');
+            const title = document.getElementById('detailTitle');
+            const content = document.getElementById('detailContent');
+
+            title.innerHTML = `${details.icon} ${nodeName}`;
+            
+            let html = `<div class="detail-section">
+                <div class="detail-section-title">Type</div>
+                <div class="detail-content">${details.type}</div>
+            </div>
+            <div class="detail-section">
+                <div class="detail-section-title">Description</div>
+                <div class="detail-content">${details.description}</div>
+            </div>`;
+
+            if (details.port) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Port</div>
+                    <div class="detail-content">:${details.port}</div>
+                </div>`;
+            }
+
+            if (details.database) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Base de Données</div>
+                    <div class="detail-content">${details.database}</div>
+                </div>`;
+            }
+
+            if (details.endpoints && details.endpoints.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Endpoints</div>
+                    <div class="endpoint-list">`;
+                details.endpoints.forEach(ep => {
+                    if (ep.method) {
+                        html += `<div class="endpoint-item"><span class="method">${ep.method}</span> ${ep.path}<br><small>${ep.desc}</small></div>`;
+                    } else {
+                        html += `<div class="endpoint-item">${ep}</div>`;
+                    }
+                });
+                html += `</div></div>`;
+            }
+
+            if (details.scripts && details.scripts.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Scripts</div>
+                    <div class="endpoint-list">`;
+                details.scripts.forEach(sc => {
+                    html += `<div class="endpoint-item">${sc}</div>`;
+                });
+                html += `</div></div>`;
+            }
+
+            if (details.files && details.files.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Fichiers</div>
+                    <div class="detail-content">${details.files.join('<br>')}</div>
+                </div>`;
+            }
+
+            if (details.features && details.features.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Fonctionnalités</div>
+                    <div class="detail-content">${details.features.join('<br>')}</div>
+                </div>`;
+            }
+
+            if (details.dependencies && details.dependencies.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Dépendances</div>
+                    <div class="detail-content">${details.dependencies.join(', ')}</div>
+                </div>`;
+            }
+
+            if (details.tables && details.tables.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Tables</div>
+                    <div class="detail-content">${details.tables.join('<br>')}</div>
+                </div>`;
+            }
+
+            if (details.categories && details.categories.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Catégories (${details.categories.length})</div>
+                    <div class="detail-content">${details.categories.join(', ')}</div>
+                </div>`;
+            }
+
+            if (details.checks && details.checks.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Vérifications</div>
+                    <div class="detail-content">${details.checks.join('<br>')}</div>
+                </div>`;
+            }
+
+            if (details.fields && details.fields.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Champs</div>
+                    <div class="detail-content">${details.fields.join(', ')}</div>
+                </div>`;
+            }
+
+            if (details.stats) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Statistiques</div>
+                    <div class="detail-content">${details.stats}</div>
+                </div>`;
+            }
+
+            if (details.outputPath) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Chemin de sortie</div>
+                    <div class="detail-content"><code>${details.outputPath}</code></div>
+                </div>`;
+            }
+
+            if (details.template) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Template</div>
+                    <div class="detail-content">${details.template}</div>
+                </div>`;
+            }
+
+            if (details.purpose) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Objectif</div>
+                    <div class="detail-content">${details.purpose}</div>
+                </div>`;
+            }
+
+            if (details.structure && details.structure.length > 0) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Structure</div>
+                    <div class="detail-content">${details.structure.join('<br>')}</div>
+                </div>`;
+            }
+
+            if (details.accessPath) {
+                html += `<div class="detail-section">
+                    <div class="detail-section-title">Accès</div>
+                    <div class="detail-content"><code>${details.accessPath}</code></div>
+                </div>`;
+            }
+
+            content.innerHTML = html;
+            panel.classList.add('active');
+        }
+
+        // Gestion des tooltips et des clics
+        const tooltip = document.getElementById('tooltip');
+        const nodes = document.querySelectorAll('.node');
+        
+        nodes.forEach(node => {
+            node.addEventListener('mouseenter', (e) => {
+                const title = node.querySelector('.node-title').textContent;
+                const details = nodeDetails[title];
+                
+                if (details) {
+                    tooltip.querySelector('.tooltip-title').textContent = title;
+                    tooltip.querySelector('.tooltip-desc').innerHTML = `<strong>${details.desc}</strong><br><br>🔗 ${details.connections}<br><br><em>💡 Cliquez pour plus de détails</em>`;
+                    tooltip.classList.add('show');
+                }
+                
+                // Highlight des connexions liées
+                highlightConnections(title, true);
+            });
+            
+            node.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+                const title = node.querySelector('.node-title').textContent;
+                highlightConnections(title, false);
+            });
+            
+            node.addEventListener('mousemove', (e) => {
+                tooltip.style.left = (e.clientX + 15) + 'px';
+                tooltip.style.top = (e.clientY + 15) + 'px';
+            });
+
+            // Clic pour afficher le panneau détaillé
+            node.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const title = node.querySelector('.node-title').textContent;
+                showDetailPanel(title);
+            });
+        });
+
+        // Fermer le panneau au clic en dehors
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('detailPanel');
+            if (!panel.contains(e.target) && !e.target.closest('.node')) {
+                closeDetailPanel();
+            }
+        });
+
+        // Fonction pour mettre en surbrillance les connexions
+        function highlightConnections(nodeName, highlight) {
+            const lines = document.querySelectorAll('.connection-line');
+            const arrows = document.querySelectorAll('.connection-arrow');
+            
+            lines.forEach((line, index) => {
+                const from = line.getAttribute('data-from');
+                const to = line.getAttribute('data-to');
+                
+                if (from === nodeName || to === nodeName) {
+                    if (highlight) {
+                        line.classList.add('highlight');
+                        arrows[index].classList.add('highlight');
+                    } else {
+                        line.classList.remove('highlight');
+                        arrows[index].classList.remove('highlight');
+                    }
+                }
+            });
+        }
+
+        // Dessiner les connexions au chargement
+        window.addEventListener('load', drawConnections);
+        window.addEventListener('resize', drawConnections);
+    </script>
+</body>
+</html>

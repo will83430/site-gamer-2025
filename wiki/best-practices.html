@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonnes Pratiques - Site Gamer 2025</title>
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
+        .header h1 { font-size: 3em; color: white; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .section { margin-bottom: 50px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; }
+        .section h2 { color: #667eea; margin-bottom: 20px; font-size: 2em; }
+        .section h3 { color: #2ecc71; margin: 25px 0 15px; font-size: 1.4em; }
+        .practice { background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .practice-title { color: #2ecc71; font-weight: 600; margin-bottom: 10px; font-size: 1.1em; }
+        .dont { background: rgba(231, 76, 60, 0.1); border-left: 4px solid #e74c3c; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .dont-title { color: #e74c3c; font-weight: 600; margin-bottom: 10px; font-size: 1.1em; }
+        code { background: rgba(102, 126, 234, 0.2); padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #ffd700; }
+        pre { background: #1a1a2e; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; border: 1px solid #667eea; }
+        pre code { background: none; padding: 0; color: #2ecc71; }
+        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .back-link:hover { background: #764ba2; transform: translateY(-2px); }
+        .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⭐ Bonnes Pratiques</h1>
+        <p>Standards et guidelines du Site Gamer 2025</p>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="scripts.html">⚙️ Scripts</a>
+        <a href="troubleshooting.html">🔧 Dépannage</a>
+        <a href="changelog.html">📝 Changelog</a>
+    </nav>
+
+    <div class="container">
+        <div class="section">
+            <h2>🗄️ Base de données</h2>
+
+            <h3>Conventions de nommage</h3>
+            <div class="practice">
+                <div class="practice-title">✅ À FAIRE</div>
+                <ul style="margin-left: 20px;">
+                    <li>IDs produits : <code>prod_XX</code> (format strict)</li>
+                    <li>Catégories : lowercase avec tirets (ex: <code>pc-gaming</code>)</li>
+                    <li>Prix : format strict <code>"XXX.XX€"</code></li>
+                    <li>Images : nom de fichier uniquement (ex: <code>iphone-15.jpg</code>)</li>
+                </ul>
+            </div>
+
+            <div class="dont">
+                <div class="dont-title">❌ À ÉVITER</div>
+                <ul style="margin-left: 20px;">
+                    <li>Catégories avec espaces ou majuscules</li>
+                    <li>Chemins absolus dans le champ image</li>
+                    <li>Prix sans le symbole €</li>
+                    <li>IDs personnalisés non conformes</li>
+                </ul>
+            </div>
+
+            <h3>Gestion des arrays</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Format recommandé</div>
+                <pre><code>// fonctionnalites_avancees
+["Écran OLED", "5G", "128 GB"]
+
+// donnees_fiche (JSONB)
+[
+  {"titre": "Caractéristiques", "contenu": "..."},
+  {"titre": "Performance", "contenu": "..."}
+]</code></pre>
+            </div>
+
+            <h3>Backups réguliers</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Routine de backup</div>
+                <pre><code># Backup quotidien
+pg_dump -U postgres gamer_2025 > backup_$(date +%Y%m%d).sql
+
+# Avant modification majeure
+pg_dump -U postgres gamer_2025 > backup_avant_modification.sql</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔌 API</h2>
+
+            <h3>Mise à jour des produits</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Workflow PUT correct</div>
+                <pre><code>// 1. Récupérer le produit complet
+const product = await fetch('/api/produits/prod_50')
+  .then(r => r.json());
+
+// 2. Modifier
+product.top_du_mois = true;
+
+// 3. PUT avec TOUT l'objet
+await fetch('/api/produits/prod_50', {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(product)
+});</code></pre>
+            </div>
+
+            <div class="dont">
+                <div class="dont-title">❌ Ne PAS faire de PUT partiel</div>
+                <pre><code>// ❌ INCORRECT - Va écraser les autres champs avec null
+await fetch('/api/produits/prod_50', {
+  method: 'PUT',
+  body: JSON.stringify({ top_du_mois: true })
+});</code></pre>
+            </div>
+
+            <h3>Gestion des erreurs</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Toujours vérifier les réponses</div>
+                <pre><code>const response = await fetch('/api/produits/prod_50');
+
+if (!response.ok) {
+  console.error('Erreur:', response.status);
+  throw new Error('Produit introuvable');
+}
+
+const product = await response.json();</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📄 Génération de fiches</h2>
+
+            <h3>Avant génération</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Checklist</div>
+                <ul style="margin-left: 20px;">
+                    <li>✓ Vérifier que <code>donnees_fiche</code> est complet</li>
+                    <li>✓ S'assurer que <code>fonctionnalites_avancees</code> existe</li>
+                    <li>✓ Valider le format du prix</li>
+                    <li>✓ Vérifier que l'image existe</li>
+                    <li>✓ Confirmer que la catégorie correspond à un dossier</li>
+                </ul>
+            </div>
+
+            <h3>Régénération</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Quand régénérer</div>
+                <ul style="margin-left: 20px;">
+                    <li>Après modification du template HTML</li>
+                    <li>Après mise à jour des styles CSS</li>
+                    <li>Après modification des données produit</li>
+                    <li>Après ajout de nouvelles fonctionnalités</li>
+                </ul>
+                <pre><code># Tout régénérer
+node scripts/regenerate-all-fiches.js
+
+# Seulement les tops du mois
+node scripts/regenerate-fiches-top.js</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Scripts</h2>
+
+            <h3>Avant d'exécuter un script</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Checklist sécurité</div>
+                <ul style="margin-left: 20px;">
+                    <li>✓ Faire un backup de la DB</li>
+                    <li>✓ Lire le code du script</li>
+                    <li>✓ Comprendre ce qu'il va faire</li>
+                    <li>✓ Vérifier les credentials DB</li>
+                    <li>✓ Tester sur un échantillon si possible</li>
+                </ul>
+            </div>
+
+            <h3>Après modifications</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Vérification post-script</div>
+                <pre><code>node scripts/verify-database-state.js</code></pre>
+            </div>
+
+            <h3>Scripts de normalisation</h3>
+            <div class="dont">
+                <div class="dont-title">⚠️ Attention</div>
+                <p style="margin-left: 20px;">Les scripts de normalisation modifient directement la DB. Toujours faire un backup avant !</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Frontend</h2>
+
+            <h3>Build des assets</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Workflow recommandé</div>
+                <pre><code># 1. Modifier les sources
+# frontend/public/assets/css/*.css
+# frontend/public/assets/js/*.js
+
+# 2. Build
+npm run build:css
+npm run build:js
+
+# 3. Tester localement
+npm start
+
+# 4. Commit
+git add frontend/public/assets/
+git commit -m "Update minified assets"</code></pre>
+            </div>
+
+            <div class="dont">
+                <div class="dont-title">❌ Ne pas modifier directement les fichiers .min</div>
+                <p style="margin-left: 20px;">Les fichiers <code>.min.css</code> et <code>.min.js</code> sont générés automatiquement. Modifiez toujours les sources.</p>
+            </div>
+
+            <h3>Images</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Organisation</div>
+                <ul style="margin-left: 20px;">
+                    <li>Toutes les images dans <code>frontend/public/assets/images/</code></li>
+                    <li>Nommage : lowercase, tirets, pas d'espaces</li>
+                    <li>Format : JPEG pour photos, PNG pour logos/icônes</li>
+                    <li>Taille : max 500 KB par image</li>
+                    <li>Placeholder : <code>placeholder.png</code> toujours présent</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Développement</h2>
+
+            <h3>Mode développement</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Utiliser nodemon</div>
+                <pre><code>npm run dev  # Auto-restart sur modification</code></pre>
+            </div>
+
+            <h3>Tests avant commit</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Checklist</div>
+                <ul style="margin-left: 20px;">
+                    <li>✓ Le serveur démarre sans erreur</li>
+                    <li>✓ Les endpoints API répondent</li>
+                    <li>✓ Les fiches se génèrent correctement</li>
+                    <li>✓ La DB est cohérente</li>
+                    <li>✓ Les assets sont buildés</li>
+                </ul>
+            </div>
+
+            <h3>Git workflow</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Messages de commit</div>
+                <pre><code># Format recommandé
+feat: Add new product category
+fix: Correct price format in database
+docs: Update API documentation
+refactor: Normalize smartphone data
+chore: Update dependencies</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Production</h2>
+
+            <h3>Avant déploiement</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Checklist production</div>
+                <ul style="margin-left: 20px;">
+                    <li>✓ Backup complet de la DB</li>
+                    <li>✓ Build des assets minifiés</li>
+                    <li>✓ Test de tous les endpoints</li>
+                    <li>✓ Vérification des credentials</li>
+                    <li>✓ Variables d'environnement configurées</li>
+                    <li>✓ HTTPS activé</li>
+                    <li>✓ CORS configuré correctement</li>
+                </ul>
+            </div>
+
+            <h3>Monitoring</h3>
+            <div class="practice">
+                <div class="practice-title">✅ À surveiller</div>
+                <ul style="margin-left: 20px;">
+                    <li>Temps de réponse API</li>
+                    <li>Taux d'erreur 500</li>
+                    <li>Utilisation DB (connexions, taille)</li>
+                    <li>Espace disque (logs, fiches)</li>
+                    <li>Mémoire Node.js</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📚 Documentation</h2>
+
+            <h3>Code comments</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Commenter intelligemment</div>
+                <pre><code>// ✅ BON : Explique le POURQUOI
+// Utilise slugToTitreAffiche car certains produits
+// n'ont pas de titre_affiche défini
+const displayTitle = product.titre_affiche || slugToTitreAffiche(slug);
+
+// ❌ MAUVAIS : Répète le code
+// Assigne displayTitle
+const displayTitle = product.titre_affiche || slug;</code></pre>
+            </div>
+
+            <h3>README et Wiki</h3>
+            <div class="practice">
+                <div class="practice-title">✅ Tenir à jour</div>
+                <ul style="margin-left: 20px;">
+                    <li>Mettre à jour après chaque feature majeure</li>
+                    <li>Ajouter des exemples concrets</li>
+                    <li>Documenter les cas d'erreur</li>
+                    <li>Inclure des captures d'écran si pertinent</li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="wiki.html" class="back-link">← Retour au Wiki</a>
+    </div>
+
+    <div class="footer">
+        <p>⭐ Bonnes Pratiques - Site Gamer 2025</p>
+        <p>Dernière mise à jour : 26 décembre 2025</p>
+    </div>
+</body>
+</html>

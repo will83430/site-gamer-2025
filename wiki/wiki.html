@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki - Site Gamer 2025</title>
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        /* Styles spécifiques à wiki.html */
+        .search-bar { max-width: 600px; margin: 30px auto 0; position: relative; }
+        .search-bar input { width: 100%; padding: 15px 50px 15px 20px; border: none; border-radius: 30px; font-size: 1em; background: rgba(255, 255, 255, 0.9); }
+        .search-bar button { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: #667eea; border: none; color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
+        .container { max-width: 1400px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .card { background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; transition: all 0.3s; cursor: pointer; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4); border-color: #764ba2; }
+        .card-icon { font-size: 3em; margin-bottom: 15px; text-align: center; }
+        .card-title { font-size: 1.5em; color: #667eea; margin-bottom: 10px; text-align: center; }
+        .card-desc { opacity: 0.8; line-height: 1.6; text-align: center; }
+        .card-meta { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(102, 126, 234, 0.3); font-size: 0.85em; opacity: 0.7; text-align: center; }
+        .quick-links { background: rgba(102, 126, 234, 0.1); border: 1px solid #667eea; border-radius: 10px; padding: 25px; margin-bottom: 40px; }
+        .quick-links h2 { color: #667eea; margin-bottom: 20px; }
+        .quick-links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .quick-link { background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; padding: 15px; border-radius: 8px; text-decoration: none; color: #2ecc71; display: block; transition: all 0.3s; text-align: center; }
+        .quick-link:hover { background: rgba(46, 204, 113, 0.2); transform: scale(1.05); }
+        .stats { display: flex; justify-content: space-around; margin: 40px 0; flex-wrap: wrap; gap: 20px; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2.5em; color: #667eea; font-weight: 700; }
+        .stat-label { opacity: 0.7; margin-top: 5px; }
+        a { color: inherit; text-decoration: none; }
+        .hidden { display: none !important; }
+        .no-results { text-align: center; padding: 60px 20px; color: #e74c3c; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 Wiki Site Gamer 2025</h1>
+        <p>Documentation complète du projet</p>
+        <div class="search-bar">
+            <input type="text" placeholder="Rechercher dans la documentation..." id="searchInput">
+            <button id="searchBtn">🔍</button>
+        </div>
+        <div id="searchResults" style="text-align: center; margin-top: 15px; color: #2ecc71; font-size: 0.9em;"></div>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="scripts.html">⚙️ Scripts</a>
+    </nav>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">13</div>
+                <div class="stat-label">Composants</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">61+</div>
+                <div class="stat-label">Produits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">16</div>
+                <div class="stat-label">Catégories</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">30+</div>
+                <div class="stat-label">Scripts</div>
+            </div>
+        </div>
+
+        <div class="quick-links">
+            <h2>🚀 Démarrage rapide</h2>
+            <div class="quick-links-grid">
+                <a href="getting-started.html" class="quick-link">🎯 Guide de démarrage</a>
+                <a href="installation.html" class="quick-link">⚙️ Installation</a>
+                <a href="api-reference.html" class="quick-link">📖 Référence API</a>
+                <a href="troubleshooting.html" class="quick-link">🔧 Dépannage</a>
+            </div>
+        </div>
+
+        <h2 style="color: #667eea; margin-bottom: 30px; font-size: 2em;">📑 Sections principales</h2>
+        
+        <div class="grid">
+            <a href="project-connections.html">
+                <div class="card">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-title">Architecture Interactive</div>
+                    <div class="card-desc">Diagramme visuel interactif montrant les connexions entre tous les composants du système</div>
+                    <div class="card-meta">📊 Vue d'ensemble visuelle</div>
+                </div>
+            </a>
+
+            <a href="project-details.html">
+                <div class="card">
+                    <div class="card-icon">📋</div>
+                    <div class="card-title">Documentation Composants</div>
+                    <div class="card-desc">Documentation détaillée de chaque composant avec endpoints, configuration et exemples</div>
+                    <div class="card-meta">📚 13 composants documentés</div>
+                </div>
+            </a>
+
+            <a href="api-reference.html">
+                <div class="card">
+                    <div class="card-icon">🔌</div>
+                    <div class="card-title">Référence API</div>
+                    <div class="card-desc">Liste complète de toutes les API REST avec paramètres, exemples de requêtes et réponses</div>
+                    <div class="card-meta">🔥 API Produits, Tendances, Fiches</div>
+                </div>
+            </a>
+
+            <a href="database.html">
+                <div class="card">
+                    <div class="card-icon">🐘</div>
+                    <div class="card-title">Base de Données</div>
+                    <div class="card-desc">Schéma PostgreSQL, tables, relations et exemples de requêtes SQL</div>
+                    <div class="card-meta">💾 gamer_2025 database</div>
+                </div>
+            </a>
+
+            <a href="scripts.html">
+                <div class="card">
+                    <div class="card-icon">⚙️</div>
+                    <div class="card-title">Scripts</div>
+                    <div class="card-desc">Documentation de tous les scripts : génération, vérification, normalisation</div>
+                    <div class="card-meta">🔄 30+ scripts disponibles</div>
+                </div>
+            </a>
+
+            <a href="deployment.html">
+                <div class="card">
+                    <div class="card-icon">🚀</div>
+                    <div class="card-title">Déploiement</div>
+                    <div class="card-desc">Guide de déploiement en production, configuration serveur et optimisations</div>
+                    <div class="card-meta">☁️ Production ready</div>
+                </div>
+            </a>
+
+            <a href="frontend.html">
+                <div class="card">
+                    <div class="card-icon">🌐</div>
+                    <div class="card-title">Frontend</div>
+                    <div class="card-desc">Structure des pages HTML, assets CSS/JS, optimisations et build</div>
+                    <div class="card-meta">🎨 17 pages statiques</div>
+                </div>
+            </a>
+
+            <a href="workflows.html">
+                <div class="card">
+                    <div class="card-icon">🔁</div>
+                    <div class="card-title">Workflows</div>
+                    <div class="card-desc">Processus et workflows : ajout produit, génération fiches, mise à jour données</div>
+                    <div class="card-meta">📝 Guides étape par étape</div>
+                </div>
+            </a>
+
+            <a href="troubleshooting.html">
+                <div class="card">
+                    <div class="card-icon">🔧</div>
+                    <div class="card-title">Dépannage</div>
+                    <div class="card-desc">Solutions aux problèmes courants, erreurs fréquentes et debugging</div>
+                    <div class="card-meta">🐛 FAQ & Solutions</div>
+                </div>
+            </a>
+
+            <a href="changelog.html">
+                <div class="card">
+                    <div class="card-icon">📝</div>
+                    <div class="card-title">Changelog</div>
+                    <div class="card-desc">Historique des versions, nouveautés et modifications du projet</div>
+                    <div class="card-meta">🕐 Historique complet</div>
+                </div>
+            </a>
+
+            <a href="best-practices.html">
+                <div class="card">
+                    <div class="card-icon">⭐</div>
+                    <div class="card-title">Bonnes Pratiques</div>
+                    <div class="card-desc">Conventions de code, patterns recommandés et guidelines du projet</div>
+                    <div class="card-meta">✨ Standards & Guidelines</div>
+                </div>
+            </a>
+
+            <a href="glossary.html">
+                <div class="card">
+                    <div class="card-icon">📖</div>
+                    <div class="card-title">Glossaire</div>
+                    <div class="card-desc">Définitions des termes techniques et concepts utilisés dans le projet</div>
+                    <div class="card-meta">🔤 A-Z Terminology</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📚 Wiki Site Gamer 2025 - Documentation complète</p>
+        <p>Dernière mise à jour : 26 décembre 2025</p>
+    </div>
+
+    <script>
+        // Fonction de recherche en temps réel
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchResults = document.getElementById('searchResults');
+        const cards = document.querySelectorAll('.grid > a');
+        const quickLinks = document.querySelectorAll('.quick-link');
+
+        function performSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            
+            if (query === '') {
+                // Réafficher toutes les cartes
+                cards.forEach(card => card.classList.remove('hidden'));
+                quickLinks.forEach(link => link.classList.remove('hidden'));
+                searchResults.textContent = '';
+                
+                // Retirer le message "no results"
+                const noResults = document.querySelector('.no-results');
+                if (noResults) noResults.remove();
+                
+                return;
+            }
+
+            let visibleCards = 0;
+            let visibleQuickLinks = 0;
+
+            // Filtrer les cartes
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+                const desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+                const meta = card.querySelector('.card-meta')?.textContent.toLowerCase() || '';
+                
+                const hasMatch = title.includes(query) || desc.includes(query) || meta.includes(query);
+                
+                if (hasMatch) {
+                    card.classList.remove('hidden');
+                    visibleCards++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Filtrer les liens rapides
+            quickLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    link.classList.remove('hidden');
+                    visibleQuickLinks++;
+                } else {
+                    link.classList.add('hidden');
+                }
+            });
+
+            // Afficher les résultats
+            const totalVisible = visibleCards + visibleQuickLinks;
+            
+            if (totalVisible === 0) {
+                searchResults.textContent = '❌ Aucun résultat trouvé';
+                searchResults.style.color = '#e74c3c';
+                
+                // Ajouter un message dans la grille
+                const grid = document.querySelector('.grid');
+                let noResults = document.querySelector('.no-results');
+                if (!noResults) {
+                    noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.innerHTML = '🔍 Aucune page ne correspond à votre recherche<br><small>Essayez un autre terme : API, database, scripts, etc.</small>';
+                    grid.parentNode.insertBefore(noResults, grid.nextSibling);
+                }
+            } else {
+                searchResults.textContent = `✅ ${totalVisible} résultat(s) trouvé(s) (${visibleCards} pages, ${visibleQuickLinks} liens rapides)`;
+                searchResults.style.color = '#2ecc71';
+                
+                // Retirer le message "no results"
+                const noResults = document.querySelector('.no-results');
+                if (noResults) noResults.remove();
+            }
+        }
+
+        // Recherche en temps réel pendant la saisie
+        searchInput.addEventListener('input', performSearch);
+
+        // Recherche au clic sur le bouton
+        searchBtn.addEventListener('click', performSearch);
+
+        // Recherche à l'appui sur Entrée
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+
+        // Raccourci clavier : Ctrl/Cmd + K pour focus sur la recherche
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+                searchInput.select();
+            }
+        });
+    </script>
+</body>
+</html>

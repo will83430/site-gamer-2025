@@ -1,56 +1,42 @@
 # 🎮 Site Gamer 2025 - Comparateur de Produits Gaming
 
-Un site web moderne de comparaison et gestion de produits gaming avec interface d'administration complète et base de données PostgreSQL.
+Un site web moderne de comparaison et gestion de produits gaming avec interface d'administration complète, base de données PostgreSQL et documentation Wiki interactive.
 
 ## 📈 Dernières Mises à Jour
 
-**🎉 Version 2.2.0 - 17 Décembre 2025**
+**🎉 Version 2.2.0 - 26 Décembre 2025**
 
-### ⭐ Sélection Top du Mois - Décembre 2025
-- ✅ **Mise à jour automatique** : 4 nouveaux produits récents sélectionnés
-- 🎯 **Apple Vision Pro** (Casque VR) - 3 699 €
-- 🥽 **Meta Quest 3S** (Casque VR) - 329 €
-- 🚁 **DJI Neo 2** (Drone) - 249 €
-- ⌚ **Huawei Watch GT 5 Pro** (Montre) - 399 €
+### 📚 Nouvelle Documentation Wiki Interactive
+- ✅ **15 pages de documentation complètes** avec navigation cohérente
+- ✅ **wiki.html** : Hub principal avec recherche en temps réel et cartes interactives
+- ✅ **project-connections.html** : Diagramme SVG interactif montrant l'architecture du système
+- ✅ **project-details.html** : Documentation exhaustive de tous les composants
+- ✅ **api-reference.html** : Documentation complète de l'API REST
+- ✅ **database.html** : Schéma PostgreSQL avec exemples de requêtes
+- ✅ **scripts.html** : Documentation des 30+ scripts de maintenance
+- ✅ **changelog.html** : Historique des versions avec recherche intégrée
+- ✅ **troubleshooting.html** : Guide de dépannage complet
+- ✅ **CSS externe unifié** : wiki-styles.css pour meilleure maintenabilité
+- ✅ **Recherche intelligente** : Filtrage en temps réel sur wiki.html et changelog.html
 
-### 🎨 Optimisations Interface
-- ✅ **Comparaison produits** : Affichage corrigé avec mise en page uniforme
-- ✅ **Cartes comparaison** : 320px × 400px avec 3 critères maximum
-- ✅ **Images optimisées** : object-fit contain avec padding pour meilleur rendu
-- ✅ **Textes centrés** : Titres et prix alignés au centre des cartes
+### 🎯 Nouveaux Produits Premium - Décembre 2025
+- ✅ **12 produits top ajoutés** (prod_50 à prod_61) :
+  - **Smartphones** : iPhone 15 Pro Max, Samsung Galaxy S24 Ultra
+  - **Montres** : Apple Watch Ultra 2, Samsung Galaxy Watch6 Classic
+  - **Caméras** : Canon EOS R5 Mark II, Sony Alpha 7R V
+  - **Écrans TV** : LG OLED G4 77", Samsung Neo QLED QN95D 85"
+  - **Casques VR** : Meta Quest 3, PlayStation VR2
+  - **GPU** : NVIDIA RTX 4090, AMD Radeon RX 7900 XTX
+- ✅ **Scripts de génération** : add-new-products.js, generate-all-new-fiches.js
+- ✅ **Système "Top du mois"** : set-top-decembre.js pour marquage automatique
 
-### 🗃️ Optimisation Base de Données
-- ✅ **Nettoyage automatique** : Suppression de 14 doublons (73→59 produits)
-- ✅ **Standardisation** : 16 catégories normalisées en MAJUSCULES 
-- ✅ **Enrichissement complet** : 12 nouveaux produits avec données détaillées
-- ✅ **Sections spécialisées** : Adaptation par catégorie (🎵 Audio, 🎮 Gaming, 📸 Photo, etc.)
-
-### 🆕 Nouveaux Produits 2025
-- **Sony A7 V** (Caméra) - Hybride 61MP avec vidéo 8K
-- **Xiaomi 15 Ultra** (Smartphone) - Système Leica 4 capteurs
-- **MSI Titan 18 HX** (PC Gaming) - RTX 5090, écran Mini LED 4K
-- **Samsung QN900D Neo QLED 8K** (TV) - 75" avec processeur IA
-- **OnePlus Pad 2** (Tablette) - 144Hz, Snapdragon 8 Gen 3
-- **Bambu Lab X1 Carbon Combo** (Imprimante 3D) - Multi-couleurs IA
-- **Huawei Watch GT 5 Pro** (Montre) - Titane, autonomie 14 jours
-- **Razer BlackWidow V4 Pro** (Clavier) - Switches mécaniques
-- **Google Pixel 10** (Smartphone) - Tensor G4, IA avancée
-- **DJI Neo 2** (Drone) - Ultra-compact, pilotage gestuel
-- **Lenovo Legion Go S** (Console) - Portable gaming 144Hz
-- **Sennheiser Momentum 5** (Casque) - ANC adaptative, 60h autonomie
-
-### 🛠️ Améliorations Techniques
-- 📜 **Scripts optimisés** : Conservation des utilitaires, suppression des temporaires
-- 🔧 **Outils de maintenance** : Vérification état BDD, ajout produits manquants
-- 💾 **Interface admin** : Gestion complète avec upload d'images et bouton suppression
-- 🎨 **CSS/JS minifiés** : Fichiers de production optimisés (styles.min.css, fiches.min.js)
-
-### 📊 État Actuel
-- **61 produits** avec données complètes
-- **16 catégories** standardisées 
-- **4 produits** en vedette (Top du mois)
-- **Interface d'administration** professionnelle
-- **Base PostgreSQL** optimisée et nettoyée
+### 🗃️ Optimisations Base de Données
+- ✅ **61+ produits** avec données complètes et enrichies
+- ✅ **16 catégories** standardisées et normalisées
+- ✅ **Scripts de normalisation** par catégorie (camera, drone, smartphone, etc.)
+- ✅ **Vérification intégrité** : verify-database-state.js avec checks automatiques
+- ✅ **Arrays JSONB** : fonctionnalites_avancees et donnees_fiche structurés
+- ✅ **Gestion des liens** : Correction automatique des espaces et chemins absolus
 
 ## 📋 Table des matières
 
@@ -60,20 +46,24 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 - [Structure du projet](#-structure-du-projet)
 - [Installation](#-installation)
 - [Configuration de la base de données](#️-configuration-de-la-base-de-données)
-- [Utilisation](#-utilisation)
+- [Documentation Wiki](#-documentation-wiki)
 - [API](#-api)
-- [Interface d'administration](#interface-dadministration)
+- [Scripts](#-scripts)
+- [Interface d'administration](#-interface-dadministration)
 - [Contribution](#-contribution)
 
 ## 🎯 Aperçu du projet
 
 Site web professionnel dédié aux produits gaming permettant :
 
-- Consultation et comparaison de produits
-- Gestion administrative complète
+- Consultation et comparaison de 61+ produits tech/gaming
+- Gestion administrative complète avec CRUD
 - Interface utilisateur moderne et responsive
 - Système de filtrage et recherche avancée
 - **Base de données PostgreSQL** pour la persistance
+- **Documentation Wiki interactive** avec 15 pages complètes
+- **Génération automatique de fiches** produits HTML
+- **Système de tendances** par catégorie (actualités, technologies, marché, etc.)
 
 
 ## ✨ Fonctionnalités
@@ -98,28 +88,52 @@ Site web professionnel dédié aux produits gaming permettant :
 - **Interface intuitive** : Dashboard moderne avec onglets
 - **Validation** : Contrôles de saisie et messages d'erreur
 - **Persistance PostgreSQL** : Base de données relationnelle robuste
+- **API REST complète** : 20+ endpoints pour produits, fiches, tendances
+- **Génération de fiches** : Création automatique de pages HTML par produit
+
+### 📚 Documentation Wiki
+
+- **15 pages interactives** : Documentation complète et navigable
+- **Recherche en temps réel** : Filtrage instantané sur wiki.html et changelog.html
+- **Architecture visuelle** : Diagramme SVG interactif des composants
+- **Guides complets** : Installation, API, base de données, scripts, workflows
+- **Best practices** : Conventions de code et standards du projet
+- **Glossaire technique** : 40+ termes définis de A à Z
+- **Changelog détaillé** : Historique des versions avec recherche
+- **CSS unifié** : wiki-styles.css pour maintenance facilitée
 
 ## 🛠 Technologies utilisées
 
 ### Frontend
 
 - **HTML5** - Structure sémantique
-- **CSS3** - Styling moderne (Grid, Flexbox, animations)
-- **JavaScript ES6+** - Logique interactive
+- **CSS3** - Styling moderne (Grid, Flexbox, animations, gradient effects)
+- **JavaScript ES6+** - Logique interactive, fetch API
 - **Responsive Design** - Compatible tous écrans
+- **CSS Minification** - Clean-CSS pour production
+- **JS Minification** - Terser pour optimisation
 
 ### Backend
 
-- **Node.js** - Serveur backend
-- **Express.js** - Framework web
-- **PostgreSQL** - Base de données relationnelle
+- **Node.js 18+** - Serveur backend avec fetch natif
+- **Express.js** - Framework web avec middleware gzip
+- **PostgreSQL 14+** - Base de données relationnelle
 - **pg** - Driver PostgreSQL pour Node.js
-- **Multer** - Gestion upload fichiers
+- **CORS** - Configuration permissive pour développement
 
 ### Base de données
 
-- **PostgreSQL 13+** - SGBD principal
+- **PostgreSQL 14+** - SGBD principal avec arrays et JSONB
 - **pgAdmin** - Interface d'administration (optionnel)
+- **Indexes** - Optimisation requêtes sur catégorie, top_du_mois
+- **JSONB** - Stockage flexible des donnees_fiche
+
+### Documentation
+
+- **Wiki HTML** - 15 pages interactives
+- **CSS unifié** - wiki-styles.css pour cohérence
+- **Recherche JS** - Filtrage en temps réel
+- **SVG** - Diagrammes interactifs d'architecture
 
 
 ## 📁 Structure du projet
@@ -132,30 +146,56 @@ site-gamer-2025/
 │       │   ├── css/
 │       │   │   ├── admin-styles.css     # Styles administration
 │       │   │   ├── style.css            # Styles principaux
-│       │   │   └── styles.min.css       # Styles minifiés
-│       │   ├── images/                  # Images produits
+│       │   │   └── styles.min.css       # Styles minifiés (production)
+│       │   ├── images/                  # Images produits (300+ fichiers)
 │       │   └── js/
 │       │       ├── admin-gestion-produits.js  # Logique admin
-│       │       ├── fiches.min.js        # Logique fiches produits
+│       │       ├── fiches.min.js        # Logique fiches (minifié)
 │       │       └── script.js            # Scripts généraux
 │       ├── fiches.html                 # Page catalogue produits
 │       ├── index.html                  # Page d'accueil
-│       ├── tendances-<categorie>.html  # Pages tendances dynamiques (ex : tendances-video-projecteur.html)
+│       ├── tendances-<categorie>.html  # Pages tendances (16 catégories)
 │       └── Gestion des produits et génération automatique.html  # Admin
-└── backend/
-    ├── server.js                       # Serveur Express
-    ├── database/
-    │   ├── config.js                   # Configuration PostgreSQL
-    │   ├── schema.sql                  # Schéma base de données
-    │   └── migrations/                 # Scripts de migration
-    ├── routes/
-    │   ├── produits.js                 # Routes API produits
-    │   └── upload.js                   # Routes upload images
-    ├── models/
-    │   └── Produit.js                  # Modèle produit
-    ├── package.json                    # Dépendances Node.js
-    ├── .env                           # Variables d'environnement
-    └── uploads/                        # Dossier uploads
+├── fiches/                             # Fiches produits générées
+│   ├── smartphone/                     # Par catégorie
+│   ├── pc-gaming/
+│   ├── console/
+│   └── ...                            # 16 catégories
+├── wiki/                               # Documentation Wiki
+│   ├── wiki.html                      # Hub principal avec recherche
+│   ├── wiki-styles.css                # Styles communs
+│   ├── project-connections.html       # Diagramme interactif
+│   ├── project-details.html           # Documentation composants
+│   ├── api-reference.html             # Référence API
+│   ├── database.html                  # Schéma PostgreSQL
+│   ├── scripts.html                   # Documentation scripts
+│   ├── changelog.html                 # Historique versions
+│   ├── troubleshooting.html           # Guide dépannage
+│   ├── installation.html              # Guide installation
+│   ├── best-practices.html            # Bonnes pratiques
+│   ├── glossary.html                  # Glossaire technique
+│   ├── deployment.html                # Guide déploiement
+│   ├── frontend.html                  # Documentation frontend
+│   ├── workflows.html                 # Processus détaillés
+│   └── getting-started.html           # Démarrage rapide
+├── scripts/                            # 30+ scripts maintenance
+│   ├── add-new-products.js            # Ajout batch produits
+│   ├── generate-all-new-fiches.js     # Génération fiches (API)
+│   ├── generate-new-products.js       # Génération fiches (direct)
+│   ├── regenerate-all-fiches.js       # Régénération complète
+│   ├── regenerate-fiches-top.js       # Régénération "top du mois"
+│   ├── set-top-decembre.js            # Marquage produits décembre
+│   ├── verify-database-state.js       # Vérification intégrité DB
+│   ├── normalize-*.js                 # Scripts normalisation (10+)
+│   └── ...                            # Autres utilitaires
+├── backend/
+│   ├── gestion_produits.sql           # Données complètes (61 produits)
+│   └── schema.sql                     # Schéma base de données
+├── server.js                           # Serveur Express principal
+├── package.json                        # Dépendances Node.js
+├── README.md                           # Ce fichier
+├── README-TOP-DECEMBRE.md             # Documentation produits décembre
+└── README-TOP-NOVEMBRE.md             # Documentation produits novembre
 ```
 
 ## 🚀 Installation
@@ -188,19 +228,39 @@ site-gamer-2025/
    # Windows : Télécharger depuis postgresql.org
    ```
 
-3. **Installer les dépendances backend**
+3. **Installer les dépendances**
 
    ```bash
-   cd backend
    npm install
    ```
 
-4. **Configurer les variables d'environnement**
+4. **Créer et initialiser la base de données**
 
    ```bash
-   cp .env.example .env
-   # Éditer .env avec vos paramètres PostgreSQL
+   # Se connecter à PostgreSQL
+   psql -U postgres
+   
+   # Créer la base
+   CREATE DATABASE gamer_2025;
+   \q
+   
+   # Charger les données complètes (61 produits + structure)
+   psql -U postgres -d gamer_2025 -f backend/gestion_produits.sql
    ```
+
+5. **Démarrer le serveur**
+
+   ```bash
+   npm start
+   # Ou en mode développement avec nodemon
+   npm run dev
+   ```
+
+6. **Accéder à l'application**
+
+   - Frontend : http://localhost:3000
+   - Wiki : http://localhost:3000/wiki/wiki.html
+   - Admin : http://localhost:3000/Gestion%20des%20produits%20et%20génération%20automatique.html
 
 ## 🗄️ Configuration de la base de données
 
@@ -209,18 +269,14 @@ site-gamer-2025/
 ```env
 # Base de données PostgreSQL
 DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=site_gamer_2025
-DB_USER=votre_utilisateur
-DB_PASSWORD=votre_mot_de_passe
+DB_PORT=XXXX
+DB_NAME=gamer_2025
+DB_USER=XXXXX
+DB_PASSWORD=XXXXXXX
 
 # Serveur
 PORT=3000
 NODE_ENV=development
-
-# Upload
-UPLOAD_PATH=./uploads
-MAX_FILE_SIZE=5242880
 ```
 
 ### Initialisation de la base
@@ -232,72 +288,250 @@ MAX_FILE_SIZE=5242880
    psql -U postgres
    
    -- Créer la base
-   CREATE DATABASE site_gamer_2025;
-   CREATE USER votre_utilisateur WITH PASSWORD 'votre_mot_de_passe';
-   GRANT ALL PRIVILEGES ON DATABASE site_gamer_2025 TO votre_utilisateur;
+   CREATE DATABASE gamer_2025;
    ```
 
-2. **Exécuter le schéma**
+2. **Charger les données complètes**
 
    ```bash
-   psql -U votre_utilisateur -d site_gamer_2025 -f database/schema.sql
+   psql -U postgres -d gamer_2025 -f backend/gestion_produits.sql
    ```
 
-### Schéma de la base (database/schema.sql)
+### Schéma principal
 
 ```sql
--- Table des produits
+-- Table des produits (structure complète)
 CREATE TABLE produits (
-    id SERIAL PRIMARY KEY,
+    id VARCHAR(20) PRIMARY KEY,          -- ex: prod_50, prod_51...
     nom VARCHAR(255) NOT NULL,
     prix VARCHAR(50),
     categorie VARCHAR(100),
     description TEXT,
-    image VARCHAR(255),
-    fonctionnalites_avancees TEXT[], -- Array PostgreSQL
+    image VARCHAR(255),                   -- Nom fichier uniquement
+    lien VARCHAR(500),                    -- URL fiche générée
+    fonctionnalites_avancees TEXT[],      -- Array PostgreSQL
+    donnees_fiche JSONB,                  -- Données structurées fiche
     top_du_mois BOOLEAN DEFAULT FALSE,
     titre_affiche VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Index pour les recherches
+-- Tables tendances par catégorie
+CREATE TABLE categories (id SERIAL PRIMARY KEY, nom VARCHAR(100));
+CREATE TABLE actualites (id SERIAL, titre TEXT, description TEXT, image VARCHAR(255), date_publication DATE, tags TEXT[], categorie_id INT);
+CREATE TABLE technologies (id SERIAL, nom TEXT, description TEXT, icone VARCHAR(100), taux_adoption INT, categorie_id INT);
+CREATE TABLE marche (id SERIAL, label TEXT, valeur TEXT, icone VARCHAR(100), tendance VARCHAR(50), categorie_id INT);
+CREATE TABLE insights (id SERIAL, titre TEXT, description TEXT, icone VARCHAR(100), categorie_id INT);
+CREATE TABLE predictions (id SERIAL, titre TEXT, description TEXT, annee INT, probabilite INT, icone VARCHAR(100), categorie_id INT);
+CREATE TABLE tendances (id SERIAL, titre TEXT, description TEXT, categorie VARCHAR(100), tags TEXT[], created_at TIMESTAMP);
+
+-- Index pour performances
 CREATE INDEX idx_produits_categorie ON produits(categorie);
-CREATE INDEX idx_produits_nom ON produits(nom);
 CREATE INDEX idx_produits_top ON produits(top_du_mois);
-
--- Trigger pour updated_at
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
-
-CREATE TRIGGER update_produits_updated_at 
-    BEFORE UPDATE ON produits 
-    FOR EACH ROW 
-    EXECUTE FUNCTION update_updated_at_column();
+CREATE INDEX idx_tendances_categorie ON tendances(categorie);
 ```
 
+## 📚 Documentation Wiki
+
+Accédez à la documentation complète via `wiki/wiki.html` :
+
+### Pages disponibles
+
+| Page | Description | URL |
+|------|-------------|-----|
+| 🏠 **Wiki Hub** | Page d'accueil avec recherche | `wiki/wiki.html` |
+| 🔄 **Architecture** | Diagramme interactif SVG | `wiki/project-connections.html` |
+| 📋 **Composants** | Documentation détaillée | `wiki/project-details.html` |
+| 📁 **API** | Référence complète REST | `wiki/api-reference.html` |
+| 🗄️ **Database** | Schéma PostgreSQL | `wiki/database.html` |
+| ⚙️ **Scripts** | 30+ scripts documentés | `wiki/scripts.html` |
+| 📝 **Changelog** | Historique versions | `wiki/changelog.html` |
+| 🔧 **Troubleshooting** | Guide dépannage | `wiki/troubleshooting.html` |
+| 🚀 **Installation** | Setup complet | `wiki/installation.html` |
+| ⭐ **Best Practices** | Conventions code | `wiki/best-practices.html` |
+| 📖 **Glossary** | Terminologie A-Z | `wiki/glossary.html` |
+| ☁️ **Deployment** | Guide production | `wiki/deployment.html` |
+| 🌐 **Frontend** | Structure assets | `wiki/frontend.html` |
+| 🔁 **Workflows** | Processus détaillés | `wiki/workflows.html` |
+
+### Fonctionnalités Wiki
+
+- ✅ **Recherche en temps réel** : Filtrage instantané des cartes et pages
+- ✅ **Navigation sticky** : Barre de navigation toujours accessible
+- ✅ **Design cohérent** : Thème violet gradient (#667eea → #764ba2)
+- ✅ **Responsive** : Adapté mobile/tablette/desktop
+- ✅ **Raccourcis clavier** : Ctrl/Cmd+K pour focus recherche
+- ✅ **CSS externe** : wiki-styles.css pour maintenance facilitée
 
 ## 🌐 API
 
+### Endpoints Produits
 
+```javascript
+// Récupérer tous les produits
+GET /api/produits
+// Filtres : ?categorie=xxx&top_du_mois=true
 
+// Récupérer un produit par ID
+GET /api/produits/:id
 
-### Endpoints disponibles
+// Créer un nouveau produit (auto-incrémente l'ID)
+POST /api/produits
+Content-Type: application/json
 
+// Modifier un produit (nécessite TOUS les champs)
+PUT /api/produits/:id
+Content-Type: application/json
+
+// Supprimer un produit
+DELETE /api/produits/:id
+```
+
+### Endpoints Fiches
+
+```javascript
+// Générer une fiche HTML pour un produit
+POST /api/generate-fiche/:id
+// Crée le fichier dans fiches/<categorie>/<slug>.html
+
+// Prévisualiser une fiche
+GET /api/preview-fiche/:id
+// Essaie plusieurs chemins possibles
+
+// Supprimer une fiche
+DELETE /api/fiches/:id
+// Supprime le fichier basé sur product.lien
+```
+
+### Endpoints Tendances
+
+```javascript
 // Récupérer les tendances d'une catégorie
+GET /api/:categorie/actualites
+GET /api/:categorie/technologies
+GET /api/:categorie/marche
+GET /api/:categorie/insights
+GET /api/:categorie/predictions
 
-GET /api/[categorie]/actualites
-GET /api/[categorie]/technologies
-GET /api/[categorie]/marche
-GET /api/[categorie]/insights
-GET /api/[categorie]/predictions
+// CRUD tendances génériques
+GET /api/tendances
+POST /api/tendances
+PUT /api/tendances/:id
+DELETE /api/tendances/:id
+```
 
-## 🗂️ Pages tendances par catégorie
+### Endpoint Configuration LLM
+
+```javascript
+// Configuration modèle IA
+GET /api/llm-config
+// Retourne: { model, gpt5Enabled, gpt5Rollout }
+```
+
+### Exemples de requêtes
+
+```javascript
+// Récupérer produits top du mois
+fetch('http://localhost:3000/api/produits?top_du_mois=true')
+  .then(res => res.json())
+  .then(data => console.log(data));
+
+// Créer un produit
+fetch('http://localhost:3000/api/produits', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    nom: 'Nouveau Produit',
+    prix: '999.99€',
+    categorie: 'smartphone',
+    description: 'Description détaillée',
+    image: 'produit.jpg',
+    fonctionnalites_avancees: ['Feature 1', 'Feature 2'],
+    donnees_fiche: { section1: 'Contenu 1', section2: 'Contenu 2' }
+  })
+});
+
+// Générer une fiche
+fetch('http://localhost:3000/api/generate-fiche/prod_50', { method: 'POST' })
+  .then(res => res.json())
+  .then(data => console.log('Fiche générée:', data.lien));
+```
+
+## ⚙️ Scripts
+
+Le projet inclut 30+ scripts pour automatiser les tâches courantes :
+
+### Scripts de génération
+
+```bash
+# Ajouter les 12 produits de décembre
+node scripts/add-new-products.js
+
+# Générer toutes les nouvelles fiches (via API)
+node scripts/generate-all-new-fiches.js
+
+# Générer fiches directement depuis DB
+node scripts/generate-new-products.js
+
+# Régénérer toutes les fiches
+node scripts/regenerate-all-fiches.js
+
+# Régénérer uniquement les "top du mois"
+node scripts/regenerate-fiches-top.js
+```
+
+### Scripts de maintenance
+
+```bash
+# Vérifier l'état de la base de données
+node scripts/verify-database-state.js
+
+# Marquer les produits "top du mois" décembre
+node scripts/set-top-decembre.js
+
+# Vérifier les schémas de données
+node scripts/check-schemas.js
+
+# Vérifier un produit spécifique
+node scripts/check-prod50.js
+
+# Check rapide
+node quick-check.js
+```
+
+### Scripts de normalisation
+
+```bash
+# Normaliser par catégorie
+node scripts/normalize-camera.js
+node scripts/normalize-smartphone.js
+node scripts/normalize-drone.js
+node scripts/normalize-casque-vr.js
+node scripts/normalize-ecran-tv.js
+node scripts/normalize-montre-connectee.js
+node scripts/normalize-tablette.js
+node scripts/normalize-video-projecteur.js
+node scripts/normalize-remaining-categories.js
+```
+
+### Scripts de nettoyage
+
+```bash
+# Nettoyer les données de fiche
+node scripts/clean-donnees-fiche.js
+
+# Nettoyer les prix
+node scripts/clean-prices.js
+
+# Corriger les descriptions dupliquées
+node scripts/fix-generic-descriptions.js
+
+# Corriger les incohérences
+psql -U postgres -d gamer_2025 -f scripts/fix-database-inconsistencies.sql
+```
+
+## 🗂️ Pages Tendances par Catégorie
 
 Chaque page `tendances-[categorie].html` affiche dynamiquement :
 
@@ -510,17 +744,62 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ---
 
-**Version actuelle : 2.1.0** | **Dernière mise à jour : 14 Décembre 2025**
+**Version actuelle : 2.2.0** | **Dernière mise à jour : 26 Décembre 2025**
 
-**🚀 Base de données PostgreSQL optimisée avec 59 produits enrichis !**
+**🚀 PostgreSQL optimisée • 61+ produits • 15 pages Wiki • 30+ scripts**
 
 ### 📈 Prochaines Évolutions
-- **Janvier 2025** : Intégration nouvelles catégories (AR/VR, IoT Gaming)
-- **Q1 2025** : Système de comparaison avancé multi-critères
-- **Q2 2025** : API publique pour intégrations tierces
-- **Q3 2025** : Recommandations IA basées sur profils utilisateurs
+
+- **Janvier 2026** : Système de recherche full-text dans le wiki
+- **v2.3.0 - Janvier 2026** :
+  - Intégration GPT-5 pour descriptions enrichies
+  - API d'authentification et gestion utilisateurs
+  - Dashboard d'administration web amélioré
+- **v3.0.0 - Février 2026** :
+  - Migration vers Next.js/React
+  - API GraphQL en complément REST
+  - Cache Redis pour performances
+  - CDN pour assets et images
+  - Tests automatisés (Jest/Vitest)
+  - CI/CD avec GitHub Actions
+- **Futures améliorations** :
+  - Système de notation et avis utilisateurs
+  - Comparateur de produits interactif
+  - Alertes prix et disponibilité
+  - Application mobile (React Native)
 
 ### 🔗 Liens Utiles
-- **Interface Admin** : [Gestion complète](http://localhost:3000/Gestion%20des%20produits%20et%20génération%20automatique.html)
-- **API Documentation** : [Endpoints disponibles](http://localhost:3000/api)
-- **Database Health** : Utiliser `node scripts/verify-database-state.js`
+
+- **📚 Wiki Documentation** : [Documentation complète](http://localhost:3000/wiki/wiki.html)
+- **🔧 Interface Admin** : [Gestion produits](http://localhost:3000/Gestion%20des%20produits%20et%20génération%20automatique.html)
+- **📁 API Reference** : [Endpoints](http://localhost:3000/wiki/api-reference.html)
+- **🗄️ Database Schema** : [PostgreSQL](http://localhost:3000/wiki/database.html)
+- **⚙️ Scripts Docs** : [30+ scripts](http://localhost:3000/wiki/scripts.html)
+- **📝 Changelog** : [Versions](http://localhost:3000/wiki/changelog.html)
+- **🔧 Troubleshooting** : [Dépannage](http://localhost:3000/wiki/troubleshooting.html)
+
+### 📊 Statistiques Projet
+
+| Métrique | Valeur |
+|----------|---------|
+| **Produits** | 61+ enrichis |
+| **Catégories** | 16 standardisées |
+| **Pages Wiki** | 15 interactives |
+| **Scripts** | 30+ automatisés |
+| **Endpoints API** | 20+ REST |
+| **Images** | 300+ optimisées |
+| **Top du mois** | 4 produits |
+
+### 🎯 Points Forts
+
+✅ **Documentation exhaustive** : Wiki de 15 pages avec recherche en temps réel  
+✅ **Architecture claire** : Diagramme interactif SVG montrant tous les composants  
+✅ **Scripts automatisés** : Génération, normalisation, vérification complète  
+✅ **API REST complète** : CRUD sur produits, fiches, tendances  
+✅ **Base PostgreSQL** : Schéma robuste avec JSONB et arrays  
+✅ **Interface moderne** : Design gradient violet responsive  
+✅ **Maintenance facile** : CSS externe unifié, code documenté, best practices  
+
+---
+
+**Développé avec ❤️ pour les gamers** | [📚 Wiki](http://localhost:3000/wiki/wiki.html) | [📝 Changelog](http://localhost:3000/wiki/changelog.html) | [🔧 Troubleshooting](http://localhost:3000/wiki/troubleshooting.html)
