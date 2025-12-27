@@ -7,23 +7,36 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "setup": "npm install",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "db:init": "psql -U postgres -d gamer_2025 -f backend/schema.sql",
     "db:populate": "psql -U postgres -d gamer_2025 -f backend/gestion_produits.sql",
     "build:css": "cleancss -o frontend/public/assets/css/styles.min.css frontend/public/assets/css/styles.css",
     "build:js": "terser frontend/public/assets/js/fiches.js -o frontend/public/assets/js/fiches.min.js && terser frontend/public/assets/js/fiche-produit.js -o frontend/public/assets/js/fiche-produit.min.js && terser frontend/public/assets/js/tendances.js -o frontend/public/assets/js/tendances.min.js",
     "build:all": "npm run build:css && npm run build:js",
-    "clean": "rm -rf frontend/public/assets/css/*.min.css frontend/public/assets/js/*.min.js"
+    "clean": "rm -rf frontend/public/assets/css/*.min.css frontend/public/assets/js/*.min.js",
+    "diagram:all": "madge --image project-full.svg --exclude \"node_modules|data|sql|wiki\" .",
+    "diagram:backend": "madge --image backend.svg ./backend",
+    "diagram:frontend": "madge --image frontend.svg ./frontend",
+    "diagram:server": "madge --image server.svg server.js",
+    "diagram:check": "madge --circular ./backend ./frontend",
+    "diagram:flow": "dot -Tsvg architecture-flow.dot -o architecture-flow.svg"
   },
   "dependencies": {
     "compression": "^1.8.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "multer": "^2.0.2",
     "pg": "^8.16.3"
   },
   "devDependencies": {
     "clean-css-cli": "^5.6.3",
+    "jest": "^30.2.0",
+    "madge": "^8.0.0",
     "nodemon": "^3.0.2",
+    "supertest": "^7.1.4",
     "terser": "^5.44.0"
   },
   "keywords": [
@@ -37,6 +50,18 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "backend/**/*.js",
+      "!backend/config/database.js",
+      "!**/node_modules/**"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "globalTeardown": "./tests/teardown.js"
+  },
   "private": true
 }
-
