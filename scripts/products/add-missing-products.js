@@ -1,5 +1,3 @@
-const { Client } = require('pg');
-
 const client = new Client({
     user: 'postgres',
     host: 'localhost',
@@ -163,14 +161,13 @@ const nouveauxProduits = [
 
 async function ajouterNouveauxProduits() {
     try {
-        await client.connect();
         console.log('🔌 Connexion établie');
         
         console.log(`📦 Ajout de ${nouveauxProduits.length} nouveaux produits...`);
         
         for (const produit of nouveauxProduits) {
             // Vérifier si le produit existe déjà
-            const existingCheck = await client.query('SELECT nom FROM produits WHERE nom = $1', [produit.nom]);
+            const existingCheck = await pool.query('SELECT nom FROM produits WHERE nom = $1', [produit.nom]);
             
             if (existingCheck.rows.length === 0) {
                 const insertQuery = `
@@ -178,7 +175,7 @@ async function ajouterNouveauxProduits() {
                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
                 `;
                 
-                await client.query(insertQuery, [
+                await pool.query(insertQuery, [
                     produit.nom,
                     produit.categorie,
                     produit.image,
@@ -199,10 +196,10 @@ async function ajouterNouveauxProduits() {
         }
         
         // Vérification finale
-        const finalCount = await client.query('SELECT COUNT(*) as total FROM produits');
+        const finalCount = await pool.query('SELECT COUNT(*) as total FROM produits');
         console.log(`\n📊 Total final: ${finalCount.rows[0].total} produits`);
         
-        const byCategory = await client.query(`
+        const byCategory = await pool.query(`
             SELECT categorie, COUNT(*) as count 
             FROM produits 
             GROUP BY categorie 
@@ -219,7 +216,7 @@ async function ajouterNouveauxProduits() {
     } catch (error) {
         console.error('❌ Erreur:', error);
     } finally {
-        await client.end();
+        await pool.end();
     }
 }
 

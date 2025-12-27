@@ -1,22 +1,13 @@
-const { Client } = require('pg');
-
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'gamer_2025',
-  password: 'Wilfried!1985',
-  port: 5432,
-});
+const pool = require('../backend/config/database');
 
 async function verifyDatabaseState() {
   try {
-    await client.connect();
     console.log('📊 VÉRIFICATION DE L\'ÉTAT DE LA BASE DE DONNÉES\n');
 
     // Afficher quelques exemples de produits avec leurs infos
     console.log('📋 ÉCHANTILLON DE PRODUITS (10 premiers):');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    const samplesResult = await client.query(`
+    const samplesResult = await pool.query(`
       SELECT categorie, image, lien, nom 
       FROM produits 
       ORDER BY id 
@@ -30,7 +21,7 @@ async function verifyDatabaseState() {
     // Statistiques par catégorie
     console.log('\n📊 RÉPARTITION PAR CATÉGORIE:');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    const categoriesResult = await client.query(`
+    const categoriesResult = await pool.query(`
       SELECT categorie, COUNT(*) as count 
       FROM produits 
       GROUP BY categorie 
@@ -46,31 +37,31 @@ async function verifyDatabaseState() {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     
     // Liens HTTP restants
-    const httpResult = await client.query(`SELECT COUNT(*) as count FROM produits WHERE lien LIKE 'http%'`);
+    const httpResult = await pool.query(`SELECT COUNT(*) as count FROM produits WHERE lien LIKE 'http%'`);
     console.log(`🔗 Liens HTTP externes: ${httpResult.rows[0].count} ${httpResult.rows[0].count === '0' ? '✅' : '❌'}`);
 
     // Images avec chemin complet
-    const imagePathResult = await client.query(`SELECT COUNT(*) as count FROM produits WHERE image LIKE '/assets/images/%'`);
+    const imagePathResult = await pool.query(`SELECT COUNT(*) as count FROM produits WHERE image LIKE '/assets/images/%'`);
     console.log(`🖼️ Images avec chemin complet: ${imagePathResult.rows[0].count} ${imagePathResult.rows[0].count === '0' ? '✅' : '❌'}`);
 
     // Noms de fichiers avec espaces
-    const spacesResult = await client.query(`SELECT COUNT(*) as count FROM produits WHERE lien LIKE '% %'`);
+    const spacesResult = await pool.query(`SELECT COUNT(*) as count FROM produits WHERE lien LIKE '% %'`);
     console.log(`📄 Liens avec espaces: ${spacesResult.rows[0].count} ${spacesResult.rows[0].count === '0' ? '✅' : '❌'}`);
 
     // Catégories en minuscules
-    const lowercaseResult = await client.query(`SELECT COUNT(*) as count FROM produits WHERE categorie ~ '[a-z]' AND categorie !~ '^[A-Z]'`);
+    const lowercaseResult = await pool.query(`SELECT COUNT(*) as count FROM produits WHERE categorie ~ '[a-z]' AND categorie !~ '^[A-Z]'`);
     console.log(`📂 Catégories en minuscules: ${lowercaseResult.rows[0].count} ${lowercaseResult.rows[0].count === '0' ? '✅' : '❌'}`);
 
     console.log('\n📈 RÉSUMÉ FINAL:');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     
-    const totalResult = await client.query('SELECT COUNT(*) as total FROM produits');
+    const totalResult = await pool.query('SELECT COUNT(*) as total FROM produits');
     console.log(`📦 Total produits: ${totalResult.rows[0].total}`);
     
-    const distinctCategoriesResult = await client.query('SELECT COUNT(DISTINCT categorie) as categories FROM produits');
+    const distinctCategoriesResult = await pool.query('SELECT COUNT(DISTINCT categorie) as categories FROM produits');
     console.log(`📂 Catégories uniques: ${distinctCategoriesResult.rows[0].categories}`);
     
-    const topDuMoisResult = await client.query('SELECT COUNT(*) as count FROM produits WHERE top_du_mois = true');
+    const topDuMoisResult = await pool.query('SELECT COUNT(*) as count FROM produits WHERE top_du_mois = true');
     console.log(`⭐ Produits "Top du mois": ${topDuMoisResult.rows[0].count}`);
 
     console.log('\n✅ Vérification terminée !');
@@ -78,7 +69,7 @@ async function verifyDatabaseState() {
   } catch (error) {
     console.error('❌ Erreur:', error.message);
   } finally {
-    await client.end();
+    await pool.end();
   }
 }
 

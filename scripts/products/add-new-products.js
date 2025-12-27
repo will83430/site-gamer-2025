@@ -1,13 +1,5 @@
 // Script pour ajouter les 12 nouveaux produits proprement
-const { Client } = require('pg');
-
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'gamer_2025',
-  password: 'Wilfried!1985',
-  port: 5432,
-});
+const pool = require('../backend/config/database');
 
 const products = [
   {
@@ -170,11 +162,10 @@ const products = [
 
 async function run() {
   try {
-    await client.connect();
     console.log('✅ Connecté à PostgreSQL\n');
     
     for (const p of products) {
-      await client.query(
+      await pool.query(
         `INSERT INTO produits (id, nom, categorie, prix, description, titre_affiche, lien, image, donnees_fiche, fonctionnalites_avancees, top_du_mois)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
         [p.id, p.nom, p.categorie, p.prix, p.description, p.titre_affiche, p.lien, p.image, p.donnees_fiche, p.fonctionnalites_avancees, p.top_du_mois]
@@ -183,7 +174,7 @@ async function run() {
     }
     
     console.log('\n✅ 12 produits ajoutés !');
-    await client.end();
+    await pool.end();
     process.exit(0);
   } catch (error) {
     console.error('❌ Erreur:', error.message);

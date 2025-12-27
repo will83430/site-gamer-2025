@@ -1,21 +1,7 @@
-// Script pour générer les fiches des 12 nouveaux produits
-const { Pool } = require('pg');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'gamer_2025',
-  password: 'Wilfried!1985',
-  port: 5432,
-});
-
-const newProductIds = [
-  'prod_50', 'prod_51', 'prod_52', 'prod_53', 'prod_54', 'prod_55',
-  'prod_56', 'prod_57', 'prod_58', 'prod_59', 'prod_60', 'prod_61'
-];
-
+// Fonction de génération du template HTML
 function generateFicheHTML(product) {
   return `<!DOCTYPE html>
 <html lang="fr">
@@ -50,7 +36,7 @@ function generateFicheHTML(product) {
     <p class="description">Chargement de la description...</p>
 
     <div class="gallery">
-<img src="${product.image || '/assets/images/placeholder.png'}" alt="${product.nom}" class="img-centree" onerror="this.src='/assets/images/placeholder.png'"></div>
+<img src="/assets/images/${product.image || 'placeholder.png'}" alt="${product.nom}" class="img-centree" onerror="this.src='/assets/images/placeholder.png'"></div>
     
     <div class="lightbox" id="lightbox">
         <img id="lightbox-img" src="" alt="Zoom">
@@ -89,41 +75,85 @@ function generateFicheHTML(product) {
 </html>`;
 }
 
-async function run() {
-  try {
-    console.log('Génération des 12 nouvelles fiches...\n');
-    
-    for (const id of newProductIds) {
-      const result = await pool.query('SELECT * FROM produits WHERE id = $1', [id]);
-      
-      if (result.rows.length === 0) {
-        console.log(`❌ ${id} - Non trouvé`);
-        continue;
-      }
-      
-      const product = result.rows[0];
-      const html = generateFicheHTML(product);
-      
-      const categoryFolder = product.categorie.toLowerCase().replace(/\s+/g, '-');
-      const ficheDir = path.join(__dirname, '..', 'fiches', categoryFolder);
-      
-      if (!fs.existsSync(ficheDir)) {
-        fs.mkdirSync(ficheDir, { recursive: true });
-      }
-      
-      const fileName = `${product.nom.toLowerCase().replace(/[^a-z0-9]/gi, '-')}.html`;
-      const filePath = path.join(ficheDir, fileName);
-      
-      fs.writeFileSync(filePath, html);
-      console.log(`✅ ${id} - ${product.nom} -> ${categoryFolder}/${fileName}`);
-    }
-    
-    console.log('\n✅ Génération terminée !');
-    process.exit(0);
-  } catch (error) {
-    console.error('Erreur:', error);
-    process.exit(1);
+// Générer et sauvegarder une fiche
+function createFiche(product, baseDir) {
+  console.log('Données produit pour génération fiche:', {
+    id: product.id,
+    nom: product.nom,
+    titre_affiche: product.titre_affiche
+  });
+
+  // Générer le HTML
+  const html = generateFicheHTML(product);
+
+  // Créer le dossier de catégorie
+  const categoryFolder = product.categorie.toLowerCase().replace(/\s+/g, '-');
+  const ficheDir = path.join(baseDir, 'fiches', categoryFolder);
+
+  if (!fs.existsSync(ficheDir)) {
+    fs.mkdirSync(ficheDir, { recursive: true });
+  }
+
+  // Créer le fichier HTML
+  const fileName = `${product.nom.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.html`;
+  const filePath = path.join(ficheDir, fileName);
+
+  fs.writeFileSync(filePath, html);
+
+  return {
+    path: `fiches/${categoryFolder}/${fileName}`,
+    fullPath: filePath
+  };
+}
+
+// Supprimer une fiche
+function deleteFiche(fichePath, baseDir) {
+  if (!fichePath) {
+    return { deleted: false, message: 'Pas de fiche à supprimer' };
+  }
+
+  const absolutePath = path.join(baseDir, fichePath);
+
+  if (fs.existsSync(absolutePath)) {
+    fs.unlinkSync(absolutePath);
+    return { deleted: true, message: 'Fiche supprimée' };
+  } else {
+    return { deleted: false, message: 'Fiche non trouvée' };
   }
 }
 
-run();
+// Lire une fiche
+function readFiche(fichePath, baseDir) {
+  if (!fichePath) {
+    return null;
+  }
+
+  // Nettoyer le chemin
+  let cleanPath = fichePath;
+  if (cleanPath.startsWith('/')) {
+    cleanPath = cleanPath.substring(1);
+  }
+
+  // Essayer plusieurs chemins possibles
+  const paths = [
+    path.join(baseDir, 'public', cleanPath),
+    path.join(baseDir, 'public', 'fiches', path.basename(cleanPath)),
+    path.join(baseDir, 'fiches', cleanPath),
+    path.join(baseDir, cleanPath)
+  ];
+
+  for (const filePath of paths) {
+    if (fs.existsSync(filePath)) {
+      return fs.readFileSync(filePath, 'utf8');
+    }
+  }
+
+  return null;
+}
+
+module.exports = {
+  generateFicheHTML,
+  createFiche,
+  deleteFiche,
+  readFiche
+};

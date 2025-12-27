@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architecture Site Gamer 2025 - Flux de données</title>
+    <title>Architecture Site Gamer 2025 - Architecture Modulaire</title>
     <style>
         * {
             margin: 0;
@@ -44,6 +44,25 @@
             opacity: 0.9;
         }
         
+        .metrics {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        
+        .metric {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        
+        .metric strong {
+            color: #3498db;
+            font-size: 1.2em;
+        }
+        
         .controls {
             display: flex;
             justify-content: center;
@@ -78,6 +97,7 @@
         .btn-backend { background: #27AE60; color: white; }
         .btn-database { background: #F1C40F; color: #333; }
         .btn-scripts { background: #E67E22; color: white; }
+        .btn-tests { background: #66BB6A; color: white; }
         .btn-all { background: #9B59B6; color: white; }
         
         .flow-container {

@@ -1,13 +1,5 @@
 // Mise à jour des produits TOP DU MOIS pour Décembre 2025
-const { Client } = require('pg');
-
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'gamer_2025',
-  password: 'Wilfried!1985',
-  port: 5432,
-});
+const pool = require('../backend/config/database');
 
 // Nouveaux top du mois - produits récents de qualité
 const topProducts = [
@@ -19,23 +11,22 @@ const topProducts = [
 
 async function updateTopDuMois() {
   try {
-    await client.connect();
     console.log('🔄 Mise à jour des TOP DU MOIS pour Décembre 2025...\n');
 
     // 1. Réinitialiser tous les produits
-    await client.query('UPDATE produits SET top_du_mois = false');
+    await pool.query('UPDATE produits SET top_du_mois = false');
     console.log('✓ Anciens top du mois réinitialisés');
 
     // 2. Définir les nouveaux top du mois
     const placeholders = topProducts.map((_, i) => `$${i + 1}`).join(',');
-    await client.query(
+    await pool.query(
       `UPDATE produits SET top_du_mois = true WHERE id IN (${placeholders})`,
       topProducts
     );
     console.log('✓ Nouveaux top du mois définis\n');
 
     // 3. Afficher les nouveaux top du mois
-    const result = await client.query(
+    const result = await pool.query(
       'SELECT id, nom, categorie, prix FROM produits WHERE top_du_mois = true ORDER BY id'
     );
 
@@ -51,7 +42,7 @@ async function updateTopDuMois() {
   } catch (error) {
     console.error('❌ Erreur:', error.message);
   } finally {
-    await client.end();
+    await pool.end();
   }
 }
 

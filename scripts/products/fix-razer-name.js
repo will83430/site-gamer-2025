@@ -1,20 +1,10 @@
 // Correction du nom Razer BlackWidow V4 Pro
-const { Client } = require('pg');
-
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'gamer_2025',
-  password: 'Wilfried!1985',
-  port: 5432,
-});
+const pool = require('../backend/config/database');
 
 async function fixRazerName() {
   try {
-    await client.connect();
-    
     // Trouver le produit
-    const find = await client.query(
+    const find = await pool.query(
       "SELECT id, nom, titre_affiche FROM produits WHERE nom LIKE '%blackwidow%' OR titre_affiche LIKE '%BlackWidow%'"
     );
     
@@ -27,14 +17,14 @@ async function fixRazerName() {
     
     if (find.rows.length > 0) {
       // Corriger le titre_affiche
-      await client.query(
+      await pool.query(
         "UPDATE produits SET titre_affiche = 'Razer BlackWidow V4 Pro' WHERE nom LIKE '%blackwidow%' OR titre_affiche LIKE '%BlackWidow%'"
       );
       
       console.log('✅ Titre corrigé en: Razer BlackWidow V4 Pro');
       
       // Vérifier
-      const check = await client.query(
+      const check = await pool.query(
         "SELECT id, nom, titre_affiche FROM produits WHERE nom LIKE '%blackwidow%'"
       );
       console.log('\nAprès correction:');
@@ -46,7 +36,7 @@ async function fixRazerName() {
   } catch (error) {
     console.error('❌ Erreur:', error.message);
   } finally {
-    await client.end();
+    await pool.end();
   }
 }
 
