@@ -1,6 +1,7 @@
 // server-fixed.js - Version corrigée du serveur
+require('dotenv').config();
 const express = require('express');
-const { Pool } = require('pg');
+const pool = require('./backend/config/database');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs'); // IMPORTANT !
@@ -12,18 +13,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(compression()); // Compression gzip
-
-// Configuration PostgreSQL
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'gamer_2025',
-  password: 'Wilfried!1985',
-  port: 5432,
-  max: 20,
-  idleTimeoutMillis: 1000,
-  connectionTimeoutMillis: 2000,
-});
 
 // Middleware
 app.use((req, res, next) => {
