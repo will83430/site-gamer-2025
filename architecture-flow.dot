@@ -1,0 +1,139 @@
+digraph SiteGamer2025 {
+    // Configuration globale
+    rankdir=LR;
+    node [shape=box, style="rounded,filled", fontname="Arial"];
+    edge [fontname="Arial", fontsize=10];
+    
+    // Groupes de noeuds
+    subgraph cluster_frontend {
+        label="Frontend (Static HTML/JS)";
+        style=filled;
+        color=lightblue;
+        
+        indexHTML [label="index.html\n(Accueil)", fillcolor="#4A90E2", fontcolor=white];
+        topHTML [label="top-du-mois.html\n(Tops produits)", fillcolor="#4A90E2", fontcolor=white];
+        adminHTML [label="admin-gestion-produits.html\n(Admin)", fillcolor="#E24A4A", fontcolor=white];
+        adminTendHTML [label="admin-tendances-dashboard.html\n(Admin tendances)", fillcolor="#E24A4A", fontcolor=white];
+        ficheHTML [label="fiches/<categorie>/<produit>.html\n(Détail produit)", fillcolor="#4A90E2", fontcolor=white];
+        
+        fichesJS [label="fiches.js\n(Liste produits)", fillcolor="#7B68EE", fontcolor=white];
+        ficheJS [label="fiche-produit.js\n(Détail produit)", fillcolor="#7B68EE", fontcolor=white];
+        adminJS [label="admin-gestion-produits.js\n(CRUD admin)", fillcolor="#9B59B6", fontcolor=white];
+        adminTendJS [label="admin-tendances-dashboard.js\n(CRUD tendances)", fillcolor="#9B59B6", fontcolor=white];
+    }
+    
+    subgraph cluster_backend {
+        label="Backend (Node.js + Express)";
+        style=filled;
+        color=lightgreen;
+        
+        server [label="server.js\n(API REST + Static files)", fillcolor="#27AE60", fontcolor=white];
+        
+        apiProduits [label="GET /api/produits\n(Liste produits)", fillcolor="#2ECC71", fontcolor=white, shape=component];
+        apiProduitsPOST [label="POST /api/produits\n(Créer produit)", fillcolor="#2ECC71", fontcolor=white, shape=component];
+        apiProduitsPUT [label="PUT /api/produits/:id\n(Modifier produit)", fillcolor="#2ECC71", fontcolor=white, shape=component];
+        apiProduitsDEL [label="DELETE /api/produits/:id\n(Supprimer produit)", fillcolor="#2ECC71", fontcolor=white, shape=component];
+        apiGenFiche [label="POST /api/generate-fiche/:id\n(Générer fiche HTML)", fillcolor="#F39C12", fontcolor=white, shape=component];
+        apiActu [label="GET /api/:categorie/actualites\n(Actualités)", fillcolor="#2ECC71", fontcolor=white, shape=component];
+        apiTech [label="GET /api/:categorie/technologies\n(Technologies)", fillcolor="#2ECC71", fontcolor=white, shape=component];
+        apiMarche [label="GET /api/:categorie/marche\n(Marché)", fillcolor="#2ECC71", fontcolor=white, shape=component];
+        apiTendances [label="GET /api/tendances\n(Tendances)", fillcolor="#2ECC71", fontcolor=white, shape=component];
+    }
+    
+    subgraph cluster_database {
+        label="Database (PostgreSQL)";
+        style=filled;
+        color=lightyellow;
+        
+        db [label="gamer_2025\nPostgreSQL", fillcolor="#F1C40F", shape=cylinder];
+        tableProduits [label="produits\n(Catalogue)", fillcolor="#F9E79F", shape=folder];
+        tableActu [label="actualites", fillcolor="#F9E79F", shape=folder];
+        tableTech [label="technologies", fillcolor="#F9E79F", shape=folder];
+        tableMarche [label="marche", fillcolor="#F9E79F", shape=folder];
+        tableTend [label="tendances", fillcolor="#F9E79F", shape=folder];
+    }
+    
+    subgraph cluster_scripts {
+        label="Scripts de gestion";
+        style=filled;
+        color=lightcoral;
+        
+        scriptAdd [label="add-new-products.js\n(Insert produits)", fillcolor="#E67E22", fontcolor=white];
+        scriptGen [label="generate-all-new-fiches.js\n(Génère fiches via API)", fillcolor="#E67E22", fontcolor=white];
+        scriptRegen [label="regenerate-all-fiches.js\n(Regénère toutes)", fillcolor="#E67E22", fontcolor=white];
+        scriptTop [label="set-top-decembre.js\n(Toggle top_du_mois)", fillcolor="#E67E22", fontcolor=white];
+    }
+    
+    subgraph cluster_output {
+        label="Fichiers générés";
+        style=filled;
+        color=lightgray;
+        
+        ficheGenerated [label="fiches/<categorie>/\n<produit>.html\n(Fichiers statiques)", fillcolor="#95A5A6", fontcolor=white];
+    }
+    
+    // Relations Frontend → JS
+    indexHTML -> fichesJS [label="charge", color=blue];
+    topHTML -> fichesJS [label="charge", color=blue];
+    adminHTML -> adminJS [label="charge", color=blue];
+    adminTendHTML -> adminTendJS [label="charge", color=blue];
+    ficheHTML -> ficheJS [label="charge", color=blue];
+    
+    // Relations JS → API (fetch)
+    fichesJS -> apiProduits [label="fetch()", color=purple];
+    ficheJS -> apiProduits [label="fetch()", color=purple];
+    adminJS -> apiProduits [label="GET", color=purple];
+    adminJS -> apiProduitsPOST [label="POST", color=purple];
+    adminJS -> apiProduitsPUT [label="PUT", color=purple];
+    adminJS -> apiProduitsDEL [label="DELETE", color=purple];
+    adminJS -> apiGenFiche [label="POST", color=orange];
+    
+    adminTendJS -> apiActu [label="CRUD", color=purple];
+    adminTendJS -> apiTech [label="CRUD", color=purple];
+    adminTendJS -> apiMarche [label="CRUD", color=purple];
+    adminTendJS -> apiTendances [label="CRUD", color=purple];
+    
+    // Relations API → Server
+    apiProduits -> server [style=invis];
+    apiProduitsPOST -> server [style=invis];
+    apiProduitsPUT -> server [style=invis];
+    apiProduitsDEL -> server [style=invis];
+    apiGenFiche -> server [style=invis];
+    apiActu -> server [style=invis];
+    apiTech -> server [style=invis];
+    apiMarche -> server [style=invis];
+    apiTendances -> server [style=invis];
+    
+    // Relations Server → Database
+    server -> db [label="pg client", color=green];
+    db -> tableProduits [style=invis];
+    db -> tableActu [style=invis];
+    db -> tableTech [style=invis];
+    db -> tableMarche [style=invis];
+    db -> tableTend [style=invis];
+    
+    // Relations API → Tables
+    apiProduits -> tableProduits [label="SELECT", color=green];
+    apiProduitsPOST -> tableProduits [label="INSERT", color=green];
+    apiProduitsPUT -> tableProduits [label="UPDATE", color=green];
+    apiProduitsDEL -> tableProduits [label="DELETE", color=green];
+    apiActu -> tableActu [label="SELECT", color=green];
+    apiTech -> tableTech [label="SELECT", color=green];
+    apiMarche -> tableMarche [label="SELECT", color=green];
+    apiTendances -> tableTend [label="SELECT", color=green];
+    
+    // Relations API génération → Fichiers
+    apiGenFiche -> tableProduits [label="SELECT", color=orange];
+    apiGenFiche -> ficheGenerated [label="write HTML", color=orange];
+    
+    // Relations Scripts → API/DB
+    scriptAdd -> server [label="Direct DB insert", color=red];
+    scriptGen -> apiGenFiche [label="HTTP POST", color=red];
+    scriptRegen -> apiGenFiche [label="HTTP POST (loop)", color=red];
+    scriptTop -> apiProduitsPUT [label="HTTP PUT", color=red];
+    
+    // Légende
+    { rank=sink; 
+        legend [shape=box, label="Légende:\nBleu = Pages HTML\nViolet = JavaScript\nVert = API/Backend\nJaune = Database\nOrange = Génération\nRouge = Scripts", fillcolor=white];
+    }
+}
