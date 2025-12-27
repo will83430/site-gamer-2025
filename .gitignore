@@ -1,6 +1,9 @@
 # Dépendances Node.js
 node_modules/
 
+# Variables d'environnement
+.env
+
 # Dossiers et fichiers de configuration éditeur
 .vscode/
 .cache/
