@@ -5,6 +5,7 @@
 Refactorisation complète du backend pour améliorer la maintenabilité, la sécurité et la testabilité du projet.
 
 ### 🏆 Résultats clés
+
 - ✅ **Server.js réduit de 59%** : 636 → 260 lignes
 - ✅ **8 modules de routes** créés et testés
 - ✅ **51/57 scripts** migrés vers config centralisée
@@ -19,6 +20,7 @@ Refactorisation complète du backend pour améliorer la maintenabilité, la séc
 ### 1. Configuration centralisée (✅ Complété)
 
 **Avant :**
+
 ```javascript
 const pool = new Pool({
   user: 'postgres',
@@ -30,6 +32,7 @@ const pool = new Pool({
 ```
 
 **Après :**
+
 ```javascript
 // .env
 DB_USER=postgres
@@ -55,7 +58,8 @@ const pool = require('../backend/config/database');
 ### 2. Architecture modulaire (✅ Complété)
 
 **Structure backend/ créée :**
-```
+
+```text
 backend/
 ├── config/
 │   └── database.js          # Pool PostgreSQL centralisé
@@ -73,6 +77,7 @@ backend/
 ```
 
 **Endpoints disponibles :**
+
 - `/api/produits` - Liste, création, modification, suppression
 - `/api/produits/:id` - Détail produit
 - `/api/generate-fiche/:id` - Génération fiche HTML
@@ -95,7 +100,7 @@ backend/
 
 **Après :** Organisés en 4 dossiers
 
-```
+```text
 scripts/
 ├── setup/              (5 fichiers)
 │   ├── reinit-db.js
@@ -122,7 +127,8 @@ Chaque dossier contient un `README.md` expliquant son rôle.
 ### 4. Tests automatisés (✅ Complété)
 
 **Configuration Jest :**
-```json
+
+```jsonjson
 {
   "scripts": {
     "test": "jest",
@@ -133,6 +139,7 @@ Chaque dossier contient un `README.md` expliquant son rôle.
 ```
 
 **Tests créés :**
+
 - `tests/database.test.js` - Connexion PostgreSQL (3 tests)
 - `tests/api.test.js` - Endpoints API (6 tests)
 - `tests/generation.test.js` - Génération fiches HTML (6 tests)
@@ -144,7 +151,7 @@ Chaque dossier contient un `README.md` expliquant son rôle.
 ## 📈 Métriques d'amélioration
 
 | Métrique | Avant | Après | Amélioration |
-|----------|-------|-------|--------------|
+| -------- | ----- | ----- | ------------ |
 | Lignes server.js | 636 | 260 | -59% |
 | Modules routes | 0 | 8 | +8 |
 | Scripts avec config centralisée | 0 | 51 | +51 |
@@ -157,12 +164,14 @@ Chaque dossier contient un `README.md` expliquant son rôle.
 ## 🚀 Commandes disponibles
 
 ### Développement
+
 ```bash
 npm start              # Démarrer le serveur
 npm run dev            # Mode développement (nodemon)
 ```
 
 ### Tests
+
 ```bash
 npm test               # Lancer tous les tests
 npm run test:watch     # Tests en mode watch
@@ -170,6 +179,7 @@ npm run test:coverage  # Tests avec couverture
 ```
 
 ### Build
+
 ```bash
 npm run build:css      # Minifier CSS
 npm run build:js       # Minifier JS
@@ -178,6 +188,7 @@ npm run clean          # Supprimer fichiers minifiés
 ```
 
 ### Diagrammes
+
 ```bash
 npm run diagram:all    # Diagramme complet du projet
 npm run diagram:backend # Diagramme backend uniquement
@@ -185,6 +196,7 @@ npm run diagram:flow   # Diagramme de flux architectural
 ```
 
 ### Base de données
+
 ```bash
 npm run db:init        # Initialiser schéma
 npm run db:populate    # Peupler avec données
@@ -242,9 +254,10 @@ npm run db:populate    # Peupler avec données
 ## 🏁 Conclusion
 
 Refactorisation majeure terminée avec succès. Le projet est maintenant :
+
 - ✅ **Plus maintenable** - Code organisé et modulaire
 - ✅ **Plus sécurisé** - Configuration externalisée
 - ✅ **Plus testable** - Tests automatisés en place
 - ✅ **Plus professionnel** - Structure standard d'application Node.js
 
-**Tous les objectifs ont été atteints ! 🎉**
+### Tous les objectifs ont été atteints ! 🎉
