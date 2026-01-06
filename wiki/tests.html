@@ -3,374 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tests Automatisés - Wiki Site Gamer 2025</title>
+    <title>Tests - Wiki Site Gamer 2025</title>
     <link rel="stylesheet" href="wiki-styles.css">
 </head>
 <body>
     <div class="header">
-        <h1>🧪 Tests Automatisés</h1>
-        <p>Tests Jest pour garantir la qualité du code</p>
+        <h1>🧪 Tests et Qualité</h1>
+        <p>Guide complet des tests automatisés et manuels</p>
     </div>
 
     <nav class="nav">
         <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="getting-started.html">📖 Guide</a>
         <a href="api-reference.html">📁 API</a>
-        <a href="database.html">🗄️ Base de données</a>
-        <a href="scripts.html">⚙️ Scripts</a>
-        <a href="troubleshooting.html">🔧 Dépannage</a>
-        <a href="changelog.html">📝 Changelog</a>
+        <a href="tests.html" class="active">🧪 Tests</a>
     </nav>
 
-    <div class="breadcrumb" style="max-width: 1200px; margin: 20px auto; padding: 0 20px; opacity: 0.7;">
-        <a href="wiki.html" style="color: #667eea; text-decoration: none;">🏠 Wiki</a> > Tests Automatisés
-    </div>
-
     <div class="container">
-        <div class="content" style="background: linear-gradient(145deg, #2a2a40, #1f1f35); border-radius: 15px; padding: 40px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);">
+        <div class="section">
+            <h2>🎯 Suite de Tests Interactive</h2>
+            <p>Interface web complète pour tester automatiquement tous les aspects du site.</p>
             
-            <h2>📋 Vue d'ensemble</h2>
-            
-            <div class="info">
-                <strong>💡 Info :</strong> Le projet utilise Jest pour les tests automatisés, garantissant la fiabilité du code et facilitant la maintenance.
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../scripts/maintenance/test-suite.html" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; border-radius: 12px; text-decoration: none; font-size: 1.2em; font-weight: bold; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.2s, box-shadow 0.2s;">
+                    🧪 Ouvrir la Suite de Tests
+                </a>
+                <p style="margin-top: 10px; opacity: 0.7; font-size: 0.9em;">Nouvelle fenêtre - 23 tests automatisés</p>
             </div>
             
-            <p>Les tests automatisés sont essentiels pour :</p>
-            <ul>
-                <li><strong>Garantir la qualité</strong> - Détecter les bugs avant la production</li>
-                <li><strong>Faciliter les refactoring</strong> - Modifier le code en toute confiance</li>
-                <li><strong>Documenter le comportement</strong> - Les tests servent de documentation vivante</li>
-                <li><strong>Accélérer le développement</strong> - Détection rapide des régressions</li>
-                <li><strong>Améliorer la maintenabilité</strong> - Code plus robuste et fiable</li>
-            </ul>
-
-            <p style="text-align: center; margin: 30px 0; font-size: 1.2em;">
-                <strong style="color: #2ecc71;">✅ 15 tests</strong> | 
-                <strong style="color: #3498db;">3 suites</strong> | 
-                <strong style="color: #2ecc71;">100% succès</strong>
-            </p>
-
-            <h2>🚀 Lancer les tests</h2>
-
-            <h3>Tests standard</h3>
-            <p>Lance tous les tests une fois :</p>
             <div class="code-block">
-                <div style="background: rgba(102, 126, 234, 0.2); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #667eea;">
-                    <span style="color: #2ecc71; font-weight: 600; font-size: 0.85em;">bash</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                <div class="code-header">
+                    <span>🌐 URL directe</span>
                 </div>
-                <code>npm test</code>
+                <pre><code>http://localhost:3000/scripts/maintenance/test-suite.html</code></pre>
             </div>
 
-            <h3>Mode watch (développement)</h3>
-            <p>Lance les tests automatiquement à chaque modification de fichier :</p>
+            <div class="info-box success">
+                <strong>✨ 23 tests automatisés</strong>
+                <p>Organisés en 3 priorités : Critique (P1), Important (P2), Recommandé (P3)</p>
+            </div>
+
+            <h3>🔴 Tests Priorité Critique (P1)</h3>
+            <ul>
+                <li><strong>Images & Assets</strong> - Vérifie que toutes les images produits existent</li>
+                <li><strong>Fiches HTML</strong> - Vérifie l'accessibilité des fiches produits</li>
+                <li><strong>Base de données</strong> - Contrôle l'intégrité des données</li>
+                <li><strong>API Produits</strong> - Teste tous les endpoints API</li>
+                <li><strong>Catégories</strong> - Vérifie que chaque catégorie a des produits</li>
+            </ul>
+
+            <h3>🟡 Tests Priorité Importante (P2)</h3>
+            <ul>
+                <li><strong>Liens internes</strong> - Vérifie tous les liens du site</li>
+                <li><strong>Performance</strong> - Mesure les temps de chargement</li>
+                <li><strong>Responsive Design</strong> - Test mobile/tablette/desktop</li>
+                <li><strong>Système de cache</strong> - Vérifie localStorage</li>
+                <li><strong>Recherche</strong> - Teste la fonctionnalité de recherche</li>
+                <li><strong>Filtres</strong> - Vérifie les filtres par catégorie</li>
+            </ul>
+
+            <h3>🔵 Tests Priorité Recommandée (P3)</h3>
+            <ul>
+                <li><strong>SEO</strong> - Balises meta, titres, descriptions</li>
+                <li><strong>Accessibilité</strong> - Navigation clavier, contrastes</li>
+                <li><strong>Sécurité</strong> - Tests injection SQL/XSS basiques</li>
+                <li><strong>Validation HTML</strong> - Conformité W3C</li>
+                <li><strong>Erreurs console</strong> - Détection JavaScript</li>
+                <li><strong>CORS</strong> - Configuration cross-origin</li>
+                <li><strong>Service Worker</strong> - Fonctionnement SW</li>
+                <li><strong>Formulaires</strong> - Validation des champs</li>
+                <li><strong>Format images</strong> - Taille et compression</li>
+                <li><strong>JSON API</strong> - Validité des réponses</li>
+                <li><strong>Top du mois</strong> - Filtrage des tops</li>
+                <li><strong>Pagination</strong> - Si implémentée</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🖥️ Tests via Scripts Node.js</h2>
+            
+            <h3>Vérification des Assets</h3>
             <div class="code-block">
-                <div style="background: rgba(102, 126, 234, 0.2); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #667eea;">
-                    <span style="color: #2ecc71; font-weight: 600; font-size: 0.85em;">bash</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                <div class="code-header">
+                    <span>Terminal</span>
                 </div>
-                <code>npm run test:watch</code>
+                <pre><code>node scripts/maintenance/verify-assets.js</code></pre>
             </div>
-            <div class="info">
-                <strong>💡 Astuce :</strong> Utilisez le mode watch pendant le développement pour un feedback immédiat.
-            </div>
+            <p><strong>Vérifie :</strong></p>
+            <ul>
+                <li>✅ Toutes les images référencées existent physiquement</li>
+                <li>⚠️ Incohérences de noms (ex: "apple-" manquant)</li>
+                <li>🗑️ Images orphelines (fichiers non utilisés)</li>
+            </ul>
 
-            <h3>Couverture de code</h3>
-            <p>Génère un rapport de couverture indiquant quelles parties du code sont testées :</p>
+            <h3>Vérification de la Base de Données</h3>
             <div class="code-block">
-                <div style="background: rgba(102, 126, 234, 0.2); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #667eea;">
-                    <span style="color: #2ecc71; font-weight: 600; font-size: 0.85em;">bash</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                <div class="code-header">
+                    <span>Terminal</span>
                 </div>
-                <code>npm run test:coverage</code>
+                <pre><code>node scripts/maintenance/verify-database-state.js</code></pre>
             </div>
-            <p>Le rapport sera généré dans <code>coverage/</code> et affichera :</p>
+            <p><strong>Vérifie :</strong></p>
             <ul>
-                <li><strong>Statements</strong> - Pourcentage d'instructions exécutées</li>
-                <li><strong>Branches</strong> - Pourcentage de branches conditionnelles testées</li>
-                <li><strong>Functions</strong> - Pourcentage de fonctions appelées</li>
-                <li><strong>Lines</strong> - Pourcentage de lignes de code exécutées</li>
+                <li>Intégrité des données produits</li>
+                <li>Champs manquants ou vides</li>
+                <li>Formats incorrects (prix, liens, etc.)</li>
+                <li>Cohérence des catégories</li>
             </ul>
 
-            <h2>📦 Structure des tests</h2>
-
+            <h3>Tests Unitaires Jest</h3>
             <div class="code-block">
-                <code>tests/
-├── database.test.js      # Tests de connexion PostgreSQL
-├── api.test.js           # Tests des endpoints API
-└── generation.test.js    # Tests de génération de fiches HTML</code>
+                <div class="code-header">
+                    <span>Terminal</span>
+                </div>
+                <pre><code># Tous les tests
+npm test
+
+# Mode watch (relance auto)
+npm run test:watch
+
+# Avec couverture de code
+npm run test:coverage</code></pre>
             </div>
-
-            <h3>1. Tests de base de données (database.test.js)</h3>
-            <p><strong>Objectif :</strong> Vérifier la connexion et la configuration PostgreSQL</p>
+            <p><strong>Fichiers testés :</strong></p>
             <ul>
-                <li>✅ Connexion à la base de données</li>
-                <li>✅ Configuration du pool de connexions</li>
-                <li>✅ Requête simple SELECT 1</li>
+                <li><code>tests/api.test.js</code> - Endpoints API</li>
+                <li><code>tests/database.test.js</code> - Connexions DB</li>
+                <li><code>tests/generation.test.js</code> - Génération de fiches</li>
             </ul>
+        </div>
 
-            <h3>2. Tests API (api.test.js)</h3>
-            <p><strong>Objectif :</strong> Valider les endpoints REST et leurs réponses</p>
-            <ul>
-                <li>✅ GET /api/produits - Liste des produits</li>
-                <li>✅ GET /api/produits/:id - Détail d'un produit</li>
-                <li>✅ POST /api/produits - Création d'un produit</li>
-                <li>✅ PUT /api/produits/:id - Modification</li>
-                <li>✅ DELETE /api/produits/:id - Suppression</li>
-                <li>✅ Gestion des erreurs (404, 500)</li>
-            </ul>
-
-            <h3>3. Tests de génération (generation.test.js)</h3>
-            <p><strong>Objectif :</strong> Tester la génération de fiches HTML produits</p>
-            <ul>
-                <li>✅ Génération du HTML valide</li>
-                <li>✅ Structure des balises</li>
-                <li>✅ Présence des métadonnées</li>
-                <li>✅ Liens vers CSS/JS</li>
-                <li>✅ Slugification des noms</li>
-                <li>✅ Création des dossiers</li>
-            </ul>
-
-            <h2>🔍 Comprendre les résultats</h2>
-
-            <h3>Résultat typique</h3>
+        <div class="section">
+            <h2>🌐 Tests dans le Navigateur</h2>
+            
+            <h3>Test Console Errors (Interface dédiée)</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <a href="../scripts/maintenance/test-console-errors.html" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-size: 1.1em; font-weight: bold; box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4); transition: transform 0.2s;">
+                    🔍 Tester les Erreurs Console
+                </a>
+            </div>
             <div class="code-block">
-                <code>PASS  tests/database.test.js
-  Database Connection
-    ✓ should connect to PostgreSQL (45ms)
-    ✓ should have correct pool configuration (2ms)
-    ✓ should execute simple query (12ms)
+                <div class="code-header">
+                    <span>🌐 URL</span>
+                </div>
+                <pre><code>http://localhost:3000/scripts/maintenance/test-console-errors.html</code></pre>
+            </div>
+            <p>Teste automatiquement tous les produits pour détecter :</p>
+            <ul>
+                <li>❌ Images 404</li>
+                <li>❌ Fiches HTML manquantes</li>
+                <li>📊 Statistiques en temps réel</li>
+                <li>📁 Résultats groupés par catégorie</li>
+            </ul>
 
-PASS  tests/api.test.js
-  API Endpoints
-    ✓ GET /api/produits should return product list (234ms)
-    ✓ GET /api/produits/:id should return specific product (156ms)
-    ✓ POST /api/produits should create new product (189ms)
-    ✓ PUT /api/produits/:id should update product (167ms)
-    ✓ DELETE /api/produits/:id should delete product (143ms)
-    ✓ should return 404 for non-existent product (89ms)
-
-PASS  tests/generation.test.js
-  Fiche Generation
-    ✓ should generate valid HTML (76ms)
-    ✓ should include metadata (34ms)
-    ✓ should link CSS and JS files (28ms)
-    ✓ should slugify product names correctly (12ms)
-    ✓ should create category folders (45ms)
-    ✓ should handle special characters (23ms)
-
-Test Suites: 3 passed, 3 total
-Tests:       15 passed, 15 total
-Snapshots:   0 total
-Time:        2.456 s</code>
+            <h3>DevTools (F12)</h3>
+            <div class="info-box">
+                <strong>Vérifications manuelles rapides :</strong>
+                <ol>
+                    <li>Ouvre le site : <code>http://localhost:3000</code></li>
+                    <li>Appuie sur <code>F12</code></li>
+                    <li>Onglet <strong>Console</strong> : erreurs JavaScript ?</li>
+                    <li>Onglet <strong>Network</strong> : temps de chargement</li>
+                    <li>Onglet <strong>Application</strong> : service worker actif ?</li>
+                </ol>
             </div>
 
-            <h3>Indicateurs de succès</h3>
+            <h3>Test Responsive</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Raccourci</span>
+                </div>
+                <pre><code>Ctrl + Shift + M (Windows/Linux)
+Cmd + Shift + M (Mac)</code></pre>
+            </div>
+            <p>Teste l'affichage sur différentes résolutions :</p>
+            <ul>
+                <li>📱 Mobile (375px)</li>
+                <li>📱 Tablet (768px)</li>
+                <li>🖥️ Desktop (1920px)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>⚡ Tests de Performance</h2>
+            
+            <h3>Google Lighthouse</h3>
+            <div class="info-box warning">
+                <strong>Dans Chrome DevTools (F12) :</strong>
+                <ol>
+                    <li>Onglet <strong>Lighthouse</strong></li>
+                    <li>Sélectionne les catégories : Performance, Accessibilité, SEO, Best Practices</li>
+                    <li>Mode : Desktop ou Mobile</li>
+                    <li>Clique sur <strong>"Analyze page load"</strong></li>
+                </ol>
+            </div>
+            <p><strong>Scores recommandés :</strong></p>
+            <ul>
+                <li>🟢 Performance : >90</li>
+                <li>🟢 Accessibilité : >90</li>
+                <li>🟢 SEO : >90</li>
+                <li>🟢 Best Practices : >90</li>
+            </ul>
+
+            <h3>Network Throttling</h3>
+            <p>Simule une connexion lente :</p>
+            <ol>
+                <li>DevTools → <strong>Network</strong></li>
+                <li>Dropdown : "No throttling" → <strong>Fast 3G / Slow 4G</strong></li>
+                <li>Recharge la page</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>🔒 Tests de Sécurité</h2>
+            
+            <h3>Test Injection SQL</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Test manuel</span>
+                </div>
+                <pre><code>// Dans un champ de recherche/filtre, essaie :
+'; DROP TABLE produits; --
+' OR '1'='1
+&lt;script&gt;alert('XSS')&lt;/script&gt;</code></pre>
+            </div>
+            <p>✅ Le site doit rejeter ou échapper ces entrées</p>
+
+            <h3>Test CORS</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>PowerShell</span>
+                </div>
+                <pre><code>curl -H "Origin: http://malicious-site.com" http://localhost:3000/api/produits</code></pre>
+            </div>
+            <p>Vérifie que les en-têtes CORS sont correctement configurés</p>
+        </div>
+
+        <div class="section">
+            <h2>📋 Checklist Complète Avant Production</h2>
+            
+            <div class="info-box success">
+                <h3>Phase 1 : Tests Critiques</h3>
+                <ul>
+                    <li>☐ <code>npm test</code> - Tous les tests passent</li>
+                    <li>☐ <code>verify-assets.js</code> - Aucune image manquante</li>
+                    <li>☐ <code>verify-database-state.js</code> - DB cohérente</li>
+                    <li>☐ Test-suite P1 - 5 tests critiques ✅</li>
+                </ul>
+            </div>
+
+            <div class="info-box warning">
+                <h3>Phase 2 : Tests Importants</h3>
+                <ul>
+                    <li>☐ Test-suite P2 - 6 tests importants ✅</li>
+                    <li>☐ Lighthouse - Score >90 sur tous</li>
+                    <li>☐ Test responsive - 3 breakpoints</li>
+                    <li>☐ Cache localStorage fonctionne</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Phase 3 : Tests Recommandés</h3>
+                <ul>
+                    <li>☐ Test-suite P3 - 12 tests recommandés ✅</li>
+                    <li>☐ SEO - Balises meta présentes</li>
+                    <li>☐ Service Worker enregistré</li>
+                    <li>☐ Validation W3C HTML</li>
+                    <li>☐ Test sécurité basique</li>
+                </ul>
+            </div>
+
+            <div class="info-box error">
+                <h3>Phase 4 : Build & Deploy</h3>
+                <ul>
+                    <li>☐ <code>npm run build:all</code> - Minification OK</li>
+                    <li>☐ Test avec cache vidé (Ctrl+Shift+R)</li>
+                    <li>☐ Test sur navigateurs multiples (Chrome, Firefox, Edge)</li>
+                    <li>☐ Vérifier variables d'environnement (.env)</li>
+                    <li>☐ <code>NODE_ENV=production npm start</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ Outils de Maintenance</h2>
+            
             <table>
                 <thead>
                     <tr>
-                        <th>Symbole</th>
-                        <th>Signification</th>
-                        <th>Action</th>
+                        <th>Outil</th>
+                        <th>Type</th>
+                        <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><span style="color: #2ecc71; font-weight: 600;">✓</span></td>
-                        <td>Test réussi</td>
-                        <td>Aucune action nécessaire</td>
+                        <td><a href="../scripts/maintenance/test-suite.html">test-suite.html</a></td>
+                        <td>🌐 Web</td>
+                        <td>Suite complète de 23 tests automatisés</td>
                     </tr>
                     <tr>
-                        <td><span style="color: #e74c3c; font-weight: 600;">✕</span></td>
-                        <td>Test échoué</td>
-                        <td>Vérifier le message d'erreur et corriger le code</td>
+                        <td><a href="../scripts/maintenance/test-console-errors.html">test-console-errors.html</a></td>
+                        <td>🌐 Web</td>
+                        <td>Détection erreurs 404 (images + fiches)</td>
                     </tr>
                     <tr>
-                        <td><span style="color: #f39c12; font-weight: 600;">○</span></td>
-                        <td>Test ignoré (skipped)</td>
-                        <td>Test désactivé temporairement avec <code>.skip()</code></td>
+                        <td><a href="../scripts/maintenance/clear-cache.html">clear-cache.html</a></td>
+                        <td>🌐 Web</td>
+                        <td>Vide le cache localStorage</td>
+                    </tr>
+                    <tr>
+                        <td><code>verify-assets.js</code></td>
+                        <td>⚙️ Node</td>
+                        <td>Vérifie images et assets</td>
+                    </tr>
+                    <tr>
+                        <td><code>verify-database-state.js</code></td>
+                        <td>⚙️ Node</td>
+                        <td>Contrôle intégrité DB</td>
                     </tr>
                 </tbody>
             </table>
+        </div>
 
-            <h2>⚙️ Configuration Jest</h2>
-
-            <p>La configuration se trouve dans <code>package.json</code> :</p>
-            <div class="code-block">
-                <code>{
-  "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
-  },
-  "devDependencies": {
-    "jest": "^30.2.0",
-    "supertest": "^7.1.4"
-  }
-}</code>
-            </div>
-
-            <h3>Variables d'environnement</h3>
-            <p>Les tests utilisent les mêmes variables que l'application (fichier <code>.env</code>) :</p>
+        <div class="section">
+            <h2>📚 Ressources Externes</h2>
             <ul>
-                <li><code>DB_USER</code> - Utilisateur PostgreSQL</li>
-                <li><code>DB_PASSWORD</code> - Mot de passe</li>
-                <li><code>DB_HOST</code> - Hôte (localhost par défaut)</li>
-                <li><code>DB_NAME</code> - Nom de la base (gamer_2025)</li>
-                <li><code>DB_PORT</code> - Port (5432 par défaut)</li>
+                <li><a href="https://validator.w3.org/" target="_blank">🌐 W3C HTML Validator</a> - Validation HTML</li>
+                <li><a href="https://jigsaw.w3.org/css-validator/" target="_blank">🎨 W3C CSS Validator</a> - Validation CSS</li>
+                <li><a href="https://web.dev/measure/" target="_blank">⚡ Web.dev Measure</a> - Performance & SEO</li>
+                <li><a href="https://www.webpagetest.org/" target="_blank">🔬 WebPageTest</a> - Test de charge détaillé</li>
+                <li><a href="https://developers.google.com/speed/pagespeed/insights/" target="_blank">🚀 PageSpeed Insights</a> - Analyse Google</li>
             </ul>
+        </div>
 
-            <h2>✍️ Écrire de nouveaux tests</h2>
+        <div class="section">
+            <h2>❓ FAQ Tests</h2>
+            
+            <h3>Combien de temps prend la suite complète ?</h3>
+            <p>Environ 2-3 minutes pour les 23 tests automatisés.</p>
 
-            <h3>Structure d'un test</h3>
-            <div class="code-block">
-                <code>// Importations
-const request = require('supertest');
-const app = require('../server');
+            <h3>Puis-je arrêter les tests en cours ?</h3>
+            <p>Oui, bouton <strong>"⏸️ Arrêter"</strong> dans l'interface test-suite.</p>
 
-// Suite de tests
-describe('Nom de la fonctionnalité', () => {
-    
-    // Préparation avant chaque test
-    beforeEach(() => {
-        // Code de setup
-    });
+            <h3>Les tests modifient-ils les données ?</h3>
+            <p>Non, tous les tests sont en lecture seule. Aucune modification de la base de données.</p>
 
-    // Test individuel
-    test('devrait faire quelque chose', async () => {
-        const response = await request(app)
-            .get('/api/endpoint')
-            .expect(200);
+            <h3>Quels tests lancer quotidiennement ?</h3>
+            <p>Tests Priorité Critique (P1) - 5 tests en 30 secondes.</p>
 
-        expect(response.body).toHaveProperty('success', true);
-    });
-
-    // Nettoyage après chaque test
-    afterEach(() => {
-        // Code de cleanup
-    });
-});</code>
-            </div>
-
-            <h3>Bonnes pratiques</h3>
-            <ul>
-                <li>✅ <strong>Nom descriptif</strong> - "devrait retourner 404 si produit inexistant"</li>
-                <li>✅ <strong>Un concept par test</strong> - Ne pas tester trop de choses à la fois</li>
-                <li>✅ <strong>Tests isolés</strong> - Chaque test doit être indépendant</li>
-                <li>✅ <strong>Setup/Teardown</strong> - Utiliser beforeEach/afterEach pour préparer/nettoyer</li>
-                <li>✅ <strong>Assertions claires</strong> - Vérifier exactement ce qui est attendu</li>
-                <li>❌ <strong>Éviter les dépendances</strong> - Les tests ne doivent pas dépendre les uns des autres</li>
-            </ul>
-
-            <h2>🐛 Dépannage</h2>
-
-            <h3>Le serveur ne démarre pas dans les tests</h3>
-            <p><strong>Solution :</strong> Vérifier que le port n'est pas déjà utilisé et que PostgreSQL est démarré.</p>
-
-            <h3>Erreur "Cannot find module"</h3>
-            <p><strong>Solution :</strong> Installer les dépendances :</p>
-            <div class="code-block">
-                <div style="background: rgba(102, 126, 234, 0.2); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #667eea;">
-                    <span style="color: #2ecc71; font-weight: 600; font-size: 0.85em;">bash</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
-                </div>
-                <code>npm install</code>
-            </div>
-
-            <h3>Tests qui timeout</h3>
-            <p><strong>Solution :</strong> Augmenter le timeout dans le test :</p>
-            <div class="code-block">
-                <code>test('long test', async () => {
-    // ...
-}, 10000); // 10 secondes</code>
-            </div>
-
-            <h3>Erreur de connexion base de données</h3>
-            <p><strong>Solution :</strong> Vérifier que :</p>
-            <ul>
-                <li>PostgreSQL est démarré</li>
-                <li>Le fichier <code>.env</code> contient les bonnes informations</li>
-                <li>La base de données <code>gamer_2025</code> existe</li>
-                <li>Les permissions sont correctes</li>
-            </ul>
-
-            <h2>📊 Métriques de tests</h2>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Suite</th>
-                        <th>Tests</th>
-                        <th>Statut</th>
-                        <th>Temps moyen</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Database</td>
-                        <td>3</td>
-                        <td><span style="color: #2ecc71; font-weight: 600;">✓ Passing</span></td>
-                        <td>~60ms</td>
-                    </tr>
-                    <tr>
-                        <td>API</td>
-                        <td>6</td>
-                        <td><span style="color: #2ecc71; font-weight: 600;">✓ Passing</span></td>
-                        <td>~900ms</td>
-                    </tr>
-                    <tr>
-                        <td>Generation</td>
-                        <td>6</td>
-                        <td><span style="color: #2ecc71; font-weight: 600;">✓ Passing</span></td>
-                        <td>~200ms</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2>🎯 Prochaines étapes</h2>
-
-            <p>Pour améliorer la couverture de tests :</p>
-            <ul>
-                <li>📝 Ajouter des tests pour les routes de contenu (actualités, technologies, etc.)</li>
-                <li>🔍 Tester les cas limites et erreurs</li>
-                <li>🧪 Ajouter des tests d'intégration end-to-end</li>
-                <li>⚡ Implémenter des tests de performance</li>
-                <li>🔒 Tester la sécurité et la validation des données</li>
-                <li>📊 Viser 80%+ de couverture de code</li>
-            </ul>
-
-            <div class="nav-bottom" style="display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3);">
-                <a href="scripts.html" class="nav-button" style="background: #667eea; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: all 0.3s;">← Scripts</a>
-                <a href="workflows.html" class="nav-button" style="background: #667eea; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: all 0.3s;">Workflows →</a>
-            </div>
+            <h3>Comment corriger les erreurs détectées ?</h3>
+            <p>Chaque test affiche un message détaillé. Utilise les scripts de maintenance pour corriger automatiquement certains problèmes.</p>
         </div>
     </div>
 
-    <div class="footer" style="text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7;">
-        <p>📚 Wiki Site Gamer 2025 - Documentation complète</p>
-        <p>Dernière mise à jour : 27 décembre 2025</p>
-    </div>
-    <script>
-        function copyCode(button) {
-            const block = button.closest('.code-block');
-            if (!block) return;
-            const codeEl = block.querySelector('code');
-            if (!codeEl) return;
-            const text = codeEl.textContent;
-
-            navigator.clipboard.writeText(text).then(() => {
-                const prev = button.textContent;
-                button.textContent = 'Copié !';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.textContent = prev;
-                    button.classList.remove('copied');
-                }, 1500);
-            }).catch(() => {
-                const prev = button.textContent;
-                button.textContent = 'Erreur';
-                setTimeout(() => button.textContent = prev, 1500);
-            });
-        }
-    </script>
+    <footer>
+        <p>📚 Wiki Site Gamer 2025 - Documentation Tests</p>
+        <p><a href="wiki.html">Retour à l'accueil</a></p>
+    </footer>
 </body>
 </html>

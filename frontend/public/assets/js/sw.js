@@ -123,7 +123,17 @@ const filesToCache = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(filesToCache))
+    caches.open(CACHE_NAME).then(cache => {
+      // Cache les fichiers un par un pour éviter l'erreur si un fichier n'existe pas
+      return Promise.allSettled(
+        filesToCache.map(url => 
+          cache.add(url).catch(err => {
+            console.warn(`Impossible de mettre en cache: ${url}`, err);
+            return Promise.resolve(); // Continue même si un fichier échoue
+          })
+        )
+      );
+    })
   );
 });
 

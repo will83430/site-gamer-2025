@@ -120,7 +120,7 @@ function mettreAJourBadgesVedettes() {
       if (!card.querySelector(".badge-top-month")) {
         const badgeTop = document.createElement("div");
         badgeTop.className = "badge-top-month";
-        badgeTop.textContent = "Top • Déc.";
+        badgeTop.textContent = "Top • Jan.";
         badgeTop.style.cssText = `
           position: absolute;
           top: 8px;

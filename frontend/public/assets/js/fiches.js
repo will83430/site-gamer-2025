@@ -230,7 +230,7 @@ function afficherProduits(produits) {
 
                 ${produit.fonctionnalites_avancees && produit.fonctionnalites_avancees.length > 0 ? `
                     <ul style="text-align: left; padding-left: 20px; margin: 10px 0;">
-                        ${produit.fonctionnalites_avancees.slice(0, 3).map(f => `<li style="font-size: 0.9em;">✓ ${f}</li>`).join('')}
+                        ${produit.fonctionnalites_avancees.slice(0, 3).map(f => `<li style="font-size: 0.9em;">${f}</li>`).join('')}
                     </ul>
                 ` : ''}
 
