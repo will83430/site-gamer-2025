@@ -63,7 +63,7 @@ router.get('/item/:id', async (req, res) => {
 // POST ajouter une tendance
 router.post('/', async (req, res) => {
   try {
-    const { titre, description, image, date_publication, tags, categorie } = req.body;
+    const { titre, description, image, video_url, date_publication, tags, hot, categorie } = req.body;
     
     const { rows: catRows } = await pool.query(
       'SELECT id FROM categories WHERE LOWER(nom) = $1', 
@@ -77,10 +77,17 @@ router.post('/', async (req, res) => {
     const catId = catRows[0].id;
     const tagsStr = Array.isArray(tags) ? `{${tags.join(',')}}` : tags;
     
+    // Récupérer le max ordre pour cette catégorie
+    const { rows: maxRows } = await pool.query(
+      'SELECT COALESCE(MAX(ordre), 0) as max_ordre FROM actualites WHERE categorie_id = $1',
+      [catId]
+    );
+    const newOrdre = maxRows[0].max_ordre + 1;
+    
     const result = await pool.query(
-      `INSERT INTO actualites (titre, description, image, date_publication, tags, categorie_id)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [titre, description, image, date_publication, tagsStr, catId]
+      `INSERT INTO actualites (titre, description, image, video_url, date_publication, tags, hot, categorie_id, ordre)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+      [titre, description, image, video_url || null, date_publication, tagsStr, hot || false, catId, newOrdre]
     );
     
     console.log('✅ Tendance créée:', result.rows[0].id);
@@ -95,15 +102,15 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { titre, description, image, date_publication, tags } = req.body;
+    const { titre, description, image, video_url, date_publication, tags, hot } = req.body;
     
     const tagsStr = Array.isArray(tags) ? `{${tags.join(',')}}` : tags;
     
     await pool.query(
       `UPDATE actualites 
-       SET titre=$1, description=$2, image=$3, date_publication=$4, tags=$5 
-       WHERE id=$6`,
-      [titre, description, image, date_publication, tagsStr, id]
+       SET titre=$1, description=$2, image=$3, video_url=$4, date_publication=$5, tags=$6, hot=$7 
+       WHERE id=$8`,
+      [titre, description, image, video_url || null, date_publication, tagsStr, hot || false, id]
     );
     
     console.log('✅ Tendance mise à jour:', id);
@@ -118,9 +125,28 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    
+    // Récupérer la catégorie avant suppression
+    const { rows: item } = await pool.query('SELECT categorie_id FROM actualites WHERE id=$1', [id]);
+    if (!item.length) {
+      return res.status(404).json({ error: 'Tendance non trouvée' });
+    }
+    const categorieId = item[0].categorie_id;
+    
+    // Supprimer l'item
     await pool.query('DELETE FROM actualites WHERE id=$1', [id]);
     
-    console.log('✅ Tendance supprimée:', id);
+    // Réorganiser les ordres de manière séquentielle
+    const { rows: remaining } = await pool.query(
+      'SELECT id FROM actualites WHERE categorie_id=$1 ORDER BY ordre ASC, date_publication DESC, id DESC',
+      [categorieId]
+    );
+    
+    for (let i = 0; i < remaining.length; i++) {
+      await pool.query('UPDATE actualites SET ordre=$1 WHERE id=$2', [i + 1, remaining[i].id]);
+    }
+    
+    console.log('✅ Tendance supprimée et ordres réorganisés:', id);
     res.json({ success: true });
   } catch (err) {
     console.error('❌ Erreur DELETE tendance:', err);

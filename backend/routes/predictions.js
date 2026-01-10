@@ -18,7 +18,7 @@ router.get('/:categorie', async (req, res) => {
     
     const catId = catRows[0].id;
     const { rows } = await pool.query(
-      'SELECT * FROM predictions WHERE categorie_id = $1 ORDER BY annee', 
+      'SELECT * FROM predictions WHERE categorie_id = $1 ORDER BY ordre ASC, annee ASC, id ASC', 
       [catId]
     );
     
@@ -47,10 +47,17 @@ router.post('/', async (req, res) => {
     const anneeInt = annee === '' || annee === undefined ? null : parseInt(annee, 10);
     const probInt = probabilite === '' || probabilite === undefined ? null : parseInt(probabilite, 10);
     
+    // Récupérer le max ordre pour cette catégorie
+    const { rows: maxRows } = await pool.query(
+      'SELECT COALESCE(MAX(ordre), 0) as max_ordre FROM predictions WHERE categorie_id = $1',
+      [catId]
+    );
+    const newOrdre = maxRows[0].max_ordre + 1;
+    
     const result = await pool.query(
-      `INSERT INTO predictions (annee, titre, description, icone, probabilite, categorie_id)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [anneeInt, titre, description || null, icone || null, probInt, catId]
+      `INSERT INTO predictions (annee, titre, description, icone, probabilite, categorie_id, ordre)
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [anneeInt, titre, description || null, icone || null, probInt, catId, newOrdre]
     );
     
     console.log('✅ Prédiction créée:', result.rows[0].id);
@@ -89,9 +96,28 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    
+    // Récupérer la catégorie avant suppression
+    const { rows: item } = await pool.query('SELECT categorie_id FROM predictions WHERE id=$1', [id]);
+    if (!item.length) {
+      return res.status(404).json({ error: 'Prédiction non trouvée' });
+    }
+    const categorieId = item[0].categorie_id;
+    
+    // Supprimer l'item
     await pool.query('DELETE FROM predictions WHERE id=$1', [id]);
     
-    console.log('✅ Prédiction supprimée:', id);
+    // Réorganiser les ordres de manière séquentielle
+    const { rows: remaining } = await pool.query(
+      'SELECT id FROM predictions WHERE categorie_id=$1 ORDER BY ordre ASC, annee ASC, id ASC',
+      [categorieId]
+    );
+    
+    for (let i = 0; i < remaining.length; i++) {
+      await pool.query('UPDATE predictions SET ordre=$1 WHERE id=$2', [i + 1, remaining[i].id]);
+    }
+    
+    console.log('✅ Prédiction supprimée et ordres réorganisés:', id);
     res.json({ success: true });
   } catch (err) {
     console.error('❌ Erreur DELETE prediction:', err);

@@ -579,7 +579,8 @@ function getCategorySpecificFields(category) {
             { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, 4G/5G, Bluetooth..." },
             { emoji: "🎮", label: "Applications et usages", placeholder: "Productivité, jeux..." },
             { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Tablette, câble, chargeur..." }
         ],
         'SMARTPHONE': [
             { emoji: "📸", label: "Appareil photo", placeholder: "Nombre de capteurs, résolution..." },
@@ -609,7 +610,8 @@ function getCategorySpecificFields(category) {
             { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, filaire..." },
             { emoji: "🎮", label: "Confort et utilisation", placeholder: "Poids, coussinets..." },
             { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Casque, câbles, étui..." }
         ],
         'MONTRE CONNECTEE': [
             { emoji: "⌚", label: "Fonctions sport et santé", placeholder: "Cardio, GPS, sommeil..." },
@@ -630,9 +632,9 @@ function getCategorySpecificFields(category) {
             { emoji: "🎛️", label: "Fonctions avancées", placeholder: "Macros, RGB, capteurs..." },
             { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, sans fil..." },
             { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Ergonomie, confort..." },
+            { emoji: "�", label: "Autonomie", placeholder: "Batterie, recharge..." },
             { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
-            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Accessoires inclus..." },
-            { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." }
+            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Accessoires inclus..." }
         ],
         'CASQUE VR': [
             { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, capteurs..." },
@@ -664,11 +666,13 @@ function getCategorySpecificFields(category) {
             { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
         ],
         'TABLEAU INTERACTIF': [
-            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution..." },
-            { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, support..." },
-            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, HDMI..." },
-            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, ergonomie..." },
-            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, tactile..." },
+            { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, support mural, caméra..." },
+            { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, HDMI, USB-C..." },
+            { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, collaboration..." },
+            { emoji: "🔋", label: "Autonomie et consommation", placeholder: "Alimentation, consommation..." },
+            { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+            { emoji: "📦", label: "Contenu de la boîte", placeholder: "Stylets, câbles, support..." }
         ]
     };
 

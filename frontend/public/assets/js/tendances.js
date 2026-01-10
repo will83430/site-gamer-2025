@@ -22,9 +22,9 @@ class TendancesDataManager {
          console.log('🟢 Données reçues pour generateNewsHTML:', newsData);
         return newsData.map((news, index) => `
             <article class="actualite-card ${index === 0 ? 'featured' : ''}">
-                ${news.video
+                ${news.video_url
                 ? `<div class="card-video">
-                        <iframe width="100%" height="200" src="${news.video}" 
+                        <iframe width="100%" height="200" src="${news.video_url}" 
                             title="${news.titre}" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen></iframe>
@@ -101,7 +101,7 @@ class TendancesDataManager {
                             <div class="stat-icon">${icon}</div>
                             <div class="stat-value">${stat.valeur}</div>
                             <div class="stat-label">${stat.label}</div>
-                            <div class="stat-trend ${stat.tendance}">${stat.tendance === 'up' ? '+12.3% vs 2024' : stat.tendance === 'down' ? '-5.2% vs 2024' : stat.tendance === 'stable' ? 'Stable' : ''}</div>
+                            <div class="stat-trend ${stat.tendance}">${stat.tendance === 'up' ? '+12.3% vs 2024' : stat.tendance === 'down' ? '-5.2% vs 2024' : 'Stable'}</div>
                         </div>
                     `;
                 }).join('');

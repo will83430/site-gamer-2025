@@ -4,13 +4,36 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 
 ## 📈 Dernières Mises à Jour
 
-**🎉 Version 2.2.0 - 26 Décembre 2025**
+### 🎉 Version 2.3.0 - 6 Janvier 2026
 
-### 📚 Nouvelle Documentation Wiki Interactive
+#### 🎨 Architecture Interactive Améliorée
+
+- ✅ **Diagramme d'architecture interactif avancé** : project-connections-enhanced.html
+- ✅ **Courbes de Bézier élégantes** : Connexions fluides adaptées aux distances
+- ✅ **Hover avec transparence** : Met en évidence les composants connectés
+- ✅ **Click-to-lock** : Verrouille la visualisation avec bordure orange
+- ✅ **Compteur dynamique** : Affiche connexions sortantes (→) et entrantes (←)
+- ✅ **Légende interactive** : Explique les types de connexions (violet/vert/gris)
+- ✅ **Filtres par couche** : Frontend, Config, Routes, Database, Scripts, Tests
+- ✅ **Badges de connexion** : Affiche le nombre de liens par composant
+
+#### ✅ Suite de Tests Complète
+
+- ✅ **38 tests au total** : 15 Jest (Backend) + 23 Web (E2E)
+- ✅ **Tests unitaires Jest** : API, Database, Generation (15 tests)
+- ✅ **Tests fonctionnels Web** : Suite interactive 23 tests (P1/P2/P3)
+- ✅ **Coverage** : Couverture de code avec lcov
+- ✅ **Interface test-suite.html** : Runner interactif avec priorités
+- ✅ **Tests automatisés** : Images, fiches, API, performance, SEO, accessibilité
+
+### 🎉 Version 2.2.0 - 26 Décembre 2025
+
+#### 📚 Nouvelle Documentation Wiki Interactive
+
 - ✅ **15 pages de documentation complètes** avec navigation cohérente
 - ✅ **wiki.html** : Hub principal avec recherche en temps réel et cartes interactives
 - ✅ **project-connections.html** : Diagramme SVG interactif montrant l'architecture du système
-- ✅ **project-details.html** : Documentation exhaustive de tous les composants
+- ✅ **tests.html** : Documentation complète des tests avec accès direct à la suite
 - ✅ **api-reference.html** : Documentation complète de l'API REST
 - ✅ **database.html** : Schéma PostgreSQL avec exemples de requêtes
 - ✅ **scripts.html** : Documentation des 30+ scripts de maintenance
@@ -19,7 +42,8 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 - ✅ **CSS externe unifié** : wiki-styles.css pour meilleure maintenabilité
 - ✅ **Recherche intelligente** : Filtrage en temps réel sur wiki.html et changelog.html
 
-### 🎯 Nouveaux Produits Premium - Décembre 2025
+#### 🎯 Nouveaux Produits Premium - Décembre 2025
+
 - ✅ **12 produits top ajoutés** (prod_50 à prod_61) :
   - **Smartphones** : iPhone 15 Pro Max, Samsung Galaxy S24 Ultra
   - **Montres** : Apple Watch Ultra 2, Samsung Galaxy Watch6 Classic
@@ -30,7 +54,8 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 - ✅ **Scripts de génération** : add-new-products.js, generate-all-new-fiches.js
 - ✅ **Système "Top du mois"** : set-top-decembre.js pour marquage automatique
 
-### 🗃️ Optimisations Base de Données
+#### 🗃️ Optimisations Base de Données
+
 - ✅ **61+ produits** avec données complètes et enrichies
 - ✅ **16 catégories** standardisées et normalisées
 - ✅ **Scripts de normalisation** par catégorie (camera, drone, smartphone, etc.)
@@ -46,10 +71,10 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 - [Structure du projet](#-structure-du-projet)
 - [Installation](#-installation)
 - [Configuration de la base de données](#️-configuration-de-la-base-de-données)
-- [Documentation Wiki](#-documentation-wiki)
+- [Documentation Wiki](#-wiki---guide-complet)
 - [API](#-api)
-- [Scripts](#-scripts)
-- [Interface d'administration](#-interface-dadministration)
+- [Scripts](#%EF%B8%8F-scripts)
+- [Interface d'administration](#interface-dadministration)
 - [Contribution](#-contribution)
 
 ## 🎯 Aperçu du projet
@@ -65,9 +90,7 @@ Site web professionnel dédié aux produits gaming permettant :
 - **Génération automatique de fiches** produits HTML
 - **Système de tendances** par catégorie (actualités, technologies, marché, etc.)
 
-
 ## ✨ Fonctionnalités
-
 
 ### 🌐 Frontend Public
 
@@ -95,12 +118,23 @@ Site web professionnel dédié aux produits gaming permettant :
 
 - **15 pages interactives** : Documentation complète et navigable
 - **Recherche en temps réel** : Filtrage instantané sur wiki.html et changelog.html
-- **Architecture visuelle** : Diagramme SVG interactif des composants
+- **Architecture interactive** : Diagramme avancé avec hover, click-to-lock et compteur
+- **Documentation tests** : Guide complet 38 tests (15 Jest + 23 Web)
 - **Guides complets** : Installation, API, base de données, scripts, workflows
 - **Best practices** : Conventions de code et standards du projet
 - **Glossaire technique** : 40+ termes définis de A à Z
 - **Changelog détaillé** : Historique des versions avec recherche
 - **CSS unifié** : wiki-styles.css pour maintenance facilitée
+
+### ✅ Tests & Qualité
+
+- **38 tests automatisés** : Couverture complète backend + frontend
+- **15 tests Jest** : Tests unitaires (API, Database, Generation)
+- **23 tests Web E2E** : Suite interactive priorités P1/P2/P3
+- **Coverage reports** : LCOV avec seuils minimum 80%
+- **Interface test-suite.html** : Runner web interactif avec statistiques
+- **Tests CI-ready** : npm test pour intégration continue
+- **Scripts de maintenance** : verify-assets.js, verify-database-state.js
 
 ## 🛠 Technologies utilisées
 
@@ -109,6 +143,7 @@ Site web professionnel dédié aux produits gaming permettant :
 - **HTML5** - Structure sémantique
 - **CSS3** - Styling moderne (Grid, Flexbox, animations, gradient effects)
 - **JavaScript ES6+** - Logique interactive, fetch API
+- **SVG** - Visualisations vectorielles (diagrammes d'architecture)
 - **Responsive Design** - Compatible tous écrans
 - **CSS Minification** - Clean-CSS pour production
 - **JS Minification** - Terser pour optimisation
@@ -120,6 +155,7 @@ Site web professionnel dédié aux produits gaming permettant :
 - **PostgreSQL 14+** - Base de données relationnelle
 - **pg** - Driver PostgreSQL pour Node.js
 - **CORS** - Configuration permissive pour développement
+- **Architecture modulaire** : 8 modules routes refactorisés (-59% code server.js)
 
 ### Base de données
 
@@ -127,6 +163,15 @@ Site web professionnel dédié aux produits gaming permettant :
 - **pgAdmin** - Interface d'administration (optionnel)
 - **Indexes** - Optimisation requêtes sur catégorie, top_du_mois
 - **JSONB** - Stockage flexible des donnees_fiche
+- **Pool de connexions** - Gestion optimisée via backend/config/database.js
+
+### Tests & Qualité
+
+- **Jest** - Framework de tests unitaires
+- **Supertest** - Tests HTTP/API
+- **Coverage** - Rapports de couverture LCOV
+- **Test-suite web** - Interface HTML interactive
+- **Scripts Node** - Vérification automatisée des assets et données
 
 ### Documentation
 
@@ -134,7 +179,6 @@ Site web professionnel dédié aux produits gaming permettant :
 - **CSS unifié** - wiki-styles.css pour cohérence
 - **Recherche JS** - Filtrage en temps réel
 - **SVG** - Diagrammes interactifs d'architecture
-
 
 ## 📁 Structure du projet
 
@@ -258,9 +302,9 @@ site-gamer-2025/
 
 6. **Accéder à l'application**
 
-   - Frontend : http://localhost:3000
-   - Wiki : http://localhost:3000/wiki/wiki.html
-   - Admin : http://localhost:3000/Gestion%20des%20produits%20et%20génération%20automatique.html
+   - Frontend : <http://localhost:3000>
+   - Wiki : <http://localhost:3000/wiki/wiki.html>
+   - Admin : <http://localhost:3000/Gestion%20des%20produits%20et%20génération%20automatique.html>
 
 ## 🗄️ Configuration de la base de données
 
@@ -332,14 +376,14 @@ CREATE INDEX idx_produits_top ON produits(top_du_mois);
 CREATE INDEX idx_tendances_categorie ON tendances(categorie);
 ```
 
-## 📚 Documentation Wiki
+## 📚 Wiki - Guide Complet
 
 Accédez à la documentation complète via `wiki/wiki.html` :
 
-### Pages disponibles
+### Index des Pages
 
 | Page | Description | URL |
-|------|-------------|-----|
+| ---- | ----------- | --- |
 | 🏠 **Wiki Hub** | Page d'accueil avec recherche | `wiki/wiki.html` |
 | 🔄 **Architecture** | Diagramme interactif SVG | `wiki/project-connections.html` |
 | 📋 **Composants** | Documentation détaillée | `wiki/project-details.html` |
@@ -559,7 +603,6 @@ Les données sont récupérées via les endpoints `/api/[categorie]/...` et affi
 </div>
 ```
 
-
 ## 🗃️ Schéma relationnel simplifié
 
 - `categories` (id, nom)
@@ -570,13 +613,11 @@ Les données sont récupérées via les endpoints `/api/[categorie]/...` et affi
 - `predictions` (id, titre, description, annee, probabilite, icone, categorie_id)
 - `produits` (id, nom, ...)
 
-
 ## 🛡️ Bonnes pratiques
 
 - Toujours insérer au moins 4 entrées par section pour chaque catégorie pour un affichage optimal.
 - Si le champ `icone` est vide, une icône par défaut est affichée côté JS.
 - Les pages tendances sont générées dynamiquement et consomment l’API REST.
-
 
 ## 🤝 Contribution aux tendances
 
@@ -613,12 +654,9 @@ Content-Type: multipart/form-data
 GET /api/categories
 ```
 
-
-
 ### Exemple de requête SQL
 
 ## 📊 Initialisation des données tendances
-
 
 Pour chaque catégorie, il est possible d'insérer rapidement 4 actualités, 4 technologies, 4 données marché, 4 insights et 4 prédictions via des scripts SQL. Cela permet d'avoir un affichage complet sur toutes les pages tendances dès l'installation.
 
@@ -746,7 +784,9 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 **Version actuelle : 2.2.0** | **Dernière mise à jour : 26 Décembre 2025**
 
-**🚀 PostgreSQL optimisée • 61+ produits • 15 pages Wiki • 30+ scripts**
+### 🚀 Projet en Chiffres
+
+PostgreSQL optimisée • 61+ produits • 15 pages Wiki • 30+ scripts
 
 ### 📈 Prochaines Évolutions
 
@@ -770,18 +810,18 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ### 🔗 Liens Utiles
 
-- **📚 Wiki Documentation** : [Documentation complète](http://localhost:3000/wiki/wiki.html)
-- **🔧 Interface Admin** : [Gestion produits](http://localhost:3000/Gestion%20des%20produits%20et%20génération%20automatique.html)
-- **📁 API Reference** : [Endpoints](http://localhost:3000/wiki/api-reference.html)
-- **🗄️ Database Schema** : [PostgreSQL](http://localhost:3000/wiki/database.html)
-- **⚙️ Scripts Docs** : [30+ scripts](http://localhost:3000/wiki/scripts.html)
-- **📝 Changelog** : [Versions](http://localhost:3000/wiki/changelog.html)
-- **🔧 Troubleshooting** : [Dépannage](http://localhost:3000/wiki/troubleshooting.html)
+- **📚 Wiki Documentation** : [Documentation complète](<http://localhost:3000/wiki/wiki.html>)
+- **🔧 Interface Admin** : [Gestion produits](<http://localhost:3000/Gestion%20des%20produits%20et%20génération%20automatique.html>)
+- **📁 API Reference** : [Endpoints](<http://localhost:3000/wiki/api-reference.html>)
+- **🗄️ Database Schema** : [PostgreSQL](<http://localhost:3000/wiki/database.html>)
+- **⚙️ Scripts Docs** : [30+ scripts](<http://localhost:3000/wiki/scripts.html>)
+- **📝 Changelog** : [Versions](<http://localhost:3000/wiki/changelog.html>)
+- **🔧 Troubleshooting** : [Dépannage](<http://localhost:3000/wiki/troubleshooting.html>)
 
 ### 📊 Statistiques Projet
 
 | Métrique | Valeur |
-|----------|---------|
+| -------- | ------- |
 | **Produits** | 61+ enrichis |
 | **Catégories** | 16 standardisées |
 | **Pages Wiki** | 15 interactives |
