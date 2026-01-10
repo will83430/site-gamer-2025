@@ -239,6 +239,12 @@ textarea {
     transition: border-color 0.3s;
 }
 
+textarea {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+}
+
 input:focus,
 select:focus,
 textarea:focus {
@@ -286,6 +292,21 @@ textarea:focus {
 .btn-info {
     background: #17a2b8;
     color: white;
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 14px;
+    min-width: 28px;
+    height: 28px;
+    background: #6c757d;
+    color: white;
+    border-radius: 4px;
+}
+
+.btn-sm:hover {
+    background: #5a6268;
+    transform: scale(1.05);
 }
 
 .btn-preview {
