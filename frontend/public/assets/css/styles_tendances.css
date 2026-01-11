@@ -419,7 +419,20 @@ p {
 
 .card-content {
     padding: 25px;
-    
+    position: relative;
+}
+
+.read-more {
+    display: inline-block;
+    margin-top: 15px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: transform 0.3s ease;
+}
+
+.actualite-card:hover .read-more {
+    transform: translateX(5px);
 }
 
 .date {

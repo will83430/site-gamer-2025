@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vider le cache</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        .success {
+            color: #10b981;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+        .info {
+            color: #666;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗑️ Vider le cache du navigateur</h1>
+        <p>Si vous rencontrez des problèmes d'affichage ou des liens incorrects, videz le cache.</p>
+        
+        <button onclick="clearCache()">🚀 Vider le cache et recharger</button>
+        <button onclick="clearLocalStorage()">💾 Vider uniquement localStorage</button>
+        <button onclick="window.location.href='/'">🏠 Retour à l'accueil</button>
+        
+        <div class="success" id="success">✅ Cache vidé avec succès !</div>
+        
+        <div class="info">
+            <strong>Astuce :</strong> Vous pouvez aussi utiliser Ctrl+F5 pour forcer le rechargement.
+        </div>
+    </div>
+
+    <script>
+        function clearCache() {
+            // Vider le localStorage
+            localStorage.clear();
+            
+            // Vider le sessionStorage
+            sessionStorage.clear();
+            
+            // Afficher le message de succès
+            document.getElementById('success').style.display = 'block';
+            
+            // Recharger la page après 1 seconde
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 1000);
+        }
+        
+        function clearLocalStorage() {
+            localStorage.clear();
+            document.getElementById('success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('success').style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

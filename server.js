@@ -10,6 +10,7 @@ const compression = require('compression'); // 🔥 AJOUTE CETTE LIGNE
 // Import routes
 const produitsRoutes = require('./backend/routes/produits');
 const fichesRoutes = require('./backend/routes/fiches');
+const fichesTendancesRoutes = require('./backend/routes/fichesTendances');
 const tendancesRoutes = require('./backend/routes/tendances');
 const contentRoutes = require('./backend/routes/content');
 const technologiesRoutes = require('./backend/routes/technologies');
@@ -167,10 +168,22 @@ app.get('/api/fiches-list', (req, res) => {
 
 // ========== ROUTES API ==========
 
+// GET - Récupérer toutes les catégories
+app.get('/api/categories', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM categories ORDER BY nom');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('❌ Erreur récupération catégories:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Utiliser les routes modulaires
 app.use('/api/produits', produitsRoutes);
 app.use('/api', fichesRoutes);
-app.use('/api/tendances', tendancesRoutes); // Alias: table actualites
+app.use('/api/fiche-tendance', fichesTendancesRoutes); // Routes pour les fiches tendances (génération + data)
+app.use('/api/tendances', tendancesRoutes); // Table actualites (liste des cards)
 app.use('/api/actualites', tendancesRoutes); // Même routes que tendances (table actualites)
 app.use('/api', contentRoutes); // /:categorie/actualites, technologies, marche, insights, predictions
 app.use('/api/technologies', technologiesRoutes);

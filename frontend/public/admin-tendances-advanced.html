@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Admin Tendances Pro - Gestion Complète</title>
+    <link rel="stylesheet" href="assets/css/admin-styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚀 Interface Admin Tendances Pro</h1>
+            <p style="color: #666;">Gestion complète des articles avec sections, images et génération automatique</p>
+        </div>
+
+        <!-- Stats Dashboard -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="total-articles">0</div>
+                <div class="stat-label">📰 Total Articles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-categories">0</div>
+                <div class="stat-label">📂 Catégories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="hot-articles">0</div>
+                <div class="stat-label">🔥 Articles HOT</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-sections">0</div>
+                <div class="stat-label">📝 Sections Totales</div>
+                <small style="color: #999; display: block; margin-top: 5px;">
+                    Blocs de contenu dynamique
+                </small>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('list')">📋 Liste des Articles</button>
+            <button class="tab-btn" onclick="showTab('create')">➕ Créer un Article</button>
+            <button class="tab-btn" onclick="showTab('modify')">✏️ Modifier un Article</button>
+            <button class="tab-btn" onclick="showTab('sections')">📝 Gérer les Sections</button>
+            <button class="tab-btn" onclick="showTab('bulk')">⚡ Actions en Masse</button>
+        </div>
+
+        <!-- Message Container -->
+        <div id="message-container"></div>
+
+        <!-- Tab: Liste des Articles -->
+        <div id="list-tab" class="tab-content active">
+            <h2 style="margin-bottom: 20px;">📋 Tous les Articles</h2>
+
+            <!-- Filtres -->
+            <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                <select id="filter-category" onchange="loadArticles()" style="max-width: 200px;">
+                    <option value="">📂 Toutes les catégories</option>
+                </select>
+                <select id="filter-hot" onchange="loadArticles()" style="max-width: 150px;">
+                    <option value="">🔥 Tous les articles</option>
+                    <option value="true">HOT uniquement</option>
+                    <option value="false">Non HOT</option>
+                </select>
+                <input type="text" id="search-articles" placeholder="🔍 Rechercher..." 
+                       oninput="loadArticles()" style="max-width: 250px;">
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th onclick="sortTable('id')" style="cursor: pointer;">
+                                ID <span id="sort-id">↕️</span>
+                            </th>
+                            <th onclick="sortTable('titre')" style="cursor: pointer;">
+                                Titre <span id="sort-titre">↕️</span>
+                            </th>
+                            <th onclick="sortTable('categorie')" style="cursor: pointer;">
+                                Catégorie <span id="sort-categorie">↕️</span>
+                            </th>
+                            <th onclick="sortTable('date')" style="cursor: pointer;">
+                                Date <span id="sort-date">↕️</span>
+                            </th>
+                            <th onclick="sortTable('hot')" style="cursor: pointer;">
+                                HOT <span id="sort-hot">↕️</span>
+                            </th>
+                            <th onclick="sortTable('sections')" style="cursor: pointer;">
+                                Sections <span id="sort-sections">↕️</span>
+                                <div style="font-size: 11px; color: #999; font-weight: normal; margin-top: 3px;">
+                                    (contenu de l'article)
+                                </div>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articles-list">
+                        <tr>
+                            <td colspan="8" style="text-align: center;">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Créer un Article -->
+        <div id="create-tab" class="tab-content">
+            <h2 style="margin-bottom: 20px;">➕ Créer un Nouveau Article</h2>
+            <form id="create-form" onsubmit="createArticle(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Titre de l'article *</label>
+                        <input type="text" id="new-titre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Catégorie *</label>
+                        <select id="new-categorie" required>
+                            <option value="">-- Choisir --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description / Résumé *</label>
+                    <textarea id="new-description" rows="4" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date de publication</label>
+                        <input type="date" id="new-date">
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding-top: 25px;">
+                        <input type="checkbox" id="new-hot" style="width: auto; margin: 0;">
+                        <label for="new-hot" style="margin: 0; cursor: pointer;">🔥 Article HOT (tendance populaire)</label>
+                    </div>
+                </div>
+
+                <!-- Zone d'upload d'image -->
+                <div class="form-group">
+                    <label>Image de l'article</label>
+                    <div class="upload-zone" id="new-upload-zone">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Glissez votre image ici</div>
+                        <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
+                        <input type="file" id="new-image-file" accept="image/*" style="display: none;">
+                    </div>
+                    <div id="new-preview-container"></div>
+                </div>
+
+                <!-- URL Vidéo -->
+                <div class="form-group">
+                    <label>URL Vidéo (optionnel - YouTube, Dailymotion)</label>
+                    <input type="url" id="new-video" placeholder="https://www.youtube.com/embed/XXXXX">
+                    <small style="color: #888;">Format embed uniquement. La vidéo remplace l'image sur la fiche.</small>
+                </div>
+
+                <!-- Tags -->
+                <div class="form-group">
+                    <label>Tags (séparés par des virgules)</label>
+                    <input type="text" id="new-tags" placeholder="Ex: innovation, gaming, 2025">
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn btn-success">
+                        💾 Créer l'Article
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="createArticleAndGenerate()">
+                        🚀 Créer + Générer Fiche HTML
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="resetCreateForm()">
+                        🔄 Réinitialiser
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tab: Modifier un Article -->
+        <div id="modify-tab" class="tab-content">
+            <h2 style="margin-bottom: 20px;">✏️ Modifier un Article</h2>
+            <div class="form-group">
+                <label>Sélectionner un article</label>
+                <select id="edit-article-select" onchange="loadArticleForEdit()">
+                    <option value="">-- Choisir un article --</option>
+                </select>
+            </div>
+            <div id="edit-form-container" style="display: none;">
+                <form id="edit-form" onsubmit="updateArticle(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Titre de l'article *</label>
+                            <input type="text" id="edit-titre" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Catégorie *</label>
+                            <select id="edit-categorie" required>
+                                <option value="">-- Choisir --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description / Résumé *</label>
+                        <textarea id="edit-description" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date de publication</label>
+                            <input type="date" id="edit-date">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding-top: 25px;">
+                            <input type="checkbox" id="edit-hot" style="width: auto; margin: 0;">
+                            <label for="edit-hot" style="margin: 0; cursor: pointer;">🔥 Article HOT (tendance populaire)</label>
+                        </div>
+                    </div>
+
+                    <!-- Image actuelle et upload -->
+                    <div class="form-group">
+                        <label>Image de l'article</label>
+                        <div id="edit-current-image" style="display: none; margin-bottom: 20px; text-align: center; background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                            <p style="color: #667eea; font-size: 16px; margin-bottom: 15px; font-weight: 600;">
+                                📷 Image actuelle
+                            </p>
+                            <img id="edit-current-img" style="max-width: 300px; height: 200px; object-fit: cover; border-radius: 12px; border: 3px solid #ddd;">
+                        </div>
+                        <div class="upload-zone" id="edit-upload-zone">
+                            <div class="upload-icon">📁</div>
+                            <div class="upload-text">Glissez une nouvelle image ici</div>
+                            <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
+                            <input type="file" id="edit-image-file" accept="image/*" style="display: none;">
+                        </div>
+                        <div id="edit-preview-container"></div>
+                    </div>
+
+                    <!-- URL Vidéo -->
+                    <div class="form-group">
+                        <label>URL Vidéo (optionnel)</label>
+                        <input type="url" id="edit-video" placeholder="https://www.youtube.com/embed/XXXXX">
+                        <small style="color: #888;">Format embed uniquement. La vidéo remplace l'image sur la fiche.</small>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="form-group">
+                        <label>Tags (séparés par des virgules)</label>
+                        <input type="text" id="edit-tags" placeholder="Ex: innovation, gaming, 2025">
+                    </div>
+
+                    <!-- Lien fiche généré -->
+                    <div class="form-group">
+                        <label>Lien fiche HTML généré</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="edit-lien" readonly style="flex: 1; background: #f5f5f5;">
+                            <button type="button" class="btn btn-info" onclick="openArticleFiche()">
+                                🔗 Ouvrir
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn btn-primary">
+                            💾 Sauvegarder
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="updateArticleAndGenerate()">
+                            🚀 Sauvegarder + Générer Fiche
+                        </button>
+                        <button type="button" class="btn btn-info" onclick="previewArticleFiche()">
+                            👁️ Prévisualiser Fiche
+                        </button>
+                        <button type="button" class="btn" style="background: #9b59b6; color: white;" onclick="goToSections()">
+                            📝 Gérer les Sections
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="deleteArticle()">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab: Gérer les Sections -->
+        <div id="sections-tab" class="tab-content">
+            <h2 style="margin-bottom: 20px;">📝 Gérer les Sections d'un Article</h2>
+            
+            <!-- Info box explicatif -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                <h3 style="margin: 0 0 10px 0; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 24px;">💡</span>
+                    <span>Qu'est-ce qu'une section ?</span>
+                </h3>
+                <p style="margin: 0; line-height: 1.6;">
+                    Chaque article tendance contient <strong>4 sections de contenu</strong> qui structurent l'information (ex: "🎮 Innovation majeure", "⚡ Puissance et performances", etc.).
+                    <br>Ces sections sont chargées dynamiquement depuis la base de données et affichées sur la fiche HTML de l'article.
+                    <br>✨ <strong>Avantage</strong> : Vous pouvez modifier le contenu sans régénérer la fiche HTML !
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label>Sélectionner un article</label>
+                <select id="sections-article-select" onchange="loadArticleSections()">
+                    <option value="">-- Choisir un article --</option>
+                </select>
+            </div>
+
+            <div id="sections-container" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 id="sections-article-title" style="margin: 0;"></h3>
+                    <button class="btn btn-success" onclick="addNewSection()">
+                        ➕ Ajouter une Section
+                    </button>
+                </div>
+
+                <div id="sections-list">
+                    <!-- Les sections seront chargées ici -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Actions en Masse -->
+        <div id="bulk-tab" class="tab-content">
+            <h2 style="margin-bottom: 20px;">⚡ Actions en Masse</h2>
+
+            <div class="form-group">
+                <label>Régénérer toutes les fiches HTML</label>
+                <p style="color: #666; margin-bottom: 15px;">
+                    Régénère toutes les 77 fiches tendances avec le format dynamique actuel.
+                </p>
+                <button class="btn btn-primary" onclick="regenerateAllFiches()">
+                    🔄 Régénérer Toutes les Fiches (77)
+                </button>
+            </div>
+
+            <hr style="margin: 30px 0;">
+
+            <div class="form-group">
+                <label>Régénérer par catégorie</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <select id="bulk-category" style="flex: 1; max-width: 300px;">
+                        <option value="">-- Choisir une catégorie --</option>
+                    </select>
+                    <button class="btn btn-info" onclick="regenerateCategoryFiches()">
+                        🔄 Régénérer Catégorie
+                    </button>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0;">
+
+            <div class="form-group">
+                <label>Marquer tous les articles HOT d'une catégorie</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <select id="bulk-hot-category" style="flex: 1; max-width: 300px;">
+                        <option value="">-- Choisir une catégorie --</option>
+                    </select>
+                    <button class="btn btn-success" onclick="markCategoryAsHot(true)">
+                        🔥 Marquer HOT
+                    </button>
+                    <button class="btn btn-warning" onclick="markCategoryAsHot(false)">
+                        ❄️ Retirer HOT
+                    </button>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0;">
+
+            <div class="form-group">
+                <label>Statistiques par catégorie</label>
+                <button class="btn btn-info" onclick="showCategoryStats()">
+                    📊 Afficher les Statistiques
+                </button>
+            </div>
+
+            <div id="stats-display" style="display: none; margin-top: 20px;">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Articles</th>
+                            <th>HOT</th>
+                            <th>Sections Moy.</th>
+                            <th>Avec Image</th>
+                            <th>Avec Vidéo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stats-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Section -->
+    <div id="section-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close" onclick="closeSectionModal()">&times;</span>
+            <h2 id="section-modal-title">Modifier Section</h2>
+            <form id="section-form" onsubmit="saveSection(event)">
+                <input type="hidden" id="section-id">
+                <input type="hidden" id="section-article-id">
+                
+                <div class="form-group">
+                    <label>Titre de la section *</label>
+                    <input type="text" id="section-titre" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contenu *</label>
+                    <textarea id="section-contenu" rows="10" required></textarea>
+                    <small style="color: #888;">Utilisez \n\n pour les sauts de ligne</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Ordre</label>
+                    <input type="number" id="section-ordre" min="1" required>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-warning" onclick="closeSectionModal()">Annuler</button>
+                    <button type="submit" class="btn btn-success">💾 Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Preview -->
+    <div id="preview-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 90%; max-height: 90vh; overflow: auto;">
+            <span class="close" onclick="closePreviewModal()">&times;</span>
+            <div id="preview-container"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/admin-tendances-advanced.js"></script>
+</body>
+</html>

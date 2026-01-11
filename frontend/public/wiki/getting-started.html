@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide de Démarrage - Wiki Site Gamer 2025</title>
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
+        .header h1 { font-size: 2.5em; color: white; margin-bottom: 10px; }
+        .breadcrumb { max-width: 1200px; margin: 20px auto; padding: 0 20px; opacity: 0.7; }
+        .breadcrumb a { color: #667eea; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .content { background: linear-gradient(145deg, #2a2a40, #1f1f35); border-radius: 15px; padding: 40px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); }
+        h2 { color: #667eea; margin-top: 30px; margin-bottom: 15px; font-size: 1.8em; }
+        h3 { color: #2ecc71; margin-top: 20px; margin-bottom: 10px; }
+        p { line-height: 1.8; margin-bottom: 15px; opacity: 0.9; }
+        .step { background: rgba(102, 126, 234, 0.1); border-left: 4px solid #667eea; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .step-number { display: inline-block; background: #667eea; color: white; width: 35px; height: 35px; border-radius: 50%; text-align: center; line-height: 35px; font-weight: 700; margin-right: 10px; }
+        .code-block { background: #000; border: 1px solid #333; padding: 15px; border-radius: 8px; margin: 15px 0; overflow-x: auto; }
+        .code-block code { color: #2ecc71; font-family: 'Courier New', monospace; }
+        .warning { background: rgba(243, 156, 18, 0.1); border-left: 4px solid #f39c12; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .info { background: rgba(52, 152, 219, 0.1); border-left: 4px solid #3498db; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .success { background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        ul { margin-left: 20px; line-height: 2; }
+        .nav-bottom { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); }
+        .nav-button { background: #667eea; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .nav-button:hover { background: #764ba2; transform: translateY(-2px); }
+        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 Guide de Démarrage Rapide</h1>
+        <p>Démarrez avec le Site Gamer 2025 en quelques minutes</p>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="scripts.html">⚙️ Scripts</a>
+        <a href="troubleshooting.html">🔧 Dépannage</a>
+        <a href="changelog.html">📝 Changelog</a>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="wiki.html">🏠 Wiki</a> > Guide de Démarrage
+    </div>
+
+    <div class="container">
+        <div class="content">
+            <h2>📋 Prérequis</h2>
+            <p>Avant de commencer, assurez-vous d'avoir installé :</p>
+            <ul>
+                <li><strong>Node.js 18+</strong> - Runtime JavaScript</li>
+                <li><strong>PostgreSQL 14+</strong> - Base de données</li>
+                <li><strong>Git</strong> - Gestion de version</li>
+                <li><strong>npm</strong> - Gestionnaire de packages (inclus avec Node.js)</li>
+            </ul>
+
+            <h2>🚀 Installation en 5 étapes</h2>
+
+            <div class="step">
+                <h3><span class="step-number">1</span> Cloner le projet</h3>
+                <div class="code-block">
+                    <code>git clone &lt;repository-url&gt;<br>
+cd site-gamer-2025</code>
+                </div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">2</span> Installer les dépendances</h3>
+                <div class="code-block">
+                    <code>npm install</code>
+                </div>
+                <p>Cela installera toutes les dépendances listées dans package.json : Express, pg, compression, cors, etc.</p>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">3</span> Configurer PostgreSQL</h3>
+                <p>Créer la base de données :</p>
+                <div class="code-block">
+                    <code>psql -U postgres<br>
+CREATE DATABASE gamer_2025;<br>
+\q</code>
+                </div>
+                
+                <div class="warning">
+                    <strong>⚠️ Credentials par défaut :</strong>
+                    <ul>
+                        <li>User: <code>postgres</code></li>
+                        <li>Password: <code>XXXXXX</code></li>
+                        <li>Database: <code>gamer_2025</code></li>
+                        <li>Port: <code>XXXX</code></li>
+                    </ul>
+                    Modifiez ces valeurs dans <code>server.js</code> si nécessaire.
+                </div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">4</span> Initialiser la base de données</h3>
+                <p>Importer les données de seed :</p>
+                <div class="code-block">
+                    <code>psql -U postgres -d gamer_2025 -f backend/gestion_produits.sql</code>
+                </div>
+                <p>Ou utiliser le script de restauration :</p>
+                <div class="code-block">
+                    <code>node restore-backup.js</code>
+                </div>
+                <div class="success">
+                    <strong>✅ Cela importera :</strong>
+                    <ul>
+                        <li>61 produits gaming</li>
+                        <li>16 catégories</li>
+                        <li>Contenus éditoriaux (tendances, actualités, etc.)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">5</span> Démarrer le serveur</h3>
+                <p>Mode développement (avec rechargement automatique) :</p>
+                <div class="code-block">
+                    <code>npm run dev</code>
+                </div>
+                <p>Mode production :</p>
+                <div class="code-block">
+                    <code>npm start</code>
+                </div>
+                <div class="info">
+                    <strong>ℹ️ Le serveur démarre sur :</strong>
+                    <ul>
+                        <li>URL: <code>http://localhost:3000</code></li>
+                        <li>Hostname: <code>0.0.0.0</code> (écoute toutes interfaces)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>✨ Vérifier l'installation</h2>
+            <p>Testez que tout fonctionne :</p>
+            
+            <h3>1. Tester la connexion serveur</h3>
+            <div class="code-block">
+                <code>curl http://localhost:3000</code>
+            </div>
+
+            <h3>2. Tester l'API Produits</h3>
+            <div class="code-block">
+                <code>curl http://localhost:3000/api/produits</code>
+            </div>
+
+            <h3>3. Lancer un script de vérification</h3>
+            <div class="code-block">
+                <code>node quick-check.js</code>
+            </div>
+
+            <div class="success">
+                <strong>✅ Si tout fonctionne, vous devriez voir :</strong>
+                <ul>
+                    <li>Le serveur démarré sans erreurs</li>
+                    <li>La liste des produits en JSON</li>
+                    <li>Le check script affichant "OK"</li>
+                </ul>
+            </div>
+
+            <h2>🔧 Étapes suivantes</h2>
+            <p>Maintenant que votre environnement est prêt :</p>
+            <ul>
+                <li>📖 Consultez la <a href="project-details.html" style="color: #2ecc71;">documentation des composants</a></li>
+                <li>🔌 Explorez la <a href="api-reference.html" style="color: #2ecc71;">référence API</a></li>
+                <li>🔄 Générez vos premières fiches avec <code>node scripts/regenerate-all-fiches.js</code></li>
+                <li>🌐 Ouvrez le <a href="project-connections.html" style="color: #2ecc71;">diagramme d'architecture</a></li>
+            </ul>
+
+            <h2>📚 Commandes utiles</h2>
+            <div class="code-block">
+                <code># Build des assets CSS/JS<br>
+npm run build:css<br>
+npm run build:js<br><br>
+# Nettoyer les fichiers minifiés<br>
+npm run clean<br><br>
+# Vérifier l'état de la DB<br>
+node scripts/verify-database-state.js<br><br>
+# Générer toutes les fiches<br>
+node scripts/regenerate-all-fiches.js<br><br>
+# Normaliser les données<br>
+node scripts/normalize-camera.js</code>
+            </div>
+
+            <h2>🐛 Problèmes courants</h2>
+            
+            <h3>Erreur de connexion PostgreSQL</h3>
+            <div class="warning">
+                Vérifiez que PostgreSQL est démarré et que les credentials sont corrects dans <code>server.js</code>
+            </div>
+
+            <h3>Port 3000 déjà utilisé</h3>
+            <div class="warning">
+                Modifiez le port dans <code>server.js</code> ou arrêtez l'autre processus
+            </div>
+
+            <h3>Modules manquants</h3>
+            <div class="warning">
+                Relancez <code>npm install</code> pour réinstaller toutes les dépendances
+            </div>
+
+            <p>Pour plus de solutions, consultez la page <a href="troubleshooting.html" style="color: #2ecc71;">Dépannage</a></p>
+
+            <div class="nav-bottom">
+                <a href="/index.html" class="nav-button">← Retour au Wiki</a>
+                <a href="api-reference.html" class="nav-button">Référence API →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
