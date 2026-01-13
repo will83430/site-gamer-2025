@@ -237,6 +237,35 @@ app.get('/api/llm-config', (req, res) => {
   }
 });
 
+// Endpoint pour sauvegarder le rapport d'intégrité des liens
+app.post('/api/save-report', (req, res) => {
+  try {
+    const { filename, content } = req.body;
+    
+    if (!filename || !content) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'filename et content sont requis' 
+      });
+    }
+    
+    // Sauvegarder dans le dossier scripts/maintenance
+    const reportPath = path.join(__dirname, 'frontend', 'public', 'scripts', 'maintenance', filename);
+    fs.writeFileSync(reportPath, content, 'utf8');
+    
+    res.json({ 
+      success: true, 
+      message: `Rapport sauvegardé: ${filename}`,
+      path: `/scripts/maintenance/${filename}`
+    });
+  } catch (err) {
+    res.status(500).json({ 
+      success: false, 
+      error: err.message 
+    });
+  }
+});
+
 app.listen(port, '0.0.0.0', async () => {
   // Test connexion PostgreSQL
   try {

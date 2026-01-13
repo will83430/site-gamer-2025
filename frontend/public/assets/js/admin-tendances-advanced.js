@@ -252,9 +252,17 @@ async function populateArticleSelects(articles) {
         if (!select) return;
         select.innerHTML = '<option value="">-- Choisir un article --</option>';
         articles.forEach(article => {
+            // S'assurer que l'ID existe et est valide
+            const articleId = article.id || article.actualite_id;
+            if (!articleId) {
+                console.warn('⚠️ Article sans ID:', article);
+                return;
+            }
+            
             const option = document.createElement('option');
-            option.value = article.id;
-            option.textContent = `${article.titre} (${article.categorie})`;
+            option.value = articleId;
+            option.textContent = `${article.titre} (${article.categorie || 'Sans catégorie'})`;
+            option.dataset.articleId = articleId;
             select.appendChild(option);
         });
     });
@@ -496,7 +504,24 @@ async function loadArticleSections() {
 
 function addNewSection() {
     const articleId = document.getElementById('sections-article-select').value;
-    if (!articleId) return;
+    
+    if (!articleId) {
+        showMessage('❌ Veuillez d\'abord sélectionner un article dans le dropdown', 'error');
+        console.warn('⚠️ Pas d\'article sélectionné');
+        return;
+    }
+    
+    if (isNaN(parseInt(articleId))) {
+        showMessage('❌ ID article invalide. Sélectionnez un article valide', 'error');
+        console.error('❌ Invalid articleId value:', { 
+            value: articleId, 
+            type: typeof articleId,
+            parsed: parseInt(articleId)
+        });
+        return;
+    }
+    
+    console.log('✅ Article sélectionné:', { articleId, parsed: parseInt(articleId) });
     
     document.getElementById('section-modal-title').textContent = 'Ajouter une Section';
     document.getElementById('section-id').value = '';
@@ -509,6 +534,25 @@ function addNewSection() {
 }
 
 function editSection(section) {
+    // Validation de l'objet section
+    if (!section || !section.id) {
+        showMessage('❌ Erreur: Section invalide', 'error');
+        console.error('❌ Invalid section:', section);
+        return;
+    }
+    
+    if (!section.actualite_id) {
+        showMessage('❌ Erreur: ID article manquant dans la section', 'error');
+        console.error('❌ Section missing actualite_id:', section);
+        return;
+    }
+    
+    console.log('✅ Modification section:', {
+        sectionId: section.id,
+        articleId: section.actualite_id,
+        titre: section.titre
+    });
+    
     document.getElementById('section-modal-title').textContent = 'Modifier Section';
     document.getElementById('section-id').value = section.id;
     document.getElementById('section-article-id').value = section.actualite_id;
@@ -522,22 +566,55 @@ function editSection(section) {
 async function saveSection(event) {
     event.preventDefault();
     
-    const sectionId = document.getElementById('section-id').value;
-    const articleId = document.getElementById('section-article-id').value;
+    const sectionId = (document.getElementById('section-id').value || '').trim();
+    const articleId = (document.getElementById('section-article-id').value || '').trim();
+    
+    // Validation stricte
+    if (!articleId || isNaN(parseInt(articleId))) {
+        showMessage('❌ Erreur: ID article invalide ou manquant', 'error');
+        console.error('❌ Invalid articleId:', articleId);
+        return;
+    }
+    
+    const titre = document.getElementById('section-titre').value.trim();
+    const contenu = document.getElementById('section-contenu').value.trim();
+    const ordre = document.getElementById('section-ordre').value;
+    
+    // Valider les données obligatoires
+    if (!titre || !contenu || !ordre) {
+        showMessage('❌ Le titre, le contenu et l\'ordre sont obligatoires', 'error');
+        return;
+    }
     
     const data = {
-        actualite_id: articleId,
-        titre: document.getElementById('section-titre').value,
-        contenu: document.getElementById('section-contenu').value,
-        ordre: parseInt(document.getElementById('section-ordre').value)
+        actualite_id: parseInt(articleId),
+        titre: titre,
+        contenu: contenu,
+        ordre: parseInt(ordre)
     };
     
+    // Double vérification que les conversions sont correctes
+    if (isNaN(data.actualite_id) || isNaN(data.ordre)) {
+        showMessage('❌ Erreur: Les valeurs numériques sont invalides', 'error');
+        console.error('❌ NaN detected:', { articleId: data.actualite_id, ordre: data.ordre });
+        return;
+    }
+    
     try {
-        const url = sectionId 
+        // Déterminer si c'est un POST (création) ou PUT (modification)
+        const isUpdate = sectionId && !isNaN(parseInt(sectionId));
+        
+        const url = isUpdate 
             ? `${API_BASE}/api/fiche-tendance/sections/${sectionId}`
             : `${API_BASE}/api/fiche-tendance/sections`;
         
-        const method = sectionId ? 'PUT' : 'POST';
+        const method = isUpdate ? 'PUT' : 'POST';
+        
+        console.log(`📝 ${isUpdate ? 'UPDATE' : 'CREATE'} section:`, {
+            url: url,
+            method: method,
+            payload: data
+        });
         
         const response = await fetch(url, {
             method,
@@ -550,10 +627,14 @@ async function saveSection(event) {
             closeSectionModal();
             await loadArticleSections();
             await loadStats();
+        } else {
+            const errText = await response.text();
+            console.error(`❌ HTTP ${response.status}:`, errText);
+            throw new Error(`HTTP ${response.status}: ${errText}`);
         }
     } catch (error) {
-        console.error('Erreur sauvegarde section:', error);
-        showMessage('❌ Erreur lors de la sauvegarde', 'error');
+        console.error('❌ Erreur sauvegarde section:', error);
+        showMessage(`❌ Erreur: ${error.message}`, 'error');
     }
 }
 

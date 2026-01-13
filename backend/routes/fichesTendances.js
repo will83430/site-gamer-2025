@@ -25,7 +25,7 @@ router.get('/data/:id', async (req, res) => {
     
     // Récupérer les sections de l'article
     const sectionsResult = await pool.query(`
-      SELECT titre, contenu, ordre
+      SELECT id, actualite_id, titre, contenu, ordre, created_at, updated_at
       FROM actualites_sections
       WHERE actualite_id = $1
       ORDER BY ordre
@@ -237,12 +237,39 @@ router.post('/sections', async (req, res) => {
   try {
     const { actualite_id, titre, contenu, ordre } = req.body;
     
+    // Validation stricte
+    if (!actualite_id || isNaN(parseInt(actualite_id))) {
+      return res.status(400).json({ success: false, error: 'actualite_id invalide ou manquant' });
+    }
+    
+    if (!titre || !contenu) {
+      return res.status(400).json({ success: false, error: 'titre et contenu obligatoires' });
+    }
+    
+    if (!ordre || isNaN(parseInt(ordre))) {
+      return res.status(400).json({ success: false, error: 'ordre invalide ou manquant' });
+    }
+    
+    const sectionActualiteId = parseInt(actualite_id);
+    const sectionOrdre = parseInt(ordre);
+    
+    // Vérifier que l'actualité existe
+    const articleExists = await pool.query(
+      'SELECT id FROM actualites WHERE id = $1',
+      [sectionActualiteId]
+    );
+    
+    if (articleExists.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Article non trouvé' });
+    }
+    
     const result = await pool.query(`
       INSERT INTO actualites_sections (actualite_id, titre, contenu, ordre)
       VALUES ($1, $2, $3, $4)
       RETURNING *
-    `, [actualite_id, titre, contenu, ordre]);
+    `, [sectionActualiteId, titre, contenu, sectionOrdre]);
     
+    console.log('✅ Section créée:', result.rows[0].id);
     res.json({ success: true, section: result.rows[0] });
   } catch (error) {
     console.error('❌ Erreur création section:', error);
@@ -256,17 +283,30 @@ router.put('/sections/:id', async (req, res) => {
     const { id } = req.params;
     const { titre, contenu, ordre } = req.body;
     
+    // Validation de l'ID
+    if (!id || isNaN(parseInt(id))) {
+      return res.status(400).json({ success: false, error: 'ID section invalide' });
+    }
+    
+    // Validation des champs obligatoires
+    if (!titre || !contenu) {
+      return res.status(400).json({ success: false, error: 'Titre et contenu obligatoires' });
+    }
+    
+    const sectionId = parseInt(id);
+    
     const result = await pool.query(`
       UPDATE actualites_sections
       SET titre = $1, contenu = $2, ordre = $3, updated_at = NOW()
       WHERE id = $4
       RETURNING *
-    `, [titre, contenu, ordre, id]);
+    `, [titre, contenu, ordre, sectionId]);
     
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, error: 'Section non trouvée' });
     }
     
+    console.log('✅ Section modifiée:', sectionId);
     res.json({ success: true, section: result.rows[0] });
   } catch (error) {
     console.error('❌ Erreur modification section:', error);

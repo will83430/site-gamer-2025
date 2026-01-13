@@ -1117,26 +1117,26 @@ Message: ${report.message}</div>
                     }
                 }
                 
-                // 5. PAGES DÉTAILS TENDANCES (actualités, technologies, marché, insights, predictions)
+                // 5. API ENDPOINTS TENDANCES (actualités, technologies, marché, insights, predictions)
                 const tendancePages = ['actualites', 'technologies', 'marche', 'insights', 'predictions'];
                 let tendancePageCount = 0;
                 
                 for (const cat of tendanceCategories) {
                     for (const page of tendancePages) {
                         try {
-                            const response = await fetch(`http://localhost:3000/tendances/${cat}/${page}.html`, { method: 'HEAD', cache: 'no-cache' });
+                            const response = await fetch(`http://localhost:3000/api/${cat}/${page}`, { method: 'GET', cache: 'no-cache' });
                             checkedLinks++;
                             tendancePageCount++;
-                            if (response.status !== 404 && !response.ok) {
-                                brokenLinks.push(`/tendances/${cat}/${page}.html (${response.status})`);
+                            if (!response.ok) {
+                                brokenLinks.push(`/api/${cat}/${page} (${response.status})`);
                             }
                         } catch (error) {
-                            // Ignorer les erreurs pour les pages optionnelles
+                            brokenLinks.push(`/api/${cat}/${page} (inaccessible)`);
                         }
                     }
                 }
                 
-                details.push(`🌐 Pages tendances détails: ${tendancePageCount}`);
+                details.push(`🌐 API endpoints tendances: ${tendancePageCount}`);
                 
                 // 6. FICHIERS SYSTÈME CRITIQUES
                 const criticalFiles = [
@@ -1187,6 +1187,64 @@ Message: ${report.message}</div>
                     errors: [error.stack || error.message]
                 };
             }
+        }
+
+        function generateIntegrityReport(checkedLinks, brokenLinks, details, duration, successRate) {
+            const timestamp = new Date().toLocaleString('fr-FR');
+            const errorRows = brokenLinks.map(error => 
+                `<tr><td>${error}</td><td style="color: red;">❌ Erreur</td></tr>`
+            ).join('');
+            
+            return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport d'Intégrité des Liens</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 3px solid #007bff; padding-bottom: 10px; }
+        .summary { background: #e8f4f8; padding: 20px; border-left: 4px solid #007bff; margin: 20px 0; }
+        .summary p { margin: 5px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #007bff; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .success { color: green; }
+        .error { color: red; }
+        .timestamp { color: #666; font-size: 12px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Rapport d'Intégrité des Liens</h1>
+        <div class="summary">
+            <p><strong>Date:</strong> ${timestamp}</p>
+            <p><strong>Liens vérifiés:</strong> ${checkedLinks}</p>
+            <p><strong>Liens valides:</strong> ${checkedLinks - brokenLinks.length}</p>
+            <p><strong>Taux de réussite:</strong> <span class="${successRate >= 95 ? 'success' : 'error'}">${successRate}%</span></p>
+            <p><strong>Durée d'analyse:</strong> ${duration}ms</p>
+        </div>
+        
+        ${brokenLinks.length > 0 ? `
+        <h2>❌ Liens Cassés (${brokenLinks.length})</h2>
+        <table>
+            <thead>
+                <tr><th>Lien</th><th>Statut</th></tr>
+            </thead>
+            <tbody>
+                ${errorRows}
+            </tbody>
+        </table>
+        ` : '<p class="success"><strong>✅ Tous les liens sont fonctionnels!</strong></p>'}
+        
+        <div class="timestamp">
+            <p>Rapport généré automatiquement par le système de test d'intégrité</p>
+        </div>
+    </div>
+</body>
+</html>`;
         }
 
         async function testLinksIntegrity() {
@@ -1244,25 +1302,25 @@ Message: ${report.message}</div>
                     }
                 }
                 
-                // 4. Vérifier les pages de catégories
+                // 4. Vérifier les API endpoints tendances
                 const categories = ['drone', 'console', 'pc-gaming', 'smartphone', 'montre-connectee', 
                                   'tablette', 'casque-vr', 'ecran-tv', 'imprimante-3d'];
                 
                 for (const category of categories) {
-                    // Pages tendances
+                    // API endpoints tendances
                     const tendancePages = ['actualites', 'technologies', 'marche', 'insights', 'predictions'];
                     for (const page of tendancePages) {
                         try {
-                            const response = await fetch(`http://localhost:3000/tendances/${category}/${page}.html`, { 
-                                method: 'HEAD',
+                            const response = await fetch(`http://localhost:3000/api/${category}/${page}`, { 
+                                method: 'GET',
                                 cache: 'no-cache' 
                             });
                             checkedLinks++;
-                            if (!response.ok && response.status !== 404) { // 404 acceptable pour certaines pages
-                                brokenLinks.push(`/tendances/${category}/${page}.html (${response.status})`);
+                            if (!response.ok) {
+                                brokenLinks.push(`/api/${category}/${page} (${response.status})`);
                             }
                         } catch (error) {
-                            // Ignorer les erreurs pour les pages tendances optionnelles
+                            brokenLinks.push(`/api/${category}/${page} (${error.message})`);
                         }
                     }
                 }
@@ -1280,6 +1338,23 @@ Message: ${report.message}</div>
                     `Pages tendances testées: ${categories.length * 5}`
                 ];
                 
+                // Générer le rapport HTML
+                const reportHTML = generateIntegrityReport(checkedLinks, brokenLinks, details, duration, successRate);
+                
+                // Sauvegarder le rapport sur le serveur
+                try {
+                    await fetch('http://localhost:3000/api/save-report', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            filename: 'rapport-integrite-liens.html',
+                            content: reportHTML
+                        })
+                    });
+                } catch (e) {
+                    console.warn('Rapport local généré mais non sauvegardé sur serveur:', e.message);
+                }
+                
                 if (brokenLinks.length === 0) {
                     return {
                         success: true,
@@ -1287,7 +1362,7 @@ Message: ${report.message}</div>
                         details: details,
                         recommendations: [
                             'Tous les liens sont fonctionnels !',
-                            'Consulter le rapport détaillé: scripts/maintenance/rapport-integrite-liens.html'
+                            'Rapport généré: scripts/maintenance/rapport-integrite-liens.html'
                         ]
                     };
                 } else {
@@ -1295,10 +1370,10 @@ Message: ${report.message}</div>
                         success: false,
                         message: `${brokenLinks.length} liens cassés détectés sur ${checkedLinks} vérifiés`,
                         details: details,
-                        errors: brokenLinks.slice(0, 10), // Limite à 10 erreurs affichées
+                        errors: brokenLinks.slice(0, 10),
                         recommendations: [
                             `${brokenLinks.length > 10 ? 'Voir toutes les erreurs dans' : 'Corriger via'} scripts/maintenance/fix-all-links.js`,
-                            'Vérifier manuellement les liens dans le rapport d\'intégrité'
+                            'Rapport généré: scripts/maintenance/rapport-integrite-liens.html'
                         ]
                     };
                 }
