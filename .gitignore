@@ -18,6 +18,9 @@ gen-cache-list.js
 test-json.js
 *.log
 *.backup
+logs/*.log
+logs/error.log
+logs/combined.log
 
 # Fichiers système
 .DS_Store

@@ -1,14 +1,62 @@
 # 📊 ANALYSE COMPLÈTE DE L'ARCHITECTURE - Site Gamer 2025
 
 **Date**: 2026-01-13
-**Version**: 1.0
+**Version**: 1.1
 **Analysé par**: Claude Sonnet 4.5
+**Dernière mise à jour**: 2026-01-13 (Corrections de sécurité appliquées)
+
+---
+
+## 🔒 CORRECTIONS RÉCENTES (2026-01-13)
+
+### ✅ Session complète de corrections - 9 améliorations
+
+**Phase 1 : Sécurité critique** (4 corrections)
+
+1. **✅ CORS sécurisé** - Configuration adaptative production/dev ([server.js:55-61](server.js#L55-L61))
+2. **✅ Validation des entrées** - Middleware express-validator complet ([backend/middleware/validators.js](backend/middleware/validators.js))
+3. **✅ Rate limiting** - Protection DDoS (100 req/15min) ([server.js:66-75](server.js#L66-L75))
+4. **✅ Headers HTTP sécurisés** - Helmet.js avec CSP ajustée ([server.js:31-44](server.js#L31-L44))
+
+**Phase 2 : Priorité HAUTE** (5 corrections)
+
+5. **✅ Gestion centralisée des erreurs** - Middleware errorHandler avec filtrage logs ([backend/middleware/errorHandler.js](backend/middleware/errorHandler.js))
+6. **✅ Helpers partagés** - Fonctions utilitaires centralisées ([backend/utils/helpers.js](backend/utils/helpers.js))
+7. **✅ Refactorisation duplication** - slugToTitreAffiche et cleanImagePath centralisés
+8. **✅ Protection endpoint sensible** - /api/llm-config désactivé ([server.js:254-274](server.js#L254-L274))
+9. **✅ Chemins images absolus** - Correction ficheGenerator.js ([backend/utils/ficheGenerator.js:30](backend/utils/ficheGenerator.js#L30))
+
+**Packages ajoutés** :
+
+- `helmet@8.1.0` - Headers de sécurité HTTP
+- `express-rate-limit@8.2.1` - Limitation débit API
+- `express-validator@7.3.1` - Validation données entrantes
+
+**Nouveaux fichiers créés** :
+
+- `backend/middleware/validators.js` - Validation réutilisable (produits, actualités)
+- `backend/middleware/errorHandler.js` - Gestion centralisée erreurs avec filtrage
+- `backend/utils/helpers.js` - 5 fonctions utilitaires (slug, images, dates, URLs)
+
+**Fichiers modifiés** :
+
+- `server.js` - Helmet, CORS, rate limiting, errorHandler, imports helpers
+- `backend/routes/produits.js` - Validation ajoutée, helpers utilisés
+- `backend/utils/ficheGenerator.js` - Chemins images corrigés
+- `.env.example` - Variable ALLOWED_ORIGINS ajoutée
+
+**Documentation créée** :
+
+- [CHANGELOG-SECURITE-2026-01-13.md](CHANGELOG-SECURITE-2026-01-13.md) - Détails sécurité
+- [CORRECTIONS-PRIORITE-HAUTE-2026-01-13.md](CORRECTIONS-PRIORITE-HAUTE-2026-01-13.md) - Détails code
+- [FIX-CSP-HELMET-2026-01-13.md](FIX-CSP-HELMET-2026-01-13.md) - Fix bug articles CSP
 
 ---
 
 ## 🎯 1. VUE D'ENSEMBLE DU PROJET
 
 Votre projet est un **site e-commerce gaming full-stack** utilisant PostgreSQL, avec :
+
 - **61+ produits** répartis sur **16 catégories**
 - **151 fiches HTML** générées dynamiquement
 - **79 scripts de maintenance** automatisés
@@ -302,6 +350,7 @@ FROM produits WHERE id LIKE 'prod_%'
 ### **5.1 Tables principales**
 
 #### **produits** (61+ lignes)
+
 ```sql
 id                      VARCHAR(20) PRIMARY KEY  -- prod_1, prod_2...
 nom                     VARCHAR(255)             -- Nom produit
@@ -318,16 +367,19 @@ created_at, updated_at TIMESTAMP
 ```
 
 **Index** :
+
 - `idx_produits_categorie` sur `categorie`
 - `idx_produits_top` sur `top_du_mois`
 
 #### **categories** (16 lignes)
+
 ```sql
 id    SERIAL PRIMARY KEY
 nom   VARCHAR(100)  -- drone, smartphone, pc-gaming...
 ```
 
 #### **actualites** (64+ lignes)
+
 ```sql
 id                SERIAL PRIMARY KEY
 titre             TEXT
@@ -343,6 +395,7 @@ lien              VARCHAR(500)       -- Fiche générée
 ```
 
 #### **actualites_sections** (256+ lignes)
+
 ```sql
 id            SERIAL PRIMARY KEY
 actualite_id  INT → actualites(id) ON DELETE CASCADE
@@ -352,6 +405,7 @@ ordre         INTEGER              -- Ordre des sections
 ```
 
 #### **technologies, marche, insights, predictions**
+
 Même structure avec `categorie_id` + `ordre`
 
 ### **5.2 Relations**
@@ -411,93 +465,143 @@ categories (1) ──< (N) produits
 
 ### **7.1 Sécurité**
 
-#### ❌ **CORS trop permissif**
-**Fichier**: `server.js:40-42`
-```javascript
-app.use(cors({
-  origin: true,  // ⚠️ Accepte TOUTES les origines
-  credentials: true
-}));
-```
-**Impact** : Vulnérabilité CSRF, pas de protection des origines.
+#### ✅ **CORS sécurisé** (CORRIGÉ - 2026-01-13)
 
-**Recommandation** :
+**Fichier**: `server.js:54-60`
+
 ```javascript
+// Configuration CORS sécurisée
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://votredomaine.com']
+    ? (process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'])
     : true,
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 ```
 
+**État** : ✅ **IMPLÉMENTÉ**
+
+- CORS adaptatif selon l'environnement
+- Variable `ALLOWED_ORIGINS` dans `.env` et `.env.example`
+- Protection CSRF en production
+- Permissif en développement pour faciliter le dev local
+
 ---
 
-#### ❌ **Pas de validation des entrées**
-**Problème** : Les routes acceptent directement `req.body` sans validation (Joi, Zod, express-validator)
+#### ✅ **Validation des entrées** (CORRIGÉ - 2026-01-13)
 
-**Impact** : Risque d'injection SQL (atténué par les requêtes paramétrées, mais pas de validation métier)
+**Fichier**: `backend/middleware/validators.js` (NOUVEAU)
 
-**Recommandation** : Ajouter une validation avec `express-validator` ou `Zod`.
-
-**Exemple** :
 ```javascript
-const { body, validationResult } = require('express-validator');
+const { body, param, validationResult } = require('express-validator');
 
-router.post('/',
+const validateProductCreate = [
   body('nom').trim().notEmpty().isLength({ max: 255 }),
-  body('categorie').isIn(['drone', 'smartphone', 'pc-gaming']),
-  body('prix').optional().isNumeric(),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+  body('categorie').optional().trim().isLength({ max: 100 }),
+  body('prix').optional().trim().isLength({ max: 50 }),
+  body('top_du_mois').optional().isBoolean(),
+  body('fonctionnalites_avancees').optional().isArray(),
+  body('donnees_fiche').optional().isObject(),
+  handleValidationErrors
+];
+```
+
+**Routes sécurisées** : `backend/routes/produits.js`
+
+```javascript
+router.post('/', validateProductCreate, async (req, res) => { ... });
+router.put('/:id', validateProductUpdate, async (req, res) => { ... });
+router.get('/:id', validateId, async (req, res) => { ... });
+router.delete('/:id', validateId, async (req, res) => { ... });
+```
+
+**État** : ✅ **IMPLÉMENTÉ**
+
+- Middleware complet avec `express-validator`
+- Validation pour produits et actualités
+- Messages d'erreur en français
+- Validation des types, longueurs, formats
+
+---
+
+#### ✅ **Headers de sécurité avec Helmet.js** (CORRIGÉ - 2026-01-13)
+
+**Fichier**: `server.js:28-38`
+
+```javascript
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
     }
-    // ... logique métier
   }
-);
+}));
 ```
+
+**État** : ✅ **IMPLÉMENTÉ**
+
+- Protection XSS automatique
+- Content Security Policy configurée
+- Compatible avec Google Fonts
+- Headers HTTP sécurisés
 
 ---
 
-#### ❌ **Gestion des erreurs DB incomplète**
-**Fichier**: `server.js:92`
-```javascript
-res.json({ success: true, message: 'Colonne OK (erreur ignorée)' });
-```
-**Impact** : Masque les vraies erreurs, debug difficile.
+#### ✅ **Rate limiting** (CORRIGÉ - 2026-01-13)
 
----
-
-#### ❌ **Pas de rate limiting**
-**Problème** : API ouverte sans limitation de requêtes
-
-**Impact** : Risque de DDoS ou scraping abusif
-
-**Recommandation** : Ajouter `express-rate-limit`.
+**Fichier**: `server.js:65-74`
 
 ```javascript
-const rateLimit = require('express-rate-limit');
-
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Max 100 requêtes par IP
-  message: 'Trop de requêtes, réessayez plus tard'
+  max: 100, // Limite à 100 requêtes par fenêtre par IP
+  message: 'Trop de requêtes depuis cette IP, veuillez réessayer plus tard.',
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 app.use('/api/', apiLimiter);
 ```
 
+**État** : ✅ **IMPLÉMENTÉ**
+
+- 100 requêtes max par 15 minutes par IP
+- Appliqué uniquement aux routes `/api/*`
+- Protection DDoS et scraping
+- Headers standards (RateLimit-*)
+
+---
+
+#### ❌ **Gestion des erreurs DB incomplète**
+
+**Fichier**: `server.js:92`
+
+```javascript
+res.json({ success: true, message: 'Colonne OK (erreur ignorée)' });
+```
+
+**Impact** : Masque les vraies erreurs, debug difficile.
+
+**État** : ⚠️ **À CORRIGER** - Priorité MOYENNE
+
 ---
 
 #### ❌ **Variables d'environnement exposées**
+
 **Fichier**: `server.js:224-227`
+
 ```javascript
 app.get('/api/llm-config', (req, res) => {
   const model = process.env.OPENAI_MODEL || 'gpt-5';
   // Expose la config publiquement
 });
 ```
+
 **Impact** : Expose la config LLM publiquement.
 
 **Recommandation** : Protéger cet endpoint avec authentification admin.
@@ -507,6 +611,7 @@ app.get('/api/llm-config', (req, res) => {
 ### **7.2 Architecture & Code**
 
 #### ❌ **Duplication de logique de normalisation**
+
 **Problème** : La fonction `slugToTitreAffiche` existe dans `server.js:294` ET `produits.js:8`
 
 **Impact** : Maintenance difficile, risque d'incohérence
@@ -526,6 +631,7 @@ module.exports = { slugToTitreAffiche };
 ```
 
 Puis importer partout :
+
 ```javascript
 const { slugToTitreAffiche } = require('../utils/helpers');
 ```
@@ -533,10 +639,13 @@ const { slugToTitreAffiche } = require('../utils/helpers');
 ---
 
 #### ❌ **Chemins d'images hardcodés**
+
 **Fichier**: `ficheGenerator.js:30`
+
 ```html
 <img src="../../frontend/public/assets/images/gaming.png">
 ```
+
 **Impact** : Chemin relatif fragile, peut casser selon le contexte.
 
 **Recommandation** : Utiliser des chemins absolus `/assets/images/...`
@@ -544,6 +653,7 @@ const { slugToTitreAffiche } = require('../utils/helpers');
 ---
 
 #### ❌ **Mélange de responsabilités dans server.js**
+
 **Problème** : `server.js` contient encore des routes directes (`/api/categories`, `/api/stats`)
 
 **Impact** : Moins modulaire
@@ -553,7 +663,9 @@ const { slugToTitreAffiche } = require('../utils/helpers');
 ---
 
 #### ❌ **Pas de gestion centralisée des erreurs**
+
 **Problème** : Chaque route fait son try/catch
+
 ```javascript
 try { ... } catch (error) {
   res.status(500).json({ success: false, error: error.message });
@@ -581,12 +693,14 @@ module.exports = (err, req, res, next) => {
 ```
 
 Utilisation dans `server.js` :
+
 ```javascript
 // À la fin, après toutes les routes
 app.use(require('./backend/middleware/errorHandler'));
 ```
 
 Dans les routes, simplement :
+
 ```javascript
 router.get('/', async (req, res, next) => {
   try {
@@ -600,10 +714,13 @@ router.get('/', async (req, res, next) => {
 ---
 
 #### ❌ **Caractères mal encodés**
+
 **Fichier**: `server.js:208, 210, 217`
+
 ```javascript
 // "GÉNÉRIQUES", "générées", "trouvée" affichés comme "G�N�RIQUES"
 ```
+
 **Impact** : Problème d'encodage UTF-8, affichage bizarre dans les commentaires.
 
 **Recommandation** : Sauvegarder le fichier en UTF-8 (pas UTF-8 BOM ou autre).
@@ -613,11 +730,13 @@ router.get('/', async (req, res, next) => {
 ### **7.3 Base de données**
 
 #### ❌ **Pas de transactions pour opérations multiples**
+
 **Problème** : La réorganisation (reorder) fait 2+ UPDATE sans transaction
 
 **Impact** : Risque d'incohérence si une query échoue
 
 **Recommandation** :
+
 ```javascript
 // backend/routes/content.js - reorder endpoint
 const client = await pool.connect();
@@ -641,7 +760,9 @@ try {
 ---
 
 #### ❌ **Gestion de l'ordre fragile**
+
 **Problème** :
+
 - Si deux items ont le même `ordre`, comportement indéfini
 - Pas de recalcul automatique des trous (1, 2, 5, 8...)
 
@@ -676,6 +797,7 @@ $$ LANGUAGE plpgsql;
 ---
 
 #### ❌ **JSONB `donnees_fiche` sans schéma**
+
 **Problème** : Données flexibles = pratique, mais aucune validation
 
 **Impact** : Risque d'incohérence entre produits
@@ -711,6 +833,7 @@ module.exports = { validateDonneesFiche };
 ```
 
 Utiliser dans les routes :
+
 ```javascript
 const { validateDonneesFiche } = require('../utils/jsonSchemas');
 
@@ -726,6 +849,7 @@ if (!validateDonneesFiche(donnees_fiche)) {
 ---
 
 #### ❌ **Pas de migrations DB versionnées**
+
 **Problème** : Pas de système de migrations (Knex, Sequelize, TypeORM...)
 
 **Impact** : Difficile de suivre l'évolution du schéma
@@ -738,6 +862,7 @@ npx knex init
 ```
 
 Configuration `knexfile.js` :
+
 ```javascript
 module.exports = {
   development: {
@@ -756,11 +881,13 @@ module.exports = {
 ```
 
 Créer une migration :
+
 ```bash
 npx knex migrate:make add_video_url_to_actualites
 ```
 
 Fichier généré `sql/migrations/20260113_add_video_url_to_actualites.js` :
+
 ```javascript
 exports.up = function(knex) {
   return knex.schema.alterTable('actualites', (table) => {
@@ -776,6 +903,7 @@ exports.down = function(knex) {
 ```
 
 Exécuter :
+
 ```bash
 npx knex migrate:latest  # Applique les migrations
 npx knex migrate:rollback # Annule la dernière migration
@@ -786,7 +914,9 @@ npx knex migrate:rollback # Annule la dernière migration
 ### **7.4 Frontend**
 
 #### ❌ **Cache LocalStorage sans TTL par défaut**
+
 **Fichier**: `fiches.js:53-57`
+
 ```javascript
 const cachedProduits = cacheManager.get('produits');
 if (cachedProduits) {
@@ -794,6 +924,7 @@ if (cachedProduits) {
     return;
 }
 ```
+
 **Impact** : Si données changent en DB, le frontend affiche du cache périmé.
 
 **Note** : `cache-manager.js` semble gérer un TTL (à vérifier), mais le fallback ligne 87-94 utilise un cache expiré.
@@ -829,10 +960,13 @@ get(key) {
 ---
 
 #### ❌ **Détection mobile basique**
+
 **Fichier**: `fiches.js:22`
+
 ```javascript
 const isMobile = /Android|iPhone|iPad/.test(navigator.userAgent);
 ```
+
 **Impact** : User-Agent spoofable, pas fiable.
 
 **Recommandation** : Utiliser `matchMedia`
@@ -853,6 +987,7 @@ mediaQuery.addEventListener('change', (e) => {
 ---
 
 #### ❌ **Pas de gestion d'état moderne**
+
 **Problème** : Variables globales (`tousLesProduits`, `categorieActuelle`)
 
 **Impact** : OK pour un petit projet, mais difficile à scaler
@@ -860,6 +995,7 @@ mediaQuery.addEventListener('change', (e) => {
 **Recommandation** : Migrer vers Vue.js (léger) ou React pour gestion d'état prévisible
 
 **Exemple avec Vue 3** :
+
 ```javascript
 // main.js
 import { createApp } from 'vue';
@@ -909,6 +1045,7 @@ export const useProduitsStore = defineStore('produits', {
 ### **7.5 DevOps & Déploiement**
 
 #### ❌ **Pas de CI/CD**
+
 **Problème** : Pas de GitHub Actions, GitLab CI...
 
 **Impact** : Tests manuels, risque d'oubli
@@ -971,6 +1108,7 @@ jobs:
 ---
 
 #### ❌ **Pas de Docker**
+
 **Problème** : Déploiement manuel, dépendances à installer à la main
 
 **Impact** : Pas d'environnement reproductible
@@ -978,6 +1116,7 @@ jobs:
 **Recommandation** : Ajouter `Dockerfile` + `docker-compose.yml`
 
 **Dockerfile** :
+
 ```dockerfile
 FROM node:18-alpine
 
@@ -999,6 +1138,7 @@ CMD ["node", "server.js"]
 ```
 
 **docker-compose.yml** :
+
 ```yaml
 version: '3.8'
 
@@ -1043,6 +1183,7 @@ volumes:
 ```
 
 **.dockerignore** :
+
 ```
 node_modules
 npm-debug.log
@@ -1056,6 +1197,7 @@ wiki
 ```
 
 Utilisation :
+
 ```bash
 # Démarrer
 docker-compose up -d
@@ -1073,6 +1215,7 @@ docker-compose up -d --build
 ---
 
 #### ❌ **Pas de monitoring/logging**
+
 **Problème** : Pas de Sentry, Winston, Morgan...
 
 **Impact** : Difficile de débugger en production
@@ -1084,6 +1227,7 @@ npm install winston morgan
 ```
 
 **backend/config/logger.js** :
+
 ```javascript
 const winston = require('winston');
 
@@ -1120,6 +1264,7 @@ module.exports = logger;
 ```
 
 **Utilisation dans server.js** :
+
 ```javascript
 const morgan = require('morgan');
 const logger = require('./backend/config/logger');
@@ -1142,28 +1287,29 @@ logger.error('❌ Erreur:', error);
 
 ### **8.1 Priorité HAUTE (sécurité/stabilité)** 🔴
 
-#### **A. Sécurité API**
+#### **A. Sécurité API** ✅ **IMPLÉMENTÉ (2026-01-13)**
 
 **Objectif** : Protéger l'API contre les attaques courantes
 
 **Actions** :
-1. ✅ Restreindre CORS pour la production
-2. ✅ Ajouter validation des entrées (express-validator)
-3. ✅ Rate limiting (express-rate-limit)
-4. ✅ Helmet.js pour headers de sécurité
+
+1. ✅ **FAIT** - Restreindre CORS pour la production ([server.js:54-60](server.js#L54-L60))
+2. ✅ **FAIT** - Validation des entrées avec express-validator ([backend/middleware/validators.js](backend/middleware/validators.js))
+3. ✅ **FAIT** - Rate limiting ([server.js:65-74](server.js#L65-L74))
+4. ✅ **FAIT** - Helmet.js pour headers de sécurité ([server.js:28-38](server.js#L28-L38))
+
+**Packages installés** :
 
 ```bash
-npm install express-validator express-rate-limit helmet
+✅ express-validator@7.3.1
+✅ express-rate-limit@8.2.1
+✅ helmet@8.1.0
 ```
 
-**Implémentation** :
+**Implémentation réalisée** :
 
 ```javascript
-// server.js
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-
-// Headers de sécurité
+// server.js - Headers de sécurité avec Helmet
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -1171,23 +1317,22 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'"]
+      scriptSrc: ["'self'", "'unsafe-inline'"]
     }
   }
 }));
 
-// Rate limiting
+// Rate limiting sur toutes les routes API
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
-  message: 'Trop de requêtes, réessayez plus tard'
+  message: 'Trop de requêtes depuis cette IP, veuillez réessayer plus tard.'
 });
-
 app.use('/api/', apiLimiter);
 
-// CORS restreint
+// CORS sécurisé adaptatif
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
     ? process.env.ALLOWED_ORIGINS?.split(',') || []
@@ -1197,6 +1342,7 @@ app.use(cors({
 ```
 
 **.env** :
+
 ```env
 ALLOWED_ORIGINS=https://votredomaine.com,https://www.votredomaine.com
 ```
@@ -1411,6 +1557,7 @@ const { slugToTitreAffiche, normalizeImagePath } = require('./backend/utils/help
 **Objectif** : Tracer l'évolution du schéma
 
 **Installation** :
+
 ```bash
 npm install knex
 npx knex init
@@ -1452,6 +1599,7 @@ module.exports = {
 ```
 
 **Créer une migration** :
+
 ```bash
 npx knex migrate:make initial_schema
 ```
@@ -1495,6 +1643,7 @@ exports.down = async function(knex) {
 ```
 
 **Scripts package.json** :
+
 ```json
 {
   "scripts": {
@@ -1507,6 +1656,7 @@ exports.down = async function(knex) {
 ```
 
 **Utilisation** :
+
 ```bash
 npm run migrate:latest  # Appliquer toutes les migrations
 npm run migrate:rollback  # Annuler la dernière
@@ -1524,6 +1674,7 @@ npm run migrate:make add_video_url  # Créer nouvelle migration
 **Ajouts recommandés** :
 
 **.dockerignore** :
+
 ```
 node_modules
 npm-debug.log
@@ -1539,32 +1690,34 @@ logs
 ```
 
 **Makefile** (optionnel, pour faciliter les commandes) :
+
 ```makefile
 .PHONY: up down logs build migrate
 
 up:
-	docker-compose up -d
+ docker-compose up -d
 
 down:
-	docker-compose down
+ docker-compose down
 
 logs:
-	docker-compose logs -f app
+ docker-compose logs -f app
 
 build:
-	docker-compose up -d --build
+ docker-compose up -d --build
 
 migrate:
-	docker-compose exec app npm run migrate:latest
+ docker-compose exec app npm run migrate:latest
 
 shell:
-	docker-compose exec app sh
+ docker-compose exec app sh
 
 db:
-	docker-compose exec db psql -U postgres -d gamer_2025
+ docker-compose exec db psql -U postgres -d gamer_2025
 ```
 
 **Utilisation** :
+
 ```bash
 make up       # Démarrer
 make logs     # Voir logs
@@ -1660,6 +1813,7 @@ const pool = new Pool({
 **Objectif** : Cache serveur partagé, invalidation centralisée
 
 **Installation** :
+
 ```bash
 npm install redis
 ```
@@ -1802,6 +1956,7 @@ volumes:
 **Objectif** : Tests automatisés dans vrais navigateurs
 
 **Installation** :
+
 ```bash
 npm install -D @playwright/test
 npx playwright install
@@ -1894,6 +2049,7 @@ test.describe('Admin', () => {
 ```
 
 **Scripts package.json** :
+
 ```json
 {
   "scripts": {
@@ -1911,11 +2067,13 @@ test.describe('Admin', () => {
 **Objectif** : Gestion d'état prévisible, composants réutilisables
 
 **Installation** :
+
 ```bash
 npm install vue@3 pinia vue-router
 ```
 
 **Structure** :
+
 ```
 frontend/src/
 ├── main.js              # Point d'entrée
@@ -2113,6 +2271,7 @@ function handleCategoryChange(categorie) {
 ```
 
 **Note** : La migration vers Vue.js est un gros projet (2-3 semaines), mais apporte :
+
 - Réactivité automatique
 - Composants réutilisables
 - Gestion d'état centralisée
@@ -2126,6 +2285,7 @@ function handleCategoryChange(categorie) {
 **Objectif** : Le client demande exactement les champs nécessaires
 
 **Installation** :
+
 ```bash
 npm install apollo-server-express graphql
 ```
@@ -2396,6 +2556,7 @@ query GetProducts {
 Votre projet **Site Gamer 2025** est un système e-commerce **bien conçu et fonctionnel**, avec :
 
 #### **✅ Points forts majeurs**
+
 1. **Architecture modulaire** claire (backend/frontend séparés, routes modulaires)
 2. **Système de génération de fiches HTML** innovant et automatisé
 3. **79 scripts de maintenance** (excellente Developer Experience)
@@ -2411,18 +2572,21 @@ Votre projet **Site Gamer 2025** est un système e-commerce **bien conçu et fon
 #### **⚠️ Points d'amélioration prioritaires**
 
 **Sécurité (CRITIQUE)** :
+
 - CORS trop permissif en production
 - Pas de validation des entrées (risque injection)
 - Pas de rate limiting (vulnérable DDoS)
 - Variables d'env exposées publiquement
 
 **Maintenabilité** :
+
 - Duplication de code (helpers)
 - Pas de migrations DB versionnées
 - Pas de Docker (déploiement manuel)
 - Gestion d'erreurs dispersée
 
 **DevOps** :
+
 - Pas de CI/CD
 - Pas de monitoring/alertes
 - Logs basiques
@@ -2461,15 +2625,15 @@ Votre projet **Site Gamer 2025** est un système e-commerce **bien conçu et fon
 
 ### **Documentation utile**
 
-- **Express.js best practices** : https://expressjs.com/en/advanced/best-practice-security.html
-- **PostgreSQL performance** : https://wiki.postgresql.org/wiki/Performance_Optimization
-- **Docker multi-stage builds** : https://docs.docker.com/build/building/multi-stage/
-- **Vue.js guide** : https://vuejs.org/guide/
-- **Playwright docs** : https://playwright.dev/
+- **Express.js best practices** : <https://expressjs.com/en/advanced/best-practice-security.html>
+- **PostgreSQL performance** : <https://wiki.postgresql.org/wiki/Performance_Optimization>
+- **Docker multi-stage builds** : <https://docs.docker.com/build/building/multi-stage/>
+- **Vue.js guide** : <https://vuejs.org/guide/>
+- **Playwright docs** : <https://playwright.dev/>
 
 ### **Outils recommandés**
 
-- **Sentry** : Monitoring erreurs (https://sentry.io)
+- **Sentry** : Monitoring erreurs (<https://sentry.io>)
 - **Datadog** : Monitoring infrastructure
 - **GitHub Actions** : CI/CD gratuit
 - **Railway/Render** : Déploiement facile PostgreSQL + Node

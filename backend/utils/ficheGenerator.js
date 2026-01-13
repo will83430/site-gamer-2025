@@ -27,7 +27,7 @@ function generateFicheHTML(product) {
 </head>
 <body>
     <div class="entete">
-    <img src="../../frontend/public/assets/images/gaming.png" alt="Gaming">
+    <img src="/assets/images/gaming.png" alt="Gaming">
     <a class="nav-back" href="javascript:history.back()">← Retour</a>
 </div>
 
