@@ -22,7 +22,7 @@
 <body data-article-id="107">
     <div class="entete">
         <img src="../../../frontend/public/assets/images/gaming.png" alt="Gaming">
-        <a class="nav-back" href="#" onclick="history.back(); return false;">← Retour</a>
+        <a class="nav-back" href="javascript:history.back()">← Retour</a>
     </div>
 
     <h1 class="article-title">Chargement...</h1>
@@ -33,9 +33,10 @@
     <div class="gallery" style="background: #000; max-width: 700px; margin: 30px auto;">
         <iframe 
             style="width: 100%; aspect-ratio: 16/9; border: none; border-radius: 12px;"
-            src="https://www.youtube.com/embed/M3D2-0F68LY" 
+            src="https://www.youtube.com/embed/M3D2-0F68LY?enablejsapi=1&origin=http://localhost:3000" 
             frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen>
         </iframe>
     </div>

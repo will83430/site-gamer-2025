@@ -29,9 +29,10 @@ class TendancesDataManager {
             <article class="actualite-card ${index === 0 ? 'featured' : ''}" ${hasLink ? `onclick="window.location.href='${detailLink}'" style="cursor: pointer;"` : ''}>
                 ${news.video_url
                 ? `<div class="card-video">
-                        <iframe width="100%" height="200" src="${news.video_url}" 
+                        <iframe width="100%" height="200" src="${news.video_url}?enablejsapi=1&origin=${window.location.origin}" 
                             title="${news.titre}" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
                             allowfullscreen></iframe>
                         ${news.hot ? '<span class="badge hot">🔥 HOT</span>' : ''}
                    </div>`

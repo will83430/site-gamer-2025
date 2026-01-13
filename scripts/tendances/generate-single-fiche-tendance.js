@@ -17,7 +17,7 @@ async function generateSingleFicheTendance(tendanceId) {
 
     console.log(`🚀 Génération de la fiche pour la tendance ID: ${tendanceId}...\n`);
 
-    const response = await fetch(`${API_URL}/api/generate-fiche-tendance/${tendanceId}`, {
+    const response = await fetch(`${API_URL}/api/fiche-tendance/generate-fiche-tendance/${tendanceId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

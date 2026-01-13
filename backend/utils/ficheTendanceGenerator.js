@@ -38,9 +38,10 @@ async function generateFicheTendanceHTML(tendance, categorie, pool = null) {
     <div class="gallery" style="background: #000; max-width: 700px; margin: 30px auto;">
         <iframe 
             style="width: 100%; aspect-ratio: 16/9; border: none; border-radius: 12px;"
-            src="${tendance.video_url}" 
+            src="${tendance.video_url}?enablejsapi=1&origin=${process.env.NODE_ENV === 'production' ? 'https://yourdomain.com' : 'http://localhost:3000'}" 
             frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen>
         </iframe>
     </div>

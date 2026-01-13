@@ -41,6 +41,7 @@ app.use(helmet({
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // unsafe-eval nécessaire pour onclick inline
       scriptSrcAttr: ["'unsafe-inline'"], // Permet les attributs onclick, onload, etc.
       connectSrc: ["'self'", "http://localhost:3000", "http://192.168.1.235:3000"], // API calls
+      frameSrc: ["'self'", "https://www.youtube.com", "https://youtube.com", "https://www.youtube-nocookie.com", "https://www.dailymotion.com", "https://geo.dailymotion.com"], // Iframes vidéos
     }
   }
 }));
@@ -50,6 +51,11 @@ app.use(compression()); // Compression gzip
 // Logs HTTP avec Morgan (via Winston)
 const morganFormat = process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
 app.use(morgan(morganFormat, { stream: logger.stream }));
+
+// Favicon route
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/public/assets/images/icons/icon-192x192.png'));
+});
 
 // Middleware
 app.use((req, res, next) => {
