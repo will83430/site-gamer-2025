@@ -26,6 +26,11 @@ logs/combined.log
 .DS_Store
 Thumbs.db
 
+# Build Vue.js / Vite
+dist/
+dist-ssr/
+*.local
+
 # Autres fichiers à ignorer
 *.tmp
 
