@@ -20,13 +20,19 @@ class TendancesDataManager {
 
     generateNewsHTML(newsData) {
          console.log('🟢 Données reçues pour generateNewsHTML:', newsData);
-        return newsData.map((news, index) => `
-            <article class="actualite-card ${index === 0 ? 'featured' : ''}">
+        return newsData.map((news, index) => {
+            // Créer le lien vers la fiche détaillée si disponible
+            const detailLink = news.lien ? `/${news.lien}` : '#';
+            const hasLink = Boolean(news.lien);
+            
+            return `
+            <article class="actualite-card ${index === 0 ? 'featured' : ''}" ${hasLink ? `onclick="window.location.href='${detailLink}'" style="cursor: pointer;"` : ''}>
                 ${news.video_url
                 ? `<div class="card-video">
-                        <iframe width="100%" height="200" src="${news.video_url}" 
+                        <iframe width="100%" height="200" src="${news.video_url}?enablejsapi=1&origin=${window.location.origin}" 
                             title="${news.titre}" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
                             allowfullscreen></iframe>
                         ${news.hot ? '<span class="badge hot">🔥 HOT</span>' : ''}
                    </div>`
@@ -43,9 +49,11 @@ class TendancesDataManager {
                     <div class="tags">
                         ${news.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                     </div>
+                    ${hasLink ? '<span class="read-more">➜ Lire la suite</span>' : ''}
                 </div>
             </article>
-        `).join('');
+        `;
+        }).join('');
     }
 
     // === TECHNOLOGIES ===

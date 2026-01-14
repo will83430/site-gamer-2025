@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog - Site Gamer 2025</title>
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
+        .header h1 { font-size: 3em; color: white; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .version { margin-bottom: 50px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; position: relative; }
+        .version::before { content: ''; position: absolute; left: -2px; top: 20px; bottom: 20px; width: 4px; background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); border-radius: 2px; }
+        .version-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .version-title { font-size: 2em; color: #667eea; display: flex; align-items: center; gap: 10px; }
+        .version-date { color: #ffc107; font-size: 1.1em; }
+        .version-badge { background: #2ecc71; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .version-badge.deprecated { background: #e74c3c; }
+        .version-badge.beta { background: #3498db; }
+        .category { margin: 25px 0; }
+        .category-title { color: #2ecc71; font-size: 1.3em; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .category-title.added { color: #2ecc71; }
+        .category-title.changed { color: #3498db; }
+        .category-title.fixed { color: #ffc107; }
+        .category-title.removed { color: #e74c3c; }
+        .category-title.security { color: #e74c3c; }
+        .change-list { list-style: none; padding-left: 20px; }
+        .change-list li { margin: 10px 0; padding-left: 25px; position: relative; }
+        .change-list li::before { content: '▸'; position: absolute; left: 0; color: #667eea; font-weight: bold; }
+        code { background: rgba(102, 126, 234, 0.2); padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #ffd700; }
+        .highlight { background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .highlight-title { color: #ffc107; font-weight: 600; margin-bottom: 10px; }
+        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .back-link:hover { background: #764ba2; transform: translateY(-2px); }
+        .stats { display: flex; justify-content: space-around; margin: 40px 0; flex-wrap: wrap; gap: 20px; }
+        .stat-item { text-align: center; background: rgba(102, 126, 234, 0.1); padding: 20px; border-radius: 10px; min-width: 150px; }
+        .stat-number { font-size: 2.5em; color: #667eea; font-weight: 700; }
+        .stat-label { opacity: 0.7; margin-top: 5px; }
+        .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7; }
+        .toc { background: rgba(102, 126, 234, 0.1); padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+        .toc h3 { color: #667eea; margin-bottom: 15px; }
+        .toc ul { list-style: none; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #e0e0e0; text-decoration: none; transition: color 0.3s; }
+        .toc a:hover { color: #667eea; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📝 Changelog</h1>
+        <p>Historique des versions et modifications du Site Gamer 2025</p>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="scripts.html">⚙️ Scripts</a>
+        <a href="troubleshooting.html">🔧 Dépannage</a>
+        <a href="changelog.html">📝 Changelog</a>
+    </nav>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">2.2</div>
+                <div class="stat-label">Version actuelle</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">61+</div>
+                <div class="stat-label">Produits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">16</div>
+                <div class="stat-label">Catégories</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">30+</div>
+                <div class="stat-label">Scripts</div>
+            </div>
+        </div>
+
+        <div class="toc">
+            <h3>📑 Versions</h3>
+            <ul>
+                <li><a href="#v2.2">v2.2.0 - Décembre 2025 (Actuelle)</a></li>
+                <li><a href="#v2.1">v2.1.0 - Novembre 2025</a></li>
+                <li><a href="#v2.0">v2.0.0 - Octobre 2025</a></li>
+                <li><a href="#v1.5">v1.5.0 - Septembre 2025</a></li>
+                <li><a href="#v1.0">v1.0.0 - Août 2025</a></li>
+            </ul>
+        </div>
+
+        <!-- Version 2.2.0 - Décembre 2025 -->
+        <div class="version" id="v2.2">
+            <div class="version-header">
+                <div class="version-title">
+                    🎄 Version 2.2.0
+                    <span class="version-badge">LATEST</span>
+                </div>
+                <div class="version-date">26 décembre 2025</div>
+            </div>
+
+            <div class="highlight">
+                <div class="highlight-title">🎯 Points forts de cette version</div>
+                <ul>
+                    <li>Ajout de 12 nouveaux produits premium pour décembre</li>
+                    <li>Nouvelle documentation Wiki complète et interactive</li>
+                    <li>Optimisation majeure de la génération de fiches</li>
+                    <li>Scripts de vérification et maintenance améliorés</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title added">✨ Ajouts</div>
+                <ul class="change-list">
+                    <li><strong>12 nouveaux produits top de décembre</strong> :
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>iPhone 15 Pro Max (prod_50)</li>
+                            <li>Samsung Galaxy S24 Ultra (prod_51)</li>
+                            <li>Apple Watch Ultra 2 (prod_52)</li>
+                            <li>Samsung Galaxy Watch6 Classic (prod_53)</li>
+                            <li>Canon EOS R5 Mark II (prod_54)</li>
+                            <li>Sony Alpha 7R V (prod_55)</li>
+                            <li>LG OLED G4 77" (prod_56)</li>
+                            <li>Samsung Neo QLED QN95D 85" (prod_57)</li>
+                            <li>Meta Quest 3 (prod_58)</li>
+                            <li>PlayStation VR2 (prod_59)</li>
+                            <li>NVIDIA GeForce RTX 4090 (prod_60)</li>
+                            <li>AMD Radeon RX 7900 XTX (prod_61)</li>
+                        </ul>
+                    </li>
+                    <li>Documentation Wiki complète avec pages interactives</li>
+                    <li>Page <code>project-connections.html</code> avec diagramme visuel des composants</li>
+                    <li>Page <code>project-details.html</code> avec documentation exhaustive</li>
+                    <li>Script <code>add-new-products.js</code> pour insertion batch de produits</li>
+                    <li>Script <code>generate-all-new-fiches.js</code> pour génération via API</li>
+                    <li>Script <code>generate-new-products.js</code> pour génération directe depuis DB</li>
+                    <li>Script <code>set-top-decembre.js</code> pour marquer les tops du mois</li>
+                    <li>Script <code>update-top-decembre.js</code> pour mise à jour automatique</li>
+                    <li>Fichiers README dédiés : <code>README-TOP-DECEMBRE.md</code></li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title changed">🔄 Modifications</div>
+                <ul class="change-list">
+                    <li>Amélioration de la fonction <code>generateFicheHTML()</code> dans server.js</li>
+                    <li>Optimisation des requêtes SQL pour les produits</li>
+                    <li>Refactoring des scripts de normalisation pour chaque catégorie</li>
+                    <li>Amélioration de la gestion des erreurs dans l'API</li>
+                    <li>Mise à jour du système de slugification pour les URLs</li>
+                    <li>Optimisation de la génération d'<code>image_url</code></li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title fixed">🐛 Corrections</div>
+                <ul class="change-list">
+                    <li>Correction des chemins d'images absolus dans la DB</li>
+                    <li>Fix des catégories avec casse incorrecte</li>
+                    <li>Correction des espaces dans les URLs de fiches</li>
+                    <li>Fix de la gestion des arrays <code>donnees_fiche</code> et <code>fonctionnalites_avancees</code></li>
+                    <li>Correction des descriptions dupliquées entre produits</li>
+                    <li>Fix du format des prix (normalisation à "XXX.XX€")</li>
+                    <li>Correction de <code>titre_affiche</code> manquant sur certains produits</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title changed">📊 Base de données</div>
+                <ul class="change-list">
+                    <li>Extension de la table <code>produits</code> à 61+ entrées</li>
+                    <li>Normalisation complète des données pour toutes les catégories</li>
+                    <li>Ajout de contenus détaillés dans <code>donnees_fiche</code></li>
+                    <li>Enrichissement des <code>fonctionnalites_avancees</code></li>
+                    <li>Mise à jour du fichier <code>backend/gestion_produits.sql</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Version 2.1.0 - Novembre 2025 -->
+        <div class="version" id="v2.1">
+            <div class="version-header">
+                <div class="version-title">🍂 Version 2.1.0</div>
+                <div class="version-date">Novembre 2025</div>
+            </div>
+
+            <div class="category">
+                <div class="category-title added">✨ Ajouts</div>
+                <ul class="change-list">
+                    <li>Système de "Top du mois" avec flag <code>top_du_mois</code></li>
+                    <li>Script <code>set-top-novembre.js</code> pour marquer les produits vedettes</li>
+                    <li>Script <code>regenerate-fiches-top.js</code> pour régénération ciblée</li>
+                    <li>Endpoint <code>/api/preview-fiche/:id</code> pour prévisualisation</li>
+                    <li>Fichier <code>README-TOP-NOVEMBRE.md</code> documentant les produits du mois</li>
+                    <li>Scripts de normalisation par catégorie (camera, drone, smartphone, etc.)</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title changed">🔄 Modifications</div>
+                <ul class="change-list">
+                    <li>Amélioration du système de génération de fiches</li>
+                    <li>Optimisation des chemins de recherche pour les previews</li>
+                    <li>Enrichissement des données produits existants</li>
+                    <li>Amélioration de la structure des <code>donnees_fiche</code></li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title fixed">🐛 Corrections</div>
+                <ul class="change-list">
+                    <li>Fix des chemins relatifs vs absolus pour les images</li>
+                    <li>Correction du format des prix inconsistants</li>
+                    <li>Fix des descriptions génériques sur certains produits</li>
+                    <li>Correction des noms de produits (ex: Razer Blade 15)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Version 2.0.0 - Octobre 2025 -->
+        <div class="version" id="v2.0">
+            <div class="version-header">
+                <div class="version-title">🚀 Version 2.0.0</div>
+                <div class="version-date">Octobre 2025</div>
+            </div>
+
+            <div class="highlight">
+                <div class="highlight-title">🎯 Refonte majeure</div>
+                <p>Restructuration complète de l'architecture et migration vers une stack moderne.</p>
+            </div>
+
+            <div class="category">
+                <div class="category-title added">✨ Ajouts</div>
+                <ul class="change-list">
+                    <li>Migration vers Node.js 18+ avec support natif de <code>fetch</code></li>
+                    <li>Nouveau serveur Express avec middleware de compression gzip</li>
+                    <li>API REST complète pour la gestion des produits</li>
+                    <li>Système de génération dynamique de fiches HTML</li>
+                    <li>Endpoints CRUD pour produits, tendances, actualités</li>
+                    <li>Support des contenus par catégorie (technologies, marché, insights, predictions)</li>
+                    <li>Scripts de backup et restauration PostgreSQL</li>
+                    <li>Script <code>verify-database-state.js</code> pour contrôle d'intégrité</li>
+                    <li>Build automatisé CSS/JS avec minification</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title changed">🔄 Modifications</div>
+                <ul class="change-list">
+                    <li>Refactoring complet de la structure des données</li>
+                    <li>Nouvelle organisation des dossiers : <code>frontend/</code>, <code>scripts/</code>, <code>fiches/</code></li>
+                    <li>Amélioration des routes statiques avec ordre d'évaluation clair</li>
+                    <li>Standardisation des credentials DB dans tous les scripts</li>
+                    <li>Adoption du format JSON pour les arrays PostgreSQL</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title removed">🗑️ Suppressions</div>
+                <ul class="change-list">
+                    <li>Ancien système de templates PHP</li>
+                    <li>Scripts legacy incompatibles Node 18+</li>
+                    <li>Dépendances obsolètes</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Version 1.5.0 - Septembre 2025 -->
+        <div class="version" id="v1.5">
+            <div class="version-header">
+                <div class="version-title">🌟 Version 1.5.0</div>
+                <div class="version-date">Septembre 2025</div>
+            </div>
+
+            <div class="category">
+                <div class="category-title added">✨ Ajouts</div>
+                <ul class="change-list">
+                    <li>Ajout de 16 catégories de produits tech</li>
+                    <li>Tables dédiées pour actualités, technologies, insights</li>
+                    <li>Système de tags pour classification</li>
+                    <li>Premiers scripts d'enrichissement de données</li>
+                    <li>Support des fonctionnalités avancées par produit</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title changed">🔄 Modifications</div>
+                <ul class="change-list">
+                    <li>Extension du schéma PostgreSQL</li>
+                    <li>Amélioration de la structure des fiches produits</li>
+                    <li>Optimisation des requêtes de catégorisation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Version 1.0.0 - Août 2025 -->
+        <div class="version" id="v1.0">
+            <div class="version-header">
+                <div class="version-title">🎉 Version 1.0.0</div>
+                <div class="version-date">Août 2025</div>
+            </div>
+
+            <div class="highlight">
+                <div class="highlight-title">🎊 Release initiale</div>
+                <p>Première version publique du Site Gamer 2025.</p>
+            </div>
+
+            <div class="category">
+                <div class="category-title added">✨ Fonctionnalités initiales</div>
+                <ul class="change-list">
+                    <li>Base de données PostgreSQL <code>gamer_2025</code></li>
+                    <li>Table <code>produits</code> avec ~30 produits initiaux</li>
+                    <li>Table <code>categories</code> avec classification</li>
+                    <li>Serveur Express basique</li>
+                    <li>Pages HTML statiques pour le frontend</li>
+                    <li>Assets CSS et JavaScript</li>
+                    <li>Système de fiches produits HTML</li>
+                    <li>Images et placeholder</li>
+                    <li>Documentation README de base</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🏗️ Architecture</div>
+                <ul class="change-list">
+                    <li>Node.js + Express pour le backend</li>
+                    <li>PostgreSQL pour la persistance</li>
+                    <li>Structure MVC simplifiée</li>
+                    <li>Frontend statique HTML/CSS/JS</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Roadmap -->
+        <div class="version">
+            <div class="version-header">
+                <div class="version-title">
+                    🗺️ Roadmap
+                    <span class="version-badge beta">À VENIR</span>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-title added">🔮 Fonctionnalités prévues</div>
+                <ul class="change-list">
+                    <li><strong>v2.3.0 - Janvier 2026</strong>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Système de recherche full-text dans le wiki</li>
+                            <li>Intégration GPT-5 pour descriptions enrichies</li>
+                            <li>API d'authentification et gestion utilisateurs</li>
+                            <li>Dashboard d'administration web</li>
+                        </ul>
+                    </li>
+                    <li><strong>v3.0.0 - Février 2026</strong>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Migration vers framework moderne (Next.js/React)</li>
+                            <li>API GraphQL en complément REST</li>
+                            <li>Cache Redis pour performances</li>
+                            <li>CDN pour assets et images</li>
+                            <li>Tests automatisés (Jest/Vitest)</li>
+                            <li>CI/CD avec GitHub Actions</li>
+                        </ul>
+                    </li>
+                    <li><strong>Futures améliorations</strong>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Système de notation et avis utilisateurs</li>
+                            <li>Comparateur de produits interactif</li>
+                            <li>Alertes prix et disponibilité</li>
+                            <li>Application mobile (React Native)</li>
+                            <li>Intégration e-commerce (partenaires affiliés)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="wiki.html" class="back-link">← Retour au Wiki</a>
+    </div>
+
+    <div class="footer">
+        <p>📝 Changelog - Site Gamer 2025</p>
+        <p>Dernière mise à jour : 26 décembre 2025</p>
+    </div>
+</body>
+</html>

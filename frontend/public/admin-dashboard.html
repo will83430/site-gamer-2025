@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Centre d'Administration - Site Gamer 2025</title>
+    <link rel="stylesheet" href="assets/css/styles.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h1 {
+            color: #667eea;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-header p {
+            color: #666;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .tool-title {
+            color: #333;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tool-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-features li {
+            color: #555;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .tool-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tool-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .tool-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+
+        .stats-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9ff, #e8ecff);
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .quick-actions {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f8f9ff, #e8ecff);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer-admin {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+
+        .footer-admin a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-admin a:hover {
+            color: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1>🎯 Centre d'Administration</h1>
+        <p>Gestion complète de votre site gaming - Tous vos outils en un seul endroit</p>
+    </div>
+
+    <div class="admin-container">
+        <!-- Statistiques rapides -->
+        <div class="stats-section">
+            <h2 style="color: #333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">📊 Aperçu Global</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-products">-</div>
+                    <div class="stat-label">Produits Gaming</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-trends">-</div>
+                    <div class="stat-label">Articles Tendances</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-categories">-</div>
+                    <div class="stat-label">Catégories Actives</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="featured-count">-</div>
+                    <div class="stat-label">Top du Mois</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outils principaux -->
+        <div class="tools-grid">
+            <!-- Gestion des Produits -->
+            <div class="tool-card">
+                <div class="tool-icon">📦</div>
+                <h3 class="tool-title">Gestion des Produits</h3>
+                <p class="tool-description">
+                    Interface complète pour gérer votre catalogue de produits gaming avec génération automatique de fiches.
+                </p>
+                <ul class="tool-features">
+                    <li>Création et modification de produits</li>
+                    <li>Upload d'images avec drag & drop</li>
+                    <li>Génération automatique de fiches HTML</li>
+                    <li>Gestion des catégories et spécifications</li>
+                    <li>Système de "Top du mois"</li>
+                </ul>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="Gestion des produits et génération automatique.html" class="tool-button">
+                        🚀 Interface Admin
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gestion des Tendances -->
+            <div class="tool-card">
+                <div class="tool-icon">📈</div>
+                <h3 class="tool-title">Gestion des Tendances</h3>
+                <p class="tool-description">
+                    Dashboard avancé pour gérer vos articles de tendances avec système de sections personnalisables.
+                </p>
+                <ul class="tool-features">
+                    <li>Création d'articles dynamiques</li>
+                    <li>Gestion des sections par article</li>
+                    <li>Tri et filtrage avancé</li>
+                    <li>Prévisualisation en temps réel</li>
+                    <li>Actions en lot</li>
+                </ul>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="admin-tendances-advanced.html" class="tool-button">
+                        🎯 Dashboard Avancé
+                    </a>
+                    <a href="admin-tendances.html" class="tool-button" style="background: linear-gradient(135deg, #ff9800, #f57c00);">
+                        📊 Dashboard Simple
+                    </a>
+                </div>
+            </div>
+
+            <!-- Documentation & Wiki -->
+            <div class="tool-card">
+                <div class="tool-icon">📚</div>
+                <h3 class="tool-title">Documentation & Wiki</h3>
+                <p class="tool-description">
+                    Documentation complète du projet avec guides, API et architectures.
+                </p>
+                <ul class="tool-features">
+                    <li>Guide d'installation</li>
+                    <li>Référence API complète</li>
+                    <li>Architecture du système</li>
+                    <li>Workflow de développement</li>
+                    <li>Troubleshooting</li>
+                </ul>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="wiki/wiki.html" class="tool-button">
+                        📖 Wiki Principal
+                    </a>
+                    <a href="wiki/api-reference.html" class="tool-button" style="background: linear-gradient(135deg, #9c27b0, #673ab7);">
+                        🔌 API Docs
+                    </a>
+                </div>
+            </div>
+
+            <!-- Outils de Maintenance -->
+            <div class="tool-card">
+                <div class="tool-icon">🛠️</div>
+                <h3 class="tool-title">Outils de Maintenance</h3>
+                <p class="tool-description">
+                    Scripts et outils pour maintenir, optimiser et vérifier l'intégrité de votre système.
+                </p>
+                <ul class="tool-features">
+                    <li>Tests automatisés</li>
+                    <li>Vérification d'intégrité</li>
+                    <li>Nettoyage cache</li>
+                    <li>Normalisation données</li>
+                    <li>Monitoring système</li>
+                </ul>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="scripts/maintenance/test-suite.html" class="tool-button">
+                        🧪 Suite de Tests
+                    </a>
+                    <a href="scripts/maintenance/clear-cache.html" class="tool-button" style="background: linear-gradient(135deg, #f44336, #d32f2f);">
+                        🗑️ Clear Cache
+                    </a>
+                    <a href="scripts/maintenance/rapport-integrite-liens.html" class="tool-button" style="background: linear-gradient(135deg, #4caf50, #45a049);">
+                        🔗 Intégrité Liens (100%)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scripts Avancés -->
+            <div class="tool-card">
+                <div class="tool-icon">⚙️</div>
+                <h3 class="tool-title">Scripts & Automatisation</h3>
+                <p class="tool-description">
+                    Scripts Node.js pour automatiser les tâches de gestion et de maintenance.
+                </p>
+                <ul class="tool-features">
+                    <li>Régénération massive</li>
+                    <li>Mise à jour données</li>
+                    <li>Backup automatique</li>
+                    <li>Migration scripts</li>
+                    <li>Batch processing</li>
+                </ul>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="checkDatabaseStatus()" class="tool-button" style="background: linear-gradient(135deg, #2196f3, #1976d2);">
+                        ✅ Vérifier BDD
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div class="quick-actions">
+            <h2 style="color: #333; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">⚡ Actions Rapides</h2>
+            <div class="actions-grid">
+                <a href="/" class="action-btn">
+                    🏠 <span>Retour au site</span>
+                </a>
+                <a href="index.html" class="action-btn">
+                    🎮 <span>Page d'accueil</span>
+                </a>
+                <a href="top-du-mois.html" class="action-btn">
+                    ⭐ <span>Voir les Top du Mois</span>
+                </a>
+                <a href="fiches.html" class="action-btn">
+                    📋 <span>Toutes les fiches</span>
+                </a>
+                <a href="wiki/wiki.html" class="action-btn">
+                    📚 <span>Documentation</span>
+                </a>
+                <a href="#" onclick="refreshStats()" class="action-btn">
+                    🔄 <span>Actualiser les stats</span>
+                </a>
+                <a href="#" onclick="showSystemStatus()" class="action-btn">
+                    💡 <span>État du système</span>
+                </a>
+                <button onclick="runMaintenanceCheck()" class="action-btn" style="border: none; background: linear-gradient(135deg, #f8f9ff, #e8ecff); cursor: pointer;">
+                    🔧 <span>Check système</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-admin">
+        <p style="color: #666; margin-bottom: 1rem;">
+            🎯 <strong>Site Gamer 2025</strong> - Interface d'administration
+        </p>
+        <div>
+            <a href="/">🏠 Accueil</a>
+            <a href="/top-du-mois.html">⭐ Vitrine</a>
+            <a href="mailto:admin@site-gamer.com">📧 Support</a>
+        </div>
+    </div>
+
+    <script>
+        // Chargement des statistiques au démarrage
+        document.addEventListener('DOMContentLoaded', loadAllStats);
+
+        async function loadAllStats() {
+            try {
+                // Charger les stats des produits
+                const productsResponse = await fetch('/api/produits');
+                if (productsResponse.ok) {
+                    const result = await productsResponse.json();
+                    // L'API renvoie {success: true, data: [...], total: X}
+                    const products = result.data || result;
+                    const total = result.total || (Array.isArray(products) ? products.length : 0);
+                    
+                    document.getElementById('total-products').textContent = total;
+                    
+                    if (Array.isArray(products)) {
+                        document.getElementById('featured-count').textContent = products.filter(p => p.top_du_mois).length;
+                        
+                        // Compter les catégories uniques
+                        const categories = [...new Set(products.map(p => p.categorie))];
+                        document.getElementById('total-categories').textContent = categories.length;
+                    }
+                }
+
+                // Charger les stats des tendances - essayer une catégorie spécifique
+                const trendsResponse = await fetch('/api/box-internet/actualites');
+                if (trendsResponse.ok) {
+                    const trends = await trendsResponse.json();
+                    const trendsCount = Array.isArray(trends) ? trends.length : (trends.total || 0);
+                    document.getElementById('total-trends').textContent = trendsCount;
+                }
+            } catch (error) {
+                console.log('Erreur lors du chargement des stats:', error);
+                // Afficher des valeurs par défaut
+                document.getElementById('total-products').textContent = '-';
+                document.getElementById('total-trends').textContent = '-';
+                document.getElementById('total-categories').textContent = '-';
+                document.getElementById('featured-count').textContent = '-';
+            }
+        }
+
+        function refreshStats() {
+            // Animation de chargement
+            document.querySelectorAll('.stat-number').forEach(el => {
+                el.innerHTML = '<span style="font-size: 1rem;">🔄</span>';
+            });
+            
+            setTimeout(() => {
+                loadAllStats();
+                showNotification('✅ Statistiques actualisées !', 'success');
+            }, 1000);
+        }
+
+        function showComingSoon(toolName) {
+            showNotification(`🔜 ${toolName} sera bientôt disponible !`, 'info');
+        }
+
+        function showSystemStatus() {
+            fetch('/api/produits')
+                .then(response => {
+                    if (response.ok) {
+                        showNotification('✅ Système opérationnel - Base de données connectée', 'success');
+                    } else {
+                        showNotification('⚠️ Problème de connexion détecté', 'warning');
+                    }
+                })
+                .catch(() => {
+                    showNotification('❌ Serveur inaccessible', 'error');
+                });
+        }
+
+        function showNotification(message, type = 'info') {
+            // Supprimer les notifications existantes
+            const existingNotifications = document.querySelectorAll('.admin-notification');
+            existingNotifications.forEach(notif => {
+                notif.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    if (notif.parentNode) {
+                        notif.parentNode.removeChild(notif);
+                    }
+                }, 300);
+            });
+
+            // Créer la nouvelle notification
+            const notification = document.createElement('div');
+            notification.className = 'admin-notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 1000;
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                max-width: 350px;
+                word-wrap: break-word;
+            `;
+
+            // Couleur selon le type
+            const colors = {
+                success: 'linear-gradient(135deg, #4caf50, #45a049)',
+                warning: 'linear-gradient(135deg, #ff9800, #f57c00)',
+                error: 'linear-gradient(135deg, #f44336, #d32f2f)',
+                info: 'linear-gradient(135deg, #667eea, #764ba2)'
+            };
+
+            notification.style.background = colors[type] || colors.info;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // Animation d'apparition
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Suppression automatique
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.transform = 'translateX(400px)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }
+            }, 4000);
+        }
+
+        // Effet de parallaxe subtil
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.tool-card');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            cards.forEach((card, index) => {
+                const speed = (index % 3 + 1) * 0.5;
+                card.style.transform = `translateX(${x * speed}px) translateY(${y * speed}px)`;
+            });
+        });
+
+        // Fonction pour exécuter des scripts Node.js
+        async function runScript(scriptName) {
+            showNotification(`🚀 Exécution du script ${scriptName}...`, 'info');
+            
+            try {
+                const response = await fetch(`/api/run-script`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ scriptName })
+                });
+                
+                if (response.ok) {
+                    const result = await response.text();
+                    showNotification(`✅ Script ${scriptName} exécuté avec succès!`, 'success');
+                    console.log('Résultat:', result);
+                } else {
+                    showNotification(`❌ Erreur lors de l'exécution du script`, 'error');
+                }
+            } catch (error) {
+                console.error('Erreur script:', error);
+                showNotification(`❌ Impossible d'exécuter le script: ${error.message}`, 'error');
+            }
+        }
+
+        // Fonction de vérification de la base de données simplifiée
+        async function checkDatabaseStatus() {
+            showNotification('🔍 Vérification de la base de données...', 'info');
+            
+            try {
+                // Test simple de connexion en récupérant le nombre de produits
+                const response = await fetch('/api/produits');
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Réponse API produits:', result); // Debug
+                    
+                    // L'API renvoie {success: true, data: [...], total: X}
+                    const products = result.data || result;
+                    const count = Array.isArray(products) ? products.length : (result.total || 0);
+                    
+                    console.log('Produits extraits:', products?.length, 'Count:', count); // Debug
+                    
+                    // Test aussi les catégories
+                    const categoriesTest = await fetch('/api/box-internet/actualites');
+                    
+                    if (categoriesTest.ok) {
+                        const categoriesData = await categoriesTest.json();
+                        console.log('API tendances response:', categoriesData); // Debug
+                        showNotification(`✅ Base de données fonctionnelle - ${count} produits • API tendances OK`, 'success');
+                    } else {
+                        showNotification(`⚠️ Base de données OK (${count} produits) mais API tendances inaccessible`, 'warning');
+                    }
+                } else {
+                    console.error('Erreur API produits:', response.status, response.statusText);
+                    showNotification(`❌ Impossible d'accéder à la base de données (status: ${response.status})`, 'error');
+                }
+            } catch (error) {
+                console.error('Erreur DB:', error);
+                showNotification(`❌ Erreur de connexion: ${error.message}`, 'error');
+            }
+        }
+
+        // Fonction de vérification système complète
+        async function runMaintenanceCheck() {
+            showNotification('🔧 Vérification système en cours...', 'info');
+            
+            const checks = [
+                { name: 'Base de données', url: '/api/produits' },
+                { name: 'API Tendances', url: '/api/actualites' },
+                { name: 'Fichiers assets', url: '/assets/css/styles.min.css' }
+            ];
+            
+            let allGood = true;
+            
+            for (const check of checks) {
+                try {
+                    const response = await fetch(check.url);
+                    if (!response.ok) {
+                        allGood = false;
+                        showNotification(`⚠️ ${check.name}: Problème détecté`, 'warning');
+                    }
+                } catch (error) {
+                    allGood = false;
+                    showNotification(`❌ ${check.name}: Inaccessible`, 'error');
+                }
+            }
+            
+            if (allGood) {
+                showNotification('✅ Tous les systèmes sont opérationnels!', 'success');
+            }
+        }
+
+        // Fonction pour ouvrir des pages dans de nouveaux onglets
+        function openInNewTab(url) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    </script>
+</body>
+</html>

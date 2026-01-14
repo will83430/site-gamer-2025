@@ -3,14 +3,8 @@ const router = express.Router();
 const pool = require('../config/database');
 const path = require('path');
 const fs = require('fs');
-
-// Helper: slugToTitreAffiche
-function slugToTitreAffiche(slug) {
-  return slug
-    .toLowerCase()
-    .replace(/-/g, ' ')
-    .replace(/\b\w/g, char => char.toUpperCase());
-}
+const { validateProductCreate, validateProductUpdate, validateId } = require('../middleware/validators');
+const { slugToTitreAffiche, cleanImagePath } = require('../utils/helpers');
 
 // GET - Récupérer tous les produits ou filtrer par catégorie
 router.get('/', async (req, res) => {
@@ -60,7 +54,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET - Récupérer un produit par ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateId, async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(`
@@ -82,7 +76,7 @@ router.get('/:id', async (req, res) => {
 
     // Correction du chemin de l'image
     if (product.image) {
-      const cleanImage = product.image.replace(/^assets\/images\//, '');
+      const cleanImage = cleanImagePath(product.image);
       product.image_url = `/assets/images/${cleanImage}`;
     } else {
       product.image_url = '/assets/images/placeholder.png';
@@ -103,7 +97,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST - Créer un nouveau produit avec ID auto-généré
-router.post('/', async (req, res) => {
+router.post('/', validateProductCreate, async (req, res) => {
   try {
     const {
       nom, categorie, description, image, lien,
@@ -170,7 +164,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT - Mettre à jour un produit
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateProductUpdate, async (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -226,7 +220,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE - Supprimer un produit
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateId, async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(

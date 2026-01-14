@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dépannage - Site Gamer 2025</title>
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
+        .header h1 { font-size: 3em; color: white; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .section { margin-bottom: 50px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; }
+        .section h2 { color: #667eea; margin-bottom: 20px; font-size: 2em; display: flex; align-items: center; gap: 10px; }
+        .section h3 { color: #2ecc71; margin: 25px 0 15px; font-size: 1.4em; }
+        .problem { background: rgba(231, 76, 60, 0.1); border-left: 4px solid #e74c3c; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .problem-title { color: #e74c3c; font-weight: 600; margin-bottom: 10px; font-size: 1.1em; }
+        .solution { background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .solution-title { color: #2ecc71; font-weight: 600; margin-bottom: 10px; }
+        code { background: rgba(102, 126, 234, 0.2); padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #ffd700; }
+        pre { background: #1a1a2e; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; border: 1px solid #667eea; }
+        pre code { background: none; padding: 0; }
+        .tip { background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .tip-title { color: #ffc107; font-weight: 600; margin-bottom: 10px; }
+        .command { background: #1a1a2e; padding: 10px 15px; border-radius: 5px; font-family: monospace; margin: 10px 0; border: 1px solid #667eea; }
+        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .back-link:hover { background: #764ba2; transform: translateY(-2px); }
+        .toc { background: rgba(102, 126, 234, 0.1); padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+        .toc h3 { color: #667eea; margin-bottom: 15px; }
+        .toc ul { list-style: none; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #e0e0e0; text-decoration: none; transition: color 0.3s; }
+        .toc a:hover { color: #667eea; }
+        .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔧 Dépannage</h1>
+        <p>Solutions aux problèmes courants du Site Gamer 2025</p>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="scripts.html">⚙️ Scripts</a>
+        <a href="troubleshooting.html">🔧 Dépannage</a>
+        <a href="changelog.html">📝 Changelog</a>
+    </nav>
+
+    <div class="container">
+        <div class="toc">
+            <h3>📑 Table des matières</h3>
+            <ul>
+                <li><a href="#database">🐘 Problèmes de base de données</a></li>
+                <li><a href="#server">🖥️ Problèmes serveur</a></li>
+                <li><a href="#fiches">📄 Problèmes de génération de fiches</a></li>
+                <li><a href="#api">🔌 Erreurs API</a></li>
+                <li><a href="#images">🖼️ Problèmes d'images</a></li>
+                <li><a href="#scripts">⚙️ Problèmes de scripts</a></li>
+                <li><a href="#frontend">🌐 Problèmes frontend</a></li>
+            </ul>
+        </div>
+
+        <!-- Database Issues -->
+        <div class="section" id="database">
+            <h2>🐘 Problèmes de base de données</h2>
+
+            <h3>Connexion refusée</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Erreur : "connection refused" ou "ECONNREFUSED"</div>
+                <p>Le serveur ne parvient pas à se connecter à PostgreSQL.</p>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solutions :</div>
+                <ol>
+                    <li>Vérifiez que PostgreSQL est démarré :
+                        <div class="command">services.msc</div>
+                        Recherchez "postgresql" et assurez-vous qu'il est démarré.
+                    </li>
+                    <li>Vérifiez les credentials dans <code>server.js</code> :
+                        <pre><code>user: 'postgres'
+database: 'gamer_2025'
+password: 'XXXXXX'</code></pre>
+                    </li>
+                    <li>Testez la connexion avec le script de vérification :
+                        <div class="command">node quick-check.js</div>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Base de données inexistante</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Erreur : database "gamer_2025" does not exist</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Créez la base de données et restaurez les données :</p>
+                <pre><code>-- Depuis psql
+CREATE DATABASE gamer_2025;
+\c gamer_2025
+
+-- Puis exécutez le fichier SQL
+\i backend/gestion_produits.sql</code></pre>
+                <p>Ou utilisez le script de restauration :</p>
+                <div class="command">node restore-backup.js</div>
+            </div>
+
+            <h3>Données manquantes ou corrompues</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Produits manquants ou données incohérentes</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Vérifiez l'état de la base de données :</p>
+                <div class="command">node scripts/verify-database-state.js</div>
+                <p>Pour restaurer les données :</p>
+                <div class="command">node scripts/restore-db.js</div>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">💡 Conseil :</div>
+                <p>Faites régulièrement des backups avec <code>pg_dump</code> :</p>
+                <div class="command">pg_dump -U postgres gamer_2025 > backup_$(date +%Y%m%d).sql</div>
+            </div>
+        </div>
+
+        <!-- Server Issues -->
+        <div class="section" id="server">
+            <h2>🖥️ Problèmes serveur</h2>
+
+            <h3>Serveur ne démarre pas</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Le serveur ne démarre pas ou crash immédiatement</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solutions :</div>
+                <ol>
+                    <li>Vérifiez que le port 3000 n'est pas déjà utilisé :
+                        <div class="command">netstat -ano | findstr :3000</div>
+                    </li>
+                    <li>Vérifiez les dépendances :
+                        <div class="command">npm install</div>
+                    </li>
+                    <li>Vérifiez la version de Node.js (18+ requis) :
+                        <div class="command">node --version</div>
+                    </li>
+                    <li>Démarrez en mode développement pour voir les erreurs :
+                        <div class="command">npm run dev</div>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>CORS errors</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Erreurs CORS dans le navigateur</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Le serveur est configuré avec des headers CORS permissifs dans <code>server.js</code>. Si le problème persiste, vérifiez que la requête provient bien du bon domaine et que les headers sont correctement définis.</p>
+            </div>
+
+            <h3>Routes statiques ne fonctionnent pas</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Les fichiers statiques retournent 404</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Vérifiez l'ordre des middlewares dans <code>server.js</code>. L'ordre est important :</p>
+                <pre><code>1. /assets → frontend/public/assets
+2. /frontend/public → frontend/public
+3. /fiches → fiches/
+4. / → project root</code></pre>
+                <p>Les routes API doivent être déclarées AVANT les gestionnaires statiques.</p>
+            </div>
+        </div>
+
+        <!-- Fiches Issues -->
+        <div class="section" id="fiches">
+            <h2>📄 Problèmes de génération de fiches</h2>
+
+            <h3>Génération échoue</h3>
+            <div class="problem">
+                <div class="problem-title">❌ POST /api/generate-fiche/:id retourne une erreur 500</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solutions :</div>
+                <ol>
+                    <li>Vérifiez que le produit existe :
+                        <div class="command">curl http://localhost:3000/api/produits/prod_50</div>
+                    </li>
+                    <li>Vérifiez que les dossiers de catégories existent dans <code>fiches/</code></li>
+                    <li>Vérifiez les permissions d'écriture dans le dossier <code>fiches/</code></li>
+                    <li>Testez la génération pour un produit spécifique :
+                        <div class="command">node scripts/generate-new-products.js</div>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Fiche générée avec données manquantes</h3>
+            <div class="problem">
+                <div class="problem-title">❌ La fiche HTML est créée mais certaines données sont vides</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Vérifiez la structure des données du produit :</p>
+                <div class="command">node scripts/check-prod1.js</div>
+                <p>Assurez-vous que tous les champs requis sont présents :</p>
+                <ul>
+                    <li><code>nom</code>, <code>categorie</code>, <code>description_courte</code></li>
+                    <li><code>prix</code> (format: "999.99€")</li>
+                    <li><code>donnees_fiche</code> (array avec sections complètes)</li>
+                    <li><code>fonctionnalites_avancees</code> (array)</li>
+                </ul>
+            </div>
+
+            <h3>Mauvais nom de fichier ou chemin</h3>
+            <div class="problem">
+                <div class="problem-title">❌ La fiche est générée avec un nom ou chemin incorrect</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Le nom de fichier est slugifié depuis <code>product.nom</code>. Vérifiez :</p>
+                <ul>
+                    <li>Le nom ne contient pas de caractères spéciaux problématiques</li>
+                    <li>La catégorie est en minuscules avec espaces remplacés par tirets</li>
+                    <li>Le champ <code>categorie</code> correspond exactement à un dossier dans <code>fiches/</code></li>
+                </ul>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">💡 Conseil :</div>
+                <p>Pour régénérer toutes les fiches en une fois :</p>
+                <div class="command">node scripts/regenerate-all-fiches.js</div>
+                <p>Pour régénérer seulement les produits du mois :</p>
+                <div class="command">node scripts/regenerate-fiches-top.js</div>
+            </div>
+        </div>
+
+        <!-- API Issues -->
+        <div class="section" id="api">
+            <h2>🔌 Erreurs API</h2>
+
+            <h3>PUT /api/produits/:id échoue</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Erreur lors de la mise à jour d'un produit</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Le PUT requiert TOUS les champs du produit, pas seulement ceux à modifier :</p>
+                <ol>
+                    <li>Récupérez d'abord le produit complet avec GET</li>
+                    <li>Modifiez les champs souhaités</li>
+                    <li>Renvoyez l'objet complet avec PUT</li>
+                </ol>
+                <p>Exemple :</p>
+                <pre><code>// 1. GET
+const product = await fetch('/api/produits/prod_50').then(r => r.json());
+
+// 2. Modifier
+product.top_du_mois = true;
+
+// 3. PUT avec TOUT l'objet
+await fetch('/api/produits/prod_50', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(product)
+});</code></pre>
+            </div>
+
+            <h3>Arrays mal formatés</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Erreurs avec fonctionnalites_avancees ou donnees_fiche</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Ces champs doivent être des arrays JavaScript, pas des strings :</p>
+                <pre><code>// ✅ Correct
+{
+    "fonctionnalites_avancees": ["Feature 1", "Feature 2"],
+    "donnees_fiche": [
+        { "titre": "Section", "contenu": "..." }
+    ]
+}
+
+// ❌ Incorrect
+{
+    "fonctionnalites_avancees": "{Feature 1,Feature 2}"
+}</code></pre>
+            </div>
+
+            <h3>Catégorie non reconnue</h3>
+            <div class="problem">
+                <div class="problem-title">❌ GET /api/:categorie/actualites retourne 404</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Les catégories sont matchées en lowercase. Utilisez exactement les noms de la table <code>categories</code> :</p>
+                <ul>
+                    <li>smartphone</li>
+                    <li>tablette</li>
+                    <li>pc-gaming</li>
+                    <li>console</li>
+                    <li>etc.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Images Issues -->
+        <div class="section" id="images">
+            <h2>🖼️ Problèmes d'images</h2>
+
+            <h3>Image ne s'affiche pas</h3>
+            <div class="problem">
+                <div class="problem-title">❌ L'image du produit ne s'affiche pas (404)</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solutions :</div>
+                <ol>
+                    <li>Vérifiez que l'image existe dans <code>frontend/public/assets/images/</code></li>
+                    <li>Le champ <code>image</code> dans la DB doit contenir SEULEMENT le nom du fichier, pas le chemin complet :
+                        <pre><code>// ✅ Correct
+"image": "iphone-15-pro.jpg"
+
+// ❌ Incorrect
+"image": "assets/images/iphone-15-pro.jpg"
+"image": "/assets/images/iphone-15-pro.jpg"</code></pre>
+                    </li>
+                    <li>Le serveur génère automatiquement <code>image_url</code> : <code>/assets/images/${image}</code></li>
+                    <li>Si l'image manque, le placeholder sera utilisé : <code>/assets/images/placeholder.png</code></li>
+                </ol>
+            </div>
+
+            <h3>Télécharger des images</h3>
+            <div class="tip">
+                <div class="tip-title">💡 Conseil :</div>
+                <p>Utilisez les scripts de téléchargement d'images :</p>
+                <div class="command">node scripts/download-camera-images.js</div>
+                <p>Puis mettez à jour les produits avec les nouveaux noms de fichiers.</p>
+            </div>
+        </div>
+
+        <!-- Scripts Issues -->
+        <div class="section" id="scripts">
+            <h2>⚙️ Problèmes de scripts</h2>
+
+            <h3>Script ne trouve pas la DB</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Les scripts retournent des erreurs de connexion</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Tous les scripts utilisent les mêmes credentials. Vérifiez que PostgreSQL est accessible avec :</p>
+                <ul>
+                    <li>user: <code>postgres</code></li>
+                    <li>database: <code>gamer_2025</code></li>
+                    <li>password: <code>XXXXXX</code></li>
+                </ul>
+                <p>Si vous avez changé ces valeurs, mettez à jour tous les scripts qui importent <code>pg</code>.</p>
+            </div>
+
+            <h3>Problème avec fetch dans les scripts</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Erreur : "fetch is not defined"</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Node.js 18+ inclut fetch nativement. Vérifiez votre version :</p>
+                <div class="command">node --version</div>
+                <p>Si &lt; 18, mettez à jour Node.js ou installez node-fetch.</p>
+            </div>
+
+            <h3>Script génère des données incorrectes</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Les scripts de normalisation modifient mal les données</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Avant de normaliser, vérifiez toujours l'état actuel :</p>
+                <div class="command">node scripts/verify-database-state.js</div>
+                <p>Faites un backup avant toute modification majeure :</p>
+                <div class="command">pg_dump -U postgres gamer_2025 > backup_avant_normalisation.sql</div>
+            </div>
+        </div>
+
+        <!-- Frontend Issues -->
+        <div class="section" id="frontend">
+            <h2>🌐 Problèmes frontend</h2>
+
+            <h3>Build CSS/JS échoue</h3>
+            <div class="problem">
+                <div class="problem-title">❌ npm run build:css ou build:js retourne une erreur</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solutions :</div>
+                <ol>
+                    <li>Vérifiez que les outils sont installés :
+                        <div class="command">npm install</div>
+                    </li>
+                    <li>Les fichiers sources existent :
+                        <ul>
+                            <li><code>frontend/public/assets/css/*.css</code></li>
+                            <li><code>frontend/public/assets/js/*.js</code></li>
+                        </ul>
+                    </li>
+                    <li>Nettoyez et rebuilddez :
+                        <div class="command">npm run clean && npm run build:css && npm run build:js</div>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Fichiers minifiés non chargés</h3>
+            <div class="problem">
+                <div class="problem-title">❌ Les fichiers .min.css ou .min.js ne sont pas trouvés</div>
+            </div>
+            <div class="solution">
+                <div class="solution-title">✅ Solution :</div>
+                <p>Après modification des sources, lancez toujours le build :</p>
+                <div class="command">npm run build:css && npm run build:js</div>
+                <p>Vérifiez que les fichiers minifiés sont bien créés dans <code>frontend/public/assets/</code></p>
+            </div>
+        </div>
+
+        <!-- Quick Diagnostic -->
+        <div class="section">
+            <h2>🔍 Diagnostic rapide</h2>
+            <p>Commandes utiles pour diagnostiquer rapidement :</p>
+            
+            <h3>Vérifier l'état général</h3>
+            <div class="command">node quick-check.js</div>
+            <p>Teste la connexion DB et affiche quelques produits.</p>
+
+            <h3>Vérifier la structure des données</h3>
+            <div class="command">node scripts/verify-database-state.js</div>
+            <p>Contrôle l'intégrité des données (liens, catégories, images, etc.).</p>
+
+            <h3>Vérifier un produit spécifique</h3>
+            <div class="command">node scripts/check-prod50.js</div>
+            <p>Affiche tous les détails d'un produit (remplacez 50 par l'ID souhaité).</p>
+
+            <h3>Tester le serveur</h3>
+            <div class="command">node test-server.js</div>
+            <p>Lance des tests basiques sur les endpoints API.</p>
+
+            <h3>Vérifier les schémas</h3>
+            <div class="command">node scripts/check-schemas.js</div>
+            <p>Vérifie la structure des tables PostgreSQL.</p>
+        </div>
+
+        <div class="tip">
+            <div class="tip-title">💡 Besoin d'aide supplémentaire ?</div>
+            <p>Si votre problème n'est pas listé ici :</p>
+            <ol>
+                <li>Consultez la <a href="api-reference.html" style="color: #667eea;">référence API</a></li>
+                <li>Vérifiez la <a href="database.html" style="color: #667eea;">documentation de la base de données</a></li>
+                <li>Examinez les logs du serveur en mode développement : <code>npm run dev</code></li>
+                <li>Consultez les <a href="workflows.html" style="color: #667eea;">workflows</a> pour les processus complets</li>
+            </ol>
+        </div>
+
+        <a href="wiki.html" class="back-link">← Retour au Wiki</a>
+    </div>
+
+    <div class="footer">
+        <p>🔧 Dépannage - Site Gamer 2025</p>
+        <p>Dernière mise à jour : 26 décembre 2025</p>
+    </div>
+</body>
+</html>

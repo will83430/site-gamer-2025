@@ -1,0 +1,63 @@
+# Node modules (sera réinstallé dans le conteneur)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Fichiers Git
+.git/
+.gitignore
+.gitattributes
+
+# Fichiers d'environnement (sensibles)
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Tests et couverture
+coverage/
+.nyc_output/
+tests/
+
+# Documentation
+wiki/
+*.md
+!README.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Fichiers temporaires
+*.tmp
+*.backup
+*.bak
+
+# Fichiers de build (seront recréés)
+frontend/public/assets/css/*.min.css
+frontend/public/assets/js/*.min.js
+
+# Scripts de maintenance non nécessaires en prod
+scripts/
+export_produits_actuels.json
+produits_propres.json
+fiches_for_ai.json.js
+gen-assets-list.js
+gen-cache-list.js
+test-json.js

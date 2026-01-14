@@ -12,6 +12,10 @@
     "test:coverage": "jest --coverage",
     "db:init": "psql -U postgres -d gamer_2025 -f backend/schema.sql",
     "db:populate": "psql -U postgres -d gamer_2025 -f backend/gestion_produits.sql",
+    "db:migrate": "knex migrate:latest",
+    "db:rollback": "knex migrate:rollback",
+    "db:seed": "knex seed:run",
+    "db:migrate:make": "knex migrate:make",
     "build:css": "cleancss -o frontend/public/assets/css/styles.min.css frontend/public/assets/css/styles.css",
     "build:js": "terser frontend/public/assets/js/fiches.js -o frontend/public/assets/js/fiches.min.js && terser frontend/public/assets/js/fiche-produit.js -o frontend/public/assets/js/fiche-produit.min.js && terser frontend/public/assets/js/tendances.js -o frontend/public/assets/js/tendances.min.js",
     "build:all": "npm run build:css && npm run build:js",
@@ -28,8 +32,14 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "knex": "^3.1.0",
+    "morgan": "^1.10.1",
     "multer": "^2.0.2",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "clean-css-cli": "^5.6.3",

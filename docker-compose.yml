@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+  # Application Node.js
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gamer-2025-app
+    ports:
+      - "3000:3000"
+    environment:
+      # Base de données
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: gamer_2025
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD:-postgres123}
+
+      # Redis
+      REDIS_URL: redis://redis:6379
+
+      # Environnement
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+
+      # CORS (en dev, autoriser tout)
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+    volumes:
+      # Monter les dossiers pour le développement
+      - ./fiches:/app/fiches
+      - ./frontend/public/assets/images:/app/frontend/public/assets/images
+      - ./logs:/app/logs
+      # En dev, monter aussi le code source pour hot-reload
+      - ./server.js:/app/server.js
+      - ./backend:/app/backend
+
+    networks:
+      - gamer-network
+
+    restart: unless-stopped
+
+  # Base de données PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: gamer-2025-db
+    environment:
+      POSTGRES_DB: gamer_2025
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres123}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      # Persistance des données
+      - postgres_data:/var/lib/postgresql/data
+      # Script d'initialisation (si besoin)
+      - ./sql:/docker-entrypoint-initdb.d:ro
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    networks:
+      - gamer-network
+
+    restart: unless-stopped
+
+  # Redis pour le cache
+  redis:
+    image: redis:7-alpine
+    container_name: gamer-2025-redis
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+    networks:
+      - gamer-network
+
+    restart: unless-stopped
+
+  # Adminer - Interface web pour PostgreSQL (optionnel, pratique)
+  adminer:
+    image: adminer:latest
+    container_name: gamer-2025-adminer
+    ports:
+      - "8080:8080"
+
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DESIGN: nette
+
+    depends_on:
+      - db
+
+    networks:
+      - gamer-network
+
+    restart: unless-stopped
+
+# Volumes pour la persistance des données
+volumes:
+  postgres_data:
+    name: gamer_2025_postgres_data
+  redis_data:
+    name: gamer_2025_redis_data
+
+# Réseau pour la communication entre conteneurs
+networks:
+  gamer-network:
+    name: gamer_2025_network
+    driver: bridge

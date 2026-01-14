@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation - Site Gamer 2025</title>
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
+        .header h1 { font-size: 3em; color: white; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .section { margin-bottom: 50px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; }
+        .section h2 { color: #667eea; margin-bottom: 20px; font-size: 2em; }
+        .section h3 { color: #2ecc71; margin: 25px 0 15px; font-size: 1.4em; }
+        .step { background: rgba(102, 126, 234, 0.1); border-left: 4px solid #667eea; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .step-number { display: inline-block; background: #667eea; color: white; width: 35px; height: 35px; border-radius: 50%; text-align: center; line-height: 35px; font-weight: 700; margin-right: 10px; }
+        code { background: rgba(102, 126, 234, 0.2); padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #ffd700; }
+        pre { background: #1a1a2e; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; border: 1px solid #667eea; }
+        pre code { background: none; padding: 0; color: #2ecc71; }
+        .warning { background: rgba(243, 156, 18, 0.1); border-left: 4px solid #f39c12; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .info { background: rgba(52, 152, 219, 0.1); border-left: 4px solid #3498db; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .success { background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .back-link:hover { background: #764ba2; transform: translateY(-2px); }
+        .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚙️ Installation</h1>
+        <p>Guide d'installation complet du Site Gamer 2025</p>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="scripts.html">⚙️ Scripts</a>
+        <a href="troubleshooting.html">🔧 Dépannage</a>
+        <a href="changelog.html">📝 Changelog</a>
+    </nav>
+
+    <div class="container">
+        <div class="section">
+            <h2>📋 Prérequis système</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Node.js 18 ou supérieur</strong>
+                <p style="margin: 10px 0 10px 45px; opacity: 0.85;">Requis pour le support natif de <code>fetch</code></p>
+                <pre><code>node --version  # Doit afficher v18.x.x ou supérieur</code></pre>
+                <p style="margin-left: 45px;"><a href="https://nodejs.org/" style="color: #667eea;">Télécharger Node.js →</a></p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>PostgreSQL 14 ou supérieur</strong>
+                <p style="margin: 10px 0 10px 45px; opacity: 0.85;">Base de données relationnelle</p>
+                <pre><code>psql --version  # Doit afficher PostgreSQL 14.x ou supérieur</code></pre>
+                <p style="margin-left: 45px;"><a href="https://www.postgresql.org/download/" style="color: #667eea;">Télécharger PostgreSQL →</a></p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Git</strong>
+                <p style="margin: 10px 0 10px 45px; opacity: 0.85;">Pour cloner le repository</p>
+                <pre><code>git --version</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Installation rapide</h2>
+
+            <h3>1. Cloner le repository</h3>
+            <pre><code>git clone https://github.com/votre-repo/site-gamer-2025.git
+cd site-gamer-2025</code></pre>
+
+            <h3>2. Installer les dépendances</h3>
+            <pre><code>npm install</code></pre>
+
+            <div class="info">
+                <strong>📦 Dépendances principales :</strong>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li><code>express</code> - Serveur web</li>
+                    <li><code>pg</code> - Driver PostgreSQL</li>
+                    <li><code>compression</code> - Middleware gzip</li>
+                    <li><code>clean-css-cli</code> - Minification CSS</li>
+                    <li><code>terser</code> - Minification JS</li>
+                    <li><code>nodemon</code> - Auto-restart en développement</li>
+                </ul>
+            </div>
+
+            <h3>3. Configurer PostgreSQL</h3>
+            
+            <div class="step">
+                <span class="step-number">3.1</span>
+                <strong>Créer la base de données</strong>
+                <pre><code>psql -U postgres
+CREATE DATABASE gamer_2025;
+\q</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3.2</span>
+                <strong>Importer les données</strong>
+                <pre><code>psql -U postgres gamer_2025 < backend/gestion_produits.sql</code></pre>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Credentials par défaut</strong>
+                <p style="margin-top: 10px;">Le projet utilise par défaut :</p>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li><strong>Utilisateur :</strong> <code>XXXXXX</code></li>
+                    <li><strong>Database :</strong> <code>gamer_2025</code></li>
+                    <li><strong>Password :</strong> <code>XXXXXX</code></li>
+                    <li><strong>Port :</strong> <code>XXXX</code></li>
+                </ul>
+                <p style="margin-top: 10px;">Si vos credentials diffèrent, modifiez <code>server.js</code> et tous les scripts dans <code>scripts/</code></p>
+            </div>
+
+            <h3>4. Vérifier l'installation</h3>
+            <pre><code>node quick-check.js</code></pre>
+
+            <div class="success">
+                <strong>✅ Si tout fonctionne, vous devriez voir :</strong>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>Connexion à la DB réussie</li>
+                    <li>Liste de quelques produits</li>
+                    <li>Nombre total de produits</li>
+                </ul>
+            </div>
+
+            <h3>5. Démarrer le serveur</h3>
+            <pre><code># Mode production
+npm start
+
+# Mode développement (avec auto-restart)
+npm run dev</code></pre>
+
+            <div class="success">
+                <strong>✅ Le serveur devrait démarrer sur :</strong>
+                <p style="margin-top: 10px;"><code>http://localhost:3000</code></p>
+            </div>
+
+            <h3>6. Accéder à l'application</h3>
+            <p>Ouvrez votre navigateur et accédez à :</p>
+            <ul style="margin: 15px 0; margin-left: 20px;">
+                <li><strong>Page d'accueil :</strong> <code>http://localhost:3000</code></li>
+                <li><strong>API Produits :</strong> <code>http://localhost:3000/api/produits</code></li>
+                <li><strong>Wiki :</strong> <code>http://localhost:3000/wiki/wiki.html</code></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Configuration avancée</h2>
+
+            <h3>Variables d'environnement</h3>
+            <p>Créez un fichier <code>.env</code> à la racine :</p>
+            <pre><code>PORT=3000
+DB_USER=postgres
+DB_HOST=localhost
+DB_NAME=gamer_2025
+DB_PASSWORD=XXXXXX
+DB_PORT=XXXX
+
+OPENAI_MODEL=gpt-4
+GPT5_ENABLED=false
+GPT5_ROLLOUT=0</code></pre>
+
+            <h3>Build des assets</h3>
+            <p>Pour minifier CSS et JavaScript :</p>
+            <pre><code># Minifier CSS
+npm run build:css
+
+# Minifier JS
+npm run build:js
+
+# Nettoyer les fichiers minifiés
+npm run clean</code></pre>
+
+            <h3>Configuration PostgreSQL avancée</h3>
+            <p>Pour optimiser les performances :</p>
+            <pre><code># Augmenter les connexions max (postgresql.conf)
+max_connections = 100
+
+# Augmenter le cache
+shared_buffers = 256MB
+
+# Améliorer les performances des requêtes
+effective_cache_size = 1GB</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>🐳 Installation avec Docker (optionnel)</h2>
+
+            <h3>Dockerfile</h3>
+            <pre><code>FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+RUN npm run build:css && npm run build:js
+
+EXPOSE 3000
+
+CMD ["npm", "start"]</code></pre>
+
+            <h3>docker-compose.yml</h3>
+            <pre><code>version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: gamer_2025
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: XXXXXX
+    ports:
+      - "XXXX:XXXX"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/gestion_produits.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+
+volumes:
+  pgdata:</code></pre>
+
+            <h3>Démarrer avec Docker</h3>
+            <pre><code>docker-compose up -d</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>✅ Vérification post-installation</h2>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Vérifier la base de données</strong>
+                <pre><code>node scripts/verify-database-state.js</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Tester l'API</strong>
+                <pre><code>curl http://localhost:3000/api/produits</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Générer une fiche test</strong>
+                <pre><code>curl -X POST http://localhost:3000/api/generate-fiche/prod_1</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Vérifier les assets</strong>
+                <p style="margin-left: 45px;">Vérifiez que les fichiers CSS et JS sont accessibles :</p>
+                <ul style="margin: 10px 0 0 65px;">
+                    <li><code>http://localhost:3000/assets/css/styles.min.css</code></li>
+                    <li><code>http://localhost:3000/assets/js/main.min.js</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔍 Dépannage installation</h2>
+
+            <h3>Erreur : "ECONNREFUSED"</h3>
+            <div class="warning">
+                <p><strong>Cause :</strong> PostgreSQL n'est pas démarré ou inaccessible</p>
+                <p style="margin-top: 10px;"><strong>Solution :</strong></p>
+                <pre><code># Windows
+services.msc → Démarrer PostgreSQL
+
+# Linux
+sudo systemctl start postgresql
+
+# macOS
+brew services start postgresql</code></pre>
+            </div>
+
+            <h3>Erreur : "database does not exist"</h3>
+            <div class="warning">
+                <p><strong>Solution :</strong></p>
+                <pre><code>createdb -U postgres gamer_2025</code></pre>
+            </div>
+
+            <h3>Port 3000 déjà utilisé</h3>
+            <div class="warning">
+                <p><strong>Solution :</strong> Modifier le port dans <code>server.js</code> ou tuer le processus :</p>
+                <pre><code># Windows
+netstat -ano | findstr :3000
+taskkill /PID &lt;PID&gt; /F
+
+# Linux/macOS
+lsof -ti:3000 | xargs kill</code></pre>
+            </div>
+
+            <h3>Module non trouvé</h3>
+            <div class="warning">
+                <p><strong>Solution :</strong> Réinstaller les dépendances :</p>
+                <pre><code>rm -rf node_modules package-lock.json
+npm install</code></pre>
+            </div>
+        </div>
+
+        <a href="wiki.html" class="back-link">← Retour au Wiki</a>
+    </div>
+
+    <div class="footer">
+        <p>⚙️ Installation - Site Gamer 2025</p>
+        <p>Dernière mise à jour : 26 décembre 2025</p>
+    </div>
+</body>
+</html>

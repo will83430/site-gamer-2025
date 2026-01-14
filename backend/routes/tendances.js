@@ -2,6 +2,67 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/database');
+const { reorderItems, swapOrder } = require('../utils/dbTransactions');
+const logger = require('../config/logger');
+
+// GET toutes les tendances (tous types confondus)
+router.get('/', async (req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT a.*, c.nom as categorie
+      FROM actualites a
+      LEFT JOIN categories c ON a.categorie_id = c.id
+      ORDER BY a.date_publication DESC, a.id DESC
+    `);
+    
+    // Normaliser tags
+    rows.forEach(r => {
+      if (typeof r.tags === 'string') {
+        r.tags = r.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
+      }
+    });
+    
+    res.json(rows);
+  } catch (err) {
+    console.error('❌ Erreur GET toutes tendances:', err);
+    res.status(500).json({ error: 'Erreur BDD' });
+  }
+});
+
+// GET un article spécifique par ID global
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Vérifier que c'est bien un ID numérique, pas un nom de catégorie
+    if (!/^\d+$/.test(id)) {
+      return res.status(400).json({ error: 'ID invalide' });
+    }
+    
+    const { rows } = await pool.query(`
+      SELECT a.*, c.nom as categorie
+      FROM actualites a
+      LEFT JOIN categories c ON a.categorie_id = c.id
+      WHERE a.id = $1
+    `, [id]);
+    
+    if (!rows.length) {
+      return res.status(404).json({ error: 'Article non trouvé' });
+    }
+    
+    const article = rows[0];
+    
+    // Normaliser tags
+    if (typeof article.tags === 'string') {
+      article.tags = article.tags.replace(/[{}]/g, '').split(',').map(s => s.trim()).filter(Boolean);
+    }
+    
+    res.json(article);
+  } catch (err) {
+    console.error('❌ Erreur GET article:', err);
+    res.status(500).json({ error: 'Erreur BDD' });
+  }
+});
 
 // GET tendances par catégorie (ex: /api/tendances/serveur)
 router.get('/:categorie', async (req, res) => {
@@ -151,6 +212,65 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     console.error('❌ Erreur DELETE tendance:', err);
     res.status(500).json({ error: 'Erreur suppression tendance' });
+  }
+});
+
+// POST - Réorganiser plusieurs tendances (avec transaction)
+router.post('/reorder', async (req, res) => {
+  try {
+    const { items } = req.body; // items = [{id, ordre}, ...]
+
+    if (!items || !Array.isArray(items)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Le paramètre items (tableau) est requis'
+      });
+    }
+
+    await reorderItems('actualites', items);
+
+    logger.info(`Réorganisation de ${items.length} actualités`);
+
+    res.json({
+      success: true,
+      message: `${items.length} actualités réorganisées`,
+      count: items.length
+    });
+  } catch (err) {
+    logger.error('Erreur réorganisation tendances:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Erreur lors de la réorganisation'
+    });
+  }
+});
+
+// POST - Échanger l'ordre de deux tendances (avec transaction)
+router.post('/swap', async (req, res) => {
+  try {
+    const { id1, id2 } = req.body;
+
+    if (!id1 || !id2) {
+      return res.status(400).json({
+        success: false,
+        error: 'Les paramètres id1 et id2 sont requis'
+      });
+    }
+
+    await swapOrder('actualites', id1, id2);
+
+    logger.info(`Échange ordre actualités: ${id1} <-> ${id2}`);
+
+    res.json({
+      success: true,
+      message: 'Ordre échangé avec succès'
+    });
+  } catch (err) {
+    logger.error('Erreur échange ordre tendances:', err);
+    res.status(500).json({
+      success: false,
+      error: err.message || 'Erreur lors de l\'échange'
+    });
   }
 });
 

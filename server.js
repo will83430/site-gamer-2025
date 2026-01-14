@@ -6,16 +6,25 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs'); // IMPORTANT !
 const compression = require('compression'); // 🔥 AJOUTE CETTE LIGNE
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
+const logger = require('./backend/config/logger');
+const { errorHandler, notFoundHandler } = require('./backend/middleware/errorHandler');
+const { slugToTitreAffiche } = require('./backend/utils/helpers');
 
 // Import routes
 const produitsRoutes = require('./backend/routes/produits');
 const fichesRoutes = require('./backend/routes/fiches');
+const fichesTendancesRoutes = require('./backend/routes/fichesTendances');
 const tendancesRoutes = require('./backend/routes/tendances');
 const contentRoutes = require('./backend/routes/content');
 const technologiesRoutes = require('./backend/routes/technologies');
 const marcheRoutes = require('./backend/routes/marche');
 const insightsRoutes = require('./backend/routes/insights');
 const predictionsRoutes = require('./backend/routes/predictions');
+const categoriesRoutes = require('./backend/routes/categories');
+const statsRoutes = require('./backend/routes/stats');
 
 const assetsPath = path.join(__dirname, 'frontend/public/assets');
 
@@ -23,7 +32,32 @@ const app = express();
 // Allow overriding the port via environment variable to avoid EADDRINUSE conflicts
 const port = process.env.PORT || 3000;
 
+// Sécurité: Headers HTTP avec Helmet
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // unsafe-eval nécessaire pour onclick inline
+      scriptSrcAttr: ["'unsafe-inline'"], // Permet les attributs onclick, onload, etc.
+      connectSrc: ["'self'", "http://localhost:3000", "http://192.168.1.235:3000"], // API calls
+      frameSrc: ["'self'", "https://www.youtube.com", "https://youtube.com", "https://www.youtube-nocookie.com", "https://www.dailymotion.com", "https://geo.dailymotion.com"], // Iframes vidéos
+    }
+  }
+}));
+
 app.use(compression()); // Compression gzip
+
+// Logs HTTP avec Morgan (via Winston)
+const morganFormat = process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
+app.use(morgan(morganFormat, { stream: logger.stream }));
+
+// Favicon route
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/public/assets/images/icons/icon-192x192.png'));
+});
 
 // Middleware
 app.use((req, res, next) => {
@@ -36,12 +70,52 @@ app.use((req, res, next) => {
     next();
   }
 });
+// Configuration CORS sécurisée
 app.use(cors({
-  origin: true,
-  credentials: true
+  origin: process.env.NODE_ENV === 'production'
+    ? (process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'])
+    : true,
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Sécurité: Rate limiting strict pour les IPs externes
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limite à 100 requêtes par fenêtre par IP
+  message: 'Trop de requêtes depuis cette IP, veuillez réessayer plus tard.',
+  standardHeaders: true,
+  legacyHeaders: false,
+  // Fonction pour exempter localhost des limitations strictes
+  skip: (req) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const isLocalhost = ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+    // Skip (ne pas appliquer le limiter strict) si c'est localhost
+    return isLocalhost;
+  }
+});
+
+// Rate limiter plus permissif pour localhost (mode dev/tests)
+const devApiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10000, // 10000 requêtes pour localhost = tests illimités
+  message: 'Trop de requêtes depuis cette IP, veuillez réessayer plus tard.',
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const isLocalhost = ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+    return !isLocalhost; // Skip (ne pas appliquer) si ce n'est PAS localhost
+  }
+});
+
+// Appliquer le rate limiting uniquement aux routes API
+// 1. D'abord le limiter permissif pour localhost
+app.use('/api/', devApiLimiter);
+// 2. Puis le limiter strict pour les autres IPs
+app.use('/api/', apiLimiter);
 
 // ========== SERVIR LES FICHIERS STATIQUES - ORDRE IMPORTANT ! ==========
 
@@ -87,7 +161,7 @@ app.post('/api/init-image-column', async (req, res) => {
       res.json({ success: true, message: 'Colonne image déjà présente' });
     }
   } catch (error) {
-    console.error('❌ Erreur init colonne:', error);
+    logger.error('❌ Erreur init colonne:', error);
     res.json({ success: true, message: 'Colonne OK (erreur ignorée)' });
   }
 });
@@ -101,30 +175,7 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-// GET - Statistiques
-app.get('/api/stats', async (req, res) => {
-  try {
-    const stats = await pool.query(`
-      SELECT
-        COUNT(DISTINCT id) AS total_products,
-        COUNT(DISTINCT CASE WHEN categorie IS NOT NULL AND categorie != '' THEN categorie END) AS total_categories,
-        COUNT(*) FILTER (WHERE top_du_mois = TRUE) AS featured_products
-      FROM produits
-    `);
-
-    res.json({
-      success: true,
-      stats: stats.rows[0]
-    });
-
-  } catch (error) {
-    console.error('❌ Erreur stats:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+// Routes stats déplacées vers backend/routes/stats.js
 
 // Liste des fiches
 app.get('/api/fiches-list', (req, res) => {
@@ -157,7 +208,7 @@ app.get('/api/fiches-list', (req, res) => {
       fiches: fiches
     });
   } catch (error) {
-    console.error('❌ Erreur liste fiches:', error);
+    logger.error('❌ Erreur liste fiches:', error);
     res.json({
       success: true,
       fiches: []
@@ -167,16 +218,21 @@ app.get('/api/fiches-list', (req, res) => {
 
 // ========== ROUTES API ==========
 
+// Routes catégories déplacées vers backend/routes/categories.js
+
 // Utiliser les routes modulaires
 app.use('/api/produits', produitsRoutes);
 app.use('/api', fichesRoutes);
-app.use('/api/tendances', tendancesRoutes); // Alias: table actualites
+app.use('/api/fiche-tendance', fichesTendancesRoutes); // Routes pour les fiches tendances (génération + data)
+app.use('/api/tendances', tendancesRoutes); // Table actualites (liste des cards)
 app.use('/api/actualites', tendancesRoutes); // Même routes que tendances (table actualites)
 app.use('/api', contentRoutes); // /:categorie/actualites, technologies, marche, insights, predictions
 app.use('/api/technologies', technologiesRoutes);
 app.use('/api/marche', marcheRoutes);
 app.use('/api/insights', insightsRoutes);
 app.use('/api/predictions', predictionsRoutes);
+app.use('/api/categories', categoriesRoutes); // Routes catégories
+app.use('/api/stats', statsRoutes); // Routes statistiques
 
 // GET - Récupérer tous les produits
 // DÉPLACÉ vers backend/routes/produits.js
@@ -205,31 +261,71 @@ app.get('/fiches/:category/:fiche', (req, res) => {
   }
 });
 
-// Endpoint pour exposer la configuration LLM
-// Endpoint pour exposer la configuration LLM (modèle / rollout)
-app.get('/api/llm-config', (req, res) => {
-  try {
-    const model = process.env.OPENAI_MODEL || 'gpt-5';
-    const enabled = (process.env.GPT5_ENABLED || 'false').toLowerCase() === 'true';
-    const rollout = parseInt(process.env.GPT5_ROLLOUT || '0', 10);
+// SÉCURITÉ: Endpoint LLM config désactivé - Contenait des informations sensibles
+// Pour le réactiver, implémenter d'abord un système d'authentification admin
+// app.get('/api/llm-config', requireAuth, (req, res) => { ... })
+//
+// Endpoint commenté pour sécurité - À réactiver avec authentification
+// app.get('/api/llm-config', (req, res) => {
+//   try {
+//     const model = process.env.OPENAI_MODEL || 'gpt-5';
+//     const enabled = (process.env.GPT5_ENABLED || 'false').toLowerCase() === 'true';
+//     const rollout = parseInt(process.env.GPT5_ROLLOUT || '0', 10);
+//
+//     res.json({
+//       success: true,
+//       model,
+//       enabled,
+//       rollout_percent: isNaN(rollout) ? 0 : Math.max(0, Math.min(100, rollout))
+//     });
+//   } catch (err) {
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// });
 
-    res.json({
-      success: true,
-      model,
-      enabled,
-      rollout_percent: isNaN(rollout) ? 0 : Math.max(0, Math.min(100, rollout))
+// Endpoint pour sauvegarder le rapport d'intégrité des liens
+app.post('/api/save-report', (req, res) => {
+  try {
+    const { filename, content } = req.body;
+    
+    if (!filename || !content) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'filename et content sont requis' 
+      });
+    }
+    
+    // Sauvegarder dans le dossier scripts/maintenance
+    const reportPath = path.join(__dirname, 'frontend', 'public', 'scripts', 'maintenance', filename);
+    fs.writeFileSync(reportPath, content, 'utf8');
+    
+    res.json({ 
+      success: true, 
+      message: `Rapport sauvegardé: ${filename}`,
+      path: `/scripts/maintenance/${filename}`
     });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ 
+      success: false, 
+      error: err.message 
+    });
   }
 });
+
+// ========== GESTION DES ERREURS (À LA FIN, APRÈS TOUTES LES ROUTES) ==========
+
+// Middleware 404 - Route non trouvée
+app.use(notFoundHandler);
+
+// Middleware de gestion centralisée des erreurs
+app.use(errorHandler);
 
 app.listen(port, '0.0.0.0', async () => {
   // Test connexion PostgreSQL
   try {
     const result = await pool.query('SELECT COUNT(*) FROM produits');
   } catch (err) {
-    console.error('❌ Erreur PostgreSQL:', err.message);
+    logger.error('❌ Erreur PostgreSQL:', err.message);
   }
 
   // Vérifier que les images sont accessibles
@@ -239,7 +335,7 @@ app.listen(port, '0.0.0.0', async () => {
   }
 
   // Ajoute ce message :
-  console.log(`🚀 Serveur démarré sur http://localhost:${port}`);
+  logger.info(`🚀 Serveur démarré sur http://localhost:${port}`);
 });
 
 // Gestion propre de l'arrêt
@@ -247,15 +343,3 @@ process.on('SIGINT', async () => {
   await pool.end();
   process.exit(0);
 });
-
-// ...avant INSERT ou UPDATE...
-function slugToTitreAffiche(slug) {
-    if (!slug) return '';
-    return slug
-        .replace(/-/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(' ');
-}

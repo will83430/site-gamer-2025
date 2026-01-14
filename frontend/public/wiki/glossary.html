@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossaire - Site Gamer 2025</title>
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
+        .header h1 { font-size: 3em; color: white; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .alphabet { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 20px; background: rgba(102, 126, 234, 0.1); border-radius: 15px; margin-bottom: 40px; }
+        .alphabet a { color: #667eea; text-decoration: none; padding: 8px 15px; background: rgba(102, 126, 234, 0.2); border-radius: 8px; transition: all 0.3s; font-weight: 600; }
+        .alphabet a:hover { background: #667eea; color: white; transform: translateY(-2px); }
+        .section { margin-bottom: 50px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; }
+        .section h2 { color: #667eea; margin-bottom: 30px; font-size: 2.5em; text-align: center; }
+        .term { background: rgba(102, 126, 234, 0.1); border-left: 4px solid #2ecc71; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .term-title { color: #2ecc71; font-weight: 700; margin-bottom: 10px; font-size: 1.3em; }
+        .term-type { display: inline-block; background: rgba(102, 126, 234, 0.3); padding: 4px 12px; border-radius: 6px; font-size: 0.85em; margin-bottom: 10px; }
+        code { background: rgba(102, 126, 234, 0.2); padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #ffd700; }
+        pre { background: #1a1a2e; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 10px 0; border: 1px solid #667eea; }
+        pre code { background: none; padding: 0; color: #2ecc71; }
+        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .back-link:hover { background: #764ba2; transform: translateY(-2px); }
+        .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📖 Glossaire</h1>
+        <p>Dictionnaire des termes techniques du Site Gamer 2025</p>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="scripts.html">⚙️ Scripts</a>
+        <a href="troubleshooting.html">🔧 Dépannage</a>
+        <a href="changelog.html">📝 Changelog</a>
+    </nav>
+
+    <div class="container">
+        <div class="alphabet">
+            <a href="#a">A</a>
+            <a href="#b">B</a>
+            <a href="#c">C</a>
+            <a href="#d">D</a>
+            <a href="#e">E</a>
+            <a href="#f">F</a>
+            <a href="#g">G</a>
+            <a href="#j">J</a>
+            <a href="#l">L</a>
+            <a href="#m">M</a>
+            <a href="#n">N</a>
+            <a href="#p">P</a>
+            <a href="#r">R</a>
+            <a href="#s">S</a>
+            <a href="#t">T</a>
+        </div>
+
+        <div id="a" class="section">
+            <h2>A</h2>
+            
+            <div class="term">
+                <div class="term-title">API REST</div>
+                <div class="term-type">Architecture</div>
+                <p><strong>Definition :</strong> Interface de programmation d'application utilisant les méthodes HTTP standard (GET, POST, PUT, DELETE) pour manipuler les ressources.</p>
+                <p style="margin-top: 10px;"><strong>Exemple :</strong></p>
+                <pre><code>GET /api/produits        # Lire
+POST /api/produits       # Créer
+PUT /api/produits/:id    # Modifier
+DELETE /api/produits/:id # Supprimer</code></pre>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Assets</div>
+                <div class="term-type">Frontend</div>
+                <p><strong>Definition :</strong> Fichiers statiques (CSS, JS, images, fonts) servis par le serveur web.</p>
+                <p style="margin-top: 10px;"><strong>Localisation :</strong> <code>frontend/public/assets/</code></p>
+            </div>
+        </div>
+
+        <div id="b" class="section">
+            <h2>B</h2>
+            
+            <div class="term">
+                <div class="term-title">Backup</div>
+                <div class="term-type">Base de données</div>
+                <p><strong>Definition :</strong> Sauvegarde complète de la base de données PostgreSQL.</p>
+                <p style="margin-top: 10px;"><strong>Commande :</strong></p>
+                <pre><code>pg_dump -U postgres gamer_2025 > backup.sql</code></pre>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Build</div>
+                <div class="term-type">Développement</div>
+                <p><strong>Definition :</strong> Processus de minification et d'optimisation des fichiers CSS et JavaScript.</p>
+                <p style="margin-top: 10px;"><strong>Commandes :</strong></p>
+                <pre><code>npm run build:css  # Clean-CSS
+npm run build:js   # Terser</code></pre>
+            </div>
+        </div>
+
+        <div id="c" class="section">
+            <h2>C</h2>
+            
+            <div class="term">
+                <div class="term-title">Catégorie</div>
+                <div class="term-type">Données</div>
+                <p><strong>Definition :</strong> Classification des produits (16 catégories disponibles).</p>
+                <p style="margin-top: 10px;"><strong>Format :</strong> Lowercase avec tirets (ex: <code>pc-gaming</code>, <code>montre-connectee</code>)</p>
+                <p style="margin-top: 10px;"><strong>Liste :</strong> PC Gaming, Smartphone, Console, Écran TV, Casque Audio, Box Internet, Drone, Casque VR, Montre Connectée, Tablette, Caméra, Serveur, Imprimante 3D, Vidéo-Projecteur, Tableau Interactif, Périphériques</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">CORS</div>
+                <div class="term-type">Sécurité</div>
+                <p><strong>Definition :</strong> Cross-Origin Resource Sharing - Mécanisme permettant aux ressources d'être demandées depuis un autre domaine.</p>
+                <p style="margin-top: 10px;"><strong>Configuration :</strong> Le serveur utilise une configuration permissive (<code>Access-Control-Allow-Origin: *</code>)</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">CRUD</div>
+                <div class="term-type">Pattern</div>
+                <p><strong>Definition :</strong> Create, Read, Update, Delete - Opérations de base sur les données.</p>
+                <p style="margin-top: 10px;"><strong>Mapping HTTP :</strong></p>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>Create → POST</li>
+                    <li>Read → GET</li>
+                    <li>Update → PUT</li>
+                    <li>Delete → DELETE</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="d" class="section">
+            <h2>D</h2>
+            
+            <div class="term">
+                <div class="term-title">donnees_fiche</div>
+                <div class="term-type">Champ DB</div>
+                <p><strong>Definition :</strong> Colonne JSONB contenant les sections détaillées d'une fiche produit.</p>
+                <p style="margin-top: 10px;"><strong>Structure :</strong></p>
+                <pre><code>[
+  {
+    "titre": "Caractéristiques techniques",
+    "contenu": "Description détaillée..."
+  },
+  {
+    "titre": "Performance",
+    "contenu": "Analyses de performance..."
+  }
+]</code></pre>
+            </div>
+
+            <div class="term">
+                <div class="term-title">donnees_prices</div>
+                <div class="term-type">Champ DB (obsolète)</div>
+                <p><strong>Definition :</strong> Ancien champ utilisé pour stocker des informations de prix supplémentaires. Progressivement remplacé par le champ <code>prix</code> principal.</p>
+            </div>
+        </div>
+
+        <div id="e" class="section">
+            <h2>E</h2>
+            
+            <div class="term">
+                <div class="term-title">Express</div>
+                <div class="term-type">Framework</div>
+                <p><strong>Definition :</strong> Framework web minimaliste pour Node.js utilisé pour le serveur.</p>
+                <p style="margin-top: 10px;"><strong>Fichier principal :</strong> <code>server.js</code></p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Endpoint</div>
+                <div class="term-type">API</div>
+                <p><strong>Definition :</strong> URL spécifique exposée par l'API pour accéder à une ressource ou effectuer une action.</p>
+                <p style="margin-top: 10px;"><strong>Exemples :</strong></p>
+                <pre><code>/api/produits
+/api/generate-fiche/:id
+/api/tendances
+/api/pc-gaming/actualites</code></pre>
+            </div>
+        </div>
+
+        <div id="f" class="section">
+            <h2>F</h2>
+            
+            <div class="term">
+                <div class="term-title">Fiche produit</div>
+                <div class="term-type">Concept</div>
+                <p><strong>Definition :</strong> Page HTML statique générée pour chaque produit, contenant description détaillée, spécifications, et fonctionnalités.</p>
+                <p style="margin-top: 10px;"><strong>Localisation :</strong> <code>fiches/{categorie-slug}/{product-slug}.html</code></p>
+                <p style="margin-top: 10px;"><strong>Génération :</strong> POST <code>/api/generate-fiche/:id</code></p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">fonctionnalites_avancees</div>
+                <div class="term-type">Champ DB</div>
+                <p><strong>Definition :</strong> Array contenant la liste des fonctionnalités clés d'un produit (3-5 items).</p>
+                <p style="margin-top: 10px;"><strong>Exemple :</strong></p>
+                <pre><code>["Écran OLED 120Hz", "5G", "Caméra 48MP", "128 GB"]</code></pre>
+            </div>
+        </div>
+
+        <div id="g" class="section">
+            <h2>G</h2>
+            
+            <div class="term">
+                <div class="term-title">gamer_2025</div>
+                <div class="term-type">Base de données</div>
+                <p><strong>Definition :</strong> Nom de la base de données PostgreSQL du projet.</p>
+                <p style="margin-top: 10px;"><strong>Credentials par défaut :</strong></p>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>User: <code>postgres</code></li>
+                    <li>Password: <code>XXXXXX</code></li>
+                    <li>Port: <code>XXXX</code></li>
+                </ul>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Gzip</div>
+                <div class="term-type">Compression</div>
+                <p><strong>Definition :</strong> Algorithme de compression appliqué aux réponses HTTP via le middleware <code>compression</code>.</p>
+                <p style="margin-top: 10px;"><strong>Avantage :</strong> Réduit la taille des réponses de 70-90%</p>
+            </div>
+        </div>
+
+        <div id="j" class="section">
+            <h2>J</h2>
+            
+            <div class="term">
+                <div class="term-title">JSONB</div>
+                <div class="term-type">Type PostgreSQL</div>
+                <p><strong>Definition :</strong> Type de données PostgreSQL pour stocker des objets JSON en format binaire optimisé.</p>
+                <p style="margin-top: 10px;"><strong>Utilisation :</strong> Champ <code>donnees_fiche</code> dans la table <code>produits</code></p>
+                <p style="margin-top: 10px;"><strong>Avantage :</strong> Indexable et interrogeable avec des opérateurs spéciaux</p>
+            </div>
+        </div>
+
+        <div id="l" class="section">
+            <h2>L</h2>
+            
+            <div class="term">
+                <div class="term-title">lien</div>
+                <div class="term-type">Champ DB</div>
+                <p><strong>Definition :</strong> URL relative vers la fiche produit générée.</p>
+                <p style="margin-top: 10px;"><strong>Format :</strong> <code>/fiches/{categorie-slug}/{product-slug}.html</code></p>
+                <p style="margin-top: 10px;"><strong>Exemple :</strong> <code>/fiches/smartphone/iphone-15-pro.html</code></p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">LLM</div>
+                <div class="term-type">Intelligence Artificielle</div>
+                <p><strong>Definition :</strong> Large Language Model - Modèle de langage de grande taille (GPT-4, GPT-5).</p>
+                <p style="margin-top: 10px;"><strong>Endpoint config :</strong> <code>/api/llm-config</code></p>
+                <p style="margin-top: 10px;"><strong>Variables :</strong></p>
+                <pre><code>OPENAI_MODEL=gpt-5
+GPT5_ENABLED=false
+GPT5_ROLLOUT=0</code></pre>
+            </div>
+        </div>
+
+        <div id="m" class="section">
+            <h2>M</h2>
+            
+            <div class="term">
+                <div class="term-title">Middleware</div>
+                <div class="term-type">Express</div>
+                <p><strong>Definition :</strong> Fonction qui traite les requêtes avant qu'elles n'atteignent les routes finales.</p>
+                <p style="margin-top: 10px;"><strong>Exemples dans le projet :</strong></p>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li><code>compression()</code> - Gzip</li>
+                    <li><code>express.json()</code> - Parser JSON</li>
+                    <li>CORS headers</li>
+                </ul>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Minification</div>
+                <div class="term-type">Optimisation</div>
+                <p><strong>Definition :</strong> Processus de réduction de la taille des fichiers CSS/JS en supprimant espaces, commentaires, et en raccourcissant les noms de variables.</p>
+                <p style="margin-top: 10px;"><strong>Outils :</strong></p>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>Clean-CSS pour CSS</li>
+                    <li>Terser pour JavaScript</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="n" class="section">
+            <h2>N</h2>
+            
+            <div class="term">
+                <div class="term-title">Nodemon</div>
+                <div class="term-type">Outil développement</div>
+                <p><strong>Definition :</strong> Utilitaire qui redémarre automatiquement le serveur Node.js quand des fichiers sont modifiés.</p>
+                <p style="margin-top: 10px;"><strong>Commande :</strong> <code>npm run dev</code></p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Normalisation</div>
+                <div class="term-type">Processus</div>
+                <p><strong>Definition :</strong> Processus de standardisation des données en base pour assurer la cohérence (formats, nommage, etc.).</p>
+                <p style="margin-top: 10px;"><strong>Scripts :</strong> <code>normalize-*.js</code>, <code>fix-*.js</code></p>
+            </div>
+        </div>
+
+        <div id="p" class="section">
+            <h2>P</h2>
+            
+            <div class="term">
+                <div class="term-title">pg</div>
+                <div class="term-type">Package npm</div>
+                <p><strong>Definition :</strong> Driver PostgreSQL pour Node.js, permet de se connecter et d'interroger la base de données.</p>
+                <p style="margin-top: 10px;"><strong>Usage :</strong></p>
+                <pre><code>const { Pool } = require('pg');
+const pool = new Pool({ ... });</code></pre>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Placeholder</div>
+                <div class="term-type">Image</div>
+                <p><strong>Definition :</strong> Image par défaut utilisée quand l'image d'un produit est manquante.</p>
+                <p style="margin-top: 10px;"><strong>Chemin :</strong> <code>/assets/images/placeholder.png</code></p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">prod_XX</div>
+                <div class="term-type">ID Format</div>
+                <p><strong>Definition :</strong> Format standard des identifiants de produits (ex: <code>prod_1</code>, <code>prod_50</code>).</p>
+                <p style="margin-top: 10px;"><strong>Auto-génération :</strong> POST <code>/api/produits</code> attribue automatiquement le prochain ID disponible</p>
+            </div>
+        </div>
+
+        <div id="r" class="section">
+            <h2>R</h2>
+            
+            <div class="term">
+                <div class="term-title">Régénération</div>
+                <div class="term-type">Processus</div>
+                <p><strong>Definition :</strong> Reconstruction complète des fiches HTML statiques à partir des données en base.</p>
+                <p style="margin-top: 10px;"><strong>Scripts :</strong></p>
+                <pre><code>regenerate-all-fiches.js       # Toutes
+regenerate-fiches-top.js       # Top du mois uniquement
+regenerate-normalized-fiches.js # Normalisées</code></pre>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Route</div>
+                <div class="term-type">Express</div>
+                <p><strong>Definition :</strong> Définition d'un endpoint HTTP avec sa méthode et son handler.</p>
+                <p style="margin-top: 10px;"><strong>Exemple :</strong></p>
+                <pre><code>app.get('/api/produits', async (req, res) => {
+  // Handler
+});</code></pre>
+            </div>
+        </div>
+
+        <div id="s" class="section">
+            <h2>S</h2>
+            
+            <div class="term">
+                <div class="term-title">Slug</div>
+                <div class="term-type">Format</div>
+                <p><strong>Definition :</strong> Version URL-friendly d'un nom (lowercase, tirets, pas d'espaces ni caractères spéciaux).</p>
+                <p style="margin-top: 10px;"><strong>Exemples :</strong></p>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>"iPhone 15 Pro" → <code>iphone-15-pro</code></li>
+                    <li>"PC Gaming" → <code>pc-gaming</code></li>
+                </ul>
+            </div>
+
+            <div class="term">
+                <div class="term-title">slugToTitreAffiche()</div>
+                <div class="term-type">Fonction</div>
+                <p><strong>Definition :</strong> Fonction qui convertit un slug en titre affiché formaté (majuscules, espaces).</p>
+                <p style="margin-top: 10px;"><strong>Localisation :</strong> Fin de <code>server.js</code></p>
+            </div>
+        </div>
+
+        <div id="t" class="section">
+            <h2>T</h2>
+            
+            <div class="term">
+                <div class="term-title">Tags</div>
+                <div class="term-type">Champ DB</div>
+                <p><strong>Definition :</strong> Mots-clés associés au contenu (actualités, technologies, tendances).</p>
+                <p style="margin-top: 10px;"><strong>Format :</strong> Array ou chaîne PostgreSQL <code>{tag1,tag2}</code></p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Tendances</div>
+                <div class="term-type">Table DB</div>
+                <p><strong>Definition :</strong> Table contenant les analyses de tendances du marché tech par catégorie.</p>
+                <p style="margin-top: 10px;"><strong>Colonnes :</strong> id, category_id, titre, description, impact, date_publication, tags</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">titre_affiche</div>
+                <div class="term-type">Champ DB</div>
+                <p><strong>Definition :</strong> Titre alternatif pour l'affichage public (optionnel, sinon utilise <code>nom</code>).</p>
+                <p style="margin-top: 10px;"><strong>Usage :</strong> Permet d'avoir un nom technique en DB et un titre marketing pour l'affichage</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">top_du_mois</div>
+                <div class="term-type">Champ DB</div>
+                <p><strong>Definition :</strong> Boolean indiquant si un produit est dans la sélection "Top du mois".</p>
+                <p style="margin-top: 10px;"><strong>Usage :</strong> Filtrage et mise en avant sur la page d'accueil</p>
+            </div>
+        </div>
+
+        <a href="wiki.html" class="back-link">← Retour au Wiki</a>
+    </div>
+
+    <div class="footer">
+        <p>📖 Glossaire - Site Gamer 2025</p>
+        <p>Dernière mise à jour : 26 décembre 2025</p>
+    </div>
+</body>
+</html>
