@@ -23,6 +23,8 @@ const technologiesRoutes = require('./backend/routes/technologies');
 const marcheRoutes = require('./backend/routes/marche');
 const insightsRoutes = require('./backend/routes/insights');
 const predictionsRoutes = require('./backend/routes/predictions');
+const categoriesRoutes = require('./backend/routes/categories');
+const statsRoutes = require('./backend/routes/stats');
 
 const assetsPath = path.join(__dirname, 'frontend/public/assets');
 
@@ -79,16 +81,40 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Sécurité: Rate limiting pour l'API
+// Sécurité: Rate limiting strict pour les IPs externes
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limite à 100 requêtes par fenêtre par IP
   message: 'Trop de requêtes depuis cette IP, veuillez réessayer plus tard.',
   standardHeaders: true,
   legacyHeaders: false,
+  // Fonction pour exempter localhost des limitations strictes
+  skip: (req) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const isLocalhost = ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+    // Skip (ne pas appliquer le limiter strict) si c'est localhost
+    return isLocalhost;
+  }
+});
+
+// Rate limiter plus permissif pour localhost (mode dev/tests)
+const devApiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10000, // 10000 requêtes pour localhost = tests illimités
+  message: 'Trop de requêtes depuis cette IP, veuillez réessayer plus tard.',
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const isLocalhost = ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+    return !isLocalhost; // Skip (ne pas appliquer) si ce n'est PAS localhost
+  }
 });
 
 // Appliquer le rate limiting uniquement aux routes API
+// 1. D'abord le limiter permissif pour localhost
+app.use('/api/', devApiLimiter);
+// 2. Puis le limiter strict pour les autres IPs
 app.use('/api/', apiLimiter);
 
 // ========== SERVIR LES FICHIERS STATIQUES - ORDRE IMPORTANT ! ==========
@@ -149,30 +175,7 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-// GET - Statistiques
-app.get('/api/stats', async (req, res) => {
-  try {
-    const stats = await pool.query(`
-      SELECT
-        COUNT(DISTINCT id) AS total_products,
-        COUNT(DISTINCT CASE WHEN categorie IS NOT NULL AND categorie != '' THEN categorie END) AS total_categories,
-        COUNT(*) FILTER (WHERE top_du_mois = TRUE) AS featured_products
-      FROM produits
-    `);
-
-    res.json({
-      success: true,
-      stats: stats.rows[0]
-    });
-
-  } catch (error) {
-    logger.error('❌ Erreur stats:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+// Routes stats déplacées vers backend/routes/stats.js
 
 // Liste des fiches
 app.get('/api/fiches-list', (req, res) => {
@@ -215,16 +218,7 @@ app.get('/api/fiches-list', (req, res) => {
 
 // ========== ROUTES API ==========
 
-// GET - Récupérer toutes les catégories
-app.get('/api/categories', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM categories ORDER BY nom');
-    res.json(result.rows);
-  } catch (error) {
-    logger.error('❌ Erreur récupération catégories:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
+// Routes catégories déplacées vers backend/routes/categories.js
 
 // Utiliser les routes modulaires
 app.use('/api/produits', produitsRoutes);
@@ -237,6 +231,8 @@ app.use('/api/technologies', technologiesRoutes);
 app.use('/api/marche', marcheRoutes);
 app.use('/api/insights', insightsRoutes);
 app.use('/api/predictions', predictionsRoutes);
+app.use('/api/categories', categoriesRoutes); // Routes catégories
+app.use('/api/stats', statsRoutes); // Routes statistiques
 
 // GET - Récupérer tous les produits
 // DÉPLACÉ vers backend/routes/produits.js

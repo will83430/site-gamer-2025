@@ -397,7 +397,7 @@
 
         <div class="stats-container">
             <div class="stat-card">
-                <div class="stat-value" id="totalTests">28</div>
+                <div class="stat-value" id="totalTests">29</div>
                 <div class="stat-label">Tests disponibles</div>
             </div>
             <div class="stat-card">
@@ -1120,18 +1120,26 @@ Message: ${report.message}</div>
                 // 5. API ENDPOINTS TENDANCES (actualités, technologies, marché, insights, predictions)
                 const tendancePages = ['actualites', 'technologies', 'marche', 'insights', 'predictions'];
                 let tendancePageCount = 0;
-                
+
                 for (const cat of tendanceCategories) {
                     for (const page of tendancePages) {
                         try {
                             const response = await fetch(`http://localhost:3000/api/${cat}/${page}`, { method: 'GET', cache: 'no-cache' });
                             checkedLinks++;
                             tendancePageCount++;
-                            if (!response.ok) {
+
+                            if (response.status === 429) {
+                                // Rate limiting détecté - on attend plus longtemps
+                                brokenLinks.push(`/api/${cat}/${page} (429 - Rate Limited)`);
+                                await new Promise(resolve => setTimeout(resolve, 2000));
+                            } else if (!response.ok) {
                                 brokenLinks.push(`/api/${cat}/${page} (${response.status})`);
                             }
+
+                            // Délai de 500ms entre chaque requête pour respecter le rate limiting
+                            await new Promise(resolve => setTimeout(resolve, 500));
                         } catch (error) {
-                            brokenLinks.push(`/api/${cat}/${page} (inaccessible)`);
+                            brokenLinks.push(`/api/${cat}/${page} (${error.message})`);
                         }
                     }
                 }
@@ -1267,14 +1275,16 @@ Message: ${report.message}</div>
                 
                 for (const link of criticalLinks) {
                     try {
-                        const response = await fetch(`http://localhost:3000${link}`, { 
+                        const response = await fetch(`http://localhost:3000${link}`, {
                             method: 'HEAD',
-                            cache: 'no-cache' 
+                            cache: 'no-cache'
                         });
                         checkedLinks++;
                         if (!response.ok) {
                             brokenLinks.push(`${link} (${response.status})`);
                         }
+                        // Délai de 200ms entre chaque requête
+                        await new Promise(resolve => setTimeout(resolve, 200));
                     } catch (error) {
                         brokenLinks.push(`${link} (inaccessible)`);
                     }
@@ -1288,14 +1298,16 @@ Message: ${report.message}</div>
                 for (const product of products) {
                     if (product.lien) {
                         try {
-                            const response = await fetch(`http://localhost:3000/${product.lien}`, { 
+                            const response = await fetch(`http://localhost:3000/${product.lien}`, {
                                 method: 'HEAD',
-                                cache: 'no-cache' 
+                                cache: 'no-cache'
                             });
                             checkedLinks++;
                             if (!response.ok) {
                                 brokenLinks.push(`${product.nom}: ${product.lien} (${response.status})`);
                             }
+                            // Délai de 200ms entre chaque requête
+                            await new Promise(resolve => setTimeout(resolve, 200));
                         } catch (error) {
                             brokenLinks.push(`${product.nom}: ${product.lien} (inaccessible)`);
                         }
@@ -1311,14 +1323,22 @@ Message: ${report.message}</div>
                     const tendancePages = ['actualites', 'technologies', 'marche', 'insights', 'predictions'];
                     for (const page of tendancePages) {
                         try {
-                            const response = await fetch(`http://localhost:3000/api/${category}/${page}`, { 
+                            const response = await fetch(`http://localhost:3000/api/${category}/${page}`, {
                                 method: 'GET',
-                                cache: 'no-cache' 
+                                cache: 'no-cache'
                             });
                             checkedLinks++;
-                            if (!response.ok) {
+
+                            if (response.status === 429) {
+                                // Rate limiting détecté - on attend plus longtemps
+                                brokenLinks.push(`/api/${category}/${page} (429 - Rate Limited)`);
+                                await new Promise(resolve => setTimeout(resolve, 2000));
+                            } else if (!response.ok) {
                                 brokenLinks.push(`/api/${category}/${page} (${response.status})`);
                             }
+
+                            // Délai de 500ms entre chaque requête pour respecter le rate limiting
+                            await new Promise(resolve => setTimeout(resolve, 500));
                         } catch (error) {
                             brokenLinks.push(`/api/${category}/${page} (${error.message})`);
                         }
@@ -1556,10 +1576,17 @@ Message: ${report.message}</div>
                 for (const endpoint of endpoints) {
                     totalTests++;
                     const url = `http://localhost:3000/api/${category}/${endpoint}`;
-                    
+
                     try {
                         const response = await fetch(url);
-                        if (response.ok) {
+
+                        if (response.status === 429) {
+                            // Rate limiting détecté
+                            results.push(`⚠️  ${category}/${endpoint}: Rate Limited (429)`);
+                            errors.push(`${url}: Rate limiting actif - attendez ou augmentez la limite`);
+                            // Attendre 2 secondes avant de continuer
+                            await new Promise(resolve => setTimeout(resolve, 2000));
+                        } else if (response.ok) {
                             const data = await response.json();
                             if (Array.isArray(data) || (data && Array.isArray(data.data))) {
                                 passedTests++;
@@ -1576,6 +1603,9 @@ Message: ${report.message}</div>
                         results.push(`❌ ${category}/${endpoint}: Erreur réseau`);
                         errors.push(`${url}: ${error.message}`);
                     }
+
+                    // Délai de 500ms entre chaque requête pour respecter le rate limiting
+                    await new Promise(resolve => setTimeout(resolve, 500));
                 }
             }
 

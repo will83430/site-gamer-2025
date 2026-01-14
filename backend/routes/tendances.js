@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/database');
+const { reorderItems, swapOrder } = require('../utils/dbTransactions');
+const logger = require('../config/logger');
 
 // GET toutes les tendances (tous types confondus)
 router.get('/', async (req, res) => {
@@ -210,6 +212,65 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     console.error('❌ Erreur DELETE tendance:', err);
     res.status(500).json({ error: 'Erreur suppression tendance' });
+  }
+});
+
+// POST - Réorganiser plusieurs tendances (avec transaction)
+router.post('/reorder', async (req, res) => {
+  try {
+    const { items } = req.body; // items = [{id, ordre}, ...]
+
+    if (!items || !Array.isArray(items)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Le paramètre items (tableau) est requis'
+      });
+    }
+
+    await reorderItems('actualites', items);
+
+    logger.info(`Réorganisation de ${items.length} actualités`);
+
+    res.json({
+      success: true,
+      message: `${items.length} actualités réorganisées`,
+      count: items.length
+    });
+  } catch (err) {
+    logger.error('Erreur réorganisation tendances:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Erreur lors de la réorganisation'
+    });
+  }
+});
+
+// POST - Échanger l'ordre de deux tendances (avec transaction)
+router.post('/swap', async (req, res) => {
+  try {
+    const { id1, id2 } = req.body;
+
+    if (!id1 || !id2) {
+      return res.status(400).json({
+        success: false,
+        error: 'Les paramètres id1 et id2 sont requis'
+      });
+    }
+
+    await swapOrder('actualites', id1, id2);
+
+    logger.info(`Échange ordre actualités: ${id1} <-> ${id2}`);
+
+    res.json({
+      success: true,
+      message: 'Ordre échangé avec succès'
+    });
+  } catch (err) {
+    logger.error('Erreur échange ordre tendances:', err);
+    res.status(500).json({
+      success: false,
+      error: err.message || 'Erreur lors de l\'échange'
+    });
   }
 });
 
