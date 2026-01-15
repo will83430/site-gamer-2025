@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- Le RouterView affichera les pages selon la route -->
-    <RouterView />
+    <RouterView :key="$route.fullPath" />
   </div>
 </template>
 

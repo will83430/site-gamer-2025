@@ -9,7 +9,7 @@
       </div>
       <div class="footer-item">
         <img src="/assets/images/logo-dokk-blanc.png" alt="Centre d'Administration" class="footer-icon">
-        <router-link to="/admin">Centre d'Administration</router-link>
+        <a href="/admin-dashboard.html">Centre d'Administration</a>
       </div>
     </div>
   </footer>

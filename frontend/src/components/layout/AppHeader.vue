@@ -1,33 +1,33 @@
 <template>
   <div class="entete">
-    <img src="/assets/images/gaming.png" alt="Gaming" />
-    <router-link to="/top-du-mois" class="lien-top">
+    <img src="/assets/images/gaming.png" alt="Gaming" class="logo-gaming">
+    <!-- Page d'accueil : lien vers Top du Mois -->
+    <router-link v-if="isHomePage" to="/top-du-mois" class="lien-top">
       Cliquer ici pour voir les Tops du Moment
     </router-link>
+    <!-- Autres pages : lien vers Accueil -->
+    <router-link v-else to="/" class="lien-entete">
+      Accueil
+    </router-link>
   </div>
-  <div id="date-mois">{{ currentDate }}</div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-const currentDate = ref('');
+const route = useRoute();
 
-onMounted(() => {
-  // Format de date identique à l'existant
-  const date = new Date();
-  const mois = [
-    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
-  ];
-  currentDate.value = `${mois[date.getMonth()]} ${date.getFullYear()}`;
-});
+// Détecte si on est sur la page d'accueil
+const isHomePage = computed(() => route.path === '/' || route.path === '/accueil');
 </script>
 
 <style scoped>
 /*
-  IMPORTANT: On utilise les classes CSS existantes
-  Le style est défini dans styles.min.css
-  Pas de nouveau style ici, on réutilise l'existant
+  IMPORTANT: On utilise les classes CSS existantes de styles.min.css
+  - .entete : conteneur de l'en-tête
+  - .logo-gaming : style du logo
+  - .lien-top : lien vers Top du Mois (page accueil)
+  - .lien-entete : lien vers Accueil (autres pages)
 */
 </style>

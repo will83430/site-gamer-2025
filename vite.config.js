@@ -6,6 +6,9 @@ import path from 'path';
 export default defineConfig({
   plugins: [vue()],
 
+  // Configuration du dossier public
+  publicDir: 'frontend/public',
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './frontend/src'),
@@ -20,21 +23,23 @@ export default defineConfig({
   // Serveur de développement
   server: {
     port: 5173, // Port Vite (different de Express 3000)
+    middlewareMode: false,
     proxy: {
-      // Proxy vers l'API Express
+      // Proxy vers l'API Express UNIQUEMENT
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
+        rewrite: (path) => path,
       },
-      // Proxy pour les assets existants pendant la migration
-      '/assets': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/fiches': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
+      // Ne pas proxy /assets - Vite les servira depuis publicDir
+    },
+    // Rediriger toutes les routes vers index.html pour le SPA
+    historyApiFallback: true,
+    // Améliorer la performance du HMR
+    hmr: {
+      host: 'localhost',
+      port: 5173,
+      protocol: 'ws',
     },
   },
 
@@ -52,9 +57,16 @@ export default defineConfig({
         // Organisation des chunks
         manualChunks: {
           'vue-vendor': ['vue', 'vue-router', 'pinia'],
+          'views': ['@views/Home.vue', '@views/Products.vue', '@views/ProductDetail.vue', '@views/TopOfMonth.vue', '@views/TrendPage.vue'],
         },
       },
     },
+
+    // Augmenter le seuil pour réduire la fragmentation
+    chunkSizeWarningLimit: 1000,
+    
+    // Optimiser les reportCompressedSize pour les builds plus rapides en dev
+    reportCompressedSize: false,
   },
 
   // CSS

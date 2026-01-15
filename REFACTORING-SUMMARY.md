@@ -24,7 +24,7 @@ Refactorisation complète du backend pour améliorer la maintenabilité, la séc
 ```javascript
 const pool = new Pool({
   user: 'postgres',
-  password: 'Wilfried!1985',  // Hardcodé partout
+  password: '***',  // Hardcodé partout
   host: 'localhost',
   database: 'gamer_2025',
   port: 5432,
@@ -34,9 +34,9 @@ const pool = new Pool({
 **Après :**
 
 ```javascript
-// .env
+// .env (fichier ignoré par git)
 DB_USER=postgres
-DB_PASSWORD=Wilfried!1985
+DB_PASSWORD=***
 DB_NAME=gamer_2025
 
 // backend/config/database.js

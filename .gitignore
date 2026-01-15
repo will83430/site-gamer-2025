@@ -33,6 +33,7 @@ dist-ssr/
 
 # Autres fichiers à ignorer
 *.tmp
+tmpclaude-*
 
 # Backups et brouillons locaux
 backup_gamer_2025.sql

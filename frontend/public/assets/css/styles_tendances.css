@@ -241,12 +241,17 @@ p {
     transition: all 0.3s ease;
     color: var(--text-dark);
     font-size: 1rem;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-btn:hover {
     border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: var(--shadow);
+    will-change: transform;
 }
 
 .nav-btn.active {
@@ -266,6 +271,10 @@ p {
     transition: all 0.3s ease;
     color: var(--text-dark);
     font-size: 1rem;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* === CONTAINER PRINCIPAL === */
@@ -368,6 +377,8 @@ p {
     position: relative;
     height: 200px;
     overflow: hidden;
+    background-color: #f0f0f0;
+    contain: layout style paint;
 }
 
 .featured .card-image {
@@ -382,6 +393,8 @@ p {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    display: block;
+    aspect-ratio: auto;
 }
 
 .card-video {
@@ -389,6 +402,8 @@ p {
     padding-bottom: 56.25%; /* Ratio 16:9 */
     height: 0;
     overflow: hidden;
+    background-color: #000;
+    contain: layout style paint;
 }
 .card-video iframe {
     position: absolute;
@@ -399,6 +414,7 @@ p {
 
 .actualite-card:hover .card-image img {
     transform: scale(1.05);
+    will-change: transform;
 }
 
 .badge {
@@ -735,7 +751,7 @@ p {
   flex-direction: row;
   /* aligne les .footer-item horizontalement */
   justify-content: flex-start;
-  /* commence l’alignement à gauche */
+  /* commence l'alignement à gauche */
   align-items: center;
   /* aligne les .footer-item verticalement au centre */
   gap: 40px;
