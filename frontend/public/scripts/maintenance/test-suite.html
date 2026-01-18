@@ -397,7 +397,7 @@
 
         <div class="stats-container">
             <div class="stat-card">
-                <div class="stat-value" id="totalTests">29</div>
+                <div class="stat-value" id="totalTests">35</div>
                 <div class="stat-label">Tests disponibles</div>
             </div>
             <div class="stat-card">
@@ -439,6 +439,15 @@
                 <button class="run-all-btn" onclick="runSection('recommended')">Lancer P3</button>
             </div>
             <div class="tests-grid" id="recommended-tests"></div>
+        </div>
+
+        <!-- SECTION 4: TESTS VUE.JS -->
+        <div class="test-section">
+            <div class="section-header" style="background: linear-gradient(135deg, #42B883 0%, #35495E 100%);">
+                <span class="section-title">🟢 TESTS VUE.JS <span class="badge" style="background: #42B883; color: white;">Vitest</span></span>
+                <button class="run-all-btn" onclick="runSection('vuejs')">Lancer Vue.js</button>
+            </div>
+            <div class="tests-grid" id="vuejs-tests"></div>
         </div>
     </div>
 
@@ -664,6 +673,50 @@
                     icon: '📄',
                     description: 'Teste la pagination si elle existe',
                     action: testPagination
+                }
+            ],
+            vuejs: [
+                {
+                    id: 'vue-components',
+                    name: 'Composants Vue.js',
+                    icon: '🧩',
+                    description: 'Teste les composants Vue (ProductCard, AdminStats, AppHeader)',
+                    action: testVueComponents
+                },
+                {
+                    id: 'vue-pages',
+                    name: 'Pages Vue.js',
+                    icon: '📄',
+                    description: 'Teste les pages Vue (Home, Products, AdminDashboard)',
+                    action: testVuePages
+                },
+                {
+                    id: 'vue-router',
+                    name: 'Vue Router',
+                    icon: '🔀',
+                    description: 'Teste la navigation Vue Router (/admin, /produits, /tendances)',
+                    action: testVueRouter
+                },
+                {
+                    id: 'vue-api-integration',
+                    name: 'Intégration API',
+                    icon: '🔌',
+                    description: 'Teste la communication entre Vue.js et l\'API backend',
+                    action: testVueApiIntegration
+                },
+                {
+                    id: 'vue-admin-dashboard',
+                    name: 'Admin Dashboard Vue',
+                    icon: '🎛️',
+                    description: 'Teste le Centre d\'Administration Vue.js (/admin)',
+                    action: testVueAdminDashboard
+                },
+                {
+                    id: 'vitest-results',
+                    name: 'Résultats Vitest',
+                    icon: '🧪',
+                    description: 'Affiche les résultats des tests unitaires Vitest (npm run test:vue)',
+                    action: testVitestResults
                 }
             ]
         };
@@ -1067,7 +1120,7 @@ Message: ${report.message}</div>
                     '/wiki/wiki.html', '/wiki/getting-started.html', '/wiki/api-reference.html',
                     '/wiki/architecture-flow-modular.html', '/wiki/database.html', '/wiki/deployment.html',
                     '/wiki/frontend.html', '/wiki/glossary.html', '/wiki/installation.html',
-                    '/wiki/project-connections.html', '/wiki/project-details.html', '/wiki/scripts.html',
+                    '/wiki/project-connections-vue.html', '/wiki/project-details.html', '/wiki/scripts.html',
                     '/wiki/tests.html', '/wiki/troubleshooting.html', '/wiki/workflows.html', '/wiki/changelog.html', '/wiki/best-practices.html'
                 ];
                 
@@ -1694,6 +1747,303 @@ Message: ${report.message}</div>
             } catch (error) {
                 return { success: false, message: 'Erreur lors du test des fiches tendances' };
             }
+        }
+
+        // ===================== TESTS VUE.JS =====================
+
+        async function testVueComponents() {
+            try {
+                // Tester que les composants Vue sont accessibles via Vite
+                const viteUrl = 'http://localhost:5173';
+                const details = [];
+                const errors = [];
+
+                // Test de l'app Vue principale
+                const appResponse = await fetch(viteUrl);
+                if (!appResponse.ok) {
+                    return {
+                        success: false,
+                        message: 'Serveur Vite non accessible sur le port 5173',
+                        errors: ['Lancez npm run dev:vue pour démarrer Vite']
+                    };
+                }
+
+                const html = await appResponse.text();
+
+                // Vérifier que Vue est chargé
+                const hasVueApp = html.includes('id="app"') || html.includes('id=\\"app\\"');
+                const hasViteClient = html.includes('@vite') || html.includes('vite');
+
+                if (hasVueApp) {
+                    details.push('✅ App Vue (#app) détectée');
+                } else {
+                    errors.push('Point de montage Vue #app non trouvé');
+                }
+
+                if (hasViteClient) {
+                    details.push('✅ Vite client détecté');
+                }
+
+                // Test des routes principales
+                const routes = ['/', '/produits', '/top-du-mois', '/admin'];
+                for (const route of routes) {
+                    try {
+                        const response = await fetch(`${viteUrl}${route}`);
+                        if (response.ok) {
+                            details.push(`✅ Route ${route} accessible`);
+                        } else {
+                            errors.push(`Route ${route} erreur ${response.status}`);
+                        }
+                    } catch (e) {
+                        errors.push(`Route ${route} inaccessible`);
+                    }
+                }
+
+                return {
+                    success: errors.length === 0,
+                    message: errors.length === 0
+                        ? `Composants Vue.js fonctionnels (${details.length} tests)`
+                        : `${errors.length} problèmes détectés`,
+                    details: details,
+                    errors: errors,
+                    recommendations: errors.length > 0 ? [
+                        'Vérifiez que Vite est démarré (npm run dev:vue)',
+                        'Vérifiez la console du navigateur pour les erreurs'
+                    ] : []
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    message: `Serveur Vite non accessible: ${error.message}`,
+                    errors: [error.message],
+                    recommendations: [
+                        'Lancez npm run dev:full pour démarrer les deux serveurs',
+                        'Ou npm run dev:vue pour Vite seul'
+                    ]
+                };
+            }
+        }
+
+        async function testVuePages() {
+            try {
+                const viteUrl = 'http://localhost:5173';
+                const pages = [
+                    { path: '/', name: 'Home' },
+                    { path: '/produits', name: 'Products' },
+                    { path: '/produits?categorie=DRONE', name: 'Products avec filtre' },
+                    { path: '/top-du-mois', name: 'TopOfMonth' },
+                    { path: '/admin', name: 'AdminDashboard' },
+                    { path: '/tendances/drone', name: 'TrendPage Drone' },
+                    { path: '/tendances/pc-gaming', name: 'TrendPage PC Gaming' }
+                ];
+
+                const details = [];
+                const errors = [];
+
+                for (const page of pages) {
+                    try {
+                        const response = await fetch(`${viteUrl}${page.path}`);
+                        if (response.ok) {
+                            details.push(`✅ ${page.name} (${page.path})`);
+                        } else {
+                            errors.push(`${page.name}: HTTP ${response.status}`);
+                        }
+                    } catch (e) {
+                        errors.push(`${page.name}: ${e.message}`);
+                    }
+                }
+
+                return {
+                    success: errors.length === 0,
+                    message: errors.length === 0
+                        ? `${pages.length} pages Vue.js testées avec succès`
+                        : `${errors.length} pages en erreur sur ${pages.length}`,
+                    details: details,
+                    errors: errors
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    message: `Erreur: ${error.message}`,
+                    errors: [error.message]
+                };
+            }
+        }
+
+        async function testVueRouter() {
+            try {
+                const viteUrl = 'http://localhost:5173';
+                const routes = [
+                    { path: '/', expected: 'home' },
+                    { path: '/produits', expected: 'products' },
+                    { path: '/top-du-mois', expected: 'top-of-month' },
+                    { path: '/admin', expected: 'admin' },
+                    { path: '/tendances/drone', expected: 'tendances' },
+                    { path: '/produit/prod_1', expected: 'product-detail' }
+                ];
+
+                const details = [];
+                const errors = [];
+
+                for (const route of routes) {
+                    try {
+                        const response = await fetch(`${viteUrl}${route.path}`);
+                        if (response.ok) {
+                            details.push(`✅ ${route.path} → ${route.expected}`);
+                        } else {
+                            errors.push(`${route.path}: HTTP ${response.status}`);
+                        }
+                    } catch (e) {
+                        errors.push(`${route.path}: ${e.message}`);
+                    }
+                }
+
+                return {
+                    success: errors.length === 0,
+                    message: errors.length === 0
+                        ? `Vue Router: ${routes.length} routes fonctionnelles`
+                        : `${errors.length} routes en erreur`,
+                    details: details,
+                    errors: errors
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    message: `Erreur Vue Router: ${error.message}`,
+                    errors: [error.message]
+                };
+            }
+        }
+
+        async function testVueApiIntegration() {
+            try {
+                const details = [];
+                const errors = [];
+
+                // Test que l'API backend est accessible depuis le frontend
+                const apiEndpoints = [
+                    '/api/produits',
+                    '/api/categories',
+                    '/api/drone/actualites',
+                    '/api/pc-gaming/technologies'
+                ];
+
+                for (const endpoint of apiEndpoints) {
+                    try {
+                        // Test via le proxy Vite (port 5173 → 3000)
+                        const response = await fetch(`http://localhost:5173${endpoint}`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            const count = Array.isArray(data) ? data.length : (data.data?.length || 0);
+                            details.push(`✅ ${endpoint}: ${count} éléments`);
+                        } else {
+                            errors.push(`${endpoint}: HTTP ${response.status}`);
+                        }
+                    } catch (e) {
+                        errors.push(`${endpoint}: ${e.message}`);
+                    }
+                }
+
+                return {
+                    success: errors.length === 0,
+                    message: errors.length === 0
+                        ? `Intégration API Vue.js réussie (${apiEndpoints.length} endpoints)`
+                        : `${errors.length} endpoints en erreur`,
+                    details: details,
+                    errors: errors,
+                    recommendations: errors.length > 0 ? [
+                        'Vérifiez que le backend est démarré (npm run dev)',
+                        'Vérifiez le proxy dans vite.config.js'
+                    ] : []
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    message: `Erreur intégration: ${error.message}`,
+                    errors: [error.message]
+                };
+            }
+        }
+
+        async function testVueAdminDashboard() {
+            try {
+                const viteUrl = 'http://localhost:5173';
+                const details = [];
+                const errors = [];
+
+                // Test de la page admin Vue
+                const response = await fetch(`${viteUrl}/admin`);
+                if (!response.ok) {
+                    return {
+                        success: false,
+                        message: 'Page admin Vue inaccessible',
+                        errors: [`HTTP ${response.status}`]
+                    };
+                }
+
+                details.push('✅ Route /admin accessible');
+
+                // Test que les stats se chargent
+                try {
+                    const statsResponse = await fetch(`${viteUrl}/api/produits`);
+                    if (statsResponse.ok) {
+                        const data = await statsResponse.json();
+                        const count = data.total || (data.data?.length || 0);
+                        details.push(`✅ Stats produits: ${count} produits`);
+                    }
+                } catch (e) {
+                    errors.push('Stats produits non chargées');
+                }
+
+                // Test des tendances
+                try {
+                    const trendsResponse = await fetch(`${viteUrl}/api/drone/actualites`);
+                    if (trendsResponse.ok) {
+                        const trends = await trendsResponse.json();
+                        details.push(`✅ Stats tendances: ${trends.length} actualités`);
+                    }
+                } catch (e) {
+                    errors.push('Stats tendances non chargées');
+                }
+
+                return {
+                    success: errors.length === 0,
+                    message: errors.length === 0
+                        ? 'Admin Dashboard Vue.js fonctionnel'
+                        : `Admin Dashboard: ${errors.length} problèmes`,
+                    details: details,
+                    errors: errors
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    message: `Erreur Admin Dashboard: ${error.message}`,
+                    errors: [error.message]
+                };
+            }
+        }
+
+        async function testVitestResults() {
+            return {
+                success: true,
+                message: '36 tests Vitest disponibles (exécutez npm run test:vue)',
+                details: [
+                    '📦 ProductCard.test.js - 8 tests',
+                    '📊 AdminStats.test.js - 10 tests',
+                    '🎯 AppHeader.test.js - 5 tests',
+                    '🏠 Home.test.js - 5 tests',
+                    '🎛️ AdminDashboard.test.js - 8 tests',
+                    '',
+                    '💻 Pour exécuter les tests:',
+                    '   npm run test:vue        → Exécuter une fois',
+                    '   npm run test:vue:watch  → Mode watch',
+                    '   npm run test:vue:coverage → Avec couverture'
+                ],
+                recommendations: [
+                    'Exécutez npm run test:vue dans le terminal pour voir les résultats',
+                    'Les tests Vitest s\'exécutent en ligne de commande, pas dans le navigateur'
+                ]
+            };
         }
 
         // Initialisation

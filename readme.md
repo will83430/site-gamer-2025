@@ -67,7 +67,7 @@ frontend/src/
 
 - ✅ **15 pages de documentation complètes** avec navigation cohérente
 - ✅ **wiki.html** : Hub principal avec recherche en temps réel et cartes interactives
-- ✅ **project-connections.html** : Diagramme SVG interactif montrant l'architecture du système
+- ✅ **project-connections-vue.html** : Diagramme SVG interactif montrant l'architecture du système
 - ✅ **tests.html** : Documentation complète des tests avec accès direct à la suite
 - ✅ **api-reference.html** : Documentation complète de l'API REST
 - ✅ **database.html** : Schéma PostgreSQL avec exemples de requêtes
@@ -243,7 +243,7 @@ site-gamer-2025/
 ├── wiki/                               # Documentation Wiki
 │   ├── wiki.html                      # Hub principal avec recherche
 │   ├── wiki-styles.css                # Styles communs
-│   ├── project-connections.html       # Diagramme interactif
+│   ├── project-connections-vue.html       # Diagramme interactif
 │   ├── project-details.html           # Documentation composants
 │   ├── api-reference.html             # Référence API
 │   ├── database.html                  # Schéma PostgreSQL
@@ -420,7 +420,7 @@ Accédez à la documentation complète via `wiki/wiki.html` :
 | Page | Description | URL |
 | ---- | ----------- | --- |
 | 🏠 **Wiki Hub** | Page d'accueil avec recherche | `wiki/wiki.html` |
-| 🔄 **Architecture** | Diagramme interactif SVG | `wiki/project-connections.html` |
+| 🔄 **Architecture** | Diagramme interactif SVG | `wiki/project-connections-vue.html` |
 | 📋 **Composants** | Documentation détaillée | `wiki/project-details.html` |
 | 📁 **API** | Référence complète REST | `wiki/api-reference.html` |
 | 🗄️ **Database** | Schéma PostgreSQL | `wiki/database.html` |
@@ -442,6 +442,63 @@ Accédez à la documentation complète via `wiki/wiki.html` :
 - ✅ **Responsive** : Adapté mobile/tablette/desktop
 - ✅ **Raccourcis clavier** : Ctrl/Cmd+K pour focus recherche
 - ✅ **CSS externe** : wiki-styles.css pour maintenance facilitée
+
+## 📊 Diagrammes d'Architecture Interactifs
+
+### Nouveau : Architecture Vue.js 2026
+
+**📄 `wiki/project-connections-vue.html`** - Diagramme complet de la migration Vue.js
+
+Visualisez l'architecture complète du frontend Vue.js 3 avec:
+- ⚡ **Vue.js Core** : main.js, App.vue, Vue Router, Pinia
+- 📄 **5 Pages Vue** : Home, Products, ProductDetail, TopOfMonth, TrendPage
+- 🧩 **8 Composants** : Header, Footer, ProductCard, LoadingSpinner, ErrorMessage, PageTransition
+- 🗄️ **Stores & Composables** : routerStore, useTrendData
+- 🔗 **Connexions Frontend → Backend** : API Express intégrée
+
+**Ouverture rapide**:
+```powershell
+# Windows PowerShell
+.\open-architecture-vue.ps1
+
+# Ou manuellement
+cd wiki
+start project-connections-vue.html
+```
+
+**Fonctionnalités interactives**:
+- 🖱️ **Hover** - Affiche connexions entrantes (vert) et sortantes (violet)
+- 🖱️ **Click** - Verrouille la vue sur un composant
+- 📊 **Filtre "Vue.js"** - Focus sur l'architecture frontend
+- 🔢 **Badges** - Nombre de connexions par composant
+- 💬 **Tooltips** - Description détaillée au survol
+- 📈 **Compteur temps réel** - Connexions actives
+
+**Couleurs Vue.js**:
+- 🟢 Vert/Turquoise → Vue.js Core
+- 🔵 Bleu ciel → Vue Pages
+- 🟣 Violet → Vue Components
+- 🟠 Orange → Stores & Composables
+
+### Architecture Backend Modulaire
+
+**📄 `wiki/project-connections-vue.html`** - Diagramme de l'architecture backend
+
+Architecture backend Express refactorisée:
+- ⚙️ **8 modules routes** modulaires
+- 🗄️ **PostgreSQL** avec 7 tables
+- 📜 **51 scripts** organisés en 4 dossiers
+- ✅ **15 tests Jest** automatisés
+- 🔧 **Configuration centralisée** (database.js)
+
+**Documentation complète**: Voir `ARCHITECTURE-VUE-INTERACTIVE.md`
+
+### Comparaison des Diagrammes
+
+| Diagramme | Focus | Nœuds | Connexions | Taille |
+|-----------|-------|-------|------------|--------|
+| **project-connections-vue.html** | Backend Express | ~30 | ~25 | 45 KB |
+| **project-connections-vue.html** | Vue.js + Backend | ~45 | ~60 | 54 KB |
 
 ## 🌐 API
 

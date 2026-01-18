@@ -113,6 +113,7 @@
                 <div class="tags">
                   <span v-for="tag in parseTags(news.tags)" :key="tag" class="tag">{{ tag }}</span>
                 </div>
+                <a v-if="news.lien" :href="'/' + news.lien" class="read-more">➜ Lire la suite</a>
               </div>
             </article>
           </div>

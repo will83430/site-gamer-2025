@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
@@ -5,6 +6,18 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+
+  // Configuration Vitest
+  test: {
+    globals: true,
+    environment: 'happy-dom',
+    include: ['frontend/src/**/*.{test,spec}.{js,ts,vue}'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
+    },
+  },
 
   // Configuration du dossier public
   publicDir: 'frontend/public',

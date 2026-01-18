@@ -6,6 +6,7 @@ const Products = () => import('@views/Products.vue');
 const ProductDetail = () => import('@views/ProductDetail.vue');
 const TopOfMonth = () => import('@views/TopOfMonth.vue');
 const TrendPage = () => import('@views/TrendPage.vue');
+const AdminDashboard = () => import('@views/AdminDashboard.vue');
 
 const router = createRouter({
   history: createWebHistory(),
@@ -58,7 +59,14 @@ const router = createRouter({
         title: 'Tendances - Site Gamer 2025',
       },
     },
-    // Les autres routes seront ajoutées progressivement
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminDashboard,
+      meta: {
+        title: '🎯 Centre d\'Administration - Site Gamer 2025',
+      },
+    },
   ],
 });
 

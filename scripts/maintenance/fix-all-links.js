@@ -142,8 +142,8 @@ function fixAllLinks() {
                     'href="project-details.html"'
                 );
                 content = content.replace(
-                    'href="../project-connections.html"',
-                    'href="project-connections.html"'
+                    'href="../project-connections-vue.html"',
+                    'href="project-connections-vue.html"'
                 );
                 content = content.replace(
                     'href="index.html"',
