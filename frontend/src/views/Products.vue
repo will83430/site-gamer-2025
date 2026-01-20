@@ -372,4 +372,81 @@ watch(() => route.query.categorie, () => {
   color: #666;
   font-size: 1.1em;
 }
+
+/* Grille des catégories */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.categorie-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  background: linear-gradient(145deg, rgba(30, 30, 50, 0.9), rgba(20, 20, 40, 0.95));
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  border-radius: 16px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.categorie-card:hover {
+  transform: translateY(-8px);
+  border-color: #667eea;
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(145deg, rgba(40, 40, 70, 0.95), rgba(30, 30, 55, 0.98));
+}
+
+.categorie-icon {
+  font-size: 3em;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.categorie-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.3em;
+  color: #fff;
+  text-align: center;
+}
+
+.categorie-card p {
+  margin: 0;
+  font-size: 0.95em;
+  color: #667eea;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 15px;
+  }
+
+  .categorie-card {
+    padding: 20px 15px;
+  }
+
+  .categorie-icon {
+    font-size: 2.2em;
+  }
+
+  .categorie-card h3 {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

@@ -9,6 +9,7 @@
     <router-link v-else to="/" class="lien-entete">
       Accueil
     </router-link>
+
   </div>
 </template>
 

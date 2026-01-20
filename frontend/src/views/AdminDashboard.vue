@@ -357,7 +357,10 @@ onMounted(() => {
   color: #666;
   font-size: 1.2rem;
   font-weight: 400;
-  margin: 0;
+  margin: 0 auto;
+  text-align: center !important;
+  width: 100%;
+  display: block;
 }
 
 .admin-container {

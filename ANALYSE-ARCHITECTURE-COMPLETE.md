@@ -1,13 +1,13 @@
 # 📊 ANALYSE COMPLÈTE DE L'ARCHITECTURE - Site Gamer 2025
 
-**Date**: 2026-01-15
-**Version**: 1.4
-**Analysé par**: Claude Sonnet 4.5
-**Dernière mise à jour**: 2026-01-15 (Migration Vue.js Phase D - Composants finalisés)
+**Date**: 2026-01-20
+**Version**: 2.5
+**Analysé par**: Claude Opus 4.5
+**Dernière mise à jour**: 2026-01-20 (Migration Vue.js Phase D - Comparateur produits + Corrections serveur)
 
 ---
 
-## 🎯 MIGRATION VUE.JS - PHASE D TERMINÉE (2026-01-15)
+## 🎯 MIGRATION VUE.JS - PHASE D TERMINÉE (2026-01-20)
 
 ### ✅ Composants Vue.js finalisés
 
@@ -17,6 +17,7 @@
 3. ✅ **Products.vue** - Grille catégories + produits filtrés + comparaison
 4. ✅ **ProductDetail.vue** - Fiche produit détaillée avec sections dynamiques
 5. ✅ **TrendPage.vue** - Page tendances (actualités, technologies, marché, prédictions)
+6. ✅ **Compare.vue** - Comparateur de produits avec design néon (NOUVEAU)
 
 **Composants réutilisables** :
 - ✅ **AppHeader.vue** - En-tête adaptatif (lien "Top du Mois" ou "Accueil")
@@ -24,6 +25,11 @@
 - ✅ **ProductCard.vue** - Carte produit avec checkbox comparaison
 - ✅ **LoadingSpinner.vue** - Spinner de chargement
 - ✅ **ErrorMessage.vue** - Composant d'erreur avec retry
+- ✅ **CompareButton.vue** - Bouton comparaison pour produits (NOUVEAU)
+- ✅ **CompareTable.vue** - Tableau comparatif des specs (NOUVEAU)
+
+**Stores Pinia** :
+- ✅ **compareStore.js** - Gestion état comparaison (max 4 produits, pas de persistance localStorage)
 
 **Routing Vue Router** :
 - `/` → Home
@@ -31,6 +37,7 @@
 - `/produits?categorie=XXX` → Products (avec filtrage)
 - `/produit/:id` → ProductDetail
 - `/tendances/:categorie` → TrendPage
+- `/comparatif` → Compare (NOUVEAU)
 
 **Corrections importantes Phase D** :
 
@@ -73,6 +80,50 @@
 - ✅ Styles CSS originaux préservés
 - ✅ Comparaison produits opérationnelle
 - ✅ Page tendances complète (4 sections)
+
+---
+
+## 🛠️ CORRECTIONS SERVEUR EXPRESS (2026-01-20)
+
+### ✅ Validation API corrigée
+
+**backend/middleware/validators.js** :
+- ✅ **Fix prix** - Limite augmentée de 50 à 255 caractères (certains prix avec abonnements dépassaient 50 chars)
+- ✅ **Fix donnees_fiche** - Accepte tableau OU objet JSON (au lieu d'objet seulement)
+- ✅ **Logs debug** - Messages détaillés pour le debugging des validations
+
+### ✅ Configuration serveur
+
+**server.js** :
+- ✅ **CSP désactivée en dev** - Plus de blocages de ressources en développement (`helmet({ contentSecurityPolicy: false })`)
+- ✅ **Priorité fichiers statiques** - frontend/public servi avant la racine
+- ✅ **Fix index.html** - Suppression de `express.static(__dirname)` pour éviter de servir le mauvais index.html Vue.js
+
+### ✅ Design comparateur gaming
+
+**Compare.vue** - Design néon rose/violet :
+```css
+.compare-img {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.15));
+  border: 2px solid rgba(240, 147, 251, 0.3);
+  box-shadow: 0 0 20px rgba(240, 147, 251, 0.15), inset 0 0 30px rgba(102, 126, 234, 0.1);
+}
+```
+
+### ✅ UI épurée
+
+- ✅ **Suppression boutons flottants** - CompareFloatingButton et CompareModal retirés d'App.vue
+- ✅ **Bouton header retiré** - Bouton comparateur supprimé de AppHeader.vue
+- ✅ **Bouton top-du-mois** - Lien comparateur avec style gradient "Top Janvier 2026"
+- ✅ **Produits centrés** - Flexbox avec `justify-content: center`
+- ✅ **Cartes agrandies** - 200px min-width, 120px image height
+
+### Configuration développement
+
+| Port | Service | Pages disponibles |
+|------|---------|-------------------|
+| **5173** | Vite (Vue.js) | /comparatif, /admin, /produits, /top-du-mois, /tendances/* |
+| **3000** | Express | Pages HTML statiques (index.html, top-du-mois.html) + API REST |
 
 ---
 

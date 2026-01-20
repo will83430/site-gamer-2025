@@ -7,6 +7,7 @@ const ProductDetail = () => import('@views/ProductDetail.vue');
 const TopOfMonth = () => import('@views/TopOfMonth.vue');
 const TrendPage = () => import('@views/TrendPage.vue');
 const AdminDashboard = () => import('@views/AdminDashboard.vue');
+const Compare = () => import('@views/Compare.vue');
 
 const router = createRouter({
   history: createWebHistory(),
@@ -65,6 +66,14 @@ const router = createRouter({
       component: AdminDashboard,
       meta: {
         title: '🎯 Centre d\'Administration - Site Gamer 2025',
+      },
+    },
+    {
+      path: '/comparatif',
+      name: 'compare',
+      component: Compare,
+      meta: {
+        title: 'Comparatif Produits - Site Gamer 2025',
       },
     },
   ],

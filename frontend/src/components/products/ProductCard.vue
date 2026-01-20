@@ -17,7 +17,8 @@
       class="produit-checkbox"
       :data-id="product.id"
       :data-nom="product.nom"
-      @change="$emit('compare-toggle', { id: product.id, nom: product.nom, checked: $event.target.checked })"
+      :checked="compareStore.isInCompare(product.id)"
+      @change="handleCompareToggle"
     >
 
     <!-- Image du produit -->
@@ -61,6 +62,7 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useCompareStore } from '@/stores/compareStore';
 
 const props = defineProps({
   product: {
@@ -73,8 +75,16 @@ const props = defineProps({
   }
 });
 
+// Store de comparaison
+const compareStore = useCompareStore();
+
 // Déclaration des événements émis
 defineEmits(['compare-toggle']);
+
+// Gestion du toggle de comparaison
+function handleCompareToggle() {
+  compareStore.toggleCompare(props.product);
+}
 
 // URL de l'image (logique identique à fiches.js)
 const imageUrl = computed(() => {

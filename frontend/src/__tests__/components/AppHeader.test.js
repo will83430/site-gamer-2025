@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createRouter, createWebHistory } from 'vue-router';
+import { createPinia, setActivePinia } from 'pinia';
 import AppHeader from '@/components/layout/AppHeader.vue';
 
 // Mock router
@@ -10,14 +11,20 @@ const router = createRouter({
     { path: '/', name: 'home', component: { template: '<div>Home</div>' } },
     { path: '/top-du-mois', name: 'top-of-month', component: { template: '<div>Top</div>' } },
     { path: '/produits', name: 'products', component: { template: '<div>Products</div>' } },
+    { path: '/comparatif', name: 'compare', component: { template: '<div>Compare</div>' } },
   ]
 });
 
 describe('AppHeader', () => {
+  // Initialiser Pinia avant chaque test
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
   it('renders header element', () => {
     const wrapper = mount(AppHeader, {
       global: {
-        plugins: [router]
+        plugins: [router, createPinia()]
       }
     });
 
@@ -27,7 +34,7 @@ describe('AppHeader', () => {
   it('displays logo image', () => {
     const wrapper = mount(AppHeader, {
       global: {
-        plugins: [router]
+        plugins: [router, createPinia()]
       }
     });
 
@@ -41,7 +48,7 @@ describe('AppHeader', () => {
 
     const wrapper = mount(AppHeader, {
       global: {
-        plugins: [router]
+        plugins: [router, createPinia()]
       }
     });
 
@@ -54,7 +61,7 @@ describe('AppHeader', () => {
 
     const wrapper = mount(AppHeader, {
       global: {
-        plugins: [router]
+        plugins: [router, createPinia()]
       }
     });
 
@@ -67,7 +74,7 @@ describe('AppHeader', () => {
 
     const wrapper = mount(AppHeader, {
       global: {
-        plugins: [router]
+        plugins: [router, createPinia()]
       }
     });
 

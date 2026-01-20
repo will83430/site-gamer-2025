@@ -4,6 +4,36 @@ Un site web moderne de comparaison et gestion de produits gaming avec interface 
 
 ## 📈 Dernières Mises à Jour
 
+### 🎉 Version 2.5.0 - 20 Janvier 2026
+
+#### 🛒 Comparateur Produits Vue.js + Corrections Serveur
+
+**Nouveau Comparateur Vue.js** :
+- ✅ **Compare.vue** - Page de comparaison complète avec design néon rose/violet gaming
+- ✅ **compareStore.js** - Store Pinia pour gestion d'état (max 4 produits)
+- ✅ **Design gaming** - Cartes avec effet glow néon, fond sombre, produits centrés
+- ✅ **Filtrage catégorie** - Comparaison uniquement dans la même catégorie
+- ✅ **Pas de persistance** - Liste vidée à chaque nouvelle visite
+- ✅ **11 tests unitaires** - Couverture complète du store
+
+**Corrections Serveur Express** :
+- ✅ **CSP désactivée en dev** - Plus de blocages de ressources en développement
+- ✅ **Priorité fichiers statiques** - frontend/public servi avant la racine
+- ✅ **Fix validation prix** - Limite augmentée à 255 caractères
+- ✅ **Fix validation donnees_fiche** - Accepte tableau ou objet JSON
+- ✅ **Logs debug validation** - Messages détaillés pour debugging
+
+**Améliorations UI** :
+- ✅ **Bouton comparateur** - Style "Top Janvier" dans top-du-mois.html
+- ✅ **Centrage admin header** - Phrase descriptive centrée
+- ✅ **Suppression boutons flottants** - Interface épurée
+
+**Configuration développement** :
+- Port 5173 (Vite) : Pages Vue.js (/comparatif, /admin, /produits)
+- Port 3000 (Express) : Pages HTML statiques + API
+
+---
+
 ### 🎉 Version 2.4.0 - 15 Janvier 2026
 
 #### 🚀 Migration Vue.js Phase D - Interface Moderne Complétée
@@ -874,7 +904,7 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ---
 
-**Version actuelle : 2.2.0** | **Dernière mise à jour : 26 Décembre 2025**
+**Version actuelle : 2.5.0** | **Dernière mise à jour : 20 Janvier 2026**
 
 ### 🚀 Projet en Chiffres
 

@@ -398,22 +398,6 @@ async function comparerProduits() {
                     <p class="info"><strong>Prix:</strong> ${p.prix || 'N/C'}</p>
                     <p class="info"><strong>Catégorie:</strong> ${p.categorie || 'N/C'}</p>
                     <p class="info">${p.description || 'Description non disponible'}</p>
-                    ${p.top_du_mois ? `
-    <div class="vedette-badge" style="
-        position: absolute;
-        top: 10px;
-        left: 10px; /* Changé de right à left */
-        background: #c9c5aeff;
-        color: #333;
-        padding: 5px 10px;
-        border-radius: 15px;
-        font-weight: bold;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        z-index: 10;
-    ">
-        ⭐ Top du mois
-    </div>
-` : ''}
                     ${p.fonctionnalites_avancees && p.fonctionnalites_avancees.length > 0 ? `
                         <ul>
                             ${p.fonctionnalites_avancees.slice(0, 3).map(f => `<li>${f}</li>`).join('')}
