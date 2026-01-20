@@ -38,13 +38,21 @@ export default defineConfig({
     port: 5173, // Port Vite (different de Express 3000)
     middlewareMode: false,
     proxy: {
-      // Proxy vers l'API Express UNIQUEMENT
+      // Proxy vers l'API Express
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
-        rewrite: (path) => path,
       },
-      // Ne pas proxy /assets - Vite les servira depuis publicDir
+      // Proxy vers les fiches générées
+      '/fiches': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+      // Proxy vers le wiki (servi par Express)
+      '/wiki': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
     },
     // Rediriger toutes les routes vers index.html pour le SPA
     historyApiFallback: true,

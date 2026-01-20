@@ -221,8 +221,8 @@ import ErrorMessage from '@components/common/ErrorMessage.vue';
 const route = useRoute();
 const router = useRouter();
 
-// URL de l'API
-const API_URL = 'http://localhost:3000/api';
+// URL de l'API (relative - passe par le proxy Vite en dev)
+const API_URL = '/api';
 
 // État - loading=true par défaut pour éviter le layout shift
 const currentSection = ref('actualites');

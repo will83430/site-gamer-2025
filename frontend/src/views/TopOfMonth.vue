@@ -330,8 +330,8 @@ const apercuVisible = ref(false);
 const apercuContent = ref('');
 const apercuStyle = ref({});
 
-// API URL
-const API_URL = 'http://localhost:3000/api';
+// API URL (relative - passe par le proxy Vite en dev)
+const API_URL = '/api';
 
 onMounted(async () => {
   // Date du mois

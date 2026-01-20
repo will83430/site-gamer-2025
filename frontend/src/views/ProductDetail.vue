@@ -107,7 +107,7 @@ async function loadProduct() {
   error.value = null;
 
   try {
-    const response = await fetch('http://localhost:3000/api/produits');
+    const response = await fetch('/api/produits');
 
     if (!response.ok) {
       throw new Error(`Erreur ${response.status}`);

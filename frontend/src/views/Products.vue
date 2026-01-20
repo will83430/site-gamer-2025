@@ -247,8 +247,8 @@ async function loadProducts() {
 
   try {
     const url = selectedCategory.value
-      ? `http://localhost:3000/api/produits?categorie=${encodeURIComponent(selectedCategory.value)}`
-      : 'http://localhost:3000/api/produits';
+      ? `/api/produits?categorie=${encodeURIComponent(selectedCategory.value)}`
+      : '/api/produits';
 
     const response = await fetch(url);
 

@@ -66,7 +66,8 @@ import AdminStats from '@/components/admin/AdminStats.vue';
 import AdminToolCard from '@/components/admin/AdminToolCard.vue';
 import AdminQuickActions from '@/components/admin/AdminQuickActions.vue';
 
-const API_URL = 'http://localhost:3000/api';
+// URL de l'API (relative - passe par le proxy Vite en dev)
+const API_URL = '/api';
 
 // État des statistiques
 const loadingStats = ref(true);

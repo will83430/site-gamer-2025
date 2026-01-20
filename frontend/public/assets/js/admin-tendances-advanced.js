@@ -1,5 +1,6 @@
 // Admin Tendances Advanced - JavaScript complet
-const API_BASE = 'http://localhost:3000';
+// URL de l'API (relative - passe par le proxy Vite en dev)
+const API_BASE = '';
 let categories = [];
 let currentArticleId = null;
 let allArticlesCache = []; // Cache pour le tri
@@ -21,7 +22,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadCategories() {
     try {
         const response = await fetch(`${API_BASE}/api/categories`);
-        categories = await response.json();
+        const result = await response.json();
+        // L'API retourne { success: true, data: [...] }
+        categories = result.data || result;
         
         // Remplir tous les selects de catégories
         const selects = [
