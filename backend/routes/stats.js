@@ -96,4 +96,77 @@ router.get('/tendances', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/stats/homepage
+ * Stats pour la homepage (produits, catégories, tendances, visites)
+ */
+router.get('/homepage', async (req, res) => {
+  try {
+    const [produits, categories, tendances, visites] = await Promise.all([
+      pool.query('SELECT COUNT(*) as count FROM produits'),
+      pool.query('SELECT COUNT(*) as count FROM categories'),
+      pool.query(`
+        SELECT
+          (SELECT COUNT(*) FROM actualites) +
+          (SELECT COUNT(*) FROM technologies) as count
+      `),
+      pool.query('SELECT valeur FROM site_stats WHERE cle = $1', ['visites_total'])
+    ]);
+
+    res.json({
+      success: true,
+      stats: {
+        produits: parseInt(produits.rows[0]?.count || 0),
+        categories: parseInt(categories.rows[0]?.count || 16),
+        tendances: parseInt(tendances.rows[0]?.count || 0),
+        visites: parseInt(visites.rows[0]?.valeur || 0)
+      }
+    });
+  } catch (error) {
+    logger.error('Erreur stats homepage:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * POST /api/stats/visit
+ * Incrémente le compteur de visites
+ */
+router.post('/visit', async (req, res) => {
+  try {
+    // Incrémenter le compteur total
+    await pool.query(`
+      UPDATE site_stats
+      SET valeur = valeur + 1, updated_at = CURRENT_TIMESTAMP
+      WHERE cle = 'visites_total'
+    `);
+
+    // Mettre à jour la dernière visite
+    await pool.query(`
+      UPDATE site_stats
+      SET valeur = $1, updated_at = CURRENT_TIMESTAMP
+      WHERE cle = 'derniere_visite'
+    `, [Date.now()]);
+
+    const result = await pool.query(
+      'SELECT valeur FROM site_stats WHERE cle = $1',
+      ['visites_total']
+    );
+
+    res.json({
+      success: true,
+      visites: parseInt(result.rows[0]?.valeur || 0)
+    });
+  } catch (error) {
+    logger.error('Erreur incrément visite:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;

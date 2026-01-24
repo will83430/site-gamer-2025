@@ -797,32 +797,45 @@
         }
 
         /* ========================================
-           NEWS BANNER
+           NEWS BANNER / ANNOUNCEMENTS
            ======================================== */
 
-        .news-banner {
-            padding: 2rem 2rem;
+        .announcements-section {
+            padding: 1.5rem 2rem 0.5rem;
             position: relative;
             z-index: 1;
-            overflow: hidden;
             margin-top: 0.5rem;
         }
 
-        .news-content {
+        .announcements-container {
             max-width: 1800px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .announcement-card {
             background: linear-gradient(135deg, rgba(212, 255, 0, 0.08) 0%, rgba(107, 255, 107, 0.08) 100%);
             border: 1px solid rgba(212, 255, 0, 0.3);
             border-radius: 20px;
-            padding: 2rem 3rem;
+            padding: 1.5rem 2.5rem;
             display: flex;
             align-items: center;
             gap: 2rem;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
 
-        .news-content::before {
+        .announcement-card:hover {
+            border-color: rgba(212, 255, 0, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 255, 0, 0.15);
+        }
+
+        .announcement-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -833,34 +846,57 @@
             animation: newsShine 3s infinite;
         }
 
+        /* Types d'annonces */
+        .announcement-card.type-promo {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+
+        .announcement-card.type-urgent {
+            background: linear-gradient(135deg, rgba(255, 77, 166, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            border-color: rgba(255, 77, 166, 0.5);
+            animation: urgentPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes urgentPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 77, 166, 0.3); }
+            50% { box-shadow: 0 0 20px 5px rgba(255, 77, 166, 0.2); }
+        }
+
+        .announcement-card.type-nouveau {
+            background: linear-gradient(135deg, rgba(77, 212, 255, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+            border-color: rgba(77, 212, 255, 0.4);
+        }
+
         @keyframes newsShine {
             0% { left: -100%; }
             100% { left: 100%; }
         }
 
-        .news-icon {
-            font-size: 3rem;
+        .announcement-icon {
+            font-size: 2.5rem;
             filter: drop-shadow(0 0 10px rgba(212, 255, 0, 0.5));
+            flex-shrink: 0;
         }
 
-        .news-text {
+        .announcement-text {
             flex: 1;
         }
 
-        .news-title {
-            font-size: 1.5rem;
+        .announcement-title {
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--tech-yellow);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
-        .news-description {
+        .announcement-description {
             color: var(--text-secondary);
-            font-size: 1.05rem;
+            font-size: 1rem;
         }
 
-        .news-btn {
-            padding: 0.9rem 2rem;
+        .announcement-btn {
+            padding: 0.8rem 1.8rem;
             background: rgba(212, 255, 0, 0.1);
             border: 1px solid var(--tech-yellow);
             color: var(--tech-yellow);
@@ -869,12 +905,87 @@
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .news-btn:hover {
+        .announcement-btn:hover {
             background: var(--tech-yellow);
             color: var(--bg-primary);
             transform: translateX(5px);
+        }
+
+        .announcements-loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           FLOATING COMPARE BUTTON
+           ======================================== */
+
+        .compare-floating-btn {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--tech-blue) 0%, var(--tech-purple) 100%);
+            border: 2px solid rgba(77, 212, 255, 0.5);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 998;
+            box-shadow: 0 8px 25px rgba(77, 212, 255, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+
+        .compare-floating-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(77, 212, 255, 0.5);
+        }
+
+        .compare-floating-btn .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--tech-pink);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            min-width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(255, 77, 166, 0.5);
+        }
+
+        .compare-floating-btn .tooltip {
+            position: absolute;
+            right: 70px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(77, 212, 255, 0.3);
+        }
+
+        .compare-floating-btn:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* ========================================
@@ -1004,37 +1115,33 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- Stats Section - Dynamique -->
     <section class="stats-section">
         <div class="stats-grid">
             <div class="stat-item">
-                <div class="stat-number">200+</div>
+                <div class="stat-number" id="stat-produits">--</div>
                 <div class="stat-label">Produits testés</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">16</div>
+                <div class="stat-number" id="stat-categories">--</div>
                 <div class="stat-label">Catégories</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">50+</div>
-                <div class="stat-label">Analyses/mois</div>
+                <div class="stat-number" id="stat-tendances">--</div>
+                <div class="stat-label">Tendances</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">24h</div>
-                <div class="stat-label">Veille techno</div>
+                <div class="stat-number" id="stat-visites">--</div>
+                <div class="stat-label">Visites</div>
             </div>
         </div>
     </section>
 
-    <!-- News Banner -->
-    <section class="news-banner">
-        <div class="news-content">
-            <div class="news-icon">🚀</div>
-            <div class="news-text">
-                <div class="news-title">Nouveauté : Samsung Galaxy S26 Ultra disponible !</div>
-                <div class="news-description">Découvrez notre test complet du flagship avec IA révolutionnaire et photo 200MP</div>
-            </div>
-            <button class="news-btn">Lire l'article →</button>
+    <!-- Announcements / Bannières dynamiques -->
+    <section class="announcements-section" id="announcements">
+        <div class="announcements-container" id="announcementsContainer">
+            <!-- Chargement dynamique depuis /api/announcements -->
+            <div class="announcements-loading">Chargement des actualités...</div>
         </div>
     </section>
 
@@ -1294,11 +1401,20 @@
         </div>
     </footer>
 
+    <!-- Floating Compare Button -->
+    <a href="/frontend/src/views/Compare.vue" class="compare-floating-btn" id="compareBtn" title="Comparer des produits">
+        ⚖️
+        <span class="badge" id="compareBadge" style="display: none;">0</span>
+        <span class="tooltip">Comparateur</span>
+    </a>
+
     <!-- Scroll to Top -->
     <button class="scroll-top" id="scrollTop">↑</button>
 
     <script>
-        // Scroll to Top
+        // ========================================
+        // SCROLL TO TOP
+        // ========================================
         const scrollTop = document.getElementById('scrollTop');
 
         window.addEventListener('scroll', () => {
@@ -1320,6 +1436,147 @@
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ========================================
+        // DYNAMIC ANNOUNCEMENTS
+        // ========================================
+        async function loadAnnouncements() {
+            const container = document.getElementById('announcementsContainer');
+
+            try {
+                const response = await fetch('/api/announcements');
+                const data = await response.json();
+
+                if (data.success && data.announcements.length > 0) {
+                    container.innerHTML = data.announcements.map(ann => `
+                        <a href="${ann.lien || '#'}" class="announcement-card type-${ann.type || 'info'}">
+                            <div class="announcement-icon">${ann.icone || '🚀'}</div>
+                            <div class="announcement-text">
+                                <div class="announcement-title">${ann.titre}</div>
+                                ${ann.description ? `<div class="announcement-description">${ann.description}</div>` : ''}
+                            </div>
+                            <span class="announcement-btn">${ann.bouton_texte || 'En savoir plus →'}</span>
+                        </a>
+                    `).join('');
+                } else {
+                    // Pas d'annonces, afficher un message par défaut ou cacher la section
+                    container.innerHTML = `
+                        <div class="announcement-card type-info">
+                            <div class="announcement-icon">📢</div>
+                            <div class="announcement-text">
+                                <div class="announcement-title">Bienvenue sur HIGH-TECH 2026 !</div>
+                                <div class="announcement-description">Découvrez les dernières innovations technologiques</div>
+                            </div>
+                            <a href="#categories" class="announcement-btn">Explorer →</a>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erreur chargement announcements:', error);
+                // Fallback en cas d'erreur
+                container.innerHTML = `
+                    <div class="announcement-card type-nouveau">
+                        <div class="announcement-icon">🚀</div>
+                        <div class="announcement-text">
+                            <div class="announcement-title">Nouveauté : Samsung Galaxy S26 Ultra disponible !</div>
+                            <div class="announcement-description">Découvrez notre test complet du flagship avec IA révolutionnaire</div>
+                        </div>
+                        <a href="/fiches/smartphone/samsung-galaxy-s26-ultra.html" class="announcement-btn">Lire l'article →</a>
+                    </div>
+                `;
+            }
+        }
+
+        // ========================================
+        // DYNAMIC STATS + VISIT COUNTER
+        // ========================================
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats/homepage');
+                const data = await response.json();
+
+                if (data.success && data.stats) {
+                    const stats = data.stats;
+
+                    // Animation de comptage
+                    animateCounter('stat-produits', stats.produits || 0, '+');
+                    animateCounter('stat-categories', stats.categories || 16);
+                    animateCounter('stat-tendances', stats.tendances || 0, '+');
+                    animateCounter('stat-visites', stats.visites || 0);
+                }
+            } catch (error) {
+                console.error('Erreur chargement stats:', error);
+                // Valeurs par défaut en cas d'erreur
+                document.getElementById('stat-produits').textContent = '200+';
+                document.getElementById('stat-categories').textContent = '16';
+                document.getElementById('stat-tendances').textContent = '50+';
+                document.getElementById('stat-visites').textContent = '0';
+            }
+        }
+
+        // Animation de comptage fluide
+        function animateCounter(elementId, targetValue, suffix = '') {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            const duration = 1500; // 1.5 secondes
+            const steps = 60;
+            const stepDuration = duration / steps;
+            let currentValue = 0;
+            const increment = targetValue / steps;
+
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= targetValue) {
+                    element.textContent = targetValue + suffix;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(currentValue) + suffix;
+                }
+            }, stepDuration);
+        }
+
+        // Incrémenter le compteur de visites
+        async function incrementVisit() {
+            try {
+                await fetch('/api/stats/visit', { method: 'POST' });
+            } catch (error) {
+                console.error('Erreur incrément visite:', error);
+            }
+        }
+
+        // ========================================
+        // COMPARE BUTTON - Badge update
+        // ========================================
+        function updateCompareBadge() {
+            const badge = document.getElementById('compareBadge');
+            const compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+
+            if (compareList.length > 0) {
+                badge.textContent = compareList.length;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Charger les données dynamiques
+            loadAnnouncements();
+            loadStats();
+            incrementVisit();
+            updateCompareBadge();
+
+            // Écouter les changements de localStorage pour le comparateur
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'compareList') {
+                    updateCompareBadge();
                 }
             });
         });
