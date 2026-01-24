@@ -17,6 +17,18 @@
         vedettes du mois 🎯
       </p>
 
+      <!-- Bouton Comparateur -->
+      <div style="text-align:center;margin:18px 0;">
+        <router-link
+          to="/comparatif"
+          style="display:inline-block;background:linear-gradient(90deg,#f093fb,#667eea);color:#fff;padding:10px 18px;border-radius:20px;font-weight:700;box-shadow:0 8px 30px rgba(102,126,234,0.18);text-decoration:none;">
+          ⚖️ Comparez vos produits favoris
+        </router-link>
+      </div>
+      <p class="intro">
+        Sélectionnez jusqu'à 4 produits et comparez leurs caractéristiques en détail
+      </p>
+
       <div class="categories-container">
         <!-- Matériel informatique -->
         <section class="category-section">

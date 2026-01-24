@@ -66,7 +66,6 @@
           :key="product.id"
           :product="product"
           from="produits"
-          @compare-toggle="handleCompareToggle"
         />
 
         <p v-if="filteredProducts.length === 0" class="no-products">
@@ -108,10 +107,10 @@
         v-if="selectedCategory"
         id="btn-comparer"
         class="btn btn-comparer"
-        :disabled="selectedProducts.length < 2"
+        :disabled="!compareStore.canCompare"
         @click="showComparison = true"
       >
-        Comparer les produits sélectionnés{{ selectedProducts.length > 0 ? ` (${selectedProducts.length})` : '' }}
+        Comparer les produits sélectionnés{{ compareStore.compareCount > 0 ? ` (${compareStore.compareCount})` : '' }}
       </button>
 
       <!-- Zone de comparaison -->
@@ -164,6 +163,7 @@ import AppFooter from '@components/layout/AppFooter.vue';
 import ProductCard from '@components/products/ProductCard.vue';
 import LoadingSpinner from '@components/common/LoadingSpinner.vue';
 import ErrorMessage from '@components/common/ErrorMessage.vue';
+import { useCompareStore } from '@/stores/compareStore';
 
 const route = useRoute();
 const router = useRouter();
@@ -172,8 +172,8 @@ const products = ref([]);
 const loading = ref(false);
 const error = ref(null);
 
-// Comparaison
-const selectedProducts = ref([]); // [{id, nom}, ...]
+// Comparaison via store Pinia
+const compareStore = useCompareStore();
 const showComparison = ref(false);
 
 // Pagination
@@ -233,11 +233,9 @@ const visiblePages = computed(() => {
   return pages;
 });
 
-// Détails des produits sélectionnés pour la comparaison
+// Détails des produits sélectionnés pour la comparaison (via store)
 const selectedProductsDetails = computed(() => {
-  return selectedProducts.value
-    .map(sp => products.value.find(p => p.id === sp.id))
-    .filter(p => p);
+  return compareStore.compareList;
 });
 
 // Charger les produits
@@ -271,22 +269,10 @@ function goBack() {
   router.push('/top-du-mois');
 }
 
-// Gestion de la comparaison
-function handleCompareToggle({ id, nom, checked }) {
-  if (checked) {
-    selectedProducts.value.push({ id, nom });
-  } else {
-    selectedProducts.value = selectedProducts.value.filter(p => p.id !== id);
-  }
-}
-
+// Gestion de la comparaison (géré par le store via ProductCard)
 function closeComparison() {
   showComparison.value = false;
-  selectedProducts.value = [];
-  // Décocher toutes les checkboxes
-  document.querySelectorAll('.produit-checkbox').forEach(cb => {
-    cb.checked = false;
-  });
+  compareStore.clearCompare();
 }
 
 // Pagination
@@ -353,7 +339,7 @@ onMounted(() => {
 
 watch(() => route.query.categorie, () => {
   currentPage.value = 1;
-  selectedProducts.value = [];
+  compareStore.clearCompare();
   showComparison.value = false;
   loadProducts();
 });
@@ -376,11 +362,12 @@ watch(() => route.query.categorie, () => {
 /* Grille des catégories */
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 60px 50px; /* vertical horizontal */
   padding: 20px;
   max-width: 1400px;
   margin: 0 auto;
+  justify-items: start;
 }
 
 .categorie-card {

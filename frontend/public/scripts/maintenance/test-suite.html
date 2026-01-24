@@ -254,6 +254,15 @@
             background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
         }
 
+        .global-btn.report {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            display: none;
+        }
+
+        .global-btn.report.show {
+            display: inline-block;
+        }
+
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -391,6 +400,7 @@
 
         <div class="global-controls">
             <button class="global-btn" onclick="runAllTests()">▶️ Lancer TOUS les tests</button>
+            <button class="global-btn report" id="globalReportBtn" onclick="showGlobalReport()">📊 Afficher rapport global</button>
             <button class="global-btn secondary" onclick="stopAllTests()">⏸️ Arrêter</button>
             <button class="global-btn secondary" onclick="clearAllResults()">🗑️ Effacer</button>
         </div>
@@ -858,11 +868,19 @@
 
         async function runAllTests() {
             isRunning = true;
+            // Cacher le bouton de rapport au début
+            document.getElementById('globalReportBtn').classList.remove('show');
+
             for (const section of ['critical', 'important', 'recommended']) {
                 if (!isRunning) break;
                 await runSection(section, false); // Ne pas gérer isRunning dans runSection
             }
             isRunning = false;
+
+            // Afficher le bouton de rapport global à la fin
+            if (Object.keys(testResults).length > 0) {
+                document.getElementById('globalReportBtn').classList.add('show');
+            }
         }
 
         function stopAllTests() {
@@ -887,6 +905,8 @@
             document.querySelectorAll('button[id^="report-btn-"]').forEach(btn => {
                 btn.disabled = true;
             });
+            // Cacher le bouton de rapport global
+            document.getElementById('globalReportBtn').classList.remove('show');
             updateStats();
         }
 
@@ -946,6 +966,130 @@ Message: ${report.message}</div>
 
         function closeReport() {
             document.getElementById('reportModal').style.display = 'none';
+        }
+
+        function showGlobalReport() {
+            const modal = document.getElementById('reportModal');
+            const title = document.getElementById('modal-test-title');
+            const content = document.getElementById('modal-report-content');
+
+            // Calculer les statistiques globales
+            const totalTests = Object.keys(testResults).length;
+            const successCount = Object.values(testResults).filter(r => r === 'success').length;
+            const errorCount = Object.values(testResults).filter(r => r === 'error').length;
+            const successRate = totalTests > 0 ? ((successCount / totalTests) * 100).toFixed(1) : 0;
+
+            // Calculer le temps total
+            const totalDuration = Object.values(testReports).reduce((sum, report) => sum + (report.duration || 0), 0);
+
+            // Obtenir la date/heure
+            const timestamp = new Date().toLocaleString('fr-FR');
+
+            title.textContent = `📊 Rapport Global des Tests - ${timestamp}`;
+
+            let html = `
+                <div class="report-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                    <h4 style="color: white;">📋 Statistiques Globales</h4>
+                    <div class="report-details" style="background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2);">
+Date: ${timestamp}
+Tests exécutés: ${totalTests}
+✅ Réussis: ${successCount} (${successRate}%)
+❌ Échoués: ${errorCount} (${(100 - successRate).toFixed(1)}%)
+⏱️ Durée totale: ${totalDuration}ms (${(totalDuration / 1000).toFixed(2)}s)</div>
+                </div>
+            `;
+
+            // Résumé par section
+            const sections = {
+                critical: '🔴 Tests Critiques (P1)',
+                important: '🟡 Tests Importants (P2)',
+                recommended: '🔵 Tests Recommandés (P3)',
+                vuejs: '🟢 Tests Vue.js'
+            };
+
+            for (const [sectionKey, sectionTitle] of Object.entries(sections)) {
+                const sectionTests = tests[sectionKey];
+                if (!sectionTests) continue;
+
+                const sectionResults = sectionTests.map(test => {
+                    const status = testResults[test.id];
+                    return {
+                        name: test.name,
+                        status: status,
+                        icon: test.icon,
+                        report: testReports[test.id]
+                    };
+                }).filter(t => t.status); // Uniquement les tests exécutés
+
+                if (sectionResults.length === 0) continue;
+
+                const sectionSuccess = sectionResults.filter(t => t.status === 'success').length;
+                const sectionTotal = sectionResults.length;
+
+                html += `
+                    <div class="report-section">
+                        <h4>${sectionTitle} (${sectionSuccess}/${sectionTotal})</h4>
+                        <div class="report-details">`;
+
+                sectionResults.forEach(test => {
+                    const statusIcon = test.status === 'success' ? '✅' : '❌';
+                    const duration = test.report?.duration ? ` (${test.report.duration}ms)` : '';
+                    html += `${statusIcon} ${test.icon} ${test.name}${duration}\n`;
+                });
+
+                html += `</div>
+                    </div>
+                `;
+            }
+
+            // Liste des erreurs si présentes
+            if (errorCount > 0) {
+                html += `
+                    <div class="report-section" style="border-left-color: #dc3545;">
+                        <h4>⚠️ Tests en Échec (${errorCount})</h4>
+                        <div class="report-details">`;
+
+                for (const [testId, status] of Object.entries(testResults)) {
+                    if (status === 'error') {
+                        const report = testReports[testId];
+                        if (report) {
+                            html += `❌ ${report.testName}: ${report.message}\n`;
+                            if (report.errors && report.errors.length > 0) {
+                                html += `   Erreurs: ${report.errors.slice(0, 2).join(', ')}\n`;
+                            }
+                        }
+                    }
+                }
+
+                html += `</div>
+                    </div>
+                `;
+            }
+
+            // Recommandations
+            html += `
+                <div class="report-section" style="background: #e8f4f8; border-left-color: #17a2b8;">
+                    <h4>💡 Recommandations</h4>
+                    <div class="report-details">`;
+
+            if (successRate >= 95) {
+                html += `✅ Excellent ! ${successRate}% de réussite\n`;
+                html += `🎉 Votre application est dans un état stable\n`;
+            } else if (successRate >= 80) {
+                html += `⚠️ Bon, mais ${errorCount} test(s) nécessitent votre attention\n`;
+                html += `🔧 Consultez les rapports individuels pour plus de détails\n`;
+            } else {
+                html += `❌ Critique ! Plusieurs tests échouent (${errorCount})\n`;
+                html += `🚨 Corrigez les erreurs avant de déployer en production\n`;
+            }
+
+            html += `\n📊 Consultez les rapports individuels pour plus de détails
+🔄 Relancez les tests après corrections</div>
+                </div>
+            `;
+
+            content.innerHTML = html;
+            modal.style.display = 'block';
         }
 
         // Fermer la modal en cliquant en dehors

@@ -1,9 +1,136 @@
 # 📊 ANALYSE COMPLÈTE DE L'ARCHITECTURE - Site Gamer 2025
 
-**Date**: 2026-01-20
-**Version**: 2.5
-**Analysé par**: Claude Opus 4.5
-**Dernière mise à jour**: 2026-01-20 (Migration Vue.js Phase D - Comparateur produits + Corrections serveur)
+**Date**: 2026-01-23
+**Version**: 2.6
+**Analysé par**: Claude Sonnet 4.5
+**Dernière mise à jour**: 2026-01-23 (Outils IA Locaux + Améliorations Tests)
+
+---
+
+## 🤖 OUTILS IA LOCAUX INSTALLÉS (2026-01-23)
+
+### ✅ Stack IA Locale Complète
+
+**Infrastructure** :
+
+- ✅ **Ollama** - Moteur IA local avec support GPU NVIDIA
+- ✅ **Open WebUI** - Interface web type ChatGPT (port 8080)
+- ✅ **Docker** - Conteneurisation d'Open WebUI
+- ✅ **3 modèles IA** téléchargés et opérationnels
+
+**Modèles Disponibles** :
+
+1. **llama3.2:latest** (2.0 GB)
+   - Modèle généraliste d'Alibaba Cloud
+   - Performance : ~60% de Claude Sonnet 4.5
+   - Quantization : Q4_K_M
+   - Context : 32768 tokens
+
+2. **qwen2.5-coder:7b** (4.7 GB)
+   - Modèle spécialisé codage (7.6B paramètres)
+   - Performance : ~70-75% pour le code
+   - Quantization : Q4_K_M
+   - Context : 32768 tokens
+
+3. **qwen-coder-fixed** (4.7 GB)
+   - Version custom avec system prompt optimisé
+   - System prompt : "You are Qwen Coder, an AI programming assistant..."
+   - Corrige le bug du prompt générique par défaut
+
+**Configuration Services** :
+
+| Service | Port | URL | Statut |
+|---------|------|-----|--------|
+| Backend Node.js | 3000 | http://localhost:3000 | ✅ Actif |
+| Frontend Vue.js | 5173 | http://localhost:5173 | ✅ Actif |
+| Open WebUI | 8080 | http://localhost:8080 | ✅ Actif |
+| Ollama API | 11434 | http://localhost:11434 | ✅ Actif |
+
+**Avantages** :
+
+- ✅ **100% gratuit** - Pas d'abonnement mensuel
+- ✅ **100% local** - Données privées, pas d'envoi en ligne
+- ✅ **Pas de limite** - Utilisation illimitée
+- ✅ **GPU accéléré** - RTX 4070 Laptop (8GB VRAM) détectée
+- ✅ **Offline capable** - Fonctionne sans internet
+
+**Commandes Utiles** :
+
+```bash
+# Lister les modèles installés
+ollama list
+
+# Lancer un modèle en CLI
+ollama run qwen-coder-fixed
+
+# Gérer le conteneur Open WebUI
+docker ps | grep open-webui
+docker logs open-webui
+docker restart open-webui
+
+# Vérifier Ollama
+systemctl status ollama
+```
+
+**Fichiers Créés** :
+
+- `/home/will/.local/share/applications/open-webui.desktop` - Lanceur d'application
+- `/tmp/Modelfile-qwen-coder` - Configuration modèle custom
+- `~/.ollama/models/` - Stockage des modèles (~7 GB total)
+
+---
+
+## 🧪 AMÉLIORATIONS SUITE DE TESTS (2026-01-23)
+
+### ✅ Nouveau Bouton Rapport Global
+
+**test-suite.html** - Ajouts :
+
+1. **Bouton "📊 Afficher rapport global"**
+   - Positionné entre "Lancer TOUS" et "Arrêter"
+   - Caché par défaut, apparaît après exécution
+   - Style gradient vert (#28a745 → #20c997)
+
+2. **Fonction `showGlobalReport()`**
+   - Calcule statistiques globales (réussis/échoués/durée)
+   - Affiche résumé par section (P1/P2/P3/Vue.js)
+   - Liste les tests en échec avec détails
+   - Recommandations basées sur le taux de réussite
+
+3. **Modal de rapport**
+   - Réutilise la modal existante
+   - Affichage structuré avec sections colorées
+   - Date/heure d'exécution
+   - Durée totale en ms et secondes
+
+**Comportement** :
+
+- ✅ S'affiche automatiquement après `runAllTests()`
+- ✅ Se cache avec le bouton "🗑️ Effacer"
+- ✅ Affiche uniquement si au moins 1 test exécuté
+
+**Contenu du Rapport** :
+
+1. **📋 Statistiques Globales** (fond violet gradient)
+   - Date/heure, tests exécutés, réussis, échoués, durée
+
+2. **🔴🟡🔵🟢 Résumé par Section**
+   - Tests Critiques (P1), Importants (P2), Recommandés (P3), Vue.js
+   - Compteur succès/total par section
+   - Liste des tests avec icône, nom, durée
+
+3. **⚠️ Tests en Échec** (si présents)
+   - Nom du test, message d'erreur
+   - Premières erreurs détaillées
+
+4. **💡 Recommandations**
+   - ≥95% : "Excellent ! Application stable"
+   - ≥80% : "Bon, mais X tests à corriger"
+   - <80% : "Critique ! Corrigez avant déploiement"
+
+**Fichiers Modifiés** :
+
+- `frontend/public/scripts/maintenance/test-suite.html` (lignes 257-264, 394, 859-874, 880-893, 951-1073)
 
 ---
 
