@@ -3,9 +3,13 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/database');
 
-// Helper pour récupérer l'id catégorie
+// Helper pour récupérer l'id catégorie (cherche par nom qui est en format slug)
 async function getCategoryId(nom) {
-  const { rows } = await pool.query('SELECT id FROM categories WHERE LOWER(nom) = $1', [nom.toLowerCase()]);
+  const nomLower = nom.toLowerCase();
+  const { rows } = await pool.query(
+    'SELECT id FROM categories WHERE LOWER(nom) = $1',
+    [nomLower]
+  );
   if (rows.length === 0) {
     console.warn(`[WARN] Catégorie non trouvée : ${nom}`);
     return null;

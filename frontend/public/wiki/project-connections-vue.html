@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Vue.js 3 - Site Gamer 2025</title>
+    <link rel="stylesheet" href="architecture-flow-modular.css">
+    <style>
+        /* Améliorations visuelles pour les connexions */
+        .connection-line {
+            stroke: #cbd5e0;
+            stroke-width: 2px;
+            fill: none;
+            transition: all 0.3s ease;
+            opacity: 0.4;
+        }
+        
+        .connection-line.dimmed {
+            opacity: 0.05;
+        }
+        
+        .connection-line.active {
+            stroke: #667eea;
+            stroke-width: 4px;
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.6));
+        }
+        
+        .connection-line.incoming {
+            stroke: #48bb78;
+            stroke-width: 4px;
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 8px rgba(72, 187, 120, 0.6));
+        }
+        
+        .connection-arrow {
+            fill: #cbd5e0;
+            transition: all 0.3s ease;
+            opacity: 0.4;
+        }
+        
+        .connection-arrow.dimmed {
+            opacity: 0.05;
+        }
+        
+        .connection-arrow.active {
+            fill: #667eea;
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 4px rgba(102, 126, 234, 0.8));
+        }
+        
+        .connection-arrow.incoming {
+            fill: #48bb78;
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 4px rgba(72, 187, 120, 0.8));
+        }
+        
+        /* Amélioration des nœuds au survol */
+        .node {
+            transition: all 0.3s ease;
+            position: relative;
+            opacity: 1;
+        }
+        
+        .node.dimmed {
+            opacity: 0.15;
+            filter: grayscale(50%);
+            transform: scale(0.95);
+        }
+        
+        .node.active {
+            transform: scale(1.08);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            border-color: #667eea !important;
+            z-index: 100;
+            opacity: 1 !important;
+        }
+        
+        .node.connected-target {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.35);
+            border-color: #667eea !important;
+            border-width: 3px;
+            opacity: 1 !important;
+        }
+        
+        .node.connected-source {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(72, 187, 120, 0.35);
+            border-color: #48bb78 !important;
+            border-width: 3px;
+            opacity: 1 !important;
+        }
+        
+        .node.locked {
+            border: 3px solid #f59e0b !important;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+        
+        /* Badge indicateur de connexions */
+        .connection-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .node:hover .connection-badge {
+            opacity: 1;
+        }
+        
+        /* Tooltip pour afficher les connexions */
+        .node-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .node:hover .node-tooltip {
+            opacity: 1;
+        }
+        
+        .node-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        /* Légende des connexions */
+        .connection-legend {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .connection-legend.show {
+            display: block;
+        }
+        
+        .connection-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .connection-legend-line {
+            width: 30px;
+            height: 3px;
+            border-radius: 2px;
+        }
+        
+        /* Pulse animation pour le nœud actif */
+        @keyframes pulse-node {
+            0%, 100% {
+                box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 40px rgba(102, 126, 234, 0.7);
+            }
+        }
+        
+        .node.active {
+            animation: pulse-node 1.5s infinite;
+        }
+        
+        /* Indicateur de direction des connexions */
+        .flow-direction {
+            position: absolute;
+            font-size: 12px;
+            color: #667eea;
+            font-weight: bold;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .node.active ~ .flow-direction,
+        .node:hover ~ .flow-direction {
+            opacity: 1;
+        }
+        
+        /* Compteur de connexions */
+        .connections-count {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .connections-count.show {
+            opacity: 1;
+        }
+        
+        .count-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .count-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        /* Highlight des colonnes entières */
+        .flow-column.highlight {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px;
+            padding: 10px;
+            margin: -10px;
+        }
+
+        /* Styles pour le bouton Vue.js */
+        .btn-vue {
+            background: linear-gradient(135deg, #42b883, #35495e);
+            color: white;
+        }
+
+        .btn-vue:hover {
+            background: linear-gradient(135deg, #35a372, #2c3e50);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 184, 131, 0.3);
+        }
+
+        .btn-vue.active {
+            background: linear-gradient(135deg, #35a372, #2c3e50);
+            box-shadow: 0 6px 20px rgba(66, 184, 131, 0.4);
+        }
+
+        /* Animation pulse pour les badges NEW */
+        @keyframes pulse-new {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        .node-badge {
+            animation: pulse-new 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Architecture Vue.js 3 - Site Gamer 2025</h1>
+            <p>Migration Vue.js 3 + Vite + Pinia - Architecture Moderne SPA</p>
+
+            <!-- Migration Status Section -->
+            <div style="background: linear-gradient(135deg, #42b883, #35495e); color: white; padding: 15px 20px; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 10px 0; font-size: 16px;">📋 Migration Status - Vue.js 3</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">✅</span>
+                        <div>
+                            <strong>Phase A:</strong> Setup Vue.js
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">✅</span>
+                        <div>
+                            <strong>Phase B:</strong> Composants de base
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">✅</span>
+                        <div>
+                            <strong>Phase C:</strong> Pages principales
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">✅</span>
+                        <div>
+                            <strong>Phase D:</strong> TrendPage + corrections
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics">
+                <div class="metric">⚡ <strong>Vue 3</strong> Composition API</div>
+                <div class="metric">📄 <strong>5</strong> pages Vue</div>
+                <div class="metric">🧩 <strong>5</strong> composants réutilisables</div>
+                <div class="metric">🚀 <strong>Vite</strong> dev server</div>
+                <div class="metric">🛣️ <strong>Vue Router</strong> 5 routes</div>
+            </div>
+        </header>
+        
+        <div class="controls">
+            <button class="btn btn-all active" onclick="filterLayer('all')">Tout afficher</button>
+            <button class="btn btn-vue" onclick="filterLayer('vue')">Vue.js</button>
+            <button class="btn btn-frontend" onclick="filterLayer('frontend')">Frontend</button>
+            <button class="btn btn-config" onclick="filterLayer('config')">Config</button>
+            <button class="btn btn-routes" onclick="filterLayer('routes')">Routes</button>
+            <button class="btn btn-database" onclick="filterLayer('database')">Database</button>
+            <button class="btn btn-scripts" onclick="filterLayer('scripts')">Scripts</button>
+            <button class="btn btn-tests" onclick="filterLayer('tests')">Tests</button>
+        </div>
+        
+        <!-- Compteur de connexions -->
+        <div class="connections-count" id="connectionsCount">
+            <div class="count-label">Connexions actives</div>
+            <div class="count-value">
+                <span id="outgoingCount">0</span> → | ← <span id="incomingCount">0</span>
+            </div>
+            <div style="font-size: 11px; margin-top: 8px; opacity: 0.8; text-align: center;">
+                🔒 Cliquez pour verrouiller
+            </div>
+        </div>
+        
+        <!-- Légende des connexions -->
+        <div class="connection-legend" id="connectionLegend">
+            <h4 style="margin-bottom: 10px; color: #667eea;">Légende des connexions</h4>
+            <div class="connection-legend-item">
+                <div class="connection-legend-line" style="background: #667eea;"></div>
+                <span>Connexions sortantes (→)</span>
+            </div>
+            <div class="connection-legend-item">
+                <div class="connection-legend-line" style="background: #48bb78;"></div>
+                <span>Connexions entrantes (←)</span>
+            </div>
+            <div class="connection-legend-item">
+                <div class="connection-legend-line" style="background: #cbd5e0;"></div>
+                <span>Connexions inactives</span>
+            </div>
+        </div>
+        
+        <div class="flow-container">
+            <svg class="connections-svg" id="connectionsSvg"></svg>
+
+            <!-- Vue.js Core Column -->
+            <div class="flow-column layer-vue layer-all">
+                <div class="column-title" style="background: linear-gradient(135deg, #42b883, #35495e); color: white;">
+                    ⚡ Vue.js Core
+                </div>
+
+                <div class="node" id="mainJS" data-connects="appVue,routerNode,piniaNode" style="background: linear-gradient(135deg, #42d392, #42b883); color: white; border: 3px solid #35495e;">
+                    <div class="node-tooltip">Point d'entrée Vue.js</div>
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">🚀 main.js</div>
+                    <div class="node-desc">Bootstrap Vue app</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+
+                <div class="node" id="appVue" data-connects="headerComp,footerComp,routerViewNode" style="background: linear-gradient(135deg, #42d392, #42b883); color: white;">
+                    <div class="node-tooltip">Composant racine + Layout</div>
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">📱 App.vue</div>
+                    <div class="node-desc">Root component</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+
+                <div class="node" id="routerNode" data-connects="homeView,productsView,productDetailView,topView,trendView" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+                    <div class="node-tooltip">Vue Router v4</div>
+                    <div class="connection-badge">5</div>
+                    <div class="node-title">🛣️ router/index.js</div>
+                    <div class="node-desc">5 routes + lazy loading</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+
+                <div class="node" id="piniaNode" data-connects="routerStore" style="background: linear-gradient(135deg, #f0db4f, #f39c12); color: #333;">
+                    <div class="node-tooltip">State management</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">🗄️ Pinia</div>
+                    <div class="node-desc">State management</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+
+                <div class="node" id="routerViewNode" data-connects="homeView,productsView,productDetailView,topView,trendView" style="background: linear-gradient(135deg, #a8e6cf, #3eecac); color: #333;">
+                    <div class="node-tooltip">Dynamic route rendering</div>
+                    <div class="connection-badge">5</div>
+                    <div class="node-title">📺 router-view</div>
+                    <div class="node-desc">Dynamic pages</div>
+                </div>
+            </div>
+
+            <!-- Vue Pages Column -->
+            <div class="flow-column layer-vue layer-all">
+                <div class="column-title" style="background: linear-gradient(135deg, #4fc3f7, #0288d1); color: white;">
+                    📄 Vue Pages
+                </div>
+
+                <div class="node" id="homeView" data-connects="productCard,loadingSpinner,serverNode" style="background: linear-gradient(135deg, #81d4fa, #4fc3f7); color: #333;">
+                    <div class="node-tooltip">Page d'accueil avec liste produits</div>
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">🏠 Home.vue</div>
+                    <div class="node-desc">Page d'accueil</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+
+                <div class="node" id="productsView" data-connects="productCard,loadingSpinner,serverNode" style="background: linear-gradient(135deg, #81d4fa, #4fc3f7); color: #333;">
+                    <div class="node-tooltip">Liste tous les produits</div>
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">📦 Products.vue</div>
+                    <div class="node-desc">Tous les produits</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+
+                <div class="node" id="productDetailView" data-connects="loadingSpinner,errorMessage,serverNode" style="background: linear-gradient(135deg, #81d4fa, #4fc3f7); color: #333;">
+                    <div class="node-tooltip">Détail d'un produit</div>
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">🔍 ProductDetail.vue</div>
+                    <div class="node-desc">Détail produit</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+
+                <div class="node" id="topView" data-connects="productCard,loadingSpinner,serverNode" style="background: linear-gradient(135deg, #81d4fa, #4fc3f7); color: #333;">
+                    <div class="node-tooltip">Top du mois</div>
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">🔥 TopOfMonth.vue</div>
+                    <div class="node-desc">Top produits</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+
+                <div class="node" id="trendView" data-connects="loadingSpinner,errorMessage,trendComposable,serverNode" style="background: linear-gradient(135deg, #81d4fa, #4fc3f7); color: #333;">
+                    <div class="node-tooltip">Page tendances tech</div>
+                    <div class="connection-badge">4</div>
+                    <div class="node-title">📰 TrendPage.vue</div>
+                    <div class="node-desc">Tendances tech</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+            </div>
+
+            <!-- Vue Components Column -->
+            <div class="flow-column layer-vue layer-all">
+                <div class="column-title" style="background: linear-gradient(135deg, #ba68c8, #9c27b0); color: white;">
+                    🧩 Vue Components
+                </div>
+
+                <div class="node" id="headerComp" style="background: linear-gradient(135deg, #ce93d8, #ba68c8); color: white;">
+                    <div class="node-tooltip">Header global</div>
+                    <div class="node-title">🎯 AppHeader.vue</div>
+                    <div class="node-desc">Navigation</div>
+                    <div class="node-badge">Layout</div>
+                </div>
+
+                <div class="node" id="footerComp" style="background: linear-gradient(135deg, #ce93d8, #ba68c8); color: white;">
+                    <div class="node-tooltip">Footer global</div>
+                    <div class="node-title">📍 AppFooter.vue</div>
+                    <div class="node-desc">Footer</div>
+                    <div class="node-badge">Layout</div>
+                </div>
+
+                <div class="node" id="productCard" style="background: linear-gradient(135deg, #ce93d8, #ba68c8); color: white;">
+                    <div class="node-tooltip">Carte produit réutilisable</div>
+                    <div class="node-title">🃏 ProductCard.vue</div>
+                    <div class="node-desc">Carte produit</div>
+                    <div class="node-badge">Reusable</div>
+                </div>
+
+                <div class="node" id="loadingSpinner" style="background: linear-gradient(135deg, #ce93d8, #ba68c8); color: white;">
+                    <div class="node-tooltip">Spinner de chargement</div>
+                    <div class="node-title">⏳ LoadingSpinner.vue</div>
+                    <div class="node-desc">Loading state</div>
+                    <div class="node-badge">Common</div>
+                </div>
+
+                <div class="node" id="errorMessage" style="background: linear-gradient(135deg, #ce93d8, #ba68c8); color: white;">
+                    <div class="node-tooltip">Message d'erreur</div>
+                    <div class="node-title">❌ ErrorMessage.vue</div>
+                    <div class="node-desc">Error state</div>
+                    <div class="node-badge">Common</div>
+                </div>
+
+                <div class="node" id="pageTransition" style="background: linear-gradient(135deg, #ce93d8, #ba68c8); color: white;">
+                    <div class="node-tooltip">Transitions de page</div>
+                    <div class="node-title">✨ PageTransition.vue</div>
+                    <div class="node-desc">Animations</div>
+                    <div class="node-badge">Common</div>
+                </div>
+            </div>
+
+            <!-- Stores & Composables Column -->
+            <div class="flow-column layer-vue layer-all">
+                <div class="column-title" style="background: linear-gradient(135deg, #ff8a65, #ff5722); color: white;">
+                    🗄️ Stores & Logic
+                </div>
+
+                <div class="node" id="routerStore" data-connects="routerNode" style="background: linear-gradient(135deg, #ffab91, #ff8a65); color: #333;">
+                    <div class="node-tooltip">Store de navigation</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">📦 routerStore.js</div>
+                    <div class="node-desc">Loading state global</div>
+                    <div class="node-badge">Pinia</div>
+                </div>
+
+                <div class="node" id="trendComposable" data-connects="serverNode" style="background: linear-gradient(135deg, #ffab91, #ff8a65); color: #333;">
+                    <div class="node-tooltip">Logique réutilisable tendances</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">🔧 useTrendData.js</div>
+                    <div class="node-desc">Fetch trends logic</div>
+                    <div class="node-badge">Composable</div>
+                </div>
+            </div>
+            
+            <!-- Server Column -->
+            <div class="flow-column layer-config layer-routes layer-all">
+                <div class="column-title" style="background: linear-gradient(135deg, #34495e, #2c3e50); color: white;">
+                    ⚙️ server.js
+                </div>
+                
+                <div class="node" id="serverNode" data-connects="configNode,routesProduits,routesFiches,routesTendances,routesContent,routesTech,routesMarche,routesInsights,routesPred" style="background: linear-gradient(135deg, #FFE0B2, #FFB74D); color: #333; border: 3px solid #F57C00;">
+                    <div class="node-tooltip">Connecte 9 modules + config</div>
+                    <div class="connection-badge">9</div>
+                    <div class="node-title">🚀 Express App</div>
+                    <div class="node-desc">260 lignes (-59%)</div>
+                    <div class="node-badge">Refactorisé</div>
+                </div>
+            </div>
+            
+            <!-- Config Column -->
+            <div class="flow-column layer-config layer-all">
+                <div class="column-title config-title">⚡ Configuration</div>
+                
+                <div class="node node-config" id="configNode" data-connects="envNode,dbNode">
+                    <div class="node-tooltip">Pool PostgreSQL centralisé</div>
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">🔧 database.js</div>
+                    <div class="node-desc">Pool PostgreSQL centralisé</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+                
+                <div class="node node-env" id="envNode">
+                    <div class="node-tooltip">Variables d'environnement</div>
+                    <div class="node-title">🔐 .env</div>
+                    <div class="node-desc">Credentials (gitignored)</div>
+                    <div class="node-badge">NEW</div>
+                </div>
+            </div>
+            
+            <!-- Routes Column -->
+            <div class="flow-column layer-routes layer-all">
+                <div class="column-title routes-title">🛣️ Routes Modules</div>
+                
+                <div class="node node-module" id="routesProduits" data-connects="configNode,tableProduits">
+                    <div class="node-tooltip">CRUD produits → DB</div>
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">📦 produits.js</div>
+                    <div class="node-desc">CRUD produits (5 routes)</div>
+                </div>
+                
+                <div class="node node-module" id="routesFiches" data-connects="configNode,utilsNode,tableProduits">
+                    <div class="node-tooltip">Génération fiches HTML</div>
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">📝 fiches.js</div>
+                    <div class="node-desc">Génération HTML (3 routes)</div>
+                </div>
+                
+                <div class="node node-module" id="routesTendances" data-connects="configNode,tableActualites">
+                    <div class="node-tooltip">CRUD actualités + alias</div>
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">📰 tendances.js</div>
+                    <div class="node-desc">CRUD actualités</div>
+                    <div class="node-badge">+alias</div>
+                </div>
+                
+                <div class="node node-module" id="routesContent" data-connects="configNode,tableActualites,tableTech,tableMarche,tableInsights,tablePred">
+                    <div class="node-tooltip">Contenu multi-tables</div>
+                    <div class="connection-badge">6</div>
+                    <div class="node-title">🔀 content.js</div>
+                    <div class="node-desc">Contenu par catégorie</div>
+                </div>
+                
+                <div class="node node-module" id="routesTech" data-connects="configNode,tableTech">
+                    <div class="node-tooltip">CRUD technologies</div>
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">💻 technologies.js</div>
+                    <div class="node-desc">CRUD technologies</div>
+                </div>
+                
+                <div class="node node-module" id="routesMarche" data-connects="configNode,tableMarche">
+                    <div class="node-tooltip">CRUD données marché</div>
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">📊 marche.js</div>
+                    <div class="node-desc">CRUD marché</div>
+                </div>
+                
+                <div class="node node-module" id="routesInsights" data-connects="configNode,tableInsights">
+                    <div class="node-tooltip">CRUD analyses</div>
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">💡 insights.js</div>
+                    <div class="node-desc">CRUD insights</div>
+                </div>
+                
+                <div class="node node-module" id="routesPred" data-connects="configNode,tablePred">
+                    <div class="node-tooltip">CRUD prévisions</div>
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">🔮 predictions.js</div>
+                    <div class="node-desc">CRUD prédictions</div>
+                </div>
+                
+                <div class="column-title" style="background: linear-gradient(135deg, #7E57C2, #5E35B1); color: white; margin-top: 20px;">
+                    🛠️ Utilitaires
+                </div>
+                
+                <div class="node node-utils" id="utilsNode">
+                    <div class="node-tooltip">Fonctions génération fiches</div>
+                    <div class="node-title">🔧 ficheGenerator.js</div>
+                    <div class="node-desc">generateFicheHTML()<br>createFiche()<br>deleteFiche()</div>
+                </div>
+            </div>
+            
+            <!-- Database Column -->
+            <div class="flow-column layer-database layer-all">
+                <div class="column-title database-title">🗄️ PostgreSQL</div>
+                
+                <div class="node node-table" id="dbNode">
+                    <div class="node-tooltip">Base de données principale</div>
+                    <div class="node-title">💾 gamer_2025</div>
+                    <div class="node-desc">Base de données</div>
+                </div>
+                
+                <div class="node node-table" id="tableProduits">
+                    <div class="node-tooltip">Table des produits</div>
+                    <div class="node-title">📦 produits</div>
+                    <div class="node-desc">61 produits</div>
+                </div>
+                
+                <div class="node node-table" id="tableActualites">
+                    <div class="node-tooltip">Table des actualités</div>
+                    <div class="node-title">📰 actualites</div>
+                    <div class="node-desc">Actualités secteur</div>
+                </div>
+                
+                <div class="node node-table" id="tableTech">
+                    <div class="node-tooltip">Table des technologies</div>
+                    <div class="node-title">💻 technologies</div>
+                    <div class="node-desc">Tech émergentes</div>
+                </div>
+                
+                <div class="node node-table" id="tableMarche">
+                    <div class="node-tooltip">Table données marché</div>
+                    <div class="node-title">📊 marche</div>
+                    <div class="node-desc">Données marché</div>
+                </div>
+                
+                <div class="node node-table" id="tableInsights">
+                    <div class="node-tooltip">Table des analyses</div>
+                    <div class="node-title">💡 insights</div>
+                    <div class="node-desc">Analyses</div>
+                </div>
+                
+                <div class="node node-table" id="tablePred">
+                    <div class="node-tooltip">Table des prévisions</div>
+                    <div class="node-title">🔮 predictions</div>
+                    <div class="node-desc">Prévisions</div>
+                </div>
+                
+                <div class="node node-table" id="tableCategories">
+                    <div class="node-tooltip">Table des catégories</div>
+                    <div class="node-title">📁 categories</div>
+                    <div class="node-desc">Types produits</div>
+                </div>
+            </div>
+            
+            <!-- Scripts Column -->
+            <div class="flow-column layer-scripts layer-all">
+                <div class="column-title scripts-title">📜 Scripts Organisés</div>
+                
+                <div class="node node-script" data-connects="configNode">
+                    <div class="node-tooltip">Scripts d'initialisation</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">🔧 setup/ (5)</div>
+                    <div class="node-desc">reinit-db.js<br>restore-db.js</div>
+                </div>
+                
+                <div class="node node-script" data-connects="configNode">
+                    <div class="node-tooltip">Gestion produits</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">📦 products/ (11)</div>
+                    <div class="node-desc">add-new-products.js<br>update-top-decembre.js</div>
+                </div>
+                
+                <div class="node node-script" data-connects="configNode">
+                    <div class="node-tooltip">Génération fiches</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">📝 fiches/ (6)</div>
+                    <div class="node-desc">regenerate-all-fiches.js<br>generate-new-products.js</div>
+                </div>
+                
+                <div class="node node-script" data-connects="configNode">
+                    <div class="node-tooltip">Scripts de maintenance</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">🔧 maintenance/ (35)</div>
+                    <div class="node-desc">verify-database-state.js<br>normalize-*.js</div>
+                </div>
+                
+                <div class="node" style="background: linear-gradient(135deg, #90CAF9, #42A5F5); color: white;">
+                    <div class="node-tooltip">Tous les scripts migrés</div>
+                    <div class="node-title">🎯 51 scripts migrés</div>
+                    <div class="node-desc">Utilisent database.js centralisé</div>
+                    <div class="node-badge">✅ Done</div>
+                </div>
+            </div>
+            
+            <!-- Tests Column -->
+            <div class="flow-column layer-tests layer-all">
+                <div class="column-title tests-title">✅ Tests (Jest)</div>
+                
+                <div class="node node-test" data-connects="routesProduits,routesFiches,routesTendances">
+                    <div class="node-tooltip">Tests des endpoints API</div>
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">🧪 api.test.js</div>
+                    <div class="node-desc">6 tests<br>Endpoints API</div>
+                    <div class="node-badge">✅ Pass</div>
+                </div>
+                
+                <div class="node node-test" data-connects="configNode">
+                    <div class="node-tooltip">Tests connexion DB</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">🧪 database.test.js</div>
+                    <div class="node-desc">3 tests<br>Connexion pool</div>
+                    <div class="node-badge">✅ Pass</div>
+                </div>
+                
+                <div class="node node-test" data-connects="utilsNode">
+                    <div class="node-tooltip">Tests génération HTML</div>
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">🧪 generation.test.js</div>
+                    <div class="node-desc">6 tests<br>Génération HTML</div>
+                    <div class="node-badge">✅ Pass</div>
+                </div>
+                
+                <div class="node" style="background: linear-gradient(135deg, #66BB6A, #43A047); color: white; border: 3px solid #2E7D32;">
+                    <div class="node-tooltip">Stratégie de tests complète</div>
+                    <div class="node-title">🎯 Tests Complets</div>
+                    <div class="node-desc">🧪 15 Jest (Backend)<br>🌐 23 Web (E2E)</div>
+                    <div class="node-badge">✅ 38 Tests</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <h3>🎨 Légende - Architecture Vue.js 2026</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #42d392, #42b883);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Vue.js Core</div>
+                        <div class="legend-desc">main.js, App.vue, Router, Pinia</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #81d4fa, #4fc3f7);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Vue Pages</div>
+                        <div class="legend-desc">5 pages principales (Views)</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #ce93d8, #ba68c8);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Vue Components</div>
+                        <div class="legend-desc">6 composants réutilisables</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #ffab91, #ff8a65);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Stores & Composables</div>
+                        <div class="legend-desc">Pinia stores + logique réutilisable</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #80CBC4, #00897B);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Configuration</div>
+                        <div class="legend-desc">database.js + dotenv</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #F48FB1, #E91E63);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">API Routes</div>
+                        <div class="legend-desc">8 modules routes modulaires</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #B39DDB, #7E57C2);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Utilitaires Backend</div>
+                        <div class="legend-desc">ficheGenerator.js</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #FFF59D, #FBC02D);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Tables PostgreSQL</div>
+                        <div class="legend-desc">Base de données gamer_2025</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #FFCC80, #E67E22);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Scripts Organisés</div>
+                        <div class="legend-desc">4 dossiers thématiques</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #AED581, #66BB6A);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">Tests Automatisés</div>
+                        <div class="legend-desc">Jest + Supertest</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #FFE0B2, #FFB74D);"></div>
+                    <div class="legend-text">
+                        <div class="legend-label">server.js Refactorisé</div>
+                        <div class="legend-desc">Express API backend</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentFilter = 'all';
+        let lockedNode = null;
+        
+        // Draw connections between nodes
+        function drawConnections() {
+            const svg = document.getElementById('connectionsSvg');
+            svg.innerHTML = '';
+            
+            const container = document.querySelector('.flow-container');
+            const containerRect = container.getBoundingClientRect();
+            
+            // Set SVG size to match container
+            svg.setAttribute('width', container.scrollWidth);
+            svg.setAttribute('height', container.scrollHeight);
+            svg.style.width = container.scrollWidth + 'px';
+            svg.style.height = container.scrollHeight + 'px';
+            
+            document.querySelectorAll('.node[data-connects]').forEach(node => {
+                const connects = node.dataset.connects;
+                if (!connects) return;
+                
+                // Skip if SOURCE node is not visible (filtered out)
+                if (node.offsetParent === null) return;
+                
+                const nodeRect = node.getBoundingClientRect();
+                // Add scroll offset
+                const x1 = nodeRect.right - containerRect.left + container.scrollLeft;
+                const y1 = nodeRect.top + nodeRect.height / 2 - containerRect.top + container.scrollTop;
+                
+                connects.split(',').forEach(targetId => {
+                    const target = document.getElementById(targetId.trim());
+                    
+                    // Skip if TARGET node doesn't exist or is not visible
+                    if (!target || target.offsetParent === null) return;
+                    
+                    const targetRect = target.getBoundingClientRect();
+                    
+                    // Calculer les positions avec scroll offset
+                    const sourceRight = nodeRect.right - containerRect.left + container.scrollLeft;
+                    const sourceLeft = nodeRect.left - containerRect.left + container.scrollLeft;
+                    const sourceCenterY = nodeRect.top + nodeRect.height / 2 - containerRect.top + container.scrollTop;
+                    
+                    const targetLeft = targetRect.left - containerRect.left + container.scrollLeft;
+                    const targetRight = targetRect.right - containerRect.left + container.scrollLeft;
+                    const targetCenterY = targetRect.top + targetRect.height / 2 - containerRect.top + container.scrollTop;
+                    
+                    // Déterminer les points de départ et d'arrivée selon la position relative
+                    let startX, startY, endX, endY;
+                    
+                    if (targetLeft >= sourceRight) {
+                        // La cible est à DROITE de la source : partir de droite → arriver à gauche
+                        startX = sourceRight;
+                        startY = sourceCenterY;
+                        endX = targetLeft;
+                        endY = targetCenterY;
+                    } else if (targetRight <= sourceLeft) {
+                        // La cible est à GAUCHE de la source : partir de gauche → arriver à droite
+                        startX = sourceLeft;
+                        startY = sourceCenterY;
+                        endX = targetRight;
+                        endY = targetCenterY;
+                    } else {
+                        // Chevauchement horizontal (rare mais possible) : connexion directe
+                        startX = sourceRight;
+                        startY = sourceCenterY;
+                        endX = targetLeft;
+                        endY = targetCenterY;
+                    }
+                    
+                    // Calculer les distances horizontale et verticale
+                    const horizontalDistance = Math.abs(endX - startX);
+                    const verticalDistance = Math.abs(endY - startY);
+                    
+                    // Adapter l'offset des points de contrôle selon les deux dimensions
+                    const horizontalOffset = Math.max(horizontalDistance * 0.5, 60); // 50% de la distance, min 60px
+                    const verticalInfluence = Math.min(verticalDistance * 0.3, 150); // 30% de la distance verticale, max 150px
+                    
+                    // Créer une courbe cubique de Bézier élégante
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    
+                    // Points de contrôle : courbe en S élégante
+                    const direction = endX > startX ? 1 : -1;
+                    const cp1x = startX + (horizontalOffset * direction);
+                    const cp1y = startY + (verticalInfluence * (endY > startY ? 0.3 : -0.3)); // Légère courbure verticale
+                    const cp2x = endX - (horizontalOffset * direction);
+                    const cp2y = endY - (verticalInfluence * (endY > startY ? 0.3 : -0.3)); // Légère courbure verticale
+                    
+                    // Courbe cubique de Bézier
+                    const d = `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`;
+                    
+                    path.setAttribute('d', d);
+                    path.setAttribute('class', 'connection-line');
+                    path.setAttribute('data-from', node.id || 'unknown');
+                    path.setAttribute('data-to', targetId.trim());
+                    
+                    svg.appendChild(path);
+                    
+                    // Ajouter une flèche pointant vers la destination
+                    const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    const angle = Math.atan2(endY - startY, endX - startX);
+                    const arrowSize = 8;
+                    const arrowX = endX - 10 * Math.cos(angle);
+                    const arrowY = endY - 10 * Math.sin(angle);
+                    
+                    const points = [
+                        [arrowX, arrowY],
+                        [arrowX - arrowSize * Math.cos(angle - Math.PI / 6), arrowY - arrowSize * Math.sin(angle - Math.PI / 6)],
+                        [arrowX - arrowSize * Math.cos(angle + Math.PI / 6), arrowY - arrowSize * Math.sin(angle + Math.PI / 6)]
+                    ].map(p => p.join(',')).join(' ');
+                    
+                    arrow.setAttribute('points', points);
+                    arrow.setAttribute('class', 'connection-arrow');
+                    arrow.setAttribute('data-from', node.id || 'unknown');
+                    arrow.setAttribute('data-to', targetId.trim());
+                    
+                    svg.appendChild(arrow);
+                });
+            });
+        }
+        
+        function filterLayer(layer) {
+            currentFilter = layer;
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Show/hide columns based on layer
+            const columns = document.querySelectorAll('.flow-column');
+            columns.forEach(column => {
+                if (layer === 'all' || column.classList.contains('layer-' + layer)) {
+                    column.style.display = 'flex';
+                } else {
+                    column.style.display = 'none';
+                }
+            });
+            
+            // Redraw connections after filter change
+            setTimeout(drawConnections, 100);
+        }
+        
+        function initNodeInteractions() {
+            // Add hover effects with enhanced visualization
+            document.querySelectorAll('.node').forEach(node => {
+                node.addEventListener('mouseenter', function() {
+                    // Don't trigger hover if a node is locked
+                    if (lockedNode && lockedNode !== this) return;
+                    
+                    highlightNode(this);
+                });
+                
+                node.addEventListener('mouseleave', function() {
+                    // Don't clear if a node is locked
+                    if (lockedNode) return;
+                    
+                    clearHighlights();
+                });
+                
+                // Add click to lock/unlock
+                node.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    if (lockedNode === this) {
+                        // Unlock
+                        lockedNode = null;
+                        this.classList.remove('locked');
+                        clearHighlights();
+                    } else {
+                        // Lock this node
+                        if (lockedNode) {
+                            lockedNode.classList.remove('locked');
+                        }
+                        lockedNode = this;
+                        this.classList.add('locked');
+                        clearHighlights();
+                        highlightNode(this);
+                    }
+                });
+            });
+            
+            // Click anywhere else to unlock
+            document.addEventListener('click', function(e) {
+                if (lockedNode && !e.target.closest('.node')) {
+                    lockedNode.classList.remove('locked');
+                    lockedNode = null;
+                    clearHighlights();
+                }
+            });
+        }
+        
+        function highlightNode(node) {
+            const nodeId = node.id;
+            const connects = node.dataset.connects;
+            const svg = document.getElementById('connectionsSvg');
+            
+            // Dim ALL nodes and connections first
+            document.querySelectorAll('.node').forEach(n => {
+                n.classList.add('dimmed');
+            });
+            document.querySelectorAll('.connection-line, .connection-arrow').forEach(conn => {
+                conn.classList.add('dimmed');
+            });
+            
+            // Highlight current node (remove dimmed)
+            node.classList.remove('dimmed');
+            node.classList.add('active');
+            
+            // Count connections
+            let outgoingCount = 0;
+            let incomingCount = 0;
+            
+            // Highlight outgoing connections and targets
+            if (connects) {
+                connects.split(',').forEach(id => {
+                    const target = document.getElementById(id.trim());
+                    
+                    // Vérifier que le nœud cible existe ET est visible
+                    if (target && target.offsetParent !== null) {
+                        // Vérifier que la connexion existe réellement dans le SVG
+                        const existingConn = svg.querySelector(`[data-from="${nodeId}"][data-to="${id.trim()}"]`);
+                        if (existingConn) {
+                            target.classList.remove('dimmed');
+                            target.classList.add('connected-target');
+                            outgoingCount++;
+                            
+                            // Highlight connection
+                            existingConn.classList.remove('dimmed');
+                            existingConn.classList.add('active');
+                            // Highlight arrow aussi
+                            svg.querySelectorAll(`[data-from="${nodeId}"][data-to="${id.trim()}"]`).forEach(conn => {
+                                conn.classList.remove('dimmed');
+                                conn.classList.add('active');
+                            });
+                        }
+                    }
+                });
+            }
+            
+            // Highlight incoming connections and sources
+            // Ne compter QUE les connexions qui sont actuellement dans le SVG
+            // Compter seulement les path (lignes), pas les polygon (flèches)
+            svg.querySelectorAll(`.connection-line[data-to="${nodeId}"]`).forEach(conn => {
+                const fromId = conn.getAttribute('data-from');
+                const fromNode = document.getElementById(fromId);
+                
+                // Si le nœud source existe et est visible
+                if (fromNode && fromNode.offsetParent !== null) {
+                    conn.classList.remove('dimmed');
+                    conn.classList.add('incoming');
+                    // Highlight arrow aussi
+                    svg.querySelectorAll(`.connection-arrow[data-from="${fromId}"][data-to="${nodeId}"]`).forEach(arrow => {
+                        arrow.classList.remove('dimmed');
+                        arrow.classList.add('incoming');
+                    });
+                    fromNode.classList.remove('dimmed');
+                    fromNode.classList.add('connected-source');
+                    incomingCount++;
+                }
+            });
+            
+            // Update connections count
+            document.getElementById('outgoingCount').textContent = outgoingCount;
+            document.getElementById('incomingCount').textContent = incomingCount;
+            document.getElementById('connectionsCount').classList.add('show');
+            
+            // Show connection legend
+            document.getElementById('connectionLegend').classList.add('show');
+        }
+        
+        function clearHighlights() {
+            // Remove all highlights and dimming
+            document.querySelectorAll('.node').forEach(n => {
+                n.classList.remove('active', 'connected-target', 'connected-source', 'dimmed');
+            });
+            document.querySelectorAll('.connection-line, .connection-arrow').forEach(conn => {
+                conn.classList.remove('active', 'incoming', 'dimmed');
+            });
+            
+            // Hide connections count
+            document.getElementById('connectionsCount').classList.remove('show');
+            
+            // Hide connection legend
+            document.getElementById('connectionLegend').classList.remove('show');
+        }
+        
+        // Initial draw and redraw on window resize
+        window.addEventListener('load', function() {
+            drawConnections();
+            initNodeInteractions();
+        });
+        window.addEventListener('resize', drawConnections);
+        
+        // Redraw on scroll (for dynamic positioning)
+        let scrollTimeout;
+        window.addEventListener('load', function() {
+            document.querySelector('.flow-container').addEventListener('scroll', function() {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(drawConnections, 50);
+            });
+        });
+    </script>
+</body>
+</html>

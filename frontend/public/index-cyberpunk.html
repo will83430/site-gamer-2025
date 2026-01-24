@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ GAMER 2025 - CYBERPUNK EDITION</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           CYBERPUNK DESIGN SYSTEM 2077
+           ======================================== */
+
+        :root {
+            /* Cyberpunk Colors - Élégant */
+            --cyber-yellow: #d4ff00;
+            --cyber-yellow-soft: #c8e600;
+            --cyber-green: #6bff6b;
+            --cyber-green-dark: #4a9d4a;
+            --cyber-lime: #b8ff00;
+            --cyber-accent: #00cc88;
+            --cyber-blue: #4dd4ff;
+            --cyber-pink: #ff4da6;
+
+            /* Dark Backgrounds */
+            --bg-black: #0d0d0d;
+            --bg-dark: #151515;
+            --bg-darker: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --bg-elevated: #242424;
+
+            /* Text Colors */
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+            --text-muted: #808080;
+
+            /* Subtle Glows */
+            --glow-yellow-soft: 0 0 15px rgba(212, 255, 0, 0.3);
+            --glow-green-soft: 0 0 15px rgba(107, 255, 107, 0.3);
+            --glow-accent-soft: 0 0 20px rgba(0, 204, 136, 0.25);
+
+            /* Grid */
+            --grid-color: rgba(107, 255, 107, 0.08);
+        }
+
+        /* ========================================
+           RESET & BASE
+           ======================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-black);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 25s linear infinite;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: perspective(500px) rotateX(60deg) translateY(0);
+            }
+            100% {
+                transform: perspective(500px) rotateX(60deg) translateY(50px);
+            }
+        }
+
+        /* Scanlines Effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.08),
+                rgba(0, 0, 0, 0.08) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            animation: scanlines 10s linear infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        /* Glitch Effect Keyframes */
+        @keyframes glitch {
+            0% {
+                text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-cyan);
+            }
+            25% {
+                text-shadow: -2px 0 var(--neon-pink), 2px 0 var(--neon-cyan);
+            }
+            50% {
+                text-shadow: 2px 2px var(--neon-pink), -2px -2px var(--neon-cyan);
+            }
+            75% {
+                text-shadow: -2px -2px var(--neon-pink), 2px 2px var(--neon-cyan);
+            }
+            100% {
+                text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-cyan);
+            }
+        }
+
+        /* ========================================
+           HEADER CYBERPUNK
+           ======================================== */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--cyber-yellow);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), var(--glow-yellow-soft);
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--cyber-yellow);
+            border-radius: 6px;
+            box-shadow: var(--glow-yellow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            box-shadow: 0 0 25px rgba(212, 255, 0, 0.4);
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--cyber-yellow);
+            text-shadow: 0 0 10px rgba(212, 255, 0, 0.3);
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .logo-text::after {
+            content: 'GAMER 2025';
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            color: var(--cyber-green);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.7rem 1.3rem;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 80%;
+            height: 2px;
+            background: var(--cyber-yellow);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .nav-link:hover {
+            color: var(--cyber-yellow);
+            background: rgba(212, 255, 0, 0.05);
+        }
+
+        .nav-link.active {
+            color: var(--cyber-yellow);
+            background: rgba(212, 255, 0, 0.1);
+            border: 1px solid var(--cyber-yellow);
+        }
+
+        /* ========================================
+           HERO CYBERPUNK
+           ======================================== */
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Diagonal Gradient Stripes (élégant) */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 150%;
+            height: 200%;
+            background: linear-gradient(
+                135deg,
+                transparent 0%,
+                transparent 35%,
+                rgba(107, 255, 107, 0.08) 35%,
+                rgba(184, 255, 0, 0.12) 55%,
+                rgba(212, 255, 0, 0.18) 75%,
+                rgba(212, 255, 0, 0.25) 100%
+            );
+            transform: rotate(-12deg);
+            animation: stripesMove 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes stripesMove {
+            0%, 100% {
+                transform: rotate(-12deg) translateX(0);
+                opacity: 0.7;
+            }
+            50% {
+                transform: rotate(-12deg) translateX(-30px);
+                opacity: 1;
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+        }
+
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(3rem, 10vw, 6.5rem);
+            font-weight: 900;
+            color: var(--cyber-yellow);
+            text-shadow: 0 0 30px rgba(212, 255, 0, 0.3);
+            margin-bottom: 2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .hero-title:hover {
+            animation: titleGlitch 0.3s ease;
+        }
+
+        @keyframes titleGlitch {
+            0%, 100% {
+                transform: translate(0);
+            }
+            33% {
+                transform: translate(-2px, 1px);
+            }
+            66% {
+                transform: translate(2px, -1px);
+            }
+        }
+
+        .cyber-bracket {
+            color: var(--cyber-green);
+            text-shadow: 0 0 15px rgba(107, 255, 107, 0.3);
+            font-size: 1.2em;
+        }
+
+        .hero-subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            letter-spacing: 1.5px;
+        }
+
+        .terminal-text {
+            color: var(--cyber-green);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .typing-cursor {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .cyber-btn {
+            padding: 1.2rem 3rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+
+        .cyber-btn-primary {
+            background: linear-gradient(135deg, rgba(212, 255, 0, 0.1) 0%, rgba(212, 255, 0, 0.05) 100%);
+            color: var(--cyber-yellow);
+            border: 2px solid var(--cyber-yellow);
+            box-shadow: var(--glow-yellow-soft);
+        }
+
+        .cyber-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 255, 0, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cyber-btn-primary:hover {
+            background: var(--cyber-yellow);
+            color: var(--bg-black);
+            box-shadow: 0 0 25px rgba(212, 255, 0, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .cyber-btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .cyber-btn-secondary {
+            background: rgba(107, 255, 107, 0.05);
+            color: var(--cyber-green);
+            border: 2px solid var(--cyber-green-dark);
+            box-shadow: var(--glow-green-soft);
+        }
+
+        .cyber-btn-secondary:hover {
+            background: var(--cyber-green);
+            color: var(--bg-black);
+            border-color: var(--cyber-green);
+            box-shadow: 0 0 25px rgba(107, 255, 107, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Stats Cyberpunk */
+        .cyber-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .stat-cyber {
+            padding: 2rem;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--cyber-green-dark);
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-cyber::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--cyber-yellow), transparent);
+            animation: scanLine 4s linear infinite;
+        }
+
+        @keyframes scanLine {
+            0% { left: -100%; opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { left: 100%; opacity: 0.5; }
+        }
+
+        .stat-cyber:hover {
+            border-color: var(--cyber-yellow);
+            background: rgba(36, 36, 36, 0.9);
+            transform: translateY(-5px);
+            box-shadow: var(--glow-yellow-soft);
+        }
+
+        .stat-number {
+            display: block;
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--cyber-yellow);
+            text-shadow: 0 0 20px rgba(212, 255, 0, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            display: block;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ========================================
+           FEATURES SECTION
+           ======================================== */
+
+        .features {
+            padding: 6rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5rem, 6vw, 3.8rem);
+            font-weight: 800;
+            text-align: center;
+            color: var(--cyber-yellow);
+            text-shadow: 0 0 20px rgba(212, 255, 0, 0.25);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+            letter-spacing: 1px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .feature-cyber {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--cyber-green-dark);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-cyber::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(212, 255, 0, 0.1) 0%, rgba(107, 255, 107, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 0;
+        }
+
+        .feature-cyber:hover {
+            transform: translateY(-8px);
+            border-color: var(--cyber-yellow);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), var(--glow-yellow-soft);
+        }
+
+        .feature-cyber:hover::after {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 5px rgba(107, 255, 107, 0.3));
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--cyber-yellow);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-description {
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========================================
+           PRODUCTS SECTION
+           ======================================== */
+
+        .products-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(57, 255, 20, 0.05) 100%);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .product-cyber {
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--cyber-green-dark);
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-cyber:hover {
+            transform: translateY(-12px);
+            border-color: var(--cyber-yellow);
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.4),
+                var(--glow-yellow-soft),
+                inset 0 0 30px rgba(212, 255, 0, 0.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(13, 13, 13, 0.95);
+            border: 1.5px solid var(--cyber-pink);
+            color: var(--cyber-pink);
+            padding: 0.4rem 0.9rem;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            z-index: 10;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            box-shadow: 0 0 15px rgba(255, 77, 166, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1f1f1f 100%);
+            border-bottom: 1px solid var(--cyber-green-dark);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.85) contrast(1.1);
+        }
+
+        .product-cyber:hover .product-image {
+            filter: brightness(1) contrast(1.2) saturate(1.1);
+            transform: scale(1.08);
+        }
+
+        .product-content {
+            padding: 1.8rem;
+        }
+
+        .product-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--cyber-yellow);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .product-price {
+            font-family: 'Orbitron', monospace;
+            color: var(--cyber-green);
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(107, 255, 107, 0.2);
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: rgba(77, 212, 255, 0.05);
+            border: 1.5px solid var(--cyber-blue);
+            color: var(--cyber-blue);
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            transition: all 0.3s ease;
+        }
+
+        .product-btn:hover {
+            background: var(--cyber-blue);
+            color: var(--bg-black);
+            box-shadow: 0 0 20px rgba(77, 212, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ========================================
+           FOOTER CYBERPUNK
+           ======================================== */
+
+        .footer {
+            background: var(--bg-darker);
+            border-top: 1px solid var(--cyber-yellow);
+            padding: 4rem 2rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Orbitron', monospace;
+            color: var(--cyber-yellow);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px rgba(212, 255, 0, 0.2);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.9rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 0;
+        }
+
+        .footer-links a::before {
+            content: '>';
+            margin-right: 0.5rem;
+            color: var(--cyber-green);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--cyber-yellow);
+            padding-left: 1rem;
+        }
+
+        .footer-links a:hover::before {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--cyber-green-dark);
+            color: var(--text-muted);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* ========================================
+           SCROLL TO TOP
+           ======================================== */
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 55px;
+            height: 55px;
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--cyber-yellow);
+            color: var(--cyber-yellow);
+            font-size: 1.8rem;
+            cursor: pointer;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            opacity: 0;
+            transform: translateY(100px);
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: var(--glow-yellow-soft);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            background: var(--cyber-yellow);
+            color: var(--bg-black);
+            box-shadow: 0 0 25px rgba(212, 255, 0, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1rem 3rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .cyber-btn {
+                width: 100%;
+            }
+
+            .features-grid,
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========================================
+           GLITCH LINES (Subtiles)
+           ======================================== */
+
+        .glitch-line {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--cyber-yellow), transparent);
+            opacity: 0;
+            z-index: 9998;
+            animation: glitchLine 8s infinite;
+            pointer-events: none;
+        }
+
+        .glitch-line:nth-child(1) { top: 25%; animation-delay: 0s; }
+        .glitch-line:nth-child(2) { top: 55%; animation-delay: 3s; }
+        .glitch-line:nth-child(3) { top: 85%; animation-delay: 6s; }
+
+        @keyframes glitchLine {
+            0%, 98%, 100% { opacity: 0; }
+            98.5%, 99% { opacity: 0.15; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Glitch Lines -->
+    <div class="glitch-line"></div>
+    <div class="glitch-line"></div>
+    <div class="glitch-line"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo-section">
+                <img src="/assets/images/gaming.png" alt="Logo" class="logo">
+                <div class="logo-text">GAMER 2025</div>
+            </div>
+
+            <div class="nav-links">
+                <a href="#" class="nav-link active">ACCUEIL</a>
+                <a href="#features" class="nav-link">FEATURES</a>
+                <a href="#products" class="nav-link">PRODUITS</a>
+                <a href="/top-du-mois" class="nav-link">TOP</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="glitch-wrapper">
+                <h1 class="hero-title">
+                    <span class="cyber-bracket">[</span>GAMER 2025<span class="cyber-bracket">]</span>
+                </h1>
+            </div>
+
+            <p class="hero-subtitle">
+                <span class="terminal-text">></span> CYBERPUNK TECH UNIVERSE
+                <span class="typing-cursor">_</span>
+            </p>
+
+            <div class="hero-cta">
+                <a href="#products" class="cyber-btn cyber-btn-primary">
+                    ⚡ EXPLORER
+                </a>
+                <a href="/top-du-mois" class="cyber-btn cyber-btn-secondary">
+                    🔥 TOP DU MOIS
+                </a>
+            </div>
+
+            <div class="cyber-stats">
+                <div class="stat-cyber">
+                    <span class="stat-number" data-count="150">000</span>
+                    <span class="stat-label">PRODUITS</span>
+                </div>
+                <div class="stat-cyber">
+                    <span class="stat-number" data-count="500">000</span>
+                    <span class="stat-label">TENDANCES</span>
+                </div>
+                <div class="stat-cyber">
+                    <span class="stat-number">016</span>
+                    <span class="stat-label">CATÉGORIES</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">[ SYSTÈME ]</h2>
+        <p class="section-subtitle">> Technologie de pointe pour gamers exigeants</p>
+
+        <div class="features-grid">
+            <div class="feature-cyber">
+                <span class="feature-icon">⚡</span>
+                <h3 class="feature-title">ULTRA SPEED</h3>
+                <p class="feature-description">
+                    Performance maximale avec chargement instantané et navigation ultra-fluide.
+                </p>
+            </div>
+
+            <div class="feature-cyber">
+                <span class="feature-icon">🎯</span>
+                <h3 class="feature-title">PRÉCISION</h3>
+                <p class="feature-description">
+                    Analyses techniques détaillées et benchmarks professionnels pour chaque produit.
+                </p>
+            </div>
+
+            <div class="feature-cyber">
+                <span class="feature-icon">🔥</span>
+                <h3 class="feature-title">HOT TRENDS</h3>
+                <p class="feature-description">
+                    Tendances actualisées en temps réel pour rester à la pointe de la tech.
+                </p>
+            </div>
+
+            <div class="feature-cyber">
+                <span class="feature-icon">📊</span>
+                <h3 class="feature-title">DATA DRIVEN</h3>
+                <p class="feature-description">
+                    Statistiques avancées et comparatifs intelligents basés sur la data.
+                </p>
+            </div>
+
+            <div class="feature-cyber">
+                <span class="feature-icon">🛡️</span>
+                <h3 class="feature-title">SÉCURISÉ</h3>
+                <p class="feature-description">
+                    Infrastructure sécurisée avec protection maximale de vos données.
+                </p>
+            </div>
+
+            <div class="feature-cyber">
+                <span class="feature-icon">🌐</span>
+                <h3 class="feature-title">CONNECTÉ</h3>
+                <p class="feature-description">
+                    API moderne et intégrations multiples pour une expérience connectée.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <h2 class="section-title">[ ARSENAL ]</h2>
+        <p class="section-subtitle">> Équipements gaming de dernière génération</p>
+
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-cyber">
+                <span class="product-badge">⚡ TOP</span>
+                <img src="/assets/images/placeholder.png" alt="Product" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">GALAXY S26 ULTRA</h3>
+                    <p class="product-description">
+                        Smartphone flagship avec IA révolutionnaire et performances extrêmes.
+                    </p>
+                    <div class="product-price">1.299€</div>
+                    <button class="product-btn">VOIR SPECS</button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-cyber">
+                <img src="/assets/images/placeholder.png" alt="Product" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">RTX 5090</h3>
+                    <p class="product-description">
+                        GPU ultime pour gaming 4K et ray-tracing temps réel à 240fps.
+                    </p>
+                    <div class="product-price">1.999€</div>
+                    <button class="product-btn">VOIR SPECS</button>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-cyber">
+                <span class="product-badge">⚡ TOP</span>
+                <img src="/assets/images/placeholder.png" alt="Product" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">VISION PRO 2</h3>
+                    <p class="product-description">
+                        Casque VR/AR next-gen avec écran microLED et tracking parfait.
+                    </p>
+                    <div class="product-price">3.999€</div>
+                    <button class="product-btn">VOIR SPECS</button>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-cyber">
+                <img src="/assets/images/placeholder.png" alt="Product" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">PS6</h3>
+                    <p class="product-description">
+                        Console next-gen 8K avec SSD ultra-rapide et exclus épiques.
+                    </p>
+                    <div class="product-price">599€</div>
+                    <button class="product-btn">VOIR SPECS</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>GAMER 2025</h3>
+                <p style="color: var(--neon-lime); font-family: 'Share Tech Mono', monospace; line-height: 1.7;">
+                    > Interface cyberpunk pour gamers et tech enthusiasts.
+                    <br>> Powered by neon dreams and digital revolution.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h3>NAVIGATION</h3>
+                <ul class="footer-links">
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/produits">Produits</a></li>
+                    <li><a href="/top-du-mois">Top du Mois</a></li>
+                    <li><a href="/comparatif">Comparatif</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>CATÉGORIES</h3>
+                <ul class="footer-links">
+                    <li><a href="/tendances/smartphone">Smartphones</a></li>
+                    <li><a href="/tendances/pc-gaming">PC Gaming</a></li>
+                    <li><a href="/tendances/console">Consoles</a></li>
+                    <li><a href="/tendances/casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>SYSTÈME</h3>
+                <ul class="footer-links">
+                    <li><a href="/wiki/wiki.html">Documentation</a></li>
+                    <li><a href="/admin">Admin Panel</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>> 2025 GAMER_2025.EXE | ALL_RIGHTS_RESERVED | CYBERPUNK_EDITION v2.0.7.7</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <script>
+        // ========================================
+        // Scroll Effects
+        // ========================================
+        const scrollTop = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        scrollTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ========================================
+        // Stats Counter
+        // ========================================
+        const animateCounter = (element, target, duration = 2000) => {
+            let start = 0;
+            const increment = target / (duration / 16);
+
+            const updateCounter = () => {
+                start += increment;
+                if (start < target) {
+                    element.textContent = String(Math.floor(start)).padStart(3, '0');
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = String(target).padStart(3, '0');
+                }
+            };
+            updateCounter();
+        };
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const count = parseInt(entry.target.dataset.count);
+                    if (count) {
+                        animateCounter(entry.target, count);
+                        statsObserver.unobserve(entry.target);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-number[data-count]').forEach(stat => {
+            statsObserver.observe(stat);
+        });
+
+        // ========================================
+        // Smooth Scroll
+        // ========================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ========================================
+        // Random Glitch Effect on Title
+        // ========================================
+        setInterval(() => {
+            const title = document.querySelector('.hero-title');
+            if (Math.random() > 0.95) {
+                title.style.animation = 'none';
+                setTimeout(() => {
+                    title.style.animation = 'titleGlitch 5s infinite';
+                }, 50);
+            }
+        }, 3000);
+
+        // ========================================
+        // Console Easter Egg
+        // ========================================
+        console.log('%c> WELCOME TO GAMER 2025 CYBERPUNK EDITION', 'color: #f5ff00; font-size: 20px; font-family: monospace; text-shadow: 0 0 10px #f5ff00;');
+        console.log('%c> SYSTEM ONLINE', 'color: #39ff14; font-size: 14px; font-family: monospace;');
+        console.log('%c> NEURAL LINK ESTABLISHED', 'color: #00ffff; font-size: 14px; font-family: monospace;');
+    </script>
+</body>
+</html>

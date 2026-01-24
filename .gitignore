@@ -1,8 +1,11 @@
 # Dépendances Node.js
 node_modules/
+package-lock.json
 
 # Variables d'environnement
 .env
+.env.local
+.env.*.local
 
 # Dossiers et fichiers de configuration éditeur
 .vscode/
@@ -26,8 +29,14 @@ logs/combined.log
 .DS_Store
 Thumbs.db
 
+# Build Vue.js / Vite
+dist/
+dist-ssr/
+*.local
+
 # Autres fichiers à ignorer
 *.tmp
+tmpclaude-*
 
 # Backups et brouillons locaux
 backup_gamer_2025.sql

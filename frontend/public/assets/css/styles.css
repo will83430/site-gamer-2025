@@ -361,9 +361,23 @@ video {
    ==================================== */
 
 .fiches-page {
-  background: url("../../assets/images/banniere-pied.png") no-repeat center center fixed;
+  background-color: #1f2039;
+  background-image: url("../images/un-logo-au-centre.png");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.fiches-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: -1;
 }
 
 .titre-categorie {

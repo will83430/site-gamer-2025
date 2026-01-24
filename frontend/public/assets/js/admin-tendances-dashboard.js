@@ -186,8 +186,8 @@ function switchTab(type) {
   }
   
   // Marquer l'onglet actif
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.tab === type);
+  document.querySelectorAll('.tab-btn').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.type === type);
   });
   
   loadTendances(type);
@@ -264,11 +264,11 @@ async function loadTendances(type) {
 
 // Modal functions
 function openModal() {
-  document.getElementById('modal').style.display = 'block';
+  document.getElementById('tendance-modal').style.display = 'block';
 }
 
 function closeModal() {
-  document.getElementById('modal').style.display = 'none';
+  document.getElementById('tendance-modal').style.display = 'none';
   document.getElementById('tendance-form').reset();
   document.getElementById('tendance-id').value = '';
   document.getElementById('form-extra').innerHTML = '';
@@ -450,7 +450,28 @@ async function reorderItem(type, id, direction) {
 // Form submit
 document.addEventListener('DOMContentLoaded', () => {
   init();
-  
+
+  // Gestion des onglets
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Retirer la classe active de tous les onglets
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      // Ajouter la classe active à l'onglet cliqué
+      btn.classList.add('active');
+      // Charger le type correspondant
+      const type = btn.dataset.type;
+      if (type) {
+        switchTab(type);
+      }
+    });
+  });
+
+  // Bouton Ajouter
+  const btnAdd = document.getElementById('btn-add');
+  if (btnAdd) {
+    btnAdd.addEventListener('click', addNew);
+  }
+
   const form = document.getElementById('tendance-form');
   if (form) {
     form.addEventListener('submit', (e) => {

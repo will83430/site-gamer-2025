@@ -1,9 +1,256 @@
 # 📊 ANALYSE COMPLÈTE DE L'ARCHITECTURE - Site Gamer 2025
 
-**Date**: 2026-01-13
-**Version**: 1.3
+**Date**: 2026-01-23
+**Version**: 2.6
 **Analysé par**: Claude Sonnet 4.5
-**Dernière mise à jour**: 2026-01-13 (17 améliorations + Docker prêt + Dev local optimisé)
+**Dernière mise à jour**: 2026-01-23 (Outils IA Locaux + Améliorations Tests)
+
+---
+
+## 🤖 OUTILS IA LOCAUX INSTALLÉS (2026-01-23)
+
+### ✅ Stack IA Locale Complète
+
+**Infrastructure** :
+
+- ✅ **Ollama** - Moteur IA local avec support GPU NVIDIA
+- ✅ **Open WebUI** - Interface web type ChatGPT (port 8080)
+- ✅ **Docker** - Conteneurisation d'Open WebUI
+- ✅ **3 modèles IA** téléchargés et opérationnels
+
+**Modèles Disponibles** :
+
+1. **llama3.2:latest** (2.0 GB)
+   - Modèle généraliste d'Alibaba Cloud
+   - Performance : ~60% de Claude Sonnet 4.5
+   - Quantization : Q4_K_M
+   - Context : 32768 tokens
+
+2. **qwen2.5-coder:7b** (4.7 GB)
+   - Modèle spécialisé codage (7.6B paramètres)
+   - Performance : ~70-75% pour le code
+   - Quantization : Q4_K_M
+   - Context : 32768 tokens
+
+3. **qwen-coder-fixed** (4.7 GB)
+   - Version custom avec system prompt optimisé
+   - System prompt : "You are Qwen Coder, an AI programming assistant..."
+   - Corrige le bug du prompt générique par défaut
+
+**Configuration Services** :
+
+| Service | Port | URL | Statut |
+|---------|------|-----|--------|
+| Backend Node.js | 3000 | http://localhost:3000 | ✅ Actif |
+| Frontend Vue.js | 5173 | http://localhost:5173 | ✅ Actif |
+| Open WebUI | 8080 | http://localhost:8080 | ✅ Actif |
+| Ollama API | 11434 | http://localhost:11434 | ✅ Actif |
+
+**Avantages** :
+
+- ✅ **100% gratuit** - Pas d'abonnement mensuel
+- ✅ **100% local** - Données privées, pas d'envoi en ligne
+- ✅ **Pas de limite** - Utilisation illimitée
+- ✅ **GPU accéléré** - RTX 4070 Laptop (8GB VRAM) détectée
+- ✅ **Offline capable** - Fonctionne sans internet
+
+**Commandes Utiles** :
+
+```bash
+# Lister les modèles installés
+ollama list
+
+# Lancer un modèle en CLI
+ollama run qwen-coder-fixed
+
+# Gérer le conteneur Open WebUI
+docker ps | grep open-webui
+docker logs open-webui
+docker restart open-webui
+
+# Vérifier Ollama
+systemctl status ollama
+```
+
+**Fichiers Créés** :
+
+- `/home/will/.local/share/applications/open-webui.desktop` - Lanceur d'application
+- `/tmp/Modelfile-qwen-coder` - Configuration modèle custom
+- `~/.ollama/models/` - Stockage des modèles (~7 GB total)
+
+---
+
+## 🧪 AMÉLIORATIONS SUITE DE TESTS (2026-01-23)
+
+### ✅ Nouveau Bouton Rapport Global
+
+**test-suite.html** - Ajouts :
+
+1. **Bouton "📊 Afficher rapport global"**
+   - Positionné entre "Lancer TOUS" et "Arrêter"
+   - Caché par défaut, apparaît après exécution
+   - Style gradient vert (#28a745 → #20c997)
+
+2. **Fonction `showGlobalReport()`**
+   - Calcule statistiques globales (réussis/échoués/durée)
+   - Affiche résumé par section (P1/P2/P3/Vue.js)
+   - Liste les tests en échec avec détails
+   - Recommandations basées sur le taux de réussite
+
+3. **Modal de rapport**
+   - Réutilise la modal existante
+   - Affichage structuré avec sections colorées
+   - Date/heure d'exécution
+   - Durée totale en ms et secondes
+
+**Comportement** :
+
+- ✅ S'affiche automatiquement après `runAllTests()`
+- ✅ Se cache avec le bouton "🗑️ Effacer"
+- ✅ Affiche uniquement si au moins 1 test exécuté
+
+**Contenu du Rapport** :
+
+1. **📋 Statistiques Globales** (fond violet gradient)
+   - Date/heure, tests exécutés, réussis, échoués, durée
+
+2. **🔴🟡🔵🟢 Résumé par Section**
+   - Tests Critiques (P1), Importants (P2), Recommandés (P3), Vue.js
+   - Compteur succès/total par section
+   - Liste des tests avec icône, nom, durée
+
+3. **⚠️ Tests en Échec** (si présents)
+   - Nom du test, message d'erreur
+   - Premières erreurs détaillées
+
+4. **💡 Recommandations**
+   - ≥95% : "Excellent ! Application stable"
+   - ≥80% : "Bon, mais X tests à corriger"
+   - <80% : "Critique ! Corrigez avant déploiement"
+
+**Fichiers Modifiés** :
+
+- `frontend/public/scripts/maintenance/test-suite.html` (lignes 257-264, 394, 859-874, 880-893, 951-1073)
+
+---
+
+## 🎯 MIGRATION VUE.JS - PHASE D TERMINÉE (2026-01-20)
+
+### ✅ Composants Vue.js finalisés
+
+**Pages principales migré vers Vue.js** :
+1. ✅ **Home.vue** - Page d'accueil avec vidéos et liens
+2. ✅ **TopOfMonth.vue** - Liste des produits vedettes du mois
+3. ✅ **Products.vue** - Grille catégories + produits filtrés + comparaison
+4. ✅ **ProductDetail.vue** - Fiche produit détaillée avec sections dynamiques
+5. ✅ **TrendPage.vue** - Page tendances (actualités, technologies, marché, prédictions)
+6. ✅ **Compare.vue** - Comparateur de produits avec design néon (NOUVEAU)
+
+**Composants réutilisables** :
+- ✅ **AppHeader.vue** - En-tête adaptatif (lien "Top du Mois" ou "Accueil")
+- ✅ **AppFooter.vue** - Footer avec "Top du Mois" + "Centre d'Administration"
+- ✅ **ProductCard.vue** - Carte produit avec checkbox comparaison
+- ✅ **LoadingSpinner.vue** - Spinner de chargement
+- ✅ **ErrorMessage.vue** - Composant d'erreur avec retry
+- ✅ **CompareButton.vue** - Bouton comparaison pour produits (NOUVEAU)
+- ✅ **CompareTable.vue** - Tableau comparatif des specs (NOUVEAU)
+
+**Stores Pinia** :
+- ✅ **compareStore.js** - Gestion état comparaison (max 4 produits, pas de persistance localStorage)
+
+**Routing Vue Router** :
+- `/` → Home
+- `/top-du-mois` → TopOfMonth
+- `/produits?categorie=XXX` → Products (avec filtrage)
+- `/produit/:id` → ProductDetail
+- `/tendances/:categorie` → TrendPage
+- `/comparatif` → Compare (NOUVEAU)
+
+**Corrections importantes Phase D** :
+
+1. **AppHeader.vue** - Affichage conditionnel des liens selon la page
+2. **ProductCard.vue** - Checkbox comparaison + événement `compare-toggle`
+3. **Products.vue** - Comparaison produits + pagination + getCategorySlug()
+4. **ProductDetail.vue** - Structure HTML conforme + header .lien-entete
+5. **TrendPage.vue** - Fix API 404/500 + sections avec `style="display: block;"`
+6. **AppFooter.vue** - "Top du Mois" + "Centre d'Administration" (conforme original)
+
+**Problèmes résolus** :
+
+**Backend** :
+- ✅ Fix `content.js` - Recherche catégorie par `nom` (slug format) au lieu de colonne `slug` inexistante
+- ✅ Table `categories` - Colonne `nom` contient directement les slugs ("pc-gaming", "drone", etc.)
+
+**Frontend** :
+- ✅ TrendPage - Normalisation catégorie URL (`decodeURIComponent + toLowerCase + replace`)
+- ✅ TrendPage - Chargement indépendant des sections (ne s'arrête pas si une échoue)
+- ✅ TrendPage - Fix CSS `display: none` sur sections avec `style="display: block;"`
+- ✅ Products.vue - Fonction `getCategorySlug()` pour conversion "PC GAMING" → "pc-gaming"
+- ✅ ProductDetail.vue - Fonction `getCategorySlug()` pour liens tendances
+
+**Fichiers modifiés** :
+- `frontend/src/components/layout/AppHeader.vue`
+- `frontend/src/components/layout/AppFooter.vue`
+- `frontend/src/components/products/ProductCard.vue`
+- `frontend/src/views/Home.vue`
+- `frontend/src/views/TopOfMonth.vue`
+- `frontend/src/views/Products.vue`
+- `frontend/src/views/ProductDetail.vue`
+- `frontend/src/views/TrendPage.vue`
+- `frontend/src/router/index.js`
+- `backend/routes/content.js`
+
+**État actuel** :
+- ✅ Toutes les pages Vue.js fonctionnelles
+- ✅ Navigation entre pages fluide
+- ✅ API backend compatible
+- ✅ Styles CSS originaux préservés
+- ✅ Comparaison produits opérationnelle
+- ✅ Page tendances complète (4 sections)
+
+---
+
+## 🛠️ CORRECTIONS SERVEUR EXPRESS (2026-01-20)
+
+### ✅ Validation API corrigée
+
+**backend/middleware/validators.js** :
+- ✅ **Fix prix** - Limite augmentée de 50 à 255 caractères (certains prix avec abonnements dépassaient 50 chars)
+- ✅ **Fix donnees_fiche** - Accepte tableau OU objet JSON (au lieu d'objet seulement)
+- ✅ **Logs debug** - Messages détaillés pour le debugging des validations
+
+### ✅ Configuration serveur
+
+**server.js** :
+- ✅ **CSP désactivée en dev** - Plus de blocages de ressources en développement (`helmet({ contentSecurityPolicy: false })`)
+- ✅ **Priorité fichiers statiques** - frontend/public servi avant la racine
+- ✅ **Fix index.html** - Suppression de `express.static(__dirname)` pour éviter de servir le mauvais index.html Vue.js
+
+### ✅ Design comparateur gaming
+
+**Compare.vue** - Design néon rose/violet :
+```css
+.compare-img {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.15));
+  border: 2px solid rgba(240, 147, 251, 0.3);
+  box-shadow: 0 0 20px rgba(240, 147, 251, 0.15), inset 0 0 30px rgba(102, 126, 234, 0.1);
+}
+```
+
+### ✅ UI épurée
+
+- ✅ **Suppression boutons flottants** - CompareFloatingButton et CompareModal retirés d'App.vue
+- ✅ **Bouton header retiré** - Bouton comparateur supprimé de AppHeader.vue
+- ✅ **Bouton top-du-mois** - Lien comparateur avec style gradient "Top Janvier 2026"
+- ✅ **Produits centrés** - Flexbox avec `justify-content: center`
+- ✅ **Cartes agrandies** - 200px min-width, 120px image height
+
+### Configuration développement
+
+| Port | Service | Pages disponibles |
+|------|---------|-------------------|
+| **5173** | Vite (Vue.js) | /comparatif, /admin, /produits, /top-du-mois, /tendances/* |
+| **3000** | Express | Pages HTML statiques (index.html, top-du-mois.html) + API REST |
 
 ---
 

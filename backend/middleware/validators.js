@@ -4,6 +4,8 @@ const { body, param, validationResult } = require('express-validator');
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('❌ Validation échouée:', JSON.stringify(errors.array(), null, 2));
+    console.log('📦 Body reçu:', JSON.stringify(req.body, null, 2));
     return res.status(400).json({
       success: false,
       error: 'Validation échouée',
@@ -42,7 +44,7 @@ const validateProductCreate = [
   body('prix')
     .optional()
     .trim()
-    .isLength({ max: 50 }).withMessage('Le prix ne doit pas dépasser 50 caractères'),
+    .isLength({ max: 255 }).withMessage('Le prix ne doit pas dépasser 255 caractères'),
 
   body('top_du_mois')
     .optional()
@@ -59,7 +61,11 @@ const validateProductCreate = [
 
   body('donnees_fiche')
     .optional()
-    .isObject().withMessage('donnees_fiche doit être un objet JSON'),
+    .custom((value) => {
+      if (value === null || value === undefined) return true;
+      if (Array.isArray(value) || typeof value === 'object') return true;
+      throw new Error('donnees_fiche doit être un tableau ou un objet JSON');
+    }),
 
   handleValidationErrors
 ];

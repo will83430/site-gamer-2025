@@ -33,20 +33,28 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Sécurité: Headers HTTP avec Helmet
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // unsafe-eval nécessaire pour onclick inline
-      scriptSrcAttr: ["'unsafe-inline'"], // Permet les attributs onclick, onload, etc.
-      connectSrc: ["'self'", "http://localhost:3000", "http://192.168.1.235:3000"], // API calls
-      frameSrc: ["'self'", "https://www.youtube.com", "https://youtube.com", "https://www.youtube-nocookie.com", "https://www.dailymotion.com", "https://geo.dailymotion.com"], // Iframes vidéos
+// En développement, désactiver CSP pour éviter les blocages
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:", "https:"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        scriptSrcAttr: ["'unsafe-inline'"],
+        connectSrc: ["'self'", "http://localhost:3000", "http://192.168.1.235:3000"],
+        frameSrc: ["'self'", "https://www.youtube.com", "https://youtube.com", "https://www.youtube-nocookie.com", "https://www.dailymotion.com", "https://geo.dailymotion.com"],
+      }
     }
-  }
-}));
+  }));
+} else {
+  // Dev: désactiver CSP
+  app.use(helmet({
+    contentSecurityPolicy: false
+  }));
+}
 
 app.use(compression()); // Compression gzip
 
@@ -132,11 +140,13 @@ if (fs.existsSync(fichesPath)) {
   app.use('/fiches', express.static(fichesPath));
 }
 
-// 4. Servir la racine pour index.html, etc.
-app.use(express.static(__dirname));
+// 4. Servir frontend/public pour les fichiers HTML statiques (priorité haute)
 app.use(express.static(path.join(__dirname, 'frontend', 'public')));
 
-// Servir index.html à la racine
+// 5. Servir la racine SAUF index.html (pour éviter de servir le index.html Vue.js)
+// Ne pas servir express.static(__dirname) car cela servirait le mauvais index.html
+
+// Servir index.html à la racine (celui de frontend/public, pas celui de la racine)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'public', 'index.html'));
 });
