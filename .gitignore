@@ -1,8 +1,11 @@
 # Dépendances Node.js
 node_modules/
+package-lock.json
 
 # Variables d'environnement
 .env
+.env.local
+.env.*.local
 
 # Dossiers et fichiers de configuration éditeur
 .vscode/
