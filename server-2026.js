@@ -113,17 +113,22 @@ app.use('/api/', devApiLimiter);
 app.use('/api/', apiLimiter);
 
 // ========== FICHIERS STATIQUES ==========
+
+// Assets partagés
 app.use('/assets', express.static(path.join(__dirname, 'frontend/public/assets')));
 
+// Dossier 2026 (nouveau site)
+app.use('/2026', express.static(path.join(__dirname, 'frontend/public/2026')));
+
+// Frontend public (legacy)
 const frontendPath = path.join(__dirname, 'frontend', 'public');
 app.use('/frontend/public', express.static(frontendPath));
 
+// Fiches produits
 const fichesPath = path.join(__dirname, 'fiches');
 if (fs.existsSync(fichesPath)) {
   app.use('/fiches', express.static(fichesPath));
 }
-
-app.use(express.static(path.join(__dirname, 'frontend', 'public')));
 
 // Favicon
 app.get('/favicon.ico', (req, res) => {
@@ -131,10 +136,20 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 // ========== HOMEPAGE 2026 ==========
-// Servir index-smooth.html comme page d'accueil
+// IMPORTANT: Ces routes doivent être AVANT express.static pour avoir la priorité
+
+// Racine -> nouveau site 2026
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'public', 'index-smooth.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'public', '2026', 'index.html'));
 });
+
+// Route /2026/ explicite
+app.get('/2026/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'public', '2026', 'index.html'));
+});
+
+// Autres fichiers statiques (APRÈS les routes explicites)
+app.use(express.static(path.join(__dirname, 'frontend', 'public')));
 
 // ========== ROUTES API ==========
 app.get('/api/test', (req, res) => {

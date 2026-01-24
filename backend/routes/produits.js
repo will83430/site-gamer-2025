@@ -19,8 +19,10 @@ router.get('/', async (req, res) => {
     const params = [];
     
     if (categorie) {
-      query += ` WHERE categorie = $1`;
-      params.push(categorie);
+      // Convertir tirets en espaces pour correspondre au format DB
+      const categorieNormalized = categorie.replace(/-/g, ' ');
+      query += ` WHERE LOWER(categorie) = LOWER($1)`;
+      params.push(categorieNormalized);
     }
     
     query += ` ORDER BY categorie, nom`;
