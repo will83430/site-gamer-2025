@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparatif Produits - HIGH-TECH 2026</title>
+    <meta name="description" content="Comparez les meilleurs produits high-tech cote a cote">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/2026/css/theme.css">
+
+    <style>
+        /* ========================================
+           COMPARATIF PAGE STYLES
+           ======================================== */
+
+        main {
+            padding-top: 100px;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .comparatif-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .products-count {
+            display: inline-block;
+            background: rgba(77, 212, 255, 0.1);
+            color: var(--tech-blue);
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(77, 212, 255, 0.3);
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        /* ========================================
+           SELECTION MODE STYLES
+           ======================================== */
+
+        .selection-mode {
+            margin-bottom: 2rem;
+        }
+
+        .category-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .category-selector label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .category-select {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: var(--radius-full);
+            border: 2px solid var(--tech-yellow);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            min-width: 220px;
+        }
+
+        .category-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 255, 0, 0.2);
+        }
+
+        .category-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Products Selection Grid */
+        .products-selection-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .selection-card {
+            width: 220px;
+            flex-shrink: 0;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 2px solid transparent;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+
+        .selection-card:hover {
+            border-color: rgba(212, 255, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .selection-card.selected {
+            border-color: var(--tech-yellow);
+            box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+        }
+
+        .selection-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            width: 28px;
+            height: 28px;
+            background: var(--tech-yellow);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .selection-card-image {
+            width: 100%;
+            height: 140px;
+            object-fit: contain;
+            background: var(--bg-elevated);
+            padding: 1rem;
+        }
+
+        .selection-card-info {
+            padding: 1rem;
+        }
+
+        .selection-card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .selection-card-price {
+            color: var(--tech-green);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Compare Button */
+        .compare-action {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .compare-action .btn {
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+        }
+
+        .compare-action .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .selection-info {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Compare Card */
+        .compare-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .compare-card-header {
+            position: relative;
+            padding: 1.5rem;
+            background: var(--bg-elevated);
+            text-align: center;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 77, 166, 0.2);
+            border: 1px solid rgba(255, 77, 166, 0.4);
+            color: var(--tech-pink);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition-fast);
+            z-index: 10;
+        }
+
+        .remove-btn:hover {
+            background: var(--tech-pink);
+            color: white;
+        }
+
+        .top-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff9500 50%, #ffd700 100%);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .compare-card-image {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .compare-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .compare-card-category {
+            color: var(--tech-yellow);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Price Highlight */
+        .price-highlight {
+            background: rgba(107, 255, 107, 0.1);
+            border: 1px solid rgba(107, 255, 107, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-sm);
+            margin: 1rem 1.5rem;
+            text-align: center;
+        }
+
+        .price-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .price-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--tech-green);
+        }
+
+        /* Description */
+        .compare-card-description {
+            padding: 0 1.5rem 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Sections */
+        .compare-section-block {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            color: var(--tech-yellow);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: var(--tech-yellow);
+            border-radius: 2px;
+        }
+
+        /* Features List */
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .features-list li {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            padding: 0.4rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .features-list li::before {
+            content: '+';
+            position: absolute;
+            left: 0;
+            color: var(--tech-green);
+            font-weight: bold;
+        }
+
+        /* Specs List */
+        .specs-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .specs-list li {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            line-height: 1.5;
+        }
+
+        .specs-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Actions */
+        .compare-card-actions {
+            padding: 1rem 1.5rem;
+            background: var(--bg-elevated);
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .view-product-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: rgba(212, 255, 0, 0.1);
+            border: 1px solid var(--tech-yellow);
+            color: var(--tech-yellow);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+        }
+
+        .view-product-btn:hover {
+            background: var(--tech-yellow);
+            color: var(--bg-primary);
+        }
+
+        /* Actions Bar */
+        .actions-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-state-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-text {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(212, 255, 0, 0.1);
+            border-top-color: var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/2026/" class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg)" stroke-width="2.5" opacity="0.9"/>
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg)" opacity="0.95"/>
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </a>
+
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link">Accueil</a>
+                <a href="/2026/#categories" class="nav-link">Categories</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="comparatif-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Comparatif Produits</h1>
+                <p class="page-subtitle" id="page-subtitle">Comparez jusqu'a 4 produits de la meme categorie</p>
+                <span class="products-count" id="products-count">0 produit</span>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-state" id="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Chargement des produits...</p>
+            </div>
+
+            <!-- ========================================
+                 SELECTION MODE (when no products selected)
+                 ======================================== -->
+            <div class="selection-mode hidden" id="selection-mode">
+                <!-- Category Selector -->
+                <div class="category-selector">
+                    <label for="category-select">Categorie :</label>
+                    <select id="category-select" class="category-select">
+                        <option value="">-- Choisir une categorie --</option>
+                        <option value="SMARTPHONE">Smartphones</option>
+                        <option value="PC GAMING">PC Gaming</option>
+                        <option value="CONSOLE">Consoles</option>
+                        <option value="CASQUE VR">VR/AR</option>
+                        <option value="DRONE">Drones</option>
+                        <option value="MONTRE CONNECTEE">Montres Connectées</option>
+                        <option value="CAMERA">Caméras</option>
+                        <option value="CASQUE AUDIO">Casques Audio</option>
+                        <option value="ECRAN TV">Ecrans & TV</option>
+                        <option value="TABLETTE">Tablettes</option>
+                        <option value="PERIPHERIQUES">Périphériques</option>
+                        <option value="IMPRIMANTE 3D">Imprimantes 3D</option>
+                        <option value="BOX INTERNET">Box Internet</option>
+                        <option value="SERVEUR">Serveurs</option>
+                        <option value="VIDEO PROJECTEUR">Vidéoprojecteurs</option>
+                        <option value="TABLEAU INTERACTIF">Tableaux Interactifs</option>
+                    </select>
+                </div>
+
+                <p class="selection-info">Cliquez sur les produits pour les sélectionner (max 4)</p>
+
+                <!-- Products Grid for Selection -->
+                <div class="products-selection-grid" id="products-selection-grid">
+                    <!-- Selection cards will be inserted here -->
+                </div>
+
+                <!-- Compare Button -->
+                <div class="compare-action">
+                    <button class="btn btn-primary" id="start-compare-btn" disabled onclick="startComparison()">
+                        Comparer les produits sélectionnés
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========================================
+                 COMPARISON MODE (when products selected)
+                 ======================================== -->
+            <!-- Comparison Grid -->
+            <div class="comparison-grid hidden" id="comparison-grid">
+                <!-- Compare cards will be inserted here -->
+            </div>
+
+            <!-- Empty State (for comparison mode) -->
+            <div class="empty-state hidden" id="empty-state">
+                <div class="empty-state-icon">:/</div>
+                <h2 class="empty-state-title">Aucun produit a comparer</h2>
+                <p class="empty-state-text">
+                    Selectionnez une categorie ci-dessus et cliquez sur les produits pour les ajouter a la comparaison.
+                </p>
+            </div>
+
+            <!-- Actions (for comparison mode) -->
+            <div class="actions-bar hidden" id="actions-bar">
+                <button class="btn btn-secondary" onclick="clearComparison()">Vider la comparaison</button>
+                <button class="btn btn-outline" onclick="switchToSelectionMode()">Nouvelle selection</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/top-du-mois">Top du Mois</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/wiki/wiki.html">Wiki</a></li>
+                    <li><a href="/admin">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top" id="scrollTop">^</button>
+
+    <script>
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        const MAX_COMPARE = 4;
+        let compareList = [];
+        let allProducts = [];
+        let selectedCategory = '';
+        let selectionList = []; // Pour le mode selection
+        let currentMode = 'selection'; // 'selection' ou 'comparison'
+
+        const categoryNames = {
+            'SMARTPHONE': 'Smartphones',
+            'PC GAMING': 'PC Gaming',
+            'CONSOLE': 'Consoles',
+            'CASQUE VR': 'VR/AR',
+            'DRONE': 'Drones',
+            'MONTRE CONNECTEE': 'Montres Connectées',
+            'CAMERA': 'Caméras',
+            'CASQUE AUDIO': 'Casques Audio',
+            'ECRAN TV': 'Ecrans & TV',
+            'TABLETTE': 'Tablettes',
+            'PERIPHERIQUES': 'Périphériques',
+            'IMPRIMANTE 3D': 'Imprimantes 3D',
+            'BOX INTERNET': 'Box Internet',
+            'SERVEUR': 'Serveurs',
+            'VIDEO PROJECTEUR': 'Vidéoprojecteurs',
+            'TABLEAU INTERACTIF': 'Tableaux Interactifs'
+        };
+
+        function categoryToSlug(cat) {
+            if (!cat) return '';
+            return cat.toLowerCase().replace(/\s+/g, '-');
+        }
+
+        function decodeText(text) {
+            if (!text) return '';
+            return text;
+        }
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCompareListFromURL();
+            loadAllProducts();
+            setupScrollTop();
+            setupCategorySelector();
+            setupPageLeaveHandler();
+        });
+
+        // ========================================
+        // CLEAR ON PAGE LEAVE (selection mode only)
+        // ========================================
+        function setupPageLeaveHandler() {
+            window.addEventListener('beforeunload', () => {
+                // Clear localStorage when leaving page in selection mode
+                if (currentMode === 'selection') {
+                    localStorage.setItem('compareList', JSON.stringify([]));
+                }
+            });
+        }
+
+        // ========================================
+        // SETUP CATEGORY SELECTOR
+        // ========================================
+        function setupCategorySelector() {
+            const select = document.getElementById('category-select');
+            select.addEventListener('change', (e) => {
+                selectedCategory = e.target.value;
+                selectionList = []; // Reset selection when category changes
+                // Also clear localStorage to avoid mixing categories
+                compareList = [];
+                localStorage.setItem('compareList', JSON.stringify([]));
+                renderSelectionGrid();
+                updateCompareButton();
+            });
+        }
+
+        // ========================================
+        // LOAD COMPARE LIST FROM URL
+        // ========================================
+        function loadCompareListFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idsParam = urlParams.get('ids');
+
+            if (idsParam) {
+                compareList = idsParam.split(',').filter(id => id.trim());
+            } else {
+                compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+            }
+        }
+
+        // ========================================
+        // LOAD ALL PRODUCTS
+        // ========================================
+        async function loadAllProducts() {
+            try {
+                const response = await fetch('/api/produits');
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    allProducts = data.data;
+
+                    document.getElementById('loading-state').classList.add('hidden');
+
+                    // Decide which mode to show
+                    if (compareList.length > 0) {
+                        // Has products to compare -> comparison mode
+                        currentMode = 'comparison';
+                        const firstProduct = allProducts.find(p => compareList.includes(String(p.id)));
+                        if (firstProduct) {
+                            selectedCategory = firstProduct.categorie;
+                        }
+                        renderComparison();
+                    } else {
+                        // No products -> selection mode
+                        currentMode = 'selection';
+                        document.getElementById('page-subtitle').textContent = 'Sélectionnez une catégorie et choisissez les produits à comparer';
+                        document.getElementById('products-count').classList.add('hidden');
+                        renderSelectionMode();
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur chargement produits:', error);
+                document.getElementById('loading-state').innerHTML = '<p>Erreur de chargement</p>';
+            }
+        }
+
+        // ========================================
+        // RENDER SELECTION MODE
+        // ========================================
+        function renderSelectionMode() {
+            document.getElementById('selection-mode').classList.remove('hidden');
+            document.getElementById('comparison-grid').classList.add('hidden');
+            document.getElementById('actions-bar').classList.add('hidden');
+            document.getElementById('empty-state').classList.add('hidden');
+            renderSelectionGrid();
+        }
+
+        // ========================================
+        // RENDER SELECTION GRID
+        // ========================================
+        function renderSelectionGrid() {
+            const grid = document.getElementById('products-selection-grid');
+
+            // Si aucune catégorie sélectionnée
+            if (!selectedCategory) {
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);width:100%;padding:2rem;">Sélectionnez une catégorie pour afficher les produits</p>';
+                return;
+            }
+
+            const categoryProducts = allProducts.filter(p => p.categorie === selectedCategory);
+
+            if (categoryProducts.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);width:100%;">Aucun produit dans cette catégorie</p>';
+                return;
+            }
+
+            grid.innerHTML = categoryProducts.map(product => {
+                const imageUrl = product.image_url || `/assets/images/${product.image || 'placeholder.png'}`;
+                const title = decodeText(product.titre_affiche || product.nom);
+                const isSelected = selectionList.includes(String(product.id));
+
+                return `
+                    <div class="selection-card ${isSelected ? 'selected' : ''}"
+                         onclick="toggleProductSelection('${product.id}')"
+                         data-id="${product.id}">
+                        <img src="${imageUrl}" alt="${title}" class="selection-card-image"
+                             onerror="this.src='/assets/images/placeholder.png'">
+                        <div class="selection-card-info">
+                            <div class="selection-card-title">${title}</div>
+                            <div class="selection-card-price">${product.prix || 'N/C'}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========================================
+        // TOGGLE PRODUCT SELECTION
+        // ========================================
+        function toggleProductSelection(productId) {
+            const id = String(productId);
+            const index = selectionList.indexOf(id);
+
+            if (index > -1) {
+                // Remove from selection
+                selectionList.splice(index, 1);
+            } else {
+                // Add to selection (max 4)
+                if (selectionList.length >= MAX_COMPARE) {
+                    alert('Vous pouvez comparer maximum ' + MAX_COMPARE + ' produits');
+                    return;
+                }
+                selectionList.push(id);
+            }
+
+            // Update UI
+            const card = document.querySelector(`.selection-card[data-id="${productId}"]`);
+            if (card) {
+                card.classList.toggle('selected', selectionList.includes(id));
+            }
+
+            updateCompareButton();
+        }
+
+        // ========================================
+        // UPDATE COMPARE BUTTON
+        // ========================================
+        function updateCompareButton() {
+            const btn = document.getElementById('start-compare-btn');
+            const count = selectionList.length;
+            btn.disabled = count < 2;
+            btn.textContent = count >= 2
+                ? `Comparer ${count} produits`
+                : 'Selectionnez au moins 2 produits';
+        }
+
+        // ========================================
+        // START COMPARISON
+        // ========================================
+        function startComparison() {
+            if (selectionList.length < 2) return;
+
+            // Transfer selection to compare list
+            compareList = [...selectionList];
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+
+            // Switch to comparison mode
+            currentMode = 'comparison';
+            document.getElementById('selection-mode').classList.add('hidden');
+            document.getElementById('page-subtitle').textContent = 'Comparez jusqu\'a 4 produits de la meme categorie';
+            document.getElementById('products-count').classList.remove('hidden');
+
+            updateURL();
+            renderComparison();
+        }
+
+        // ========================================
+        // SWITCH TO SELECTION MODE
+        // ========================================
+        function switchToSelectionMode() {
+            currentMode = 'selection';
+            compareList = [];
+            selectionList = [];
+            localStorage.setItem('compareList', JSON.stringify([]));
+            
+            // Convertir la catégorie DB (ex: "SMARTPHONE") en slug URL (ex: "smartphone")
+            const categorySlug = selectedCategory ? selectedCategory.toLowerCase().replace(/\s+/g, '-') : '';
+            
+            // Rediriger vers la page de sélection avec la catégorie actuelle
+            window.location.href = `/2026/produits.html?categorie=${categorySlug}`;
+        }
+
+        // ========================================
+        // REMOVE PRODUCT
+        // ========================================
+        function removeProduct(productId) {
+            compareList = compareList.filter(id => id !== String(productId));
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+            updateURL();
+            renderComparison();
+        }
+
+        // ========================================
+        // RENDER COMPARISON
+        // ========================================
+        function renderComparison() {
+            const grid = document.getElementById('comparison-grid');
+            const emptyState = document.getElementById('empty-state');
+            const actionsBar = document.getElementById('actions-bar');
+
+            // Get products in compare list
+            const productsToCompare = allProducts.filter(p => compareList.includes(String(p.id)));
+
+            // Update count
+            document.getElementById('products-count').textContent =
+                `${productsToCompare.length} produit${productsToCompare.length > 1 ? 's' : ''}`;
+
+            if (productsToCompare.length === 0) {
+                grid.classList.add('hidden');
+                actionsBar.classList.add('hidden');
+                // Switch back to selection mode
+                switchToSelectionMode();
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.classList.remove('hidden');
+            actionsBar.classList.remove('hidden');
+
+            // Render cards
+            grid.innerHTML = productsToCompare.map(product => renderCompareCard(product)).join('');
+        }
+
+        // ========================================
+        // RENDER COMPARE CARD
+        // ========================================
+        function renderCompareCard(product) {
+            const imageUrl = product.image_url || `/assets/images/${product.image || 'placeholder.png'}`;
+            const title = decodeText(product.titre_affiche || product.nom);
+            const categoryName = categoryNames[product.categorie] || product.categorie;
+            const description = decodeText(product.description) || 'Description non disponible';
+
+            // Caracteristiques (fonctionnalites_avancees)
+            let featuresHtml = '';
+            if (product.fonctionnalites_avancees && product.fonctionnalites_avancees.length > 0) {
+                const features = product.fonctionnalites_avancees.map(f =>
+                    typeof f === 'string' ? decodeText(f) : decodeText(f.description || f.titre || '')
+                );
+                featuresHtml = `
+                    <div class="compare-section-block">
+                        <div class="section-title">Caracteristiques</div>
+                        <ul class="features-list">
+                            ${features.map(f => `<li>${f}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // Fiche technique (donnees_fiche)
+            let specsHtml = '';
+            if (product.donnees_fiche && product.donnees_fiche.length > 0) {
+                const specs = product.donnees_fiche.map(spec => {
+                    if (typeof spec === 'string') {
+                        return decodeText(spec);
+                    }
+                    return decodeText(spec.label || '') + ': ' + decodeText(spec.value || '');
+                });
+                specsHtml = `
+                    <div class="compare-section-block">
+                        <div class="section-title">Fiche technique</div>
+                        <ul class="specs-list">
+                            ${specs.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="compare-card" data-id="${product.id}">
+                    <div class="compare-card-header">
+                        ${product.top_du_mois ? '<span class="top-badge">TOP DU MOIS</span>' : ''}
+                        <button class="remove-btn" onclick="removeProduct('${product.id}')" title="Retirer">x</button>
+                        <img src="${imageUrl}" alt="${title}" class="compare-card-image"
+                             onerror="this.src='/assets/images/placeholder.png'">
+                        <h3 class="compare-card-title">${title}</h3>
+                        <div class="compare-card-category">${categoryName}</div>
+                    </div>
+
+                    <div class="price-highlight">
+                        <div class="price-label">Prix</div>
+                        <div class="price-value">${product.prix || 'N/C'}</div>
+                    </div>
+
+                    <p class="compare-card-description">${description}</p>
+
+                    ${featuresHtml}
+                    ${specsHtml}
+
+                    <div class="compare-card-actions">
+                        <a href="/2026/fiche.html?produit=${encodeURIComponent(product.nom)}" class="view-product-btn">
+                            Voir la fiche complete
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // UPDATE URL
+        // ========================================
+        function updateURL() {
+            if (compareList.length > 0) {
+                window.history.replaceState({}, '', `/2026/comparatif.html?ids=${compareList.join(',')}`);
+            } else {
+                window.history.replaceState({}, '', '/2026/comparatif.html');
+            }
+        }
+
+        // ========================================
+        // CLEAR COMPARISON
+        // ========================================
+        function clearComparison() {
+            compareList = [];
+            localStorage.setItem('compareList', JSON.stringify([]));
+            updateURL();
+            renderComparison();
+        }
+
+        // ========================================
+        // SCROLL TO TOP
+        // ========================================
+        function setupScrollTop() {
+            const scrollTop = document.getElementById('scrollTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollTop.classList.add('visible');
+                } else {
+                    scrollTop.classList.remove('visible');
+                }
+            });
+
+            scrollTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
+</html>

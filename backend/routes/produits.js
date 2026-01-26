@@ -55,6 +55,49 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET - Récupérer un produit par nom (slug)
+router.get('/by-name/:nom', async (req, res) => {
+  try {
+    const { nom } = req.params;
+    const result = await pool.query(`
+      SELECT
+        p.*,
+        COALESCE(p.titre_affiche, p.nom) as titre_affiche
+      FROM produits p
+      WHERE LOWER(p.nom) = LOWER($1)
+    `, [nom]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Produit non trouvé'
+      });
+    }
+
+    const product = result.rows[0];
+
+    // Correction du chemin de l'image
+    if (product.image) {
+      const cleanImage = cleanImagePath(product.image);
+      product.image_url = `/assets/images/${cleanImage}`;
+    } else {
+      product.image_url = '/assets/images/placeholder.png';
+    }
+
+    res.json({
+      success: true,
+      data: product
+    });
+
+  } catch (error) {
+    console.error('❌ Erreur GET produit par nom:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // GET - Récupérer un produit par ID
 router.get('/:id', validateId, async (req, res) => {
   try {

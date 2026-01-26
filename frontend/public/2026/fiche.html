@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Chargement... - HIGH-TECH 2026</title>
+    <meta name="description" id="page-description" content="Fiche produit HIGH-TECH 2026">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/2026/css/theme.css">
+
+    <style>
+        /* ========================================
+           PRODUCT PAGE SPECIFIC STYLES
+           ======================================== */
+
+        main {
+            padding-top: 100px;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--tech-yellow);
+        }
+
+        .breadcrumb span {
+            color: var(--text-muted);
+        }
+
+        .breadcrumb .current {
+            color: var(--tech-yellow);
+        }
+
+        /* Product Header */
+        .product-header {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-yellow-green);
+        }
+
+        .product-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .meta-badge {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .meta-badge.category {
+            background: rgba(212, 255, 0, 0.1);
+            color: var(--tech-yellow);
+            border: 1px solid rgba(212, 255, 0, 0.3);
+        }
+
+        .meta-badge.price {
+            background: rgba(107, 255, 107, 0.1);
+            color: var(--tech-green);
+            border: 1px solid rgba(107, 255, 107, 0.3);
+        }
+
+        .meta-badge.top {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff9500 50%, #ffd700 100%);
+            color: white;
+            border: none;
+            animation: topPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes topPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Product Overview */
+        .product-overview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 968px) {
+            .product-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product-image-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .product-image-section img {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            transition: transform 0.5s ease;
+        }
+
+        .product-image-section:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-summary {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+        }
+
+        .summary-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--tech-yellow);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--gradient-yellow-green);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            box-shadow: 0 10px 30px rgba(212, 255, 0, 0.3);
+        }
+
+        .product-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 255, 0, 0.4);
+        }
+
+        /* Sections */
+        .section-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Specs Grid */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .spec-item {
+            padding: 1.2rem;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--tech-yellow);
+            transition: var(--transition-fast);
+            min-height: auto;
+        }
+
+        .spec-item:hover {
+            border-left-color: var(--tech-green);
+            background: rgba(212, 255, 0, 0.05);
+        }
+
+        .spec-label {
+            color: var(--tech-yellow);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .spec-value {
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover {
+            border-color: rgba(212, 255, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(212, 255, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(212, 255, 0, 0.1);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation Footer */
+        .product-footer {
+            margin-top: 3rem;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .share-section {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .share-title {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(212, 255, 0, 0.2);
+            color: var(--text-secondary);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-size: 0.9rem;
+        }
+
+        .share-btn:hover {
+            background: rgba(212, 255, 0, 0.1);
+            border-color: var(--tech-yellow);
+            color: var(--tech-yellow);
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(212, 255, 0, 0.1);
+            border-top-color: var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--tech-pink);
+            margin-bottom: 1rem;
+        }
+
+        .error-text {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Category Names */
+        .category-display {
+            text-transform: capitalize;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/2026/" class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg)" stroke-width="2.5" opacity="0.9"/>
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg)" opacity="0.95"/>
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </a>
+
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link">Accueil</a>
+                <a href="/2026/#categories" class="nav-link">Catégories</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="product-container">
+            <!-- Loading State -->
+            <div class="loading-state" id="loading-state">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Chargement du produit...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-state hidden" id="error-state">
+                <div class="error-icon">:(</div>
+                <h2 class="error-title">Produit non trouve</h2>
+                <p class="error-text">Le produit que vous recherchez n'existe pas ou a ete deplace.</p>
+                <a href="/2026/produits.html" class="btn btn-primary">Voir tous les produits</a>
+            </div>
+
+            <!-- Product Content (hidden until loaded) -->
+            <div class="product-content hidden" id="product-content">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <a href="/2026/">Accueil</a>
+                    <span>/</span>
+                    <a href="/2026/#categories">Catégories</a>
+                    <span>/</span>
+                    <a href="#" id="breadcrumb-category-link">Catégorie</a>
+                    <span>/</span>
+                    <span class="current" id="breadcrumb-product">Produit</span>
+                </nav>
+
+                <!-- Product Header -->
+                <div class="product-header">
+                    <h1 class="product-title" id="product-title">Nom du produit</h1>
+                    <div class="product-meta" id="product-meta">
+                        <!-- Badges will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Product Overview -->
+                <div class="product-overview">
+                    <div class="product-image-section">
+                        <img id="product-image" src="/assets/images/placeholder.png" alt="Produit" loading="lazy">
+                    </div>
+
+                    <div class="product-summary">
+                        <h2 class="summary-title">Description</h2>
+                        <p class="product-description" id="product-description">
+                            Description du produit...
+                        </p>
+                        <a href="#" class="product-link hidden" id="product-link" target="_blank" rel="noopener">
+                            Voir le produit
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Specifications (if available) -->
+                <div class="section-card hidden" id="specs-section">
+                    <h2 class="section-card-title">Specifications Techniques</h2>
+                    <div class="specs-grid" id="specs-grid">
+                        <!-- Specs will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Features (if available) -->
+                <div class="section-card hidden" id="features-section">
+                    <h2 class="section-card-title">Fonctionnalites Avancees</h2>
+                    <div class="features-grid" id="features-grid">
+                        <!-- Features will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Product Footer -->
+                <div class="product-footer">
+                    <div class="navigation-buttons">
+                        <a href="/2026/" class="btn btn-secondary">
+                            Accueil
+                        </a>
+                        <a href="/2026/produits.html" class="btn btn-primary" id="category-link">
+                            Voir la categorie
+                        </a>
+                    </div>
+
+                    <div class="share-section">
+                        <h4 class="share-title">Partager cette fiche:</h4>
+                        <div class="share-buttons">
+                            <button class="share-btn" onclick="shareContent()">Partager</button>
+                            <button class="share-btn" onclick="copyLink()">Copier le lien</button>
+                            <button class="share-btn" onclick="print()">Imprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/top-du-mois">Top du Mois</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/wiki/wiki.html">Wiki</a></li>
+                    <li><a href="/admin">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top" id="scrollTop">^</button>
+
+    <script>
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        const categoryNames = {
+            'SMARTPHONE': 'Smartphones',
+            'PC GAMING': 'PC Gaming',
+            'CONSOLE': 'Consoles',
+            'CASQUE VR': 'VR/AR',
+            'DRONE': 'Drones',
+            'MONTRE CONNECTEE': 'Montres Connectées',
+            'CAMERA': 'Caméras',
+            'CASQUE AUDIO': 'Casques Audio',
+            'ECRAN TV': 'Ecrans & TV',
+            'TABLETTE': 'Tablettes',
+            'PERIPHERIQUES': 'Périphériques',
+            'IMPRIMANTE 3D': 'Imprimantes 3D',
+            'BOX INTERNET': 'Box Internet',
+            'SERVEUR': 'Serveurs',
+            'VIDEO PROJECTEUR': 'Vidéoprojecteurs',
+            'TABLEAU INTERACTIF': 'Tableaux Interactifs'
+        };
+
+        function categoryToSlug(cat) {
+            if (!cat) return '';
+            return cat.toLowerCase().replace(/\s+/g, '-');
+        }
+
+        // ========================================
+        // GET PRODUCT FROM URL
+        // ========================================
+        function getProductNameFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('produit') || urlParams.get('nom') || urlParams.get('id');
+        }
+
+        // ========================================
+        // LOAD PRODUCT
+        // ========================================
+        async function loadProduct() {
+            const productName = getProductNameFromURL();
+
+            if (!productName) {
+                showError();
+                return;
+            }
+
+            try {
+                // Try to load by name first
+                let response = await fetch(`/api/produits/by-name/${encodeURIComponent(productName)}`);
+                let data = await response.json();
+
+                // If not found by name, try by ID
+                if (!data.success) {
+                    response = await fetch(`/api/produits/${encodeURIComponent(productName)}`);
+                    data = await response.json();
+                }
+
+                if (data.success && data.data) {
+                    displayProduct(data.data);
+                } else {
+                    showError();
+                }
+            } catch (error) {
+                console.error('Erreur chargement produit:', error);
+                showError();
+            }
+        }
+
+        // ========================================
+        // DISPLAY PRODUCT
+        // ========================================
+        function displayProduct(product) {
+            // Hide loading, show content
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('product-content').classList.remove('hidden');
+
+            // Update page title
+            const title = product.titre_affiche || product.nom;
+            document.getElementById('page-title').textContent = `${title} - HIGH-TECH 2026`;
+            document.getElementById('page-description').content = product.description || `Fiche produit ${title}`;
+
+            // Breadcrumb
+            const categoryName = categoryNames[product.categorie] || product.categorie;
+            const categorySlug = categoryToSlug(product.categorie);
+            document.getElementById('breadcrumb-category-link').textContent = categoryName;
+            document.getElementById('breadcrumb-category-link').href = `/2026/produits.html?categorie=${categorySlug}`;
+            document.getElementById('breadcrumb-product').textContent = title;
+
+            // Product Header
+            document.getElementById('product-title').textContent = title;
+
+            // Meta badges
+            const metaContainer = document.getElementById('product-meta');
+            metaContainer.innerHTML = '';
+
+            // Category badge
+            metaContainer.innerHTML += `<span class="meta-badge category">${categoryName}</span>`;
+
+            // Price badge
+            if (product.prix) {
+                metaContainer.innerHTML += `<span class="meta-badge price">${product.prix}</span>`;
+            }
+
+            // Top du mois badge
+            if (product.top_du_mois) {
+                metaContainer.innerHTML += `<span class="meta-badge top">TOP DU MOIS</span>`;
+            }
+
+            // Image
+            const imageUrl = product.image_url || '/assets/images/placeholder.png';
+            document.getElementById('product-image').src = imageUrl;
+            document.getElementById('product-image').alt = title;
+
+            // Description
+            const description = product.description || 'Aucune description disponible pour ce produit.';
+            document.getElementById('product-description').textContent = description;
+
+            // External link (only show if it's a real external URL, not old fiche path)
+            if (product.lien && product.lien.startsWith('http')) {
+                const linkEl = document.getElementById('product-link');
+                linkEl.href = product.lien;
+                linkEl.classList.remove('hidden');
+            }
+
+            // Specifications (donnees_fiche)
+            if (product.donnees_fiche && product.donnees_fiche.length > 0) {
+                const specsSection = document.getElementById('specs-section');
+                const specsGrid = document.getElementById('specs-grid');
+
+                specsGrid.innerHTML = product.donnees_fiche.map(spec => {
+                    // Si c'est un string, parser le format "Titre\nContenu"
+                    if (typeof spec === 'string') {
+                        const lines = spec.split('\n');
+                        const title = lines[0] || 'Specification';
+                        const content = lines.slice(1).join('<br>').replace(/[⦁•-]\s*/g, '&bull; ');
+                        return `
+                            <div class="spec-item">
+                                <div class="spec-label">${title}</div>
+                                <div class="spec-value">${content || '-'}</div>
+                            </div>
+                        `;
+                    }
+                    // Si c'est un objet
+                    return `
+                        <div class="spec-item">
+                            <div class="spec-label">${spec.label || spec.nom || 'Spec'}</div>
+                            <div class="spec-value">${spec.value || spec.valeur || '-'}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                specsSection.classList.remove('hidden');
+            }
+
+            // Features (fonctionnalites_avancees)
+            if (product.fonctionnalites_avancees && product.fonctionnalites_avancees.length > 0) {
+                const featuresSection = document.getElementById('features-section');
+                const featuresGrid = document.getElementById('features-grid');
+
+                featuresGrid.innerHTML = product.fonctionnalites_avancees.map((feature, index) => {
+                    // Si c'est un string
+                    if (typeof feature === 'string') {
+                        const icons = ['*', '+', '#', '@'];
+                        return `
+                            <div class="feature-card">
+                                <div class="feature-icon">${icons[index % icons.length]}</div>
+                                <h3 class="feature-title">Fonctionnalite ${index + 1}</h3>
+                                <p class="feature-description">${feature}</p>
+                            </div>
+                        `;
+                    }
+                    // Si c'est un objet
+                    return `
+                        <div class="feature-card">
+                            <div class="feature-icon">${feature.icone || '*'}</div>
+                            <h3 class="feature-title">${feature.titre || feature.nom || 'Fonctionnalite'}</h3>
+                            <p class="feature-description">${feature.description || ''}</p>
+                        </div>
+                    `;
+                }).join('');
+
+                featuresSection.classList.remove('hidden');
+            }
+
+            // Category link button
+            document.getElementById('category-link').href = `/2026/produits.html?categorie=${categorySlug}`;
+            document.getElementById('category-link').textContent = `Voir ${categoryName}`;
+
+            // Animate elements
+            animateElements();
+        }
+
+        // ========================================
+        // SHOW ERROR
+        // ========================================
+        function showError() {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+        }
+
+        // ========================================
+        // ANIMATIONS
+        // ========================================
+        function animateElements() {
+            const elements = document.querySelectorAll('.spec-item, .feature-card, .section-card');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.5s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 60);
+            });
+        }
+
+        // ========================================
+        // SHARE FUNCTIONS
+        // ========================================
+        function shareContent() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: 'Decouvrez ce produit sur HIGH-TECH 2026',
+                    url: window.location.href
+                });
+            } else {
+                copyLink();
+            }
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Lien copie dans le presse-papiers!');
+            });
+        }
+
+        // ========================================
+        // SCROLL TO TOP
+        // ========================================
+        const scrollTop = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        scrollTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', loadProduct);
+    </script>
+</body>
+</html>

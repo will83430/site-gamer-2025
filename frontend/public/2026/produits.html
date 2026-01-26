@@ -26,6 +26,76 @@
             z-index: 1;
         }
 
+        /* How It Works Section */
+        .how-it-works {
+            padding: 1rem 2rem 1.5rem;
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+            background: transparent;
+        }
+
+        .steps-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .step-card {
+            text-align: center;
+            flex: 1;
+            min-width: 180px;
+            max-width: 280px;
+        }
+
+        @media (max-width: 900px) {
+            .steps-grid {
+                gap: 1.5rem;
+            }
+            .step-card {
+                min-width: 150px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .steps-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .step-card {
+                max-width: 100%;
+            }
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--tech-yellow) 0%, var(--tech-green) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--bg-primary);
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 20px rgba(212, 255, 0, 0.3);
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
         /* Page Header */
         .page-header {
             padding: 2rem 2rem 1rem;
@@ -209,15 +279,26 @@
         }
 
         .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 1.5rem;
             max-width: var(--container-max-width);
             margin: 0 auto;
         }
 
+        .products-grid .product-card {
+            width: 320px;
+            flex-shrink: 0;
+        }
+
         .products-grid.view-list {
-            grid-template-columns: 1fr;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .products-grid.view-list .product-card {
+            width: 100%;
         }
 
         /* Product Card */
@@ -373,6 +454,7 @@
             margin-bottom: 1rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -662,10 +744,49 @@
     </header>
 
     <main>
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Parcourez les produits</h3>
+                    <p class="step-description">
+                        Explorez les produits pour trouver ce qui vous interesse.
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Selectionnez pour comparer</h3>
+                    <p class="step-description">
+                        Cochez les produits que vous souhaitez (max 4) puis lancez la comparaison.
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Consultez les fiches</h3>
+                    <p class="step-description">
+                        Cliquez sur "Voir" pour accéder aux spécifications, fonctionnalités et avis.
+                    </p>
+                </div>
+
+                 <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Visualisez les tendances</h3>
+                    <p class="step-description">
+                        Cliquez sur "Voir les tendances" pour accéder articles de la catégorie.
+                    </p>
+                </div>
+            </div>
+        </section>
+
         <!-- Page Header -->
         <div class="page-header">
             <nav class="breadcrumb">
                 <a href="/2026/">Accueil</a>
+                <span>/</span>
+                <a href="/2026/#categories">Catégories</a>
                 <span>/</span>
                 <span class="current" id="breadcrumb-category">Sélectionnez une catégorie</span>
             </nav>
@@ -790,7 +911,7 @@
             </div>
 
             <div class="footer-section">
-                <h3>Categories</h3>
+                <h3>Catégories</h3>
                 <ul class="footer-links">
                     <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
                     <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
@@ -809,7 +930,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2026 HIGH-TECH 2026. Tous droits reserves.</p>
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
         </div>
     </footer>
 
@@ -947,9 +1068,9 @@
             breadcrumbCategory.textContent = name;
             document.getElementById('page-title').textContent = `${name} - HIGH-TECH 2026`;
 
-            // Show tendances button if category selected
+            // Bouton Tendances → page tendances filtrée par catégorie
             if (currentCategory) {
-                btnTendances.href = `/tendances/${currentCategory}`;
+                btnTendances.href = `/2026/tendances.html?categorie=${currentCategory}`;
                 btnTendances.style.display = 'inline-flex';
             }
         }
@@ -1024,7 +1145,7 @@
                             <p class="product-description">${description}</p>
                             <div class="product-footer">
                                 <span class="product-price">${priceHTML}</span>
-                                <a href="/fiches/${categoryToSlug(product.categorie)}/${product.nom}.html" class="product-btn">
+                                <a href="/2026/fiche.html?produit=${encodeURIComponent(product.nom)}" class="product-btn">
                                     Voir →
                                 </a>
                             </div>
