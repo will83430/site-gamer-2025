@@ -278,38 +278,19 @@ async function generateFicheTendanceHTML(tendance, categorie, pool = null) {
 </html>`;
 }
 
-// Générer et sauvegarder une fiche tendance (HTML minimal)
+// Générer une fiche tendance : on ne crée plus de fichiers, on pointe vers la page dynamique 2026
 async function createFicheTendance(tendance, categorie, baseDir, pool = null) {
-  console.log('Génération fiche tendance:', {
+  console.log('Génération lien fiche tendance (dynamique):', {
     id: tendance.id,
     titre: tendance.titre,
     categorie: categorie
   });
 
-  // Générer le HTML minimal
-  const html = await generateFicheTendanceHTML(tendance, categorie, pool);
-
-  // Créer le dossier de catégorie
-  const categorySlug = categorie.toLowerCase().replace(/\s+/g, '-');
-  const ficheDir = path.join(baseDir, 'fiches', 'tendances', categorySlug);
-
-  if (!fs.existsSync(ficheDir)) {
-    fs.mkdirSync(ficheDir, { recursive: true });
-  }
-
-  // Créer le fichier HTML (slug depuis le titre)
-  const slug = tendance.titre
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-  const fileName = `${slug}.html`;
-  const filePath = path.join(ficheDir, fileName);
-
-  fs.writeFileSync(filePath, html, 'utf8');
+  const dynamicPath = `/2026/tendance.html?id=${tendance.id}`;
 
   return {
-    path: `fiches/tendances/${categorySlug}/${fileName}`,
-    fullPath: filePath
+    path: dynamicPath,
+    fullPath: null
   };
 }
 
@@ -317,6 +298,11 @@ async function createFicheTendance(tendance, categorie, baseDir, pool = null) {
 function deleteFicheTendance(fichePath, baseDir) {
   if (!fichePath) {
     return { deleted: false, message: 'Pas de fiche à supprimer' };
+  }
+
+  // Nouveau modèle dynamique : rien à supprimer si le lien pointe vers la page unique 2026
+  if (fichePath.startsWith('/2026/tendance.html')) {
+    return { deleted: false, message: 'Fiche dynamique, aucune suppression nécessaire' };
   }
 
   const absolutePath = path.join(baseDir, fichePath);
@@ -327,7 +313,9 @@ function deleteFicheTendance(fichePath, baseDir) {
   } else {
     return { deleted: false, message: 'Fiche tendance non trouvée' };
   }
+
 }
+
 
 module.exports = {
   generateFicheTendanceHTML,

@@ -28,6 +28,7 @@ const predictionsRoutes = require('./backend/routes/predictions');
 const categoriesRoutes = require('./backend/routes/categories');
 const statsRoutes = require('./backend/routes/stats');
 const announcementsRoutes = require('./backend/routes/announcements');
+const wikiRoutes = require('./backend/routes/wiki');
 
 // ========== CONFIGURATION ==========
 const app = express();
@@ -113,6 +114,11 @@ app.use('/api/', devApiLimiter);
 app.use('/api/', apiLimiter);
 
 // ========== FICHIERS STATIQUES ==========
+
+// Redirection des anciennes fiches tendances vers le nouveau format dynamique
+app.get('/fiches/tendances/*', (req, res) => {
+  res.redirect('/2026/tendances.html');
+});
 
 // Assets partagés
 app.use('/assets', express.static(path.join(__dirname, 'frontend/public/assets')));
@@ -229,6 +235,7 @@ app.use('/api/predictions', predictionsRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/announcements', announcementsRoutes);
+app.use('/api/wiki', wikiRoutes);
 
 // Servir les fiches HTML
 app.get('/fiches/:category/:fiche', (req, res) => {

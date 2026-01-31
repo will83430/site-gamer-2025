@@ -250,63 +250,73 @@
         }
 
         .spec-label {
-            color: var(--tech-yellow);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 0.8rem;
+        }
+
+        .spec-icon {
+            font-size: 1.2rem;
+        }
+
+        .spec-title {
+            color: var(--text-primary);
         }
 
         .spec-value {
             color: var(--text-secondary);
             font-weight: 400;
             font-size: 0.95rem;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-        /* Features Grid */
+        .spec-value .spec-line {
+            display: block;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .spec-value .spec-line:last-child {
+            border-bottom: none;
+        }
+
+        .spec-value .spec-bullet {
+            color: var(--tech-cyan);
+            margin-right: 0.3rem;
+        }
+
+        /* Features Tags */
         .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .feature-card {
-            background: var(--bg-elevated);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: var(--transition-smooth);
-        }
-
-        .feature-card:hover {
-            border-color: rgba(212, 255, 0, 0.3);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(212, 255, 0, 0.1);
-        }
-
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(212, 255, 0, 0.1);
-            border-radius: var(--radius-sm);
             display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .feature-tag {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-description {
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
+            transition: var(--transition-fast);
+        }
+
+        .feature-tag:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--tech-cyan);
+        }
+
+        .feature-tag .feature-check {
+            color: var(--tech-green);
+            font-weight: bold;
         }
 
         /* Navigation Footer */
@@ -718,14 +728,54 @@
                 const specsGrid = document.getElementById('specs-grid');
 
                 specsGrid.innerHTML = product.donnees_fiche.map(spec => {
-                    // Si c'est un string, parser le format "Titre\nContenu"
                     if (typeof spec === 'string') {
-                        const lines = spec.split('\n');
-                        const title = lines[0] || 'Specification';
-                        const content = lines.slice(1).join('<br>').replace(/[⦁•-]\s*/g, '&bull; ');
+                        // Format: "emoji Titre|Contenu avec details"
+                        let title, content, icon = '';
+
+                        if (spec.includes('|')) {
+                            // Nouveau format avec pipe
+                            const parts = spec.split('|');
+                            const titlePart = parts[0].trim();
+                            content = parts.slice(1).join('|').trim();
+
+                            // Extraire l'emoji du titre
+                            const emojiMatch = titlePart.match(/^([\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|\u{2B50}|\u{1F4B0}|\u{1F527}|\u{1F50B}|\u{1F3B5}|\u{1F4D0}|\u{1F4F6}|\u{1F4E6}|\u{1F507}|\u{1F4DD})\s*/u);
+                            if (emojiMatch) {
+                                icon = emojiMatch[0].trim();
+                                title = titlePart.substring(emojiMatch[0].length).trim();
+                            } else {
+                                title = titlePart;
+                            }
+                        } else if (spec.includes('\n')) {
+                            // Ancien format avec saut de ligne
+                            const lines = spec.split('\n');
+                            title = lines[0] || 'Specification';
+                            content = lines.slice(1).join('<br>');
+                        } else {
+                            title = 'Info';
+                            content = spec;
+                        }
+
+                        // Formater le contenu: separer par bullet points
+                        if (content) {
+                            content = content
+                                .split(/\s*[•]\s*/)
+                                .filter(s => s.trim())
+                                .map(s => `<span class="spec-line"><span class="spec-bullet">▸</span> ${s.trim()}</span>`)
+                                .join('');
+
+                            // Si pas de bullets, afficher tel quel
+                            if (!content.includes('spec-line')) {
+                                content = `<span class="spec-line">${spec.split('|')[1] || spec}</span>`;
+                            }
+                        }
+
                         return `
                             <div class="spec-item">
-                                <div class="spec-label">${title}</div>
+                                <div class="spec-label">
+                                    ${icon ? `<span class="spec-icon">${icon}</span>` : ''}
+                                    <span class="spec-title">${title}</span>
+                                </div>
                                 <div class="spec-value">${content || '-'}</div>
                             </div>
                         `;
@@ -733,7 +783,9 @@
                     // Si c'est un objet
                     return `
                         <div class="spec-item">
-                            <div class="spec-label">${spec.label || spec.nom || 'Spec'}</div>
+                            <div class="spec-label">
+                                <span class="spec-title">${spec.label || spec.nom || 'Spec'}</span>
+                            </div>
                             <div class="spec-value">${spec.value || spec.valeur || '-'}</div>
                         </div>
                     `;
@@ -747,25 +799,13 @@
                 const featuresSection = document.getElementById('features-section');
                 const featuresGrid = document.getElementById('features-grid');
 
-                featuresGrid.innerHTML = product.fonctionnalites_avancees.map((feature, index) => {
-                    // Si c'est un string
-                    if (typeof feature === 'string') {
-                        const icons = ['*', '+', '#', '@'];
-                        return `
-                            <div class="feature-card">
-                                <div class="feature-icon">${icons[index % icons.length]}</div>
-                                <h3 class="feature-title">Fonctionnalite ${index + 1}</h3>
-                                <p class="feature-description">${feature}</p>
-                            </div>
-                        `;
-                    }
-                    // Si c'est un objet
+                featuresGrid.innerHTML = product.fonctionnalites_avancees.map((feature) => {
+                    const text = typeof feature === 'string' ? feature : (feature.titre || feature.nom || '');
                     return `
-                        <div class="feature-card">
-                            <div class="feature-icon">${feature.icone || '*'}</div>
-                            <h3 class="feature-title">${feature.titre || feature.nom || 'Fonctionnalite'}</h3>
-                            <p class="feature-description">${feature.description || ''}</p>
-                        </div>
+                        <span class="feature-tag">
+                            <span class="feature-check">✓</span>
+                            ${text}
+                        </span>
                     `;
                 }).join('');
 

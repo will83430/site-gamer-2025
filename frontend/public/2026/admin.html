@@ -1,0 +1,3764 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - HIGH-TECH 2026</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           HIGH-TECH 2026 ADMIN DASHBOARD
+           ======================================== */
+
+        :root {
+            --tech-yellow: #d4ff00;
+            --tech-green: #6bff6b;
+            --tech-blue: #4dd4ff;
+            --tech-purple: #a78bfa;
+            --tech-pink: #ff4da6;
+            --tech-red: #ff6b6b;
+
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a28;
+            --bg-elevated: #222235;
+
+            --text-primary: #f0f0f5;
+            --text-secondary: #b8b8c8;
+            --text-muted: #80808f;
+
+            --gradient-yellow-green: linear-gradient(135deg, var(--tech-yellow) 0%, var(--tech-green) 100%);
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           SIDEBAR
+           ======================================== */
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid rgba(212, 255, 0, 0.1);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-logo h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-logo span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(212, 255, 0, 0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(212, 255, 0, 0.1);
+            color: var(--tech-yellow);
+        }
+
+        .nav-item-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item-badge {
+            margin-left: auto;
+            background: var(--tech-yellow);
+            color: var(--bg-primary);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        /* ========================================
+           MAIN CONTENT
+           ======================================== */
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-yellow-green);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 255, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--tech-yellow);
+        }
+
+        /* ========================================
+           STATS CARDS
+           ======================================== */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(212, 255, 0, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-card-icon.yellow { background: rgba(212, 255, 0, 0.15); }
+        .stat-card-icon.green { background: rgba(107, 255, 107, 0.15); }
+        .stat-card-icon.blue { background: rgba(77, 212, 255, 0.15); }
+        .stat-card-icon.purple { background: rgba(167, 139, 250, 0.15); }
+
+        .stat-card-trend {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .stat-card-trend.up {
+            background: rgba(107, 255, 107, 0.15);
+            color: var(--tech-green);
+        }
+
+        .stat-card-trend.down {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--tech-red);
+        }
+
+        .stat-card-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ========================================
+           CONTENT SECTIONS
+           ======================================== */
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .content-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .content-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .content-card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .content-card-body {
+            padding: 1.5rem;
+        }
+
+        /* ========================================
+           DATA TABLE
+           ======================================== */
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        .data-table tr:hover {
+            background: rgba(212, 255, 0, 0.02);
+        }
+
+        .data-table-img {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            background: var(--bg-elevated);
+        }
+
+        .data-table-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success { background: rgba(107, 255, 107, 0.15); color: var(--tech-green); }
+        .badge-warning { background: rgba(212, 255, 0, 0.15); color: var(--tech-yellow); }
+        .badge-info { background: rgba(77, 212, 255, 0.15); color: var(--tech-blue); }
+        .badge-danger { background: rgba(255, 107, 107, 0.15); color: var(--tech-red); }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .action-btn.edit:hover { color: var(--tech-blue); }
+        .action-btn.delete:hover { color: var(--tech-red); }
+
+        /* ========================================
+           FORMS
+           ======================================== */
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--tech-yellow);
+            box-shadow: 0 0 0 3px rgba(212, 255, 0, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        /* ========================================
+           MODAL
+           ======================================== */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            width: 95%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Upload Zone Drag & Drop */
+        .upload-zone {
+            border: 2px dashed rgba(212, 255, 0, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(212, 255, 0, 0.02);
+        }
+
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: var(--tech-yellow);
+            background: rgba(212, 255, 0, 0.08);
+        }
+
+        .upload-zone .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-zone .upload-text {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .upload-zone .upload-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .image-preview-card {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .image-preview-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+        }
+
+        .image-preview-card .image-info {
+            flex: 1;
+        }
+
+        .image-preview-card .image-name {
+            font-weight: 500;
+            color: var(--tech-green);
+        }
+
+        .image-preview-card .image-size {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Champs catégorie */
+        .category-fields-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-fields-title {
+            color: var(--tech-yellow);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--tech-red);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* ========================================
+           LOADING & EMPTY STATES
+           ======================================== */
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212, 255, 0, 0.1);
+            border-top-color: var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* ========================================
+           SEARCH & FILTERS
+           ======================================== */
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: #f0f0f5;
+            font-size: 0.95rem;
+        }
+
+        .search-input-wrapper input:focus {
+            outline: none;
+            border-color: var(--tech-yellow);
+            box-shadow: 0 0 0 3px rgba(212, 255, 0, 0.1);
+        }
+
+        .search-input-wrapper input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-input-wrapper::before {
+            content: '🔍';
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            width: auto;
+            min-width: 180px;
+            max-width: 220px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: #f0f0f5;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--tech-yellow);
+        }
+
+        .filter-select option {
+            background: var(--bg-card);
+            color: #f0f0f5;
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 1rem 0.5rem;
+            }
+
+            .sidebar-logo h1,
+            .sidebar-logo span,
+            .nav-section-title,
+            .nav-item span:not(.nav-item-icon) {
+                display: none;
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .nav-item-badge {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div>
+                <h1>HIGH-TECH 2026</h1>
+                <span>Administration</span>
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-section-title">Principal</div>
+                <a class="nav-item active" data-section="dashboard">
+                    <span class="nav-item-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a class="nav-item" data-section="produits">
+                    <span class="nav-item-icon">📦</span>
+                    <span>Produits</span>
+                    <span class="nav-item-badge" id="count-produits">0</span>
+                </a>
+                <a class="nav-item" data-section="articles">
+                    <span class="nav-item-icon">📰</span>
+                    <span>Articles</span>
+                    <span class="nav-item-badge" id="count-articles">0</span>
+                </a>
+                <a class="nav-item" data-section="annonces">
+                    <span class="nav-item-icon">📢</span>
+                    <span>Annonces</span>
+                    <span class="nav-item-badge" id="count-annonces">0</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Contenu</div>
+                <a class="nav-item" data-section="categories">
+                    <span class="nav-item-icon">🏷️</span>
+                    <span>Catégories</span>
+                </a>
+                <a class="nav-item" data-section="technologies">
+                    <span class="nav-item-icon">⚡</span>
+                    <span>Technologies</span>
+                </a>
+                <a class="nav-item" data-section="marche">
+                    <span class="nav-item-icon">📈</span>
+                    <span>Marché</span>
+                </a>
+                <a class="nav-item" data-section="predictions">
+                    <span class="nav-item-icon">🔮</span>
+                    <span>Prédictions</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Système</div>
+                <a class="nav-item" data-section="stats">
+                    <span class="nav-item-icon">📉</span>
+                    <span>Statistiques</span>
+                </a>
+                <a class="nav-item" data-section="wiki">
+                    <span class="nav-item-icon">📚</span>
+                    <span>Wiki</span>
+                </a>
+                <a class="nav-item" href="/2026/">
+                    <span class="nav-item-icon">🌐</span>
+                    <span>Voir le site</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="section-dashboard" class="section active">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="refreshStats()">🔄 Actualiser</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon yellow">📦</div>
+                        <span class="stat-card-trend up">↑ Actif</span>
+                    </div>
+                    <div class="stat-card-value" id="stat-produits">--</div>
+                    <div class="stat-card-label">Produits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon green">📰</div>
+                        <span class="stat-card-trend up">↑ Actif</span>
+                    </div>
+                    <div class="stat-card-value" id="stat-articles">--</div>
+                    <div class="stat-card-label">Articles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon blue">👁️</div>
+                        <span class="stat-card-trend up">↑ 12%</span>
+                    </div>
+                    <div class="stat-card-value" id="stat-visites">--</div>
+                    <div class="stat-card-label">Visites (30j)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon purple">🏷️</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-categories">--</div>
+                    <div class="stat-card-label">Catégories</div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <div class="content-card-header">
+                    <h3 class="content-card-title">Activité récente</h3>
+                </div>
+                <div class="content-card-body" id="recent-activity">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Produits Section -->
+        <section id="section-produits" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Gestion des Produits</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('produit')">+ Nouveau Produit</button>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input type="text" placeholder="Rechercher un produit..." id="search-produits">
+                </div>
+                <select class="form-select filter-select" id="filter-categorie-produits">
+                    <option value="">Toutes catégories</option>
+                </select>
+            </div>
+
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Nom</th>
+                                <th>Catégorie</th>
+                                <th>Prix</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-produits">
+                            <tr><td colspan="6"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Articles Section -->
+        <section id="section-articles" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Gestion des Articles</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('article')">+ Nouvel Article</button>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input type="text" placeholder="Rechercher un article..." id="search-articles">
+                </div>
+                <select class="form-select filter-select" id="filter-categorie-articles">
+                    <option value="">Toutes catégories</option>
+                </select>
+            </div>
+
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table" id="articles-table">
+                        <thead>
+                            <tr id="articles-header">
+                                <th id="th-ordre" style="display: none;">Ordre</th>
+                                <th>Image</th>
+                                <th>Titre</th>
+                                <th>Catégorie</th>
+                                <th>Date</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-articles">
+                            <tr><td colspan="6"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Annonces Section -->
+        <section id="section-annonces" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Gestion des Annonces</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('annonce')">+ Nouvelle Annonce</button>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Icône</th>
+                                <th>Titre</th>
+                                <th>Type</th>
+                                <th>Actif</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-annonces">
+                            <tr><td colspan="5"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section id="section-stats" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Statistiques</h1>
+            </div>
+            <div class="content-card">
+                <div class="content-card-body">
+                    <p class="empty-state">
+                        <span class="empty-state-icon">📊</span><br>
+                        Module statistiques en cours de développement
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wiki Section -->
+        <section id="section-wiki" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Wiki</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('wiki')">+ Nouvelle Page</button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input type="text" class="search-input" id="search-wiki" placeholder="Rechercher une page...">
+                </div>
+                <select class="filter-select" id="filter-categorie-wiki">
+                    <option value="">Toutes catégories</option>
+                </select>
+            </div>
+            <div class="content-card">
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Icône</th>
+                                <th>Titre</th>
+                                <th>Slug</th>
+                                <th>Catégorie</th>
+                                <th>Statut</th>
+                                <th style="width: 120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-wiki">
+                            <tr><td colspan="6"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="section-categories" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Gestion des Catégories</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('categorie')">+ Nouvelle Catégorie</button>
+                </div>
+            </div>
+            <div class="content-card">
+                <div class="content-card-body" id="content-categories"><div class="loading-spinner"></div></div>
+            </div>
+        </section>
+
+        <!-- Technologies Section -->
+        <section id="section-technologies" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Technologies</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('technologie')">+ Nouvelle Technologie</button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input type="text" placeholder="Rechercher une technologie..." id="search-technologies">
+                </div>
+                <select class="form-select filter-select" id="filter-categorie-technologies">
+                    <option value="">Toutes catégories</option>
+                </select>
+            </div>
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Icône</th>
+                                <th>Titre</th>
+                                <th>Catégorie</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-technologies"><tr><td colspan="5"><div class="loading-spinner"></div></td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Marché Section -->
+        <section id="section-marche" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Données Marché</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('marche')">+ Nouvelle Donnée</button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input type="text" placeholder="Rechercher..." id="search-marche">
+                </div>
+                <select class="form-select filter-select" id="filter-categorie-marche">
+                    <option value="">Toutes catégories</option>
+                </select>
+            </div>
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Icône</th>
+                                <th>Valeur</th>
+                                <th>Label</th>
+                                <th>Catégorie</th>
+                                <th>Tendance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-marche"><tr><td colspan="6"><div class="loading-spinner"></div></td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prédictions Section -->
+        <section id="section-predictions" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Prédictions</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('prediction')">+ Nouvelle Prédiction</button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input type="text" placeholder="Rechercher une prédiction..." id="search-predictions">
+                </div>
+                <select class="form-select filter-select" id="filter-categorie-predictions">
+                    <option value="">Toutes catégories</option>
+                </select>
+            </div>
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Icône</th>
+                                <th>Année</th>
+                                <th>Titre</th>
+                                <th>Catégorie</th>
+                                <th>Probabilité</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-predictions"><tr><td colspan="6"><div class="loading-spinner"></div></td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Titre</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <!-- Dynamic content -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+            <button class="btn btn-primary" id="modal-submit">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ========================================
+    // NAVIGATION
+    // ========================================
+    document.querySelectorAll('.nav-item[data-section]').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = item.dataset.section;
+
+            // Update active nav
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            item.classList.add('active');
+
+            // Show section
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`section-${section}`).classList.add('active');
+
+            // Load section data
+            loadSectionData(section);
+        });
+    });
+
+    // ========================================
+    // DATA LOADING
+    // ========================================
+    async function loadSectionData(section) {
+        switch(section) {
+            case 'dashboard': loadDashboardStats(); break;
+            case 'produits': loadProduits(); break;
+            case 'articles': loadArticles(); break;
+            case 'annonces': loadAnnonces(); break;
+            case 'categories': loadCategories(); break;
+            case 'technologies': loadTechnologies(); break;
+            case 'marche': loadMarche(); break;
+            case 'predictions': loadPredictions(); break;
+            case 'wiki': loadWiki(); break;
+        }
+    }
+
+    // Helper pour extraire les données des réponses API
+    function extractData(response) {
+        if (Array.isArray(response)) return response;
+        if (response?.data) return response.data;
+        if (response?.success && response?.data) return response.data;
+        return [];
+    }
+
+    // Convertir les noms d'icônes textuels en emojis
+    function convertIconToEmoji(iconText) {
+        const iconMap = {
+            // TECHNOLOGIES
+            'bluetooth': '📡', 'pen': '✍️', 'hand': '✋', 'brain': '🧠',
+            'wifi': '📶', 'cloud': '☁️', 'eye': '👁️', 'camera': '📷',
+            'microphone': '🎤', 'speaker': '🔊', 'display': '🖥️', 'touch': '👆',
+            'gesture': '👋', 'voice': '🗣️', 'ai': '🤖', 'chip': '🔧',
+            'battery': '🔋', 'power': '⚡', 'security': '🔒', 'network': '🌐',
+            'data': '💾', 'processor': '⚙️', 'memory': '🧩', 'sensor': '📊',
+            'screen': '📱', 'keyboard': '⌨️', 'mouse': '🖱️', 'vr': '🥽',
+            'ar': '👓', 'game': '🎮', 'video': '📹', 'audio': '🎧',
+            'usb': '🔌', 'wireless': '📡', 'laser': '🔦', 'scanner': '📄',
+            'printer': '🖨️', '3d': '📐', 'projection': '📽️', 'light': '💡',
+            'sound': '🔈', 'signal': '📡', 'satellite': '🛰️', 'robot': '🤖',
+            'drone': '🚁', 'rocket': '🚀', 'globe': '🌍', 'chart': '📈',
+            'document': '📋', 'folder': '📁', 'image': '🖼️', 'code': '💻',
+            'database': '🗄️', 'server': '🖥️', 'mobile': '📱', 'tablet': '📲',
+            'laptop': '💻', 'desktop': '🖥️', 'watch': '⌚', 'headphone': '🎧',
+            'earphone': '🎧', 'controller': '🎮', 'gamepad': '🎮',
+            'joystick': '🕹️', 'remote': '📱', 'dollar': '💲', 'money': '💰',
+            'trophy': '🏆', 'medal': '🥇', 'award': '🏅',
+            // TECH EXTRA
+            'cpu': '🖥️', 'cube': '🎲', 'droplet': '💧', 'file': '📄',
+            'heartbeat': '💓', 'home': '🏠', 'leaf': '🍃', 'monitor': '🖥️',
+            'refresh': '🔄', 'sound-wave': '📢', 'tv': '📺', 'zap': '⚡',
+            // MARCHE
+            'android': '🤖', 'apple': '🍎', 'building': '🏢', 'creality': '🖨️',
+            'euro': '💶', 'fold': '📱', 'france': '🇫🇷', 'lg': '📺',
+            'link': '🔗', 'list': '📋', 'meta': '👁️', 'package': '📦',
+            'phone': '📱', 'school': '🏫', 'vr-headset': '🥽', 'headphones': '🎧',
+            // PREDICTIONS
+            '8k': '📺', 'box': '📦', 'fingerprint': '👆', 'hologram': '✨',
+            'metal': '⚙️', 'mic': '🎤', 'quantum': '⚛️', 'recycle': '♻️',
+            'sparkle': '✨', 'translate': '🌐', 'zoom': '🔍',
+        };
+        if (!iconText) return '🔧';
+        const normalized = iconText.toLowerCase().trim();
+        return iconMap[normalized] || iconText;
+    }
+
+    // Logos consoles officiels
+    function getConsoleLogo(iconText) {
+        if (!iconText) return null;
+        const normalized = iconText.toLowerCase().trim();
+        if (normalized === 'xbox') {
+            return '<span class="console-logo" style="color:#107C10;">X</span>';
+        }
+        if (normalized === 'playstation' || normalized === 'ps5') {
+            return '<span class="console-logo" style="color:#003791;">P</span>';
+        }
+        if (normalized === 'nintendo' || normalized === 'switch') {
+            return '<span class="console-logo" style="color:#E60012;">N</span>';
+        }
+        return null;
+    }
+
+    async function loadDashboardStats() {
+        try {
+            // Charger les stats
+            const [produitsRes, articlesRes, categoriesRes, statsRes] = await Promise.all([
+                fetch('/api/produits'),
+                fetch('/api/actualites'),
+                fetch('/api/categories'),
+                fetch('/api/stats/visits').catch(() => ({ ok: false }))
+            ]);
+
+            const produitsData = await produitsRes.json();
+            const articlesData = await articlesRes.json();
+            const categoriesData = await categoriesRes.json();
+
+            const produits = extractData(produitsData);
+            const articles = extractData(articlesData);
+            const categories = extractData(categoriesData);
+
+            document.getElementById('stat-produits').textContent = produits.length || 0;
+            document.getElementById('stat-articles').textContent = articles.length || 0;
+            document.getElementById('stat-categories').textContent = categories.length || 0;
+
+            document.getElementById('count-produits').textContent = produits.length || 0;
+            document.getElementById('count-articles').textContent = articles.length || 0;
+
+            if (statsRes.ok) {
+                const stats = await statsRes.json();
+                document.getElementById('stat-visites').textContent = stats.total || '--';
+            } else {
+                document.getElementById('stat-visites').textContent = '--';
+            }
+
+            // Annonces count
+            const annoncesRes = await fetch('/api/announcements');
+            const annoncesData = await annoncesRes.json();
+            const annoncesCount = annoncesData.announcements?.length || 0;
+            document.getElementById('count-annonces').textContent = annoncesCount;
+
+            // Recent activity
+            document.getElementById('recent-activity').innerHTML = `
+                <p style="color: var(--text-secondary);">
+                    📦 ${produits.length} produits en base<br>
+                    📰 ${articles.length} articles publiés<br>
+                    📢 ${annoncesCount} annonces actives<br>
+                    🏷️ ${categories.length} catégories
+                </p>
+            `;
+        } catch (error) {
+            console.error('Erreur chargement stats:', error);
+        }
+    }
+
+    // Données globales pour recherche/filtre
+    let allProduits = [];
+    let allArticles = [];
+    let allCategories = [];
+
+    async function loadProduits() {
+        try {
+            const response = await fetch('/api/produits');
+            const data = await response.json();
+            allProduits = extractData(data);
+            renderProduits(allProduits);
+            populateFilters();
+        } catch (error) {
+            console.error('Erreur chargement produits:', error);
+        }
+    }
+
+    function renderProduits(produits) {
+        const tbody = document.getElementById('table-produits');
+        if (produits.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Aucun produit trouvé</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = produits.slice(0, 100).map(p => {
+            const imgSrc = p.image ? `/assets/images/${p.image}` : '';
+            const imgHtml = imgSrc
+                ? `<img src="${imgSrc}" class="data-table-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="data-table-img" style="display:none;background:var(--bg-elevated);align-items:center;justify-content:center;">📦</div>`
+                : `<div class="data-table-img" style="background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;">📦</div>`;
+            return `
+                <tr>
+                    <td>${imgHtml}</td>
+                    <td><strong>${p.nom || p.name || 'Sans nom'}</strong></td>
+                    <td><span class="data-table-badge badge-info">${p.categorie || p.category || '-'}</span></td>
+                    <td>${p.prix || '-'}</td>
+                    <td><span class="data-table-badge badge-success">Actif</span></td>
+                    <td>
+                        <button class="action-btn edit" title="Modifier" onclick="editProduit('${p.id}')">✏️</button>
+                        <button class="action-btn" title="Voir la fiche" onclick="window.open('/2026/fiche.html?produit=${encodeURIComponent(p.nom || '')}', '_blank')">👁️</button>
+                        <button class="action-btn delete" title="Supprimer" onclick="deleteProduit('${p.id}', '${(p.nom || '').replace(/'/g, "\\'")}')">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    async function loadArticles() {
+        try {
+            const response = await fetch('/api/actualites');
+            const data = await response.json();
+            allArticles = extractData(data);
+            renderArticles(allArticles);
+            populateFilters();
+        } catch (error) {
+            console.error('Erreur chargement articles:', error);
+        }
+    }
+
+    // Formater le nom de catégorie (tirets -> espaces, majuscules)
+    function formatCategorie(cat) {
+        if (!cat) return '-';
+        return cat.replace(/-/g, ' ').toUpperCase();
+    }
+
+    function renderArticles(articles) {
+        const tbody = document.getElementById('table-articles');
+        const thOrdre = document.getElementById('th-ordre');
+
+        // Vérifier si une catégorie est sélectionnée (pour activer le réordonnancement)
+        const categorieFilter = document.getElementById('filter-categorie-articles')?.value || '';
+        const canReorder = categorieFilter !== '';
+
+        // Afficher/masquer la colonne Ordre dans le header
+        if (thOrdre) thOrdre.style.display = canReorder ? '' : 'none';
+
+        if (articles.length === 0) {
+            const colspan = canReorder ? 7 : 6;
+            tbody.innerHTML = `<tr><td colspan="${colspan}" class="empty-state">Aucun article trouvé</td></tr>`;
+            return;
+        }
+
+        // Trier par ordre puis par date
+        const sorted = [...articles].sort((a, b) => (a.ordre || 999) - (b.ordre || 999));
+
+        tbody.innerHTML = sorted.slice(0, 100).map((a, index) => {
+            const imgSrc = a.image ? `/assets/images/${a.image}` : '';
+            const hasVideo = a.video_url || a.video;
+            const imgHtml = imgSrc
+                ? `<img src="${imgSrc}" class="data-table-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="data-table-img" style="display:none;background:var(--bg-elevated);align-items:center;justify-content:center;">${hasVideo ? '🎬' : '📰'}</div>`
+                : `<div class="data-table-img" style="background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;">${hasVideo ? '🎬' : '📰'}</div>`;
+            const catFormatted = formatCategorie(a.categorie);
+            const isFirst = index === 0;
+            const isLast = index === sorted.length - 1;
+
+            // Colonne ordre : seulement si catégorie sélectionnée
+            const orderCell = canReorder
+                ? `<td>
+                       <div style="display: flex; flex-direction: column; gap: 2px;">
+                           <button class="action-btn" title="Monter" onclick="moveArticle(${a.id}, 'up')" ${isFirst ? 'disabled style="opacity:0.3"' : ''}>⬆️</button>
+                           <button class="action-btn" title="Descendre" onclick="moveArticle(${a.id}, 'down')" ${isLast ? 'disabled style="opacity:0.3"' : ''}>⬇️</button>
+                       </div>
+                   </td>`
+                : '';
+
+            return `
+                <tr data-id="${a.id}">
+                    ${orderCell}
+                    <td>${imgHtml}</td>
+                    <td><strong>${a.titre || 'Sans titre'}</strong>${a.hot ? ' <span style="color:var(--tech-red);">🔥</span>' : ''}</td>
+                    <td><span class="data-table-badge badge-info">${catFormatted}</span></td>
+                    <td>${a.date_publication ? new Date(a.date_publication).toLocaleDateString('fr-FR') : '-'}</td>
+                    <td><span class="data-table-badge badge-success">Publié</span></td>
+                    <td>
+                        <button class="action-btn edit" title="Modifier" onclick="editArticle(${a.id})">✏️</button>
+                        <button class="action-btn" title="Voir" onclick="window.open('/2026/article.html?id=${a.id}', '_blank')">👁️</button>
+                        <button class="action-btn delete" title="Supprimer" onclick="deleteArticle(${a.id}, '${(a.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function populateFilters() {
+        const filterProduits = document.getElementById('filter-categorie-produits');
+        const filterArticles = document.getElementById('filter-categorie-articles');
+
+        // Extraire les catégories uniques des produits
+        if (filterProduits && allProduits.length > 0) {
+            const categoriesProduits = [...new Set(allProduits.map(p => p.categorie || p.category).filter(Boolean))].sort();
+            const optionsProduits = categoriesProduits.map(c => `<option value="${c}">${c}</option>`).join('');
+            filterProduits.innerHTML = '<option value="">Toutes catégories</option>' + optionsProduits;
+        }
+
+        // Extraire les catégories uniques des articles (formatées)
+        if (filterArticles && allArticles.length > 0) {
+            const categoriesArticles = [...new Set(allArticles.map(a => a.categorie).filter(Boolean))];
+            const categoriesFormatted = [...new Set(categoriesArticles.map(c => formatCategorie(c)))].sort();
+            const optionsArticles = categoriesFormatted.map(c => `<option value="${c}">${c}</option>`).join('');
+            filterArticles.innerHTML = '<option value="">Toutes catégories</option>' + optionsArticles;
+        }
+    }
+
+    // Recherche et filtres
+    function filterProduits() {
+        const search = document.getElementById('search-produits')?.value.toLowerCase() || '';
+        const categorie = document.getElementById('filter-categorie-produits')?.value.toLowerCase() || '';
+
+        const filtered = allProduits.filter(p => {
+            const nom = (p.nom || p.name || '').toLowerCase();
+            const cat = (p.categorie || p.category || '').toLowerCase();
+            const matchSearch = !search || nom.includes(search);
+            const matchCat = !categorie || cat.includes(categorie);
+            return matchSearch && matchCat;
+        });
+
+        renderProduits(filtered);
+    }
+
+    function filterArticles() {
+        const search = document.getElementById('search-articles')?.value.toLowerCase() || '';
+        const categorie = document.getElementById('filter-categorie-articles')?.value || '';
+
+        const filtered = allArticles.filter(a => {
+            const titre = (a.titre || '').toLowerCase();
+            const catFormatted = formatCategorie(a.categorie);
+            const matchSearch = !search || titre.includes(search);
+            const matchCat = !categorie || catFormatted === categorie;
+            return matchSearch && matchCat;
+        });
+
+        renderArticles(filtered);
+    }
+
+    // Déplacer un article (monter/descendre) - par catégorie
+    async function moveArticle(id, direction) {
+        // Récupérer la catégorie filtrée
+        const categorieFilter = document.getElementById('filter-categorie-articles')?.value || '';
+        if (!categorieFilter) {
+            showNotification('Sélectionnez une catégorie pour réordonner', 'info');
+            return;
+        }
+
+        // Filtrer les articles par catégorie et trier par ordre
+        const filtered = allArticles.filter(a => formatCategorie(a.categorie) === categorieFilter);
+        const sorted = [...filtered].sort((a, b) => (a.ordre || 999) - (b.ordre || 999));
+        const index = sorted.findIndex(a => a.id === id);
+
+        if (index === -1) return;
+
+        let targetIndex;
+        if (direction === 'up' && index > 0) {
+            targetIndex = index - 1;
+        } else if (direction === 'down' && index < sorted.length - 1) {
+            targetIndex = index + 1;
+        } else {
+            return; // Déjà en haut ou en bas
+        }
+
+        const currentArticle = sorted[index];
+        const targetArticle = sorted[targetIndex];
+
+        try {
+            const response = await fetch('/api/actualites/swap', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id1: currentArticle.id, id2: targetArticle.id })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                // Échanger les ordres localement dans allArticles
+                const curr = allArticles.find(a => a.id === currentArticle.id);
+                const targ = allArticles.find(a => a.id === targetArticle.id);
+                if (curr && targ) {
+                    const tempOrdre = curr.ordre;
+                    curr.ordre = targ.ordre;
+                    targ.ordre = tempOrdre;
+                }
+
+                filterArticles(); // Re-filtrer et afficher
+                showNotification('Ordre modifié', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur déplacement article:', error);
+            showNotification('Erreur lors du déplacement', 'error');
+        }
+    }
+
+    // Event listeners initialisés dans DOMContentLoaded
+
+    async function loadAnnonces() {
+        try {
+            const response = await fetch('/api/announcements');
+            const data = await response.json();
+            const annonces = data.announcements || [];
+
+            const tbody = document.getElementById('table-annonces');
+            if (annonces.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucune annonce</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = annonces.map(a => `
+                <tr>
+                    <td style="font-size: 1.5rem;">${a.icone || '📢'}</td>
+                    <td><strong>${a.titre}</strong><br><small style="color: var(--text-muted);">${a.description || ''}</small></td>
+                    <td><span class="data-table-badge badge-${a.type === 'urgent' ? 'danger' : a.type === 'promo' ? 'warning' : 'info'}">${a.type || 'info'}</span></td>
+                    <td><span class="data-table-badge ${a.actif !== false ? 'badge-success' : 'badge-danger'}">${a.actif !== false ? 'Oui' : 'Non'}</span></td>
+                    <td>
+                        <button class="action-btn edit" title="Modifier" onclick="editAnnonce(${a.id})">✏️</button>
+                        <button class="action-btn delete" title="Supprimer" onclick="deleteAnnonce(${a.id}, '${(a.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (error) {
+            console.error('Erreur chargement annonces:', error);
+        }
+    }
+
+    async function loadCategories() {
+        try {
+            const response = await fetch('/api/categories');
+            const data = await response.json();
+            const categories = extractData(data);
+
+            document.getElementById('content-categories').innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+                    ${categories.map(c => `
+                        <div style="background: var(--bg-elevated); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong style="font-size: 1.1rem;">${c.nom}</strong>
+                                <br><small style="color: var(--text-muted);">slug: ${c.slug || c.nom}</small>
+                            </div>
+                            <div>
+                                <button class="action-btn edit" title="Modifier">✏️</button>
+                                <button class="action-btn delete" title="Supprimer">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } catch (error) {
+            console.error('Erreur chargement catégories:', error);
+        }
+    }
+
+    // Données globales pour Technologies, Marché, Prédictions
+    let allTechnologies = [];
+    let allMarche = [];
+    let allPredictions = [];
+
+    async function loadTechnologies() {
+        try {
+            // Charger toutes les technologies de toutes les catégories
+            const catRes = await fetch('/api/categories');
+            const catData = await catRes.json();
+            const categories = extractData(catData);
+
+            allTechnologies = [];
+            for (const cat of categories) {
+                try {
+                    const res = await fetch(`/api/technologies/${cat.nom || cat.slug}`);
+                    const techs = await res.json();
+                    if (Array.isArray(techs)) {
+                        techs.forEach(t => { t.categorie = cat.nom; });
+                        allTechnologies.push(...techs);
+                    }
+                } catch (e) {}
+            }
+
+            populateFilterTechnologies(categories);
+            renderTechnologies(allTechnologies);
+        } catch (error) {
+            console.error('Erreur chargement technologies:', error);
+        }
+    }
+
+    function renderTechnologies(technologies) {
+        const tbody = document.getElementById('table-technologies');
+        if (technologies.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucune technologie trouvée</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = technologies.slice(0, 100).map(t => {
+            const iconDisplay = convertIconToEmoji(t.icone) || '⚡';
+            const tauxDisplay = t.taux_adoption ? `${t.taux_adoption}%` : '-';
+            return `
+            <tr>
+                <td style="font-size: 1.5rem;">${iconDisplay}</td>
+                <td><strong>${t.nom || t.titre || '-'}</strong></td>
+                <td><span class="data-table-badge badge-info">${t.categorie || '-'}</span></td>
+                <td><span class="data-table-badge badge-success">${tauxDisplay}</span></td>
+                <td>
+                    <button class="action-btn edit" title="Modifier" onclick="editTechnologie(${t.id}, '${t.categorie}')">✏️</button>
+                    <button class="action-btn delete" title="Supprimer" onclick="deleteTechnologie(${t.id}, '${(t.nom || '').replace(/'/g, "\\'")}', '${t.categorie}')">🗑️</button>
+                </td>
+            </tr>
+        `}).join('');
+    }
+
+    function populateFilterTechnologies(categories) {
+        const filter = document.getElementById('filter-categorie-technologies');
+        if (filter) {
+            filter.innerHTML = '<option value="">Toutes catégories</option>' +
+                categories.map(c => `<option value="${c.nom}">${c.nom}</option>`).join('');
+        }
+    }
+
+    async function loadMarche() {
+        try {
+            const catRes = await fetch('/api/categories');
+            const catData = await catRes.json();
+            const categories = extractData(catData);
+
+            allMarche = [];
+            for (const cat of categories) {
+                try {
+                    const res = await fetch(`/api/marche/${cat.nom || cat.slug}`);
+                    const items = await res.json();
+                    if (Array.isArray(items)) {
+                        items.forEach(m => { m.categorie = cat.nom; });
+                        allMarche.push(...items);
+                    }
+                } catch (e) {}
+            }
+
+            populateFilterMarche(categories);
+            renderMarche(allMarche);
+        } catch (error) {
+            console.error('Erreur chargement marché:', error);
+        }
+    }
+
+    function renderMarche(marche) {
+        const tbody = document.getElementById('table-marche');
+        if (marche.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Aucune donnée marché trouvée</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = marche.slice(0, 100).map(m => {
+            const tendanceClass = m.tendance === 'up' ? 'badge-success' : m.tendance === 'down' ? 'badge-danger' : 'badge-warning';
+            const tendanceIcon = m.tendance === 'up' ? '↑' : m.tendance === 'down' ? '↓' : '→';
+            const consoleLogo = getConsoleLogo(m.icone);
+            const iconDisplay = consoleLogo || convertIconToEmoji(m.icone) || '📈';
+            return `
+                <tr>
+                    <td style="font-size: 1.5rem;">${iconDisplay}</td>
+                    <td><strong>${m.valeur || '-'}</strong></td>
+                    <td>${m.label || '-'}</td>
+                    <td><span class="data-table-badge badge-info">${m.categorie || '-'}</span></td>
+                    <td><span class="data-table-badge ${tendanceClass}">${tendanceIcon} ${m.tendance || '-'}</span></td>
+                    <td>
+                        <button class="action-btn edit" title="Modifier" onclick="editMarche(${m.id}, '${m.categorie}')">✏️</button>
+                        <button class="action-btn delete" title="Supprimer" onclick="deleteMarche(${m.id}, '${(m.label || '').replace(/'/g, "\\'")}', '${m.categorie}')">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function populateFilterMarche(categories) {
+        const filter = document.getElementById('filter-categorie-marche');
+        if (filter) {
+            filter.innerHTML = '<option value="">Toutes catégories</option>' +
+                categories.map(c => `<option value="${c.nom}">${c.nom}</option>`).join('');
+        }
+    }
+
+    async function loadPredictions() {
+        try {
+            const catRes = await fetch('/api/categories');
+            const catData = await catRes.json();
+            const categories = extractData(catData);
+
+            allPredictions = [];
+            for (const cat of categories) {
+                try {
+                    const res = await fetch(`/api/predictions/${cat.nom || cat.slug}`);
+                    const items = await res.json();
+                    if (Array.isArray(items)) {
+                        items.forEach(p => { p.categorie = cat.nom; });
+                        allPredictions.push(...items);
+                    }
+                } catch (e) {}
+            }
+
+            populateFilterPredictions(categories);
+            renderPredictions(allPredictions);
+        } catch (error) {
+            console.error('Erreur chargement prédictions:', error);
+        }
+    }
+
+    function renderPredictions(predictions) {
+        const tbody = document.getElementById('table-predictions');
+        if (predictions.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Aucune prédiction trouvée</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = predictions.slice(0, 100).map(p => {
+            const prob = p.probabilite || 0;
+            const probClass = prob >= 70 ? 'badge-success' : prob >= 40 ? 'badge-warning' : 'badge-danger';
+            const consoleLogo = getConsoleLogo(p.icone);
+            const iconDisplay = consoleLogo || convertIconToEmoji(p.icone) || '🔮';
+            return `
+                <tr>
+                    <td style="font-size: 1.5rem;">${iconDisplay}</td>
+                    <td><strong>${p.annee || '-'}</strong></td>
+                    <td>${p.titre || '-'}</td>
+                    <td><span class="data-table-badge badge-info">${p.categorie || '-'}</span></td>
+                    <td><span class="data-table-badge ${probClass}">${prob}%</span></td>
+                    <td>
+                        <button class="action-btn edit" title="Modifier" onclick="editPrediction(${p.id}, '${p.categorie}')">✏️</button>
+                        <button class="action-btn delete" title="Supprimer" onclick="deletePrediction(${p.id}, '${(p.titre || '').replace(/'/g, "\\'")}', '${p.categorie}')">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function populateFilterPredictions(categories) {
+        const filter = document.getElementById('filter-categorie-predictions');
+        if (filter) {
+            filter.innerHTML = '<option value="">Toutes catégories</option>' +
+                categories.map(c => `<option value="${c.nom}">${c.nom}</option>`).join('');
+        }
+    }
+
+    // Filtres pour Technologies, Marché, Prédictions
+    function filterTechnologies() {
+        const search = document.getElementById('search-technologies')?.value.toLowerCase() || '';
+        const categorie = document.getElementById('filter-categorie-technologies')?.value.toLowerCase() || '';
+        const filtered = allTechnologies.filter(t => {
+            const titre = (t.titre || t.nom || '').toLowerCase();
+            const cat = (t.categorie || '').toLowerCase();
+            return (!search || titre.includes(search)) && (!categorie || cat.includes(categorie));
+        });
+        renderTechnologies(filtered);
+    }
+
+    function filterMarche() {
+        const search = document.getElementById('search-marche')?.value.toLowerCase() || '';
+        const categorie = document.getElementById('filter-categorie-marche')?.value.toLowerCase() || '';
+        const filtered = allMarche.filter(m => {
+            const label = (m.label || m.titre || m.valeur || '').toLowerCase();
+            const cat = (m.categorie || '').toLowerCase();
+            return (!search || label.includes(search)) && (!categorie || cat.includes(categorie));
+        });
+        renderMarche(filtered);
+    }
+
+    function filterPredictions() {
+        const search = document.getElementById('search-predictions')?.value.toLowerCase() || '';
+        const categorie = document.getElementById('filter-categorie-predictions')?.value.toLowerCase() || '';
+        const filtered = allPredictions.filter(p => {
+            const titre = (p.titre || '').toLowerCase();
+            const cat = (p.categorie || '').toLowerCase();
+            return (!search || titre.includes(search)) && (!categorie || cat.includes(categorie));
+        });
+        renderPredictions(filtered);
+    }
+
+    // ========================================
+    // MODAL
+    // ========================================
+    async function openModal(type) {
+        const overlay = document.getElementById('modal-overlay');
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+        currentEditId = null;
+
+        switch(type) {
+            case 'produit':
+                title.textContent = 'Nouveau Produit';
+                body.innerHTML = getProduitFormHtml();
+                currentImageFile = null;
+                setupImageUpload();
+                document.getElementById('modal-submit').onclick = saveProduit;
+                break;
+
+            case 'article':
+                title.textContent = 'Nouvel Article';
+                body.innerHTML = getArticleFormHtml(true); // Afficher section container
+                populateArticleCategories();
+                currentArticleId = null;
+                articleSections = [];
+                renderSections([]);
+                document.getElementById('modal-submit').onclick = saveArticle;
+                break;
+
+            case 'annonce':
+                title.textContent = 'Nouvelle Annonce';
+                body.innerHTML = getAnnonceFormHtml();
+                document.getElementById('modal-submit').onclick = saveAnnonce;
+                break;
+
+            case 'technologie':
+                title.textContent = 'Nouvelle Technologie';
+                body.innerHTML = getTechnologieFormHtml();
+                await populateFormCategories('form-tech-categorie');
+                document.getElementById('modal-submit').onclick = saveTechnologie;
+                break;
+
+            case 'marche':
+                title.textContent = 'Nouvelle Donnée Marché';
+                body.innerHTML = getMarcheFormHtml();
+                await populateFormCategories('form-marche-categorie');
+                document.getElementById('modal-submit').onclick = saveMarche;
+                break;
+
+            case 'prediction':
+                title.textContent = 'Nouvelle Prédiction';
+                body.innerHTML = getPredictionFormHtml();
+                await populateFormCategories('form-pred-categorie');
+                document.getElementById('modal-submit').onclick = savePrediction;
+                break;
+
+            case 'wiki':
+                title.textContent = 'Nouvelle Page Wiki';
+                body.innerHTML = getWikiFormHtml();
+                document.getElementById('modal-submit').onclick = saveWiki;
+                break;
+        }
+
+        overlay.classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('modal-overlay').classList.remove('active');
+        currentEditId = null;
+    }
+
+    // ========================================
+    // PRODUITS CRUD
+    // ========================================
+    let currentEditId = null;
+
+    function getProduitFormHtml() {
+        return `
+            <input type="hidden" id="form-produit-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Nom du produit *</label>
+                    <input type="text" class="form-input" id="form-produit-nom" placeholder="Ex: iPhone 16 Pro" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Catégorie *</label>
+                    <select class="form-select" id="form-produit-categorie" required onchange="updateCategoryFields()">
+                        <option value="">-- Choisir --</option>
+                        <option value="DRONE">DRONE</option>
+                        <option value="CONSOLE">CONSOLE</option>
+                        <option value="TABLETTE">TABLETTE</option>
+                        <option value="SMARTPHONE">SMARTPHONE</option>
+                        <option value="PC GAMING">PC GAMING</option>
+                        <option value="SERVEUR">SERVEUR</option>
+                        <option value="CASQUE AUDIO">CASQUE AUDIO</option>
+                        <option value="MONTRE CONNECTEE">MONTRE CONNECTEE</option>
+                        <option value="CASQUE VR">CASQUE VR</option>
+                        <option value="IMPRIMANTE 3D">IMPRIMANTE 3D</option>
+                        <option value="ECRAN TV">ECRAN TV</option>
+                        <option value="CAMERA">CAMERA</option>
+                        <option value="PERIPHERIQUES">PERIPHERIQUES</option>
+                        <option value="VIDEO PROJECTEUR">VIDEO PROJECTEUR</option>
+                        <option value="BOX INTERNET">BOX INTERNET</option>
+                        <option value="TABLEAU INTERACTIF">TABLEAU INTERACTIF</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Prix</label>
+                    <input type="text" class="form-input" id="form-produit-prix" placeholder="Ex: 1299€">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Top du mois</label>
+                    <select class="form-select" id="form-produit-top">
+                        <option value="false">Non</option>
+                        <option value="true">Oui ⭐</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description courte</label>
+                <textarea class="form-textarea" id="form-produit-description" placeholder="Description du produit..." rows="3"></textarea>
+            </div>
+
+            <!-- Image avec Drag & Drop -->
+            <div class="form-group">
+                <label class="form-label">Image du produit</label>
+                <div id="form-produit-image-preview" style="display: none;"></div>
+                <div class="upload-zone" id="form-produit-upload-zone">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Glissez votre image ici</div>
+                    <div class="upload-hint">ou cliquez pour parcourir (JPG, PNG, WebP - Max 5MB)</div>
+                    <input type="file" id="form-produit-file" accept="image/*" style="display: none;">
+                </div>
+                <input type="hidden" id="form-produit-image">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Fiche produit</label>
+                <button type="button" class="btn btn-secondary" onclick="previewFiche()" id="btn-preview-fiche">
+                    👁️ Voir la fiche produit
+                </button>
+                <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">Ouvre la fiche dynamique dans un nouvel onglet</small>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Fonctionnalités avancées</label>
+                <textarea class="form-textarea" id="form-produit-fonctionnalites" placeholder="Une fonctionnalité par ligne..." rows="4"></textarea>
+                <small style="color: var(--text-muted);">Entrez une fonctionnalité par ligne</small>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Titre affiché (optionnel)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" class="form-input" id="form-produit-titre-affiche" placeholder="Ex: Asus ROG Strix G18" style="flex: 1;">
+                    <button type="button" class="btn btn-secondary" onclick="autoTitreAffiche()">🔄 Auto</button>
+                </div>
+            </div>
+
+            <!-- Champs spécifiques par catégorie -->
+            <div id="form-produit-category-fields"></div>
+        `;
+    }
+
+    function autoTitreAffiche() {
+        const nom = document.getElementById('form-produit-nom').value;
+        if (nom) {
+            const keepUppercase = ['EOS', 'RAM', 'SSD', 'HDD', 'CPU', 'GPU', 'LED', 'LCD', 'HDR', 'USB', 'HD', 'UHD', 'FHD', '4K', '8K', 'PS5', 'PS4'];
+            const titre = nom.replace(/-/g, ' ').trim().split(' ').map(word => {
+                if (keepUppercase.includes(word.toUpperCase())) return word.toUpperCase();
+                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            }).join(' ');
+            document.getElementById('form-produit-titre-affiche').value = titre;
+        }
+    }
+
+    // ========================================
+    // DRAG & DROP IMAGE
+    // ========================================
+    let currentImageFile = null;
+
+    function setupImageUpload() {
+        const uploadZone = document.getElementById('form-produit-upload-zone');
+        const fileInput = document.getElementById('form-produit-file');
+        if (!uploadZone || !fileInput) return;
+
+        uploadZone.onclick = () => fileInput.click();
+
+        fileInput.onchange = (e) => {
+            if (e.target.files[0]) handleImageFile(e.target.files[0]);
+        };
+
+        uploadZone.ondragover = (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        };
+
+        uploadZone.ondragleave = (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+        };
+
+        uploadZone.ondrop = (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            if (e.dataTransfer.files[0]) handleImageFile(e.dataTransfer.files[0]);
+        };
+    }
+
+    function handleImageFile(file) {
+        if (!file.type.startsWith('image/')) {
+            showNotification('Ce fichier n\'est pas une image', 'error');
+            return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+            showNotification('L\'image dépasse 5MB', 'error');
+            return;
+        }
+
+        currentImageFile = file;
+        document.getElementById('form-produit-image').value = file.name;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const preview = document.getElementById('form-produit-image-preview');
+            const uploadZone = document.getElementById('form-produit-upload-zone');
+
+            preview.innerHTML = `
+                <div class="image-preview-card">
+                    <img src="${e.target.result}" alt="Aperçu">
+                    <div class="image-info">
+                        <div class="image-name">✅ ${file.name}</div>
+                        <div class="image-size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="removeImagePreview()">🗑️</button>
+                </div>
+            `;
+            preview.style.display = 'block';
+            uploadZone.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+        showNotification('Image sélectionnée: ' + file.name, 'success');
+    }
+
+    function removeImagePreview() {
+        currentImageFile = null;
+        document.getElementById('form-produit-image').value = '';
+        document.getElementById('form-produit-image-preview').style.display = 'none';
+        document.getElementById('form-produit-upload-zone').style.display = 'block';
+        document.getElementById('form-produit-file').value = '';
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function displayExistingImage(imageName) {
+        if (!imageName) return;
+        const preview = document.getElementById('form-produit-image-preview');
+        const uploadZone = document.getElementById('form-produit-upload-zone');
+
+        preview.innerHTML = `
+            <div class="image-preview-card">
+                <img src="/assets/images/${imageName}" alt="Image actuelle" onerror="this.src='/assets/images/placeholder.png'">
+                <div class="image-info">
+                    <div class="image-name">📷 ${imageName}</div>
+                    <div class="image-size">Image existante</div>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="removeImagePreview()">🗑️</button>
+            </div>
+        `;
+        preview.style.display = 'block';
+        uploadZone.style.display = 'none';
+    }
+
+    // ========================================
+    // CHAMPS SPECIFIQUES PAR CATEGORIE
+    // ========================================
+    function getCategorySpecificFields(category) {
+        const baseFields = [
+            { emoji: "📝", label: "Description détaillée", placeholder: "Description complète du produit" },
+            { emoji: "💰", label: "Prix", placeholder: "Ex: 1299€ - Prix compétitif" },
+            { emoji: "🧩", label: "Spécifications matérielles", placeholder: "Processeur, RAM, stockage..." }
+        ];
+
+        const categorySpecific = {
+            'DRONE': [
+                { emoji: "🎥", label: "Fonctions vidéo et photo", placeholder: "Résolution, stabilisation, modes photo..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Bluetooth, radio..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Pilotage, application mobile..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Accessoires inclus", placeholder: "Batteries, hélices, sacoche..." }
+            ],
+            'CONSOLE': [
+                { emoji: "🖥️", label: "Écran et affichage", placeholder: "Résolution, taux de rafraîchissement..." },
+                { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, accessoires..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Ethernet, Bluetooth..." },
+                { emoji: "🎮", label: "Expérience de jeu", placeholder: "Interface, exclusivités..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Contenu de la boîte", placeholder: "Manettes, câbles..." }
+            ],
+            'TABLETTE': [
+                { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, technologie..." },
+                { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, clavier..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, 4G/5G, Bluetooth..." },
+                { emoji: "🎮", label: "Applications et usages", placeholder: "Productivité, jeux..." },
+                { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Contenu de la boîte", placeholder: "Tablette, câble, chargeur..." }
+            ],
+            'SMARTPHONE': [
+                { emoji: "📸", label: "Appareil photo", placeholder: "Nombre de capteurs, résolution..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "5G, Wi-Fi, Bluetooth..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, OS..." },
+                { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Contenu de la boîte", placeholder: "Chargeur, câble..." }
+            ],
+            'PC GAMING': [
+                { emoji: "🎮", label: "Performances gaming", placeholder: "GPU, CPU, FPS..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Ethernet, Bluetooth..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Refroidissement, bruit..." },
+                { emoji: "🔋", label: "Gestion thermique", placeholder: "Ventilation, watercooling..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Accessoires inclus", placeholder: "Souris, clavier..." }
+            ],
+            'SERVEUR': [
+                { emoji: "🖥️", label: "Performances et virtualisation", placeholder: "CPU, RAM, hyperviseur..." },
+                { emoji: "🌐", label: "Connectivité réseau", placeholder: "Ethernet, fibre..." },
+                { emoji: "🎮", label: "Gestion et monitoring", placeholder: "Logiciels, alertes..." },
+                { emoji: "🔒", label: "Sécurité et redondance", placeholder: "RAID, alimentation..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            ],
+            'CASQUE AUDIO': [
+                { emoji: "🎧", label: "Fonctions audio", placeholder: "ANC, spatialisation..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, filaire..." },
+                { emoji: "🎮", label: "Confort et utilisation", placeholder: "Poids, coussinets..." },
+                { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Contenu de la boîte", placeholder: "Casque, câbles, étui..." }
+            ],
+            'MONTRE CONNECTEE': [
+                { emoji: "⌚", label: "Fonctions sport et santé", placeholder: "Cardio, GPS, sommeil..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "Bluetooth, Wi-Fi..." },
+                { emoji: "🎮", label: "Applications et autonomie", placeholder: "App store, batterie..." },
+                { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            ],
+            'CAMERA': [
+                { emoji: "🎥", label: "Fonctions vidéo et photo", placeholder: "Résolution, formats, modes..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, Bluetooth..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, ergonomie..." },
+                { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Accessoires inclus", placeholder: "Objectifs, câbles..." }
+            ],
+            'PERIPHERIQUES': [
+                { emoji: "🎛️", label: "Fonctions avancées", placeholder: "Macros, RGB, capteurs..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, sans fil..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Ergonomie, confort..." },
+                { emoji: "🔋", label: "Autonomie", placeholder: "Batterie, recharge..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Contenu de la boîte", placeholder: "Accessoires inclus..." }
+            ],
+            'CASQUE VR': [
+                { emoji: "🕹️", label: "Contrôleurs et interaction", placeholder: "Manettes, capteurs..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "USB, Bluetooth, Wi-Fi..." },
+                { emoji: "🎮", label: "Expérience immersive", placeholder: "Champ de vision, confort..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            ],
+            'IMPRIMANTE 3D': [
+                { emoji: "🖨️", label: "Fonctions d'impression", placeholder: "Technologie, matériaux..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "USB, Wi-Fi..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, calibration..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            ],
+            'ECRAN TV': [
+                { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, HDR..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "HDMI, Wi-Fi..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, télécommande..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            ],
+            'VIDEO PROJECTEUR': [
+                { emoji: "🎥", label: "Fonctions vidéo", placeholder: "Résolution, luminosité..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "HDMI, Wi-Fi..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Installation, réglages..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            ],
+            'BOX INTERNET': [
+                { emoji: "🌐", label: "Connectivité", placeholder: "Ethernet, Wi-Fi..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Interface, installation..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." }
+            ],
+            'TABLEAU INTERACTIF': [
+                { emoji: "🖥️", label: "Écran et affichage", placeholder: "Taille, résolution, tactile..." },
+                { emoji: "🖊️", label: "Accessoires et interaction", placeholder: "Stylet, support mural, caméra..." },
+                { emoji: "🌐", label: "Connectivité", placeholder: "Wi-Fi, HDMI, USB-C..." },
+                { emoji: "🎮", label: "Expérience utilisateur", placeholder: "Logiciel, collaboration..." },
+                { emoji: "🔋", label: "Autonomie et consommation", placeholder: "Alimentation, consommation..." },
+                { emoji: "🛡️", label: "Garantie et support", placeholder: "Durée, SAV..." },
+                { emoji: "📦", label: "Contenu de la boîte", placeholder: "Stylets, câbles, support..." }
+            ]
+        };
+
+        return [...baseFields, ...(categorySpecific[category] || [])];
+    }
+
+    function updateCategoryFields(existingData = null) {
+        const category = document.getElementById('form-produit-categorie')?.value;
+        const container = document.getElementById('form-produit-category-fields');
+        if (!container) return;
+
+        if (!category) {
+            container.innerHTML = '';
+            return;
+        }
+
+        const fields = getCategorySpecificFields(category);
+
+        container.innerHTML = `
+            <div class="category-fields-section">
+                <div class="category-fields-title">📋 Données fiche pour ${category}</div>
+                ${fields.map((field, index) => {
+                    let value = '';
+                    if (existingData && existingData[index]) {
+                        const contenu = existingData[index];
+                        if (contenu.includes('\n') && /^[^\w\s]/.test(contenu)) {
+                            value = contenu.split('\n').slice(1).join('\n');
+                        } else {
+                            value = contenu;
+                        }
+                    }
+                    return `
+                        <div class="form-group">
+                            <label class="form-label">${field.emoji} ${field.label}</label>
+                            <textarea class="form-textarea" id="form-produit-fiche-${index}" rows="2" placeholder="${field.placeholder}">${value}</textarea>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
+    function collectCategoryData() {
+        const category = document.getElementById('form-produit-categorie')?.value;
+        if (!category) return [];
+
+        const fields = getCategorySpecificFields(category);
+        const data = [];
+
+        for (let i = 0; i < fields.length; i++) {
+            const field = document.getElementById(`form-produit-fiche-${i}`);
+            if (field) {
+                data.push(`${fields[i].emoji} ${fields[i].label}\n${field.value.trim()}`);
+            }
+        }
+        return data;
+    }
+
+    // Aperçu de la fiche produit dynamique
+    function previewFiche() {
+        const nom = document.getElementById('form-produit-nom')?.value;
+        if (!nom) {
+            showNotification('Entrez d\'abord le nom du produit', 'info');
+            return;
+        }
+        const url = `/2026/fiche.html?produit=${encodeURIComponent(nom)}`;
+        window.open(url, '_blank');
+    }
+
+    // ========================================
+    async function populateProduitCategories() {
+        // Charger les catégories si pas encore fait
+        if (allCategories.length === 0) {
+            try {
+                const catRes = await fetch('/api/categories');
+                const catData = await catRes.json();
+                allCategories = extractData(catData);
+            } catch (e) {
+                console.error('Erreur chargement catégories:', e);
+            }
+        }
+        const select = document.getElementById('form-produit-categorie');
+        if (select && allCategories.length > 0) {
+            select.innerHTML = '<option value="">Sélectionner...</option>' +
+                allCategories.map(c => `<option value="${c.nom}">${c.nom}</option>`).join('');
+        }
+    }
+
+    async function editProduit(id) {
+        try {
+            const response = await fetch(`/api/produits/${id}`);
+            const result = await response.json();
+            const produit = result.data || result;
+
+            currentEditId = id;
+            currentImageFile = null;
+
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = 'Modifier le Produit';
+            body.innerHTML = getProduitFormHtml();
+
+            // Pré-remplir le formulaire
+            document.getElementById('form-produit-id').value = id;
+            document.getElementById('form-produit-nom').value = produit.nom || '';
+            document.getElementById('form-produit-categorie').value = produit.categorie || '';
+            document.getElementById('form-produit-prix').value = produit.prix || '';
+            document.getElementById('form-produit-image').value = produit.image || '';
+            document.getElementById('form-produit-description').value = produit.description || '';
+            document.getElementById('form-produit-top').value = produit.top_du_mois ? 'true' : 'false';
+            document.getElementById('form-produit-titre-affiche').value = produit.titre_affiche || '';
+
+            // Fonctionnalités avancées (array -> texte)
+            const fonctionnalites = produit.fonctionnalites_avancees || [];
+            document.getElementById('form-produit-fonctionnalites').value = Array.isArray(fonctionnalites) ? fonctionnalites.join('\n') : '';
+
+            // Setup drag & drop
+            setupImageUpload();
+
+            // Afficher l'image existante
+            if (produit.image) {
+                displayExistingImage(produit.image);
+            }
+
+            // Charger les champs catégorie avec données existantes
+            updateCategoryFields(produit.donnees_fiche);
+
+            document.getElementById('modal-submit').onclick = saveProduit;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement produit:', error);
+            showNotification('Erreur lors du chargement du produit', 'error');
+        }
+    }
+
+    async function saveProduit() {
+        const id = document.getElementById('form-produit-id')?.value;
+
+        // Convertir les fonctionnalités texte en array
+        const fonctionnalitesText = document.getElementById('form-produit-fonctionnalites').value;
+        const fonctionnalites = fonctionnalitesText
+            .split('\n')
+            .map(f => f.trim())
+            .filter(f => f.length > 0);
+
+        // Auto-générer titre affiché si vide
+        let titreAffiche = document.getElementById('form-produit-titre-affiche').value;
+        if (!titreAffiche) {
+            autoTitreAffiche();
+            titreAffiche = document.getElementById('form-produit-titre-affiche').value;
+        }
+
+        const data = {
+            nom: document.getElementById('form-produit-nom').value,
+            categorie: document.getElementById('form-produit-categorie').value,
+            prix: document.getElementById('form-produit-prix').value,
+            image: document.getElementById('form-produit-image').value,
+            description: document.getElementById('form-produit-description').value,
+            top_du_mois: document.getElementById('form-produit-top').value === 'true',
+            titre_affiche: titreAffiche,
+            fonctionnalites_avancees: fonctionnalites,
+            donnees_fiche: collectCategoryData()
+        };
+
+        if (!data.nom) {
+            showNotification('Le nom du produit est obligatoire', 'error');
+            return;
+        }
+
+        if (!data.categorie) {
+            showNotification('La catégorie est obligatoire', 'error');
+            return;
+        }
+
+        try {
+            const url = id ? `/api/produits/${id}` : '/api/produits';
+            const method = id ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                loadProduits();
+                loadDashboardStats();
+                showNotification(id ? 'Produit modifié!' : 'Produit créé!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    // ========================================
+    // ARTICLES - FORMULAIRE ET CRUD
+    // ========================================
+    let currentArticleId = null;
+
+    function getArticleFormHtml(isEdit = false) {
+        const today = new Date().toISOString().split('T')[0];
+        return `
+            <input type="hidden" id="form-article-id">
+            <div class="form-group">
+                <label class="form-label">Titre *</label>
+                <input type="text" class="form-input" id="form-article-titre" placeholder="Titre de l'article" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Catégorie *</label>
+                    <select class="form-select" id="form-article-categorie" required>
+                        <option value="">-- Choisir --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date de publication</label>
+                    <input type="date" class="form-input" id="form-article-date" value="${today}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description courte *</label>
+                <textarea class="form-textarea" id="form-article-description" placeholder="Résumé de l'article (affiché sur la card)..." rows="3" required></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Image</label>
+                    <input type="text" class="form-input" id="form-article-image" placeholder="nom-image.jpg">
+                    <small style="color: var(--text-muted);">Nom du fichier dans /assets/images/</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL Vidéo (optionnel)</label>
+                    <input type="text" class="form-input" id="form-article-video" placeholder="https://youtube.com/...">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Tags</label>
+                    <input type="text" class="form-input" id="form-article-tags" placeholder="tag1, tag2, tag3">
+                    <small style="color: var(--text-muted);">Séparés par des virgules</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Article Hot 🔥</label>
+                    <select class="form-select" id="form-article-hot">
+                        <option value="false">Non</option>
+                        <option value="true">Oui 🔥</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sections de l'article -->
+            <div class="form-group" id="sections-container" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <label class="form-label" style="margin: 0; color: var(--tech-yellow);">📝 Sections de l'article (contenu détaillé)</label>
+                    <button type="button" class="btn btn-secondary" onclick="addSection()">+ Ajouter section</button>
+                </div>
+                <small style="color: var(--text-muted); display: block; margin-bottom: 1rem;">
+                    Les sections constituent le contenu détaillé affiché sur la page article.html (après la description courte)
+                </small>
+                <div id="sections-list">
+                    <!-- Sections chargées dynamiquement -->
+                </div>
+            </div>
+        `;
+    }
+
+    function populateArticleCategories() {
+        const select = document.getElementById('form-article-categorie');
+        if (!select) return;
+
+        // Extraire les catégories uniques des articles existants
+        const categories = [...new Set(allArticles.map(a => a.categorie).filter(Boolean))].sort();
+
+        if (categories.length > 0) {
+            select.innerHTML = '<option value="">-- Choisir --</option>' +
+                categories.map(c => `<option value="${c}">${formatCategorie(c)}</option>`).join('');
+        } else {
+            // Fallback sur les catégories générales
+            select.innerHTML = `
+                <option value="">-- Choisir --</option>
+                <option value="drone">DRONE</option>
+                <option value="console">CONSOLE</option>
+                <option value="tablette">TABLETTE</option>
+                <option value="smartphone">SMARTPHONE</option>
+                <option value="pc-gaming">PC GAMING</option>
+                <option value="serveur">SERVEUR</option>
+                <option value="casque-audio">CASQUE AUDIO</option>
+                <option value="montre-connectee">MONTRE CONNECTEE</option>
+                <option value="casque-vr">CASQUE VR</option>
+                <option value="imprimante-3d">IMPRIMANTE 3D</option>
+                <option value="ecran-tv">ECRAN TV</option>
+                <option value="camera">CAMERA</option>
+                <option value="peripheriques">PERIPHERIQUES</option>
+                <option value="video-projecteur">VIDEO PROJECTEUR</option>
+                <option value="box-internet">BOX INTERNET</option>
+                <option value="tableau-interactif">TABLEAU INTERACTIF</option>
+            `;
+        }
+    }
+
+    async function saveArticle() {
+        const id = document.getElementById('form-article-id')?.value;
+        const titre = document.getElementById('form-article-titre').value.trim();
+        const categorie = document.getElementById('form-article-categorie').value;
+        const description = document.getElementById('form-article-description').value.trim();
+        const image = document.getElementById('form-article-image').value.trim();
+        const video_url = document.getElementById('form-article-video').value.trim();
+        const date_publication = document.getElementById('form-article-date').value;
+        const tagsInput = document.getElementById('form-article-tags').value.trim();
+        const hot = document.getElementById('form-article-hot').value === 'true';
+
+        // Validation
+        if (!titre) {
+            showNotification('Le titre est obligatoire', 'error');
+            return;
+        }
+        if (!categorie) {
+            showNotification('La catégorie est obligatoire', 'error');
+            return;
+        }
+        if (!description) {
+            showNotification('La description est obligatoire', 'error');
+            return;
+        }
+
+        // Convertir les tags en array
+        const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+
+        const data = {
+            titre,
+            categorie,
+            description,
+            image: image || null,
+            video_url: video_url || null,
+            date_publication: date_publication || new Date().toISOString().split('T')[0],
+            tags,
+            hot
+        };
+
+        try {
+            const url = id ? `/api/actualites/${id}` : '/api/actualites';
+            const method = id ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success || result.tendance) {
+                // Récupérer l'ID de l'article (nouveau ou existant)
+                const articleId = id || result.tendance?.id;
+
+                // Sauvegarder les sections si on a des sections et un ID
+                if (articleId && articleSections.length > 0) {
+                    await saveSections(articleId);
+                }
+
+                loadArticles();
+                loadDashboardStats();
+                showNotification(id ? 'Article modifié!' : 'Article créé!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde article:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editArticle(id) {
+        try {
+            // Charger l'article avec ses sections
+            const response = await fetch(`/api/fiche-tendance/data/${id}`);
+            const result = await response.json();
+
+            if (!result.success || !result.data) {
+                showNotification('Article non trouvé', 'error');
+                return;
+            }
+
+            const article = result.data;
+            currentArticleId = id;
+
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = 'Modifier l\'Article';
+            body.innerHTML = getArticleFormHtml(true); // true = mode édition, afficher sections
+            populateArticleCategories();
+
+            // Pré-remplir le formulaire
+            document.getElementById('form-article-id').value = id;
+            document.getElementById('form-article-titre').value = article.titre || '';
+            document.getElementById('form-article-categorie').value = article.categorie || '';
+            document.getElementById('form-article-description').value = article.description || '';
+            document.getElementById('form-article-image').value = article.image || '';
+            document.getElementById('form-article-video').value = article.video_url || '';
+            document.getElementById('form-article-hot').value = article.hot ? 'true' : 'false';
+
+            // Date
+            if (article.date_publication) {
+                const date = new Date(article.date_publication).toISOString().split('T')[0];
+                document.getElementById('form-article-date').value = date;
+            }
+
+            // Tags
+            if (article.tags) {
+                const tagsArray = Array.isArray(article.tags) ? article.tags : [];
+                document.getElementById('form-article-tags').value = tagsArray.join(', ');
+            }
+
+            // Charger les sections
+            renderSections(article.sections || []);
+
+            document.getElementById('modal-submit').onclick = saveArticle;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement article:', error);
+            showNotification('Erreur lors du chargement de l\'article', 'error');
+        }
+    }
+
+    async function deleteArticle(id, titre) {
+        if (!confirm(`Supprimer l'article "${titre}" ?`)) return;
+
+        try {
+            const response = await fetch(`/api/actualites/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (result.success) {
+                loadArticles();
+                loadDashboardStats();
+                showNotification('Article supprimé', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression article:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // SECTIONS D'ARTICLE
+    // ========================================
+    let articleSections = [];
+
+    function renderSections(sections) {
+        articleSections = sections;
+        const container = document.getElementById('sections-list');
+        if (!container) return;
+
+        if (sections.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">Aucune section. Cliquez sur "+ Ajouter section" pour commencer.</p>';
+            return;
+        }
+
+        container.innerHTML = sections.map((s, index) => `
+            <div class="section-item" data-id="${s.id}" style="background: var(--bg-elevated); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.75rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="color: var(--tech-green); font-weight: 500;">#${index + 1} - Section</span>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="action-btn" onclick="moveSectionUp(${index})" ${index === 0 ? 'disabled style="opacity:0.3"' : ''} title="Monter">⬆️</button>
+                        <button type="button" class="action-btn" onclick="moveSectionDown(${index})" ${index === sections.length - 1 ? 'disabled style="opacity:0.3"' : ''} title="Descendre">⬇️</button>
+                        <button type="button" class="action-btn delete" onclick="deleteSection('${s.id}')" title="Supprimer">🗑️</button>
+                    </div>
+                </div>
+                <input type="text" class="form-input" value="${(s.titre || '').replace(/"/g, '&quot;')}"
+                       onchange="updateSectionTitle('${s.id}', this.value)"
+                       placeholder="Titre de la section" style="margin-bottom: 0.5rem;">
+                <textarea class="form-textarea" rows="4"
+                          onchange="updateSectionContent('${s.id}', this.value)"
+                          placeholder="Contenu de la section...">${s.contenu || ''}</textarea>
+            </div>
+        `).join('');
+    }
+
+    function addSection() {
+        const articleId = document.getElementById('form-article-id')?.value;
+
+        // Créer une nouvelle section locale (temporaire)
+        const newSection = {
+            id: 'new_' + Date.now(),
+            actualite_id: articleId || null,
+            titre: '',
+            contenu: '',
+            ordre: articleSections.length + 1,
+            isNew: true
+        };
+
+        articleSections.push(newSection);
+        renderSections(articleSections);
+        showNotification('Section ajoutée', 'success');
+    }
+
+    function updateSectionTitle(id, value) {
+        const section = articleSections.find(s => String(s.id) === String(id));
+        if (section) section.titre = value;
+    }
+
+    function updateSectionContent(id, value) {
+        const section = articleSections.find(s => String(s.id) === String(id));
+        if (section) section.contenu = value;
+    }
+
+    function moveSectionUp(index) {
+        if (index <= 0) return;
+        [articleSections[index], articleSections[index - 1]] = [articleSections[index - 1], articleSections[index]];
+        // Mettre à jour les ordres
+        articleSections.forEach((s, i) => s.ordre = i + 1);
+        renderSections(articleSections);
+    }
+
+    function moveSectionDown(index) {
+        if (index >= articleSections.length - 1) return;
+        [articleSections[index], articleSections[index + 1]] = [articleSections[index + 1], articleSections[index]];
+        // Mettre à jour les ordres
+        articleSections.forEach((s, i) => s.ordre = i + 1);
+        renderSections(articleSections);
+    }
+
+    async function deleteSection(id) {
+        const isNew = String(id).startsWith('new_');
+
+        if (!isNew) {
+            // Supprimer en base
+            try {
+                const response = await fetch(`/api/fiche-tendance/sections/${id}`, { method: 'DELETE' });
+                const result = await response.json();
+                if (!result.success) {
+                    showNotification('Erreur suppression section', 'error');
+                    return;
+                }
+            } catch (error) {
+                console.error('Erreur suppression section:', error);
+                showNotification('Erreur suppression section', 'error');
+                return;
+            }
+        }
+
+        // Retirer de la liste locale
+        articleSections = articleSections.filter(s => String(s.id) !== String(id));
+        articleSections.forEach((s, i) => s.ordre = i + 1);
+        renderSections(articleSections);
+        showNotification('Section supprimée', 'success');
+    }
+
+    async function saveSections(articleId) {
+        // Sauvegarder toutes les sections
+        for (const section of articleSections) {
+            const isNew = String(section.id).startsWith('new_');
+            const data = {
+                actualite_id: articleId,
+                titre: section.titre || 'Section',
+                contenu: section.contenu || '',
+                ordre: section.ordre
+            };
+
+            try {
+                if (isNew) {
+                    // Créer nouvelle section
+                    await fetch('/api/fiche-tendance/sections', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    // Mettre à jour section existante
+                    await fetch(`/api/fiche-tendance/sections/${section.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur sauvegarde section:', error);
+            }
+        }
+    }
+
+    // ========================================
+    // ANNONCES - FORMULAIRE ET CRUD
+    // ========================================
+    let currentAnnonceId = null;
+
+    function getAnnonceFormHtml() {
+        return `
+            <input type="hidden" id="form-annonce-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Icône (emoji) *</label>
+                    <input type="text" class="form-input" id="form-annonce-icone" placeholder="🚀" value="🚀" maxlength="4" style="font-size: 1.5rem; text-align: center;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Type *</label>
+                    <select class="form-select" id="form-annonce-type">
+                        <option value="info">ℹ️ Info</option>
+                        <option value="nouveau">🆕 Nouveau</option>
+                        <option value="promo">🏷️ Promo</option>
+                        <option value="urgent">🚨 Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Active</label>
+                    <select class="form-select" id="form-annonce-actif">
+                        <option value="true">✅ Oui</option>
+                        <option value="false">❌ Non</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Titre *</label>
+                <input type="text" class="form-input" id="form-annonce-titre" placeholder="Titre de l'annonce" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="form-annonce-description" placeholder="Description de l'annonce..." rows="3"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Lien</label>
+                    <input type="text" class="form-input" id="form-annonce-lien" placeholder="/2026/article.html?id=...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Texte du bouton</label>
+                    <input type="text" class="form-input" id="form-annonce-bouton" placeholder="En savoir plus →" value="En savoir plus →">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Date de début (optionnel)</label>
+                    <input type="datetime-local" class="form-input" id="form-annonce-date-debut">
+                    <small style="color: var(--text-muted);">Laisser vide = immédiat</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date de fin (optionnel)</label>
+                    <input type="datetime-local" class="form-input" id="form-annonce-date-fin">
+                    <small style="color: var(--text-muted);">Laisser vide = permanent</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Ordre d'affichage</label>
+                <input type="number" class="form-input" id="form-annonce-ordre" placeholder="0" value="0" min="0">
+                <small style="color: var(--text-muted);">Plus petit = affiché en premier</small>
+            </div>
+        `;
+    }
+
+    async function saveAnnonce() {
+        const id = document.getElementById('form-annonce-id')?.value;
+        const titre = document.getElementById('form-annonce-titre').value.trim();
+        const description = document.getElementById('form-annonce-description').value.trim();
+        const icone = document.getElementById('form-annonce-icone').value.trim() || '🚀';
+        const type = document.getElementById('form-annonce-type').value;
+        const actif = document.getElementById('form-annonce-actif').value === 'true';
+        const lien = document.getElementById('form-annonce-lien').value.trim();
+        const bouton_texte = document.getElementById('form-annonce-bouton').value.trim() || 'En savoir plus →';
+        const date_debut = document.getElementById('form-annonce-date-debut').value || null;
+        const date_fin = document.getElementById('form-annonce-date-fin').value || null;
+        const ordre = parseInt(document.getElementById('form-annonce-ordre').value) || 0;
+
+        if (!titre) {
+            showNotification('Le titre est obligatoire', 'error');
+            return;
+        }
+
+        const data = {
+            titre,
+            description,
+            icone,
+            type,
+            actif,
+            lien,
+            bouton_texte,
+            date_debut,
+            date_fin,
+            ordre
+        };
+
+        try {
+            const url = id ? `/api/announcements/${id}` : '/api/announcements';
+            const method = id ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success || result.announcement) {
+                loadAnnonces();
+                loadDashboardStats();
+                showNotification(id ? 'Annonce modifiée!' : 'Annonce créée!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde annonce:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editAnnonce(id) {
+        try {
+            const response = await fetch(`/api/announcements/${id}`);
+            const result = await response.json();
+
+            if (!result.success || !result.announcement) {
+                showNotification('Annonce non trouvée', 'error');
+                return;
+            }
+
+            const annonce = result.announcement;
+            currentAnnonceId = id;
+
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = 'Modifier l\'Annonce';
+            body.innerHTML = getAnnonceFormHtml();
+
+            // Pré-remplir le formulaire
+            document.getElementById('form-annonce-id').value = id;
+            document.getElementById('form-annonce-titre').value = annonce.titre || '';
+            document.getElementById('form-annonce-description').value = annonce.description || '';
+            document.getElementById('form-annonce-icone').value = annonce.icone || '🚀';
+            document.getElementById('form-annonce-type').value = annonce.type || 'info';
+            document.getElementById('form-annonce-actif').value = annonce.actif ? 'true' : 'false';
+            document.getElementById('form-annonce-lien').value = annonce.lien || '';
+            document.getElementById('form-annonce-bouton').value = annonce.bouton_texte || 'En savoir plus →';
+            document.getElementById('form-annonce-ordre').value = annonce.ordre || 0;
+
+            // Dates
+            if (annonce.date_debut) {
+                const dateDebut = new Date(annonce.date_debut).toISOString().slice(0, 16);
+                document.getElementById('form-annonce-date-debut').value = dateDebut;
+            }
+            if (annonce.date_fin) {
+                const dateFin = new Date(annonce.date_fin).toISOString().slice(0, 16);
+                document.getElementById('form-annonce-date-fin').value = dateFin;
+            }
+
+            document.getElementById('modal-submit').onclick = saveAnnonce;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement annonce:', error);
+            showNotification('Erreur lors du chargement de l\'annonce', 'error');
+        }
+    }
+
+    async function deleteAnnonce(id, titre) {
+        if (!confirm(`Supprimer l'annonce "${titre}" ?`)) return;
+
+        try {
+            const response = await fetch(`/api/announcements/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (result.success) {
+                loadAnnonces();
+                loadDashboardStats();
+                showNotification('Annonce supprimée', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression annonce:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // TECHNOLOGIES - FORMULAIRE ET CRUD
+    // ========================================
+    function getTechnologieFormHtml() {
+        return `
+            <input type="hidden" id="form-tech-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Icône (emoji) *</label>
+                    <input type="text" class="form-input" id="form-tech-icone" placeholder="⚡" value="⚡" maxlength="4" style="font-size: 1.5rem; text-align: center;">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                    <label class="form-label">Nom *</label>
+                    <input type="text" class="form-input" id="form-tech-nom" placeholder="Ex: Intelligence Artificielle" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="form-tech-description" placeholder="Description de la technologie..." rows="3"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Catégorie *</label>
+                    <select class="form-select" id="form-tech-categorie" required>
+                        <option value="">-- Choisir --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Taux d'adoption (%)</label>
+                    <input type="number" class="form-input" id="form-tech-taux" placeholder="75" min="0" max="100">
+                </div>
+            </div>
+        `;
+    }
+
+    async function saveTechnologie() {
+        const id = document.getElementById('form-tech-id')?.value;
+        const nom = document.getElementById('form-tech-nom').value.trim();
+        const description = document.getElementById('form-tech-description').value.trim();
+        const icone = document.getElementById('form-tech-icone').value.trim() || '⚡';
+        const categorie = document.getElementById('form-tech-categorie').value;
+        const taux_adoption = parseInt(document.getElementById('form-tech-taux').value) || null;
+
+        if (!nom) {
+            showNotification('Le nom est obligatoire', 'error');
+            return;
+        }
+        if (!categorie) {
+            showNotification('La catégorie est obligatoire', 'error');
+            return;
+        }
+
+        const data = { nom, description, icone, taux_adoption, categorie };
+
+        try {
+            const url = id ? `/api/technologies/${id}` : '/api/technologies';
+            const method = id ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success || result.technologie) {
+                loadTechnologies();
+                showNotification(id ? 'Technologie modifiée!' : 'Technologie créée!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde technologie:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editTechnologie(id, categorie) {
+        try {
+            const response = await fetch(`/api/technologies/${categorie}`);
+            const techs = await response.json();
+            const tech = Array.isArray(techs) ? techs.find(t => t.id === id) : null;
+
+            if (!tech) {
+                showNotification('Technologie non trouvée', 'error');
+                return;
+            }
+
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = 'Modifier la Technologie';
+            body.innerHTML = getTechnologieFormHtml();
+            await populateFormCategories('form-tech-categorie');
+
+            document.getElementById('form-tech-id').value = id;
+            document.getElementById('form-tech-nom').value = tech.nom || '';
+            document.getElementById('form-tech-description').value = tech.description || '';
+            document.getElementById('form-tech-icone').value = tech.icone || '⚡';
+            document.getElementById('form-tech-categorie').value = categorie;
+            document.getElementById('form-tech-taux').value = tech.taux_adoption || '';
+
+            document.getElementById('modal-submit').onclick = saveTechnologie;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement technologie:', error);
+            showNotification('Erreur lors du chargement', 'error');
+        }
+    }
+
+    async function deleteTechnologie(id, nom, categorie) {
+        if (!confirm(`Supprimer la technologie "${nom}" ?`)) return;
+
+        try {
+            const response = await fetch(`/api/technologies/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (result.success) {
+                loadTechnologies();
+                showNotification('Technologie supprimée', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression technologie:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // MARCHÉ - FORMULAIRE ET CRUD
+    // ========================================
+    function getMarcheFormHtml() {
+        return `
+            <input type="hidden" id="form-marche-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Icône (emoji) *</label>
+                    <input type="text" class="form-input" id="form-marche-icone" placeholder="📈" value="📈" maxlength="10" style="font-size: 1.5rem; text-align: center;">
+                    <small style="color: var(--text-muted);">Emoji ou: xbox, playstation, nintendo</small>
+                </div>
+                <div class="form-group" style="flex: 2;">
+                    <label class="form-label">Valeur / Titre *</label>
+                    <input type="text" class="form-input" id="form-marche-valeur" placeholder="Ex: 45.2 milliards $" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Label / Description *</label>
+                <input type="text" class="form-input" id="form-marche-label" placeholder="Ex: Marché mondial des drones" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Catégorie *</label>
+                    <select class="form-select" id="form-marche-categorie" required>
+                        <option value="">-- Choisir --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tendance *</label>
+                    <select class="form-select" id="form-marche-tendance">
+                        <option value="up">↑ Hausse</option>
+                        <option value="stable">→ Stable</option>
+                        <option value="down">↓ Baisse</option>
+                    </select>
+                </div>
+            </div>
+        `;
+    }
+
+    async function saveMarche() {
+        const id = document.getElementById('form-marche-id')?.value;
+        const valeur = document.getElementById('form-marche-valeur').value.trim();
+        const label = document.getElementById('form-marche-label').value.trim();
+        const icone = document.getElementById('form-marche-icone').value.trim() || '📈';
+        const categorie = document.getElementById('form-marche-categorie').value;
+        const tendance = document.getElementById('form-marche-tendance').value;
+
+        if (!valeur) {
+            showNotification('La valeur est obligatoire', 'error');
+            return;
+        }
+        if (!label) {
+            showNotification('Le label est obligatoire', 'error');
+            return;
+        }
+        if (!categorie) {
+            showNotification('La catégorie est obligatoire', 'error');
+            return;
+        }
+
+        const data = { valeur, label, icone, tendance, categorie };
+
+        try {
+            const url = id ? `/api/marche/${id}` : '/api/marche';
+            const method = id ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success || result.marche) {
+                loadMarche();
+                showNotification(id ? 'Donnée marché modifiée!' : 'Donnée marché créée!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde marché:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editMarche(id, categorie) {
+        try {
+            const response = await fetch(`/api/marche/${categorie}`);
+            const items = await response.json();
+            const item = Array.isArray(items) ? items.find(m => m.id === id) : null;
+
+            if (!item) {
+                showNotification('Donnée marché non trouvée', 'error');
+                return;
+            }
+
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = 'Modifier la Donnée Marché';
+            body.innerHTML = getMarcheFormHtml();
+            await populateFormCategories('form-marche-categorie');
+
+            document.getElementById('form-marche-id').value = id;
+            document.getElementById('form-marche-valeur').value = item.valeur || '';
+            document.getElementById('form-marche-label').value = item.label || '';
+            document.getElementById('form-marche-icone').value = item.icone || '📈';
+            document.getElementById('form-marche-categorie').value = categorie;
+            document.getElementById('form-marche-tendance').value = item.tendance || 'stable';
+
+            document.getElementById('modal-submit').onclick = saveMarche;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement marché:', error);
+            showNotification('Erreur lors du chargement', 'error');
+        }
+    }
+
+    async function deleteMarche(id, label, categorie) {
+        if (!confirm(`Supprimer la donnée marché "${label}" ?`)) return;
+
+        try {
+            const response = await fetch(`/api/marche/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (result.success) {
+                loadMarche();
+                showNotification('Donnée marché supprimée', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression marché:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // PRÉDICTIONS - FORMULAIRE ET CRUD
+    // ========================================
+    function getPredictionFormHtml() {
+        const currentYear = new Date().getFullYear();
+        return `
+            <input type="hidden" id="form-pred-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Icône (emoji)</label>
+                    <input type="text" class="form-input" id="form-pred-icone" placeholder="🔮" value="🔮" maxlength="10" style="font-size: 1.5rem; text-align: center;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Année</label>
+                    <input type="number" class="form-input" id="form-pred-annee" placeholder="${currentYear + 1}" min="2020" max="2050">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Probabilité (%)</label>
+                    <input type="number" class="form-input" id="form-pred-probabilite" placeholder="75" min="0" max="100">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Titre / Prédiction *</label>
+                <input type="text" class="form-input" id="form-pred-titre" placeholder="Ex: L'IA dépassera les capacités humaines" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="form-pred-description" placeholder="Détails de la prédiction..." rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Catégorie *</label>
+                <select class="form-select" id="form-pred-categorie" required>
+                    <option value="">-- Choisir --</option>
+                </select>
+            </div>
+        `;
+    }
+
+    async function savePrediction() {
+        const id = document.getElementById('form-pred-id')?.value;
+        const titre = document.getElementById('form-pred-titre').value.trim();
+        const description = document.getElementById('form-pred-description').value.trim();
+        const icone = document.getElementById('form-pred-icone').value.trim() || '🔮';
+        const categorie = document.getElementById('form-pred-categorie').value;
+        const annee = document.getElementById('form-pred-annee').value;
+        const probabilite = document.getElementById('form-pred-probabilite').value;
+
+        if (!titre) {
+            showNotification('Le titre est obligatoire', 'error');
+            return;
+        }
+        if (!categorie) {
+            showNotification('La catégorie est obligatoire', 'error');
+            return;
+        }
+
+        const data = { titre, description, icone, categorie, annee, probabilite };
+
+        try {
+            const url = id ? `/api/predictions/${id}` : '/api/predictions';
+            const method = id ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success || result.prediction) {
+                loadPredictions();
+                showNotification(id ? 'Prédiction modifiée!' : 'Prédiction créée!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde prédiction:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editPrediction(id, categorie) {
+        try {
+            const response = await fetch(`/api/predictions/${categorie}`);
+            const items = await response.json();
+            const item = Array.isArray(items) ? items.find(p => p.id === id) : null;
+
+            if (!item) {
+                showNotification('Prédiction non trouvée', 'error');
+                return;
+            }
+
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = 'Modifier la Prédiction';
+            body.innerHTML = getPredictionFormHtml();
+            await populateFormCategories('form-pred-categorie');
+
+            document.getElementById('form-pred-id').value = id;
+            document.getElementById('form-pred-titre').value = item.titre || '';
+            document.getElementById('form-pred-description').value = item.description || '';
+            document.getElementById('form-pred-icone').value = item.icone || '🔮';
+            document.getElementById('form-pred-categorie').value = categorie;
+            document.getElementById('form-pred-annee').value = item.annee || '';
+            document.getElementById('form-pred-probabilite').value = item.probabilite || '';
+
+            document.getElementById('modal-submit').onclick = savePrediction;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement prédiction:', error);
+            showNotification('Erreur lors du chargement', 'error');
+        }
+    }
+
+    async function deletePrediction(id, titre, categorie) {
+        if (!confirm(`Supprimer la prédiction "${titre}" ?`)) return;
+
+        try {
+            const response = await fetch(`/api/predictions/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (result.success) {
+                loadPredictions();
+                showNotification('Prédiction supprimée', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression prédiction:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // WIKI - CHARGEMENT ET AFFICHAGE
+    // ========================================
+    let allWikiPages = [];
+    const wikiCategories = [
+        { value: 'general', label: 'Général' },
+        { value: 'getting-started', label: 'Démarrage' },
+        { value: 'api', label: 'API & Backend' },
+        { value: 'frontend', label: 'Frontend' },
+        { value: 'tools', label: 'Outils' },
+        { value: 'deployment', label: 'Déploiement' },
+        { value: 'support', label: 'Support' }
+    ];
+
+    async function loadWiki() {
+        try {
+            const response = await fetch('/api/wiki/admin/all');
+            const data = await response.json();
+            allWikiPages = data.pages || [];
+            populateFilterWiki();
+            renderWiki(allWikiPages);
+        } catch (error) {
+            console.error('Erreur chargement wiki:', error);
+            document.getElementById('table-wiki').innerHTML = '<tr><td colspan="6" class="empty-state">Erreur de chargement</td></tr>';
+        }
+    }
+
+    function renderWiki(pages) {
+        const tbody = document.getElementById('table-wiki');
+        if (pages.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Aucune page wiki trouvée</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = pages.map(p => {
+            const statusClass = p.actif ? 'badge-success' : 'badge-danger';
+            const statusText = p.actif ? 'Actif' : 'Inactif';
+            const catLabel = wikiCategories.find(c => c.value === p.categorie)?.label || p.categorie;
+            return `
+            <tr>
+                <td style="font-size: 1.5rem;">${p.icone || '📄'}</td>
+                <td><strong>${p.titre || '-'}</strong></td>
+                <td><code style="background: var(--bg-darker); padding: 2px 6px; border-radius: 4px;">${p.slug || '-'}</code></td>
+                <td><span class="data-table-badge badge-info">${catLabel}</span></td>
+                <td><span class="data-table-badge ${statusClass}">${statusText}</span></td>
+                <td>
+                    <button class="action-btn" title="Voir" onclick="window.open('/2026/wiki.html?page=${p.slug}', '_blank')">👁️</button>
+                    <button class="action-btn edit" title="Modifier" onclick="editWiki(${p.id})">✏️</button>
+                    <button class="action-btn delete" title="Supprimer" onclick="deleteWiki(${p.id}, '${(p.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
+                </td>
+            </tr>
+        `}).join('');
+    }
+
+    function populateFilterWiki() {
+        const filter = document.getElementById('filter-categorie-wiki');
+        if (filter) {
+            filter.innerHTML = '<option value="">Toutes catégories</option>' +
+                wikiCategories.map(c => `<option value="${c.value}">${c.label}</option>`).join('');
+        }
+    }
+
+    function filterWiki() {
+        const search = document.getElementById('search-wiki')?.value.toLowerCase() || '';
+        const categorie = document.getElementById('filter-categorie-wiki')?.value || '';
+        const filtered = allWikiPages.filter(p => {
+            const titre = (p.titre || '').toLowerCase();
+            const slug = (p.slug || '').toLowerCase();
+            return (!search || titre.includes(search) || slug.includes(search)) &&
+                   (!categorie || p.categorie === categorie);
+        });
+        renderWiki(filtered);
+    }
+
+    // ========================================
+    // WIKI - FORMULAIRE ET CRUD
+    // ========================================
+    function getWikiFormHtml() {
+        const categoriesOptions = wikiCategories.map(c =>
+            `<option value="${c.value}">${c.label}</option>`
+        ).join('');
+
+        return `
+            <input type="hidden" id="form-wiki-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Icône (emoji)</label>
+                    <input type="text" class="form-input" id="form-wiki-icone" placeholder="📄" value="📄" maxlength="4" style="font-size: 1.5rem; text-align: center;">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" class="form-input" id="form-wiki-titre" placeholder="Ex: Guide d'installation" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Slug (URL)</label>
+                    <input type="text" class="form-input" id="form-wiki-slug" placeholder="guide-installation (auto-généré si vide)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Catégorie *</label>
+                    <select class="form-select" id="form-wiki-categorie" required>
+                        ${categoriesOptions}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description courte</label>
+                <input type="text" class="form-input" id="form-wiki-description" placeholder="Description pour la liste des pages">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Contenu (HTML)</label>
+                <textarea class="form-textarea" id="form-wiki-contenu" placeholder="<h2>Titre</h2><p>Contenu de la page...</p>" rows="12" style="font-family: monospace;"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Ordre</label>
+                    <input type="number" class="form-input" id="form-wiki-ordre" placeholder="0" min="0">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Statut</label>
+                    <select class="form-select" id="form-wiki-actif">
+                        <option value="true">Actif</option>
+                        <option value="false">Inactif</option>
+                    </select>
+                </div>
+            </div>
+        `;
+    }
+
+    async function saveWiki() {
+        const id = document.getElementById('form-wiki-id')?.value;
+        const titre = document.getElementById('form-wiki-titre').value.trim();
+        const slug = document.getElementById('form-wiki-slug').value.trim();
+        const description = document.getElementById('form-wiki-description').value.trim();
+        const contenu = document.getElementById('form-wiki-contenu').value;
+        const icone = document.getElementById('form-wiki-icone').value.trim() || '📄';
+        const categorie = document.getElementById('form-wiki-categorie').value;
+        const ordre = parseInt(document.getElementById('form-wiki-ordre').value) || 0;
+        const actif = document.getElementById('form-wiki-actif').value === 'true';
+
+        if (!titre) {
+            showNotification('Le titre est obligatoire', 'error');
+            return;
+        }
+
+        const data = { titre, slug: slug || null, description, contenu, icone, categorie, ordre, actif };
+
+        try {
+            const url = id ? `/api/wiki/${id}` : '/api/wiki';
+            const method = id ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success || result.page) {
+                loadWiki();
+                showNotification(id ? 'Page wiki modifiée!' : 'Page wiki créée!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde wiki:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editWiki(id) {
+        try {
+            const response = await fetch(`/api/wiki/${id}`);
+            const data = await response.json();
+            const page = data.page;
+
+            if (!page) {
+                showNotification('Page non trouvée', 'error');
+                return;
+            }
+
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = 'Modifier la Page Wiki';
+            body.innerHTML = getWikiFormHtml();
+
+            document.getElementById('form-wiki-id').value = id;
+            document.getElementById('form-wiki-titre').value = page.titre || '';
+            document.getElementById('form-wiki-slug').value = page.slug || '';
+            document.getElementById('form-wiki-description').value = page.description || '';
+            document.getElementById('form-wiki-contenu').value = page.contenu || '';
+            document.getElementById('form-wiki-icone').value = page.icone || '📄';
+            document.getElementById('form-wiki-categorie').value = page.categorie || 'general';
+            document.getElementById('form-wiki-ordre').value = page.ordre || 0;
+            document.getElementById('form-wiki-actif').value = page.actif ? 'true' : 'false';
+
+            document.getElementById('modal-submit').onclick = saveWiki;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement page wiki:', error);
+            showNotification('Erreur lors du chargement', 'error');
+        }
+    }
+
+    async function deleteWiki(id, titre) {
+        if (!confirm(`Supprimer la page "${titre}" ?`)) return;
+
+        try {
+            const response = await fetch(`/api/wiki/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (result.success) {
+                loadWiki();
+                showNotification('Page wiki supprimée', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression wiki:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // Helper pour peupler les catégories dans les formulaires
+    async function populateFormCategories(selectId) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        try {
+            if (allCategories.length === 0) {
+                const catRes = await fetch('/api/categories');
+                const catData = await catRes.json();
+                allCategories = extractData(catData);
+            }
+            select.innerHTML = '<option value="">-- Choisir --</option>' +
+                allCategories.map(c => `<option value="${c.nom}">${c.nom}</option>`).join('');
+        } catch (e) {
+            console.error('Erreur chargement catégories:', e);
+        }
+    }
+
+    // Notification toast
+    function showNotification(message, type = 'info') {
+        const existing = document.querySelector('.toast-notification');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: 500;
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+            background: ${type === 'success' ? 'var(--tech-green)' : type === 'error' ? 'var(--tech-red)' : 'var(--tech-blue)'};
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    async function deleteProduit(id, nom) {
+        if (!confirm(`Supprimer le produit "${nom}" ?\n\nCette action est irréversible.`)) return;
+
+        try {
+            const response = await fetch(`/api/produits/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (result.success) {
+                loadProduits();
+                loadDashboardStats();
+                showNotification('Produit supprimé avec succès!', 'success');
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    function refreshStats() {
+        loadDashboardStats();
+    }
+
+    // ========================================
+    // INIT
+    // ========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDashboardStats();
+
+        // Event listeners pour recherche/filtre - Produits & Articles
+        document.getElementById('search-produits')?.addEventListener('input', filterProduits);
+        document.getElementById('filter-categorie-produits')?.addEventListener('change', filterProduits);
+        document.getElementById('search-articles')?.addEventListener('input', filterArticles);
+        document.getElementById('filter-categorie-articles')?.addEventListener('change', filterArticles);
+
+        // Event listeners - Technologies, Marché, Prédictions
+        document.getElementById('search-technologies')?.addEventListener('input', filterTechnologies);
+        document.getElementById('filter-categorie-technologies')?.addEventListener('change', filterTechnologies);
+        document.getElementById('search-marche')?.addEventListener('input', filterMarche);
+        document.getElementById('filter-categorie-marche')?.addEventListener('change', filterMarche);
+        document.getElementById('search-predictions')?.addEventListener('input', filterPredictions);
+        document.getElementById('filter-categorie-predictions')?.addEventListener('change', filterPredictions);
+
+        // Event listeners - Wiki
+        document.getElementById('search-wiki')?.addEventListener('input', filterWiki);
+        document.getElementById('filter-categorie-wiki')?.addEventListener('change', filterWiki);
+    });
+
+    // Close modal on overlay click
+    document.getElementById('modal-overlay').addEventListener('click', (e) => {
+        if (e.target.id === 'modal-overlay') closeModal();
+    });
+</script>
+
+</body>
+</html>

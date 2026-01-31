@@ -712,6 +712,10 @@
             text-decoration: none;
             transition: all 0.3s ease;
             display: inline-block;
+            cursor: pointer !important;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 10;
         }
 
         .footer-links a:hover {
@@ -724,6 +728,7 @@
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             color: var(--text-muted);
+            user-select: none;
         }
 
         /* ========================================
@@ -734,32 +739,28 @@
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            width: 55px;
-            height: 55px;
+            width: 80px;
+            height: 80px;
             background: var(--bg-card);
-            border: 2px solid var(--tech-yellow);
+            border: 3px solid var(--tech-yellow);
             color: var(--tech-yellow);
             border-radius: 50%;
-            font-size: 1.5rem;
-            display: flex;
+            font-size: 2rem;
+            display: none;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            opacity: 0;
-            transform: translateY(100px);
-            transition: all 0.4s ease;
-            z-index: 999;
+            z-index: 999999;
+            user-select: none;
         }
 
         .scroll-top.visible {
-            opacity: 1;
-            transform: translateY(0);
+            display: flex;
         }
 
         .scroll-top:hover {
             background: var(--tech-yellow);
             color: var(--bg-primary);
-            transform: translateY(-5px);
         }
 
         /* ========================================
@@ -848,14 +849,6 @@
             gap: 2rem;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .announcement-card:hover {
-            border-color: rgba(212, 255, 0, 0.6);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(212, 255, 0, 0.15);
         }
 
         .announcement-card::before {
@@ -867,6 +860,7 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(212, 255, 0, 0.1), transparent);
             animation: newsShine 3s infinite;
+            pointer-events: none;
         }
 
         /* Types d'annonces */
@@ -926,10 +920,12 @@
             border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
             white-space: nowrap;
             text-decoration: none;
             display: inline-block;
+            position: relative;
+            z-index: 2;
         }
 
         .announcement-btn:hover {
@@ -1477,8 +1473,8 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/wiki/wiki.html">Wiki</a></li>
-                    <li><a href="/admin">Admin</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
                     <li><a href="#">À propos</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
@@ -1491,25 +1487,58 @@
     </footer>
 
     <!-- Scroll to Top -->
-    <button class="scroll-top" id="scrollTop">↑</button>
+    <div class="scroll-top" id="scrollTop">↑</div>
 
     <script>
         // ========================================
         // SCROLL TO TOP
         // ========================================
-        const scrollTop = document.getElementById('scrollTop');
+        
+        function initScrollTop() {
+            const scrollTop = document.getElementById('scrollTop');
+            const footer = document.querySelector('.footer');
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollTop.classList.add('visible');
-            } else {
-                scrollTop.classList.remove('visible');
+            if (!scrollTop) {
+                console.error('❌ scrollTop button not found!');
+                return;
             }
-        });
 
-        scrollTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+            console.log('✅ scrollTop button initialized');
+
+            // Gestionnaire de scroll
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    const footerRect = footer.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    if (footerRect.top < windowHeight - 400) {
+                        scrollTop.classList.remove('visible');
+                    } else {
+                        scrollTop.classList.add('visible');
+                    }
+                } else {
+                    scrollTop.classList.remove('visible');
+                }
+            });
+
+            // UN SEUL event listener simple
+            scrollTop.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🎯 SCROLL TO TOP CLICKED!');
+                window.scrollTo({ 
+                    top: 0, 
+                    behavior: 'smooth' 
+                });
+            }, true); // Utiliser la phase de capture
+        }
+
+        // Attendre que le DOM soit prêt
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initScrollTop);
+        } else {
+            initScrollTop();
+        }
 
         // Smooth scroll pour les ancres
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1534,14 +1563,14 @@
 
                 if (data.success && data.announcements.length > 0) {
                     container.innerHTML = data.announcements.map(ann => `
-                        <a href="${ann.lien || '#'}" class="announcement-card type-${ann.type || 'info'}">
+                        <div class="announcement-card type-${ann.type || 'info'}">
                             <div class="announcement-icon">${ann.icone || '🚀'}</div>
                             <div class="announcement-text">
                                 <div class="announcement-title">${ann.titre}</div>
                                 ${ann.description ? `<div class="announcement-description">${ann.description}</div>` : ''}
                             </div>
-                            <span class="announcement-btn">${ann.bouton_texte || 'En savoir plus →'}</span>
-                        </a>
+                            <a href="${ann.lien || '#'}" class="announcement-btn">${ann.bouton_texte || 'En savoir plus →'}</a>
+                        </div>
                     `).join('');
                 } else {
                     // Pas d'annonces, afficher un message par défaut ou cacher la section

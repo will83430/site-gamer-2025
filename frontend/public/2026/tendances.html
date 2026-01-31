@@ -81,6 +81,38 @@
             letter-spacing: 1px;
         }
 
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--tech-yellow);
+        }
+
+        .breadcrumb .active {
+            color: var(--tech-yellow);
+        }
+
+        .breadcrumb .current {
+            color: var(--tech-yellow);
+        }
+
+        .breadcrumb .separator {
+            color: var(--text-muted);
+        }
+
         /* Navigation Tabs */
         .tendances-nav {
             display: flex;
@@ -190,11 +222,18 @@
 
         .card-video {
             position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            background: #000;
         }
 
         .card-video iframe {
+            position: absolute;
+            inset: 0;
             width: 100%;
-            height: 200px;
+            height: 100%;
             border: none;
         }
 
@@ -318,6 +357,8 @@
             padding: 1.5rem;
             text-align: center;
             transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
         }
 
         .market-card:hover {
@@ -328,41 +369,68 @@
         .market-card .market-icon {
             font-size: 2.5rem;
             margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
         }
 
         .market-card .stat-value {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             background: var(--gradient-yellow-green);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .market-card .stat-unit {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
         }
 
         .market-card .stat-label {
             color: var(--text-secondary);
             font-size: 0.9rem;
+            margin-top: 0.5rem;
         }
 
         .market-card .tendance {
-            font-size: 1.5rem;
-            margin-left: 0.3rem;
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            padding-bottom: 1px;
         }
 
         .market-card .tendance.up {
+            background: rgba(107, 255, 107, 0.2);
             color: #6bff6b;
+            padding-bottom: 2px;
         }
 
         .market-card .tendance.down {
+            background: rgba(255, 107, 107, 0.2);
             color: #ff6b6b;
+            padding-top: 1px;
         }
 
         .market-card .tendance.stable {
+            background: rgba(255, 215, 0, 0.2);
             color: #ffd700;
         }
 
@@ -420,6 +488,14 @@
             border-color: rgba(212, 255, 0, 0.3);
         }
 
+        .prediction-year-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 100px;
+        }
+
         .prediction-year {
             font-family: 'Orbitron', sans-serif;
             font-size: 2rem;
@@ -427,7 +503,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            min-width: 80px;
         }
 
         .prediction-content h3 {
@@ -436,10 +511,92 @@
             margin-bottom: 0.5rem;
         }
 
+        .prediction-icon {
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Console Logos */
+        .console-logo {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+
+        .xbox-logo {
+            background: linear-gradient(135deg, #107C10 0%, #0D6E0D 100%);
+        }
+
+        .xbox-logo svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .playstation-logo {
+            background: linear-gradient(135deg, #003087 0%, #001F5C 100%);
+        }
+
+        .playstation-logo svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .nintendo-logo {
+            background: linear-gradient(135deg, #E60012 0%, #B20010 100%);
+        }
+
+        .nintendo-logo svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
         .prediction-content p {
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.6;
+        }
+
+        .prediction-prob {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-full);
+            white-space: nowrap;
+            margin-top: 0.8rem;
+        }
+
+        .prediction-prob.high {
+            background: rgba(107, 255, 107, 0.15);
+            color: var(--tech-green);
+            border: 1px solid rgba(107, 255, 107, 0.3);
+        }
+
+        .prediction-prob.medium {
+            background: rgba(212, 255, 0, 0.15);
+            color: var(--tech-yellow);
+            border: 1px solid rgba(212, 255, 0, 0.3);
+        }
+
+        .prediction-prob.low {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.3);
         }
 
         /* Loading State */
@@ -510,7 +667,7 @@
 
             <div class="nav-links">
                 <a href="/2026/" class="nav-link">Accueil</a>
-                <a href="/2026/#categories" class="nav-link">Categories</a>
+                <a href="/2026/#categories" class="nav-link">Catégories</a>
             </div>
         </nav>
     </header>
@@ -520,14 +677,14 @@
             <!-- Page Header -->
             <div class="page-header">
                 <!-- Breadcrumb -->
-                <nav class="breadcrumb" style="margin-bottom: 2rem; text-align: center;">
-                    <a href="/2026/" style="color: var(--tech-yellow); text-decoration: none;">Accueil</a>
-                    <span style="color: var(--text-secondary);">/</span>
-                    <a href="/2026/#categories" style="color: var(--tech-yellow); text-decoration: none;">Catégories</a>
-                    <span style="color: var(--text-secondary);">/</span>
-                    <a href="#" id="breadcrumb-category" style="color: var(--tech-yellow); text-decoration: none;"></a>
-                    <span style="color: var(--text-secondary);">/</span>
-                    <span style="color: var(--text-primary);">Tendances</span>
+                <nav class="breadcrumb" id="breadcrumb-nav" style="margin-bottom: 2rem; text-align: center;">
+                    <a href="/2026/" class="crumb">Accueil</a>
+                    <span class="separator">/</span>
+                    <a href="/2026/#categories" class="crumb">Catégories</a>
+                    <span class="separator">/</span>
+                    <a href="#" id="breadcrumb-category" class="crumb"></a>
+                    <span class="separator">/</span>
+                    <span class="current">Tendances</span>
                 </nav>
 
                 <h1 class="page-title" id="main-title">Tendances</h1>
@@ -688,6 +845,7 @@
         // ========================================
         function convertIconToEmoji(iconText) {
             const iconMap = {
+                // TECHNOLOGIES
                 'bluetooth': '📡',
                 'pen': '✍️',
                 'hand': '✋',
@@ -750,9 +908,61 @@
                 'headphone': '🎧',
                 'earphone': '🎧',
                 'controller': '🎮',
+                'gamepad': '🎮',
+                'xbox': '�',
+                'playstation': '🔵',
+                'ps5': '🔵',
+                'nintendo': '🔴',
+                'switch': '🔴',
                 'joystick': '🕹️',
                 'remote': '📱',
                 'dollar': '💲',
+                'money': '💰',
+                'trophy': '🏆',
+                'medal': '🥇',
+                'award': '🏅',
+                // TECHNOLOGIES MISSING
+                'cpu': '🖥️',
+                'cube': '🎲',
+                'droplet': '💧',
+                'file': '📄',
+                'heartbeat': '💓',
+                'home': '🏠',
+                'leaf': '🍃',
+                'monitor': '🖥️',
+                'refresh': '🔄',
+                'sound-wave': '📢',
+                'tv': '📺',
+                'zap': '⚡',
+                // MARCHE
+                'android': '🤖',
+                'apple': '🍎',
+                'building': '🏢',
+                'creality': '🖨️',
+                'euro': '💶',
+                'fold': '📱',
+                'france': '🇫🇷',
+                'lg': '📺',
+                'link': '🔗',
+                'list': '📋',
+                'meta': '👁️',
+                'package': '📦',
+                'phone': '📱',
+                'school': '🏫',
+                'vr-headset': '🥽',
+                'headphones': '🎧',
+                // PREDICTIONS
+                '8k': '📺',
+                'box': '📦',
+                'fingerprint': '👆',
+                'hologram': '✨',
+                'metal': '⚙️',
+                'mic': '🎤',
+                'quantum': '⚛️',
+                'recycle': '♻️',
+                'sparkle': '✨',
+                'translate': '🌐',
+                'zoom': '🔍',
             };
 
             if (!iconText) return '🔧';
@@ -760,10 +970,72 @@
             return iconMap[normalized] || iconText;
         }
 
+        function getConsoleLogo(iconText) {
+            if (!iconText) return null;
+            const normalized = iconText.toLowerCase().trim();
+            if (normalized === 'xbox') {
+                return '<div class="console-logo xbox-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.102 21.033A11.947 11.947 0 0 0 12 24a11.96 11.96 0 0 0 7.902-2.967c1.877-1.912-4.316-8.709-7.902-11.417-3.582 2.708-9.779 9.505-7.898 11.417zm11.16-14.406c2.5 2.961 7.484 10.313 6.076 12.912A11.942 11.942 0 0 0 24 12.004a11.95 11.95 0 0 0-3.57-8.536s-.027-.022-.082-.042a.824.824 0 0 0-.281-.045c-.592 0-1.985.434-4.805 3.246zM3.654 3.426c-.057.02-.082.041-.086.042A11.956 11.956 0 0 0 0 12.004c0 2.854.998 5.473 2.661 7.533-1.401-2.605 3.579-9.951 6.08-12.91-2.82-2.812-4.213-3.246-4.806-3.246a.725.725 0 0 0-.281.045zM12 3.551S9.055 1.828 6.755 1.746c-.903-.033-1.454.295-1.521.339C7.379.685 9.659 0 12 0c2.342 0 4.622.685 6.766 2.085-.066-.044-.615-.372-1.52-.339C14.946 1.828 12 3.551 12 3.551z"/></svg></div>';
+            }
+            if (normalized === 'playstation' || normalized === 'ps5') {
+                return '<div class="console-logo playstation-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg></div>';
+            }
+            if (normalized === 'nintendo' || normalized === 'switch') {
+                return '<div class="console-logo nintendo-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.176 24h3.674c3.376 0 6.15-2.774 6.15-6.15V6.15C24 2.775 21.226 0 17.85 0H14.1c-.074 0-.15.074-.15.15v23.7c-.001.076.075.15.226.15zm4.574-13.199c1.351 0 2.399 1.125 2.399 2.398 0 1.352-1.125 2.4-2.399 2.4-1.35 0-2.4-1.049-2.4-2.4-.075-1.349 1.05-2.398 2.4-2.398zM11.4 0H6.15C2.775 0 0 2.775 0 6.15v11.7C0 21.226 2.775 24 6.15 24h5.25c.074 0 .15-.074.15-.149V.15c0-.076-.076-.15-.15-.15zM6.15 13.2c-1.35 0-2.4-1.05-2.4-2.4 0-1.35 1.05-2.4 2.4-2.4 1.35 0 2.4 1.05 2.4 2.4 0 1.35-1.05 2.4-2.4 2.4z"/></svg></div>';
+            }
+            return null;
+        }
+
         function normalizeTags(tags) {
             if (!tags) return [];
             if (Array.isArray(tags)) return tags;
             return String(tags).replace(/[{}]/g, '').split(',').map(t => t.trim()).filter(Boolean);
+        }
+
+        function buildTendanceLink(item) {
+            // Toujours utiliser article.html pour les liens
+            if (item && item.id) {
+                return `/2026/article.html?id=${item.id}`;
+            }
+            // Si y a un lien en BDD, le convertir vers article.html
+            if (item && item.lien) {
+                let link = item.lien.startsWith('/') ? item.lien : `/${item.lien}`;
+                // Remplacer tous les anciens formats de tendance.html
+                link = link.replace(/\/2026\/tendance\.html/, '/2026/article.html');
+                link = link.replace(/fiches\/tendances\/[^\/]+\/([^\.]+)\.html/, `/2026/article.html?id=$1`);
+                return link;
+            }
+            return '';
+        }
+
+        // Convertit les URLs YouTube (watch, youtu.be, shorts) en liens embed pour éviter l'erreur 153
+        function normalizeVideoUrl(url) {
+            if (!url) return '';
+            try {
+                const parsed = new URL(url, window.location.origin);
+                const host = parsed.hostname.replace(/^www\./, '');
+
+                if (host.endsWith('youtube.com') || host === 'youtu.be') {
+                    let videoId = parsed.searchParams.get('v');
+
+                    if (!videoId && host === 'youtu.be') {
+                        videoId = parsed.pathname.split('/').filter(Boolean)[0];
+                    }
+
+                    if (!videoId && parsed.pathname.includes('/shorts/')) {
+                        videoId = parsed.pathname.split('/shorts/')[1]?.split('/')[0];
+                    }
+
+                    if (videoId) {
+                        const startParam = parsed.searchParams.get('t') || parsed.searchParams.get('start');
+                        const start = startParam ? parseInt(startParam, 10) || 0 : 0;
+                        const startSuffix = start > 0 ? `?start=${start}` : '';
+                        return `https://www.youtube.com/embed/${videoId}${startSuffix}`;
+                    }
+                }
+            } catch (err) {
+                console.warn('normalizeVideoUrl failed:', err);
+            }
+            return url;
         }
 
         // ========================================
@@ -784,15 +1056,18 @@
         document.addEventListener('DOMContentLoaded', () => {
             currentCategory = getCategoryFromURL();
 
-            if (!isValidCategory(currentCategory)) {
+            // Si une catégorie est spécifiée mais invalide, afficher une erreur
+            if (currentCategory && !isValidCategory(currentCategory)) {
                 document.getElementById('loading-state').classList.add('hidden');
                 document.getElementById('content-sections').innerHTML = `
                     <div class="empty-state">
-                        <p>Aucune catégorie sélectionnée ou catégorie inconnue.</p>
+                        <p>Catégorie inconnue : ${currentCategory}</p>
+                        <p><a href="/2026/tendances.html" style="color: var(--tech-yellow);">← Retour aux tendances globales</a></p>
                     </div>
                 `;
                 return;
             }
+
             setupNavigation();
             setupScrollTop();
             loadTendances();
@@ -803,16 +1078,31 @@
         // UPDATE PAGE INFO
         // ========================================
         function updatePageInfo() {
-            const categoryName = categoryNames[currentCategory] || currentCategory || 'Technologie';
+            const categoryName = categoryNames[currentCategory] || 'Tendances';
+            const pageTitle = currentCategory ? `${categoryName}` : 'Tendances';
 
-            document.getElementById('page-title').textContent = `Tendances ${categoryName} - HIGH-TECH 2026`;
-            document.getElementById('main-title').textContent = `Tendances ${categoryName}`;
+            document.getElementById('page-title').textContent = `${pageTitle} - HIGH-TECH 2026`;
+            document.getElementById('main-title').textContent = pageTitle;
             
             const breadcrumbLink = document.getElementById('breadcrumb-category');
-            breadcrumbLink.textContent = categoryName;
-            breadcrumbLink.href = `/2026/produits.html?categorie=${currentCategory}`;
+            const breadcrumbNav = document.getElementById('breadcrumb-nav');
             
-            document.getElementById('back-btn').href = `/2026/produits.html?categorie=${currentCategory}`;
+            if (currentCategory) {
+                // Avec catégorie : Accueil / Catégories / [Cat] / Tendances
+                breadcrumbLink.textContent = categoryName;
+                breadcrumbLink.href = `/2026/produits.html?categorie=${currentCategory}`;
+                breadcrumbLink.style.display = 'inline';
+                breadcrumbNav.style.display = 'flex';
+                document.getElementById('back-btn').href = `/2026/produits.html?categorie=${currentCategory}`;
+                document.getElementById('back-btn').textContent = `Retour à ${categoryName}`;
+            } else {
+                // Sans catégorie : masquer la partie catégorie du breadcrumb
+                // Accueil / Tendances
+                breadcrumbLink.style.display = 'none';
+                breadcrumbLink.previousElementSibling.style.display = 'none'; // span /
+                document.getElementById('back-btn').href = '/2026/';
+                document.getElementById('back-btn').textContent = 'Retour à l\'accueil';
+            }
         }
 
         // ========================================
@@ -842,25 +1132,78 @@
         // ========================================
         async function loadTendances() {
             try {
-                const apiCategory = slugToApiCategory(currentCategory);
-                const dbCategory = slugToDbCategory(currentCategory);
+                let actualites = [];
+                let technologies = [];
+                let marche = [];
+                let insights = [];
+                let predictions = [];
 
-                // Charger chaque type depuis les routes dédiées
-                const [actualitesRes, techRes, marcheRes, insightsRes, predictionsRes] = await Promise.all([
-                    fetch(`/api/${encodeURIComponent(apiCategory)}/actualites`),
-                    fetch(`/api/${encodeURIComponent(apiCategory)}/technologies`),
-                    fetch(`/api/${encodeURIComponent(apiCategory)}/marche`),
-                    fetch(`/api/${encodeURIComponent(apiCategory)}/insights`),
-                    fetch(`/api/${encodeURIComponent(apiCategory)}/predictions`)
-                ]);
+                if (currentCategory) {
+                    // Charger pour une catégorie spécifique
+                    const apiCategory = slugToApiCategory(currentCategory);
+                    const dbCategory = slugToDbCategory(currentCategory);
 
-                const [actualites, technologies, marche, insights, predictions] = await Promise.all([
-                    actualitesRes.json(),
-                    techRes.json(),
-                    marcheRes.json(),
-                    insightsRes.json(),
-                    predictionsRes.json()
-                ]);
+                    // Charger chaque type depuis les routes dédiées
+                    const [actualitesRes, techRes, marcheRes, insightsRes, predictionsRes] = await Promise.all([
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/actualites`),
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/technologies`),
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/marche`),
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/insights`),
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/predictions`)
+                    ]);
+
+                    const jsonResults = await Promise.all([
+                        actualitesRes.json(),
+                        techRes.json(),
+                        marcheRes.json(),
+                        insightsRes.json(),
+                        predictionsRes.json()
+                    ]);
+
+                    [actualites, technologies, marche, insights, predictions] = jsonResults;
+
+                    const hasContent = [actualites, technologies, marche, insights, predictions].some(arr => Array.isArray(arr) && arr.length > 0);
+
+                    if (!hasContent) {
+                        // Fallback: ancienne route combinée
+                        const fallbackRes = await fetch(`/api/tendances?categorie=${encodeURIComponent(dbCategory)}`);
+                        const fallbackData = await fallbackRes.json();
+
+                        if (Array.isArray(fallbackData) && fallbackData.length > 0) {
+                            const typedFallback = fallbackData.map(item => ({
+                                ...item,
+                                type: (item.type || 'actualite').toLowerCase()
+                            }));
+
+                            actualites = typedFallback.filter(d => d.type === 'actualite');
+                            technologies = typedFallback.filter(d => d.type === 'technologie');
+                            marche = typedFallback.filter(d => d.type === 'marche');
+                            predictions = typedFallback.filter(d => d.type === 'prediction');
+
+                            [actualites, technologies, marche, predictions]
+                                .forEach(list => list.forEach(item => { item.tags = normalizeTags(item.tags); }));
+                        }
+                    }
+                } else {
+                    // Charger TOUTES les tendances (globales)
+                    const fallbackRes = await fetch('/api/tendances');
+                    const fallbackData = await fallbackRes.json();
+
+                    if (Array.isArray(fallbackData) && fallbackData.length > 0) {
+                        const typedFallback = fallbackData.map(item => ({
+                            ...item,
+                            type: (item.type || 'actualite').toLowerCase()
+                        }));
+
+                        actualites = typedFallback.filter(d => d.type === 'actualite');
+                        technologies = typedFallback.filter(d => d.type === 'technologie');
+                        marche = typedFallback.filter(d => d.type === 'marche');
+                        predictions = typedFallback.filter(d => d.type === 'prediction');
+
+                        [actualites, technologies, marche, predictions]
+                            .forEach(list => list.forEach(item => { item.tags = normalizeTags(item.tags); }));
+                    }
+                }
 
                 document.getElementById('loading-state').classList.add('hidden');
                 document.getElementById('tendances-nav').classList.remove('hidden');
@@ -872,35 +1215,7 @@
                     tendancesData = { actualites, technologies, marche, insights, predictions };
                     renderAllSections({ actualites, technologies, marche, insights, predictions });
                 } else {
-                    // Fallback: ancienne route combinée si les nouvelles sont vides
-                    const fallbackRes = await fetch(`/api/tendances?categorie=${encodeURIComponent(dbCategory)}`);
-                    const fallbackData = await fallbackRes.json();
-
-                    if (Array.isArray(fallbackData) && fallbackData.length > 0) {
-                        const typedFallback = fallbackData.map(item => ({
-                            ...item,
-                            type: (item.type || 'actualite').toLowerCase()
-                        }));
-
-                        const actualitesFallback = typedFallback.filter(d => d.type === 'actualite');
-                        const technologiesFallback = typedFallback.filter(d => d.type === 'technologie');
-                        const marcheFallback = typedFallback.filter(d => d.type === 'marche');
-                        const predictionsFallback = typedFallback.filter(d => d.type === 'prediction');
-
-                        [actualitesFallback, technologiesFallback, marcheFallback, predictionsFallback]
-                            .forEach(list => list.forEach(item => { item.tags = normalizeTags(item.tags); }));
-
-                        tendancesData = {
-                            actualites: actualitesFallback,
-                            technologies: technologiesFallback,
-                            marche: marcheFallback,
-                            insights: [],
-                            predictions: predictionsFallback
-                        };
-                        renderAllSections(tendancesData);
-                    } else {
-                        showEmptyState();
-                    }
+                    showEmptyState();
                 }
             } catch (error) {
                 console.error('Erreur chargement tendances:', error);
@@ -935,12 +1250,17 @@
 
                 const fullDate = item.date_publication || item.date || '';
                 const dateText = fullDate.split('T')[0]; // Extract only the date part
+                const ficheLink = buildTendanceLink(item);
 
+                const embedUrl = normalizeVideoUrl(item.video_url);
                 return `
                     <article class="actualite-card ${index === 0 ? 'featured' : ''}">
-                        ${item.video_url
+                        ${embedUrl
                             ? `<div class="card-video">
-                                    <iframe src="${item.video_url}" title="${item.titre}" allowfullscreen></iframe>
+                                    <iframe src="${embedUrl}" title="${item.titre}"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        referrerpolicy="strict-origin-when-cross-origin"
+                                        allowfullscreen></iframe>
                                     ${item.hot ? '<span class="badge-hot">HOT</span>' : ''}
                                </div>`
                             : `<div class="card-image">
@@ -954,7 +1274,7 @@
                             <h3>${item.titre}</h3>
                             <p>${item.description || ''}</p>
                             <div class="tags">${tagsHtml}</div>
-                            ${item.lien ? `<a href="/${item.lien}" class="btn-read-more" style="display: inline-block; margin-top: 1rem; color: var(--tech-yellow); text-decoration: none; font-weight: 600; transition: var(--transition-fast);">➜ Lire la suite</a>` : ''}
+                            ${ficheLink ? `<a href="${ficheLink}" class="btn-read-more" style="display: inline-block; margin-top: 1rem; color: var(--tech-yellow); text-decoration: none; font-weight: 600; transition: var(--transition-fast);">➜ Lire la suite</a>` : ''}
                         </div>
                     </article>
                 `;
@@ -981,7 +1301,6 @@
                     </div>
                     <p><strong>Adoption: ${item.taux_adoption || 0}%</strong></p>
                     <p>${item.description || ''}</p>
-                    ${item.lien ? `<a href="/${item.lien}" class="btn-read-more" style="display: inline-block; margin-top: 1rem; color: var(--tech-yellow); text-decoration: none; font-weight: 600; transition: var(--transition-fast);">➜ Lire la suite</a>` : ''}
                 </div>
             `).join('');
         }
@@ -998,10 +1317,10 @@
                 insightsGrid.innerHTML = '';
             } else {
                 grid.innerHTML = data.map(item => {
-                    // Icône convertie en emoji
-                    const iconEmoji = item.icone ? convertIconToEmoji(item.icone) : '📊';
-                    
-                    // Tendance avec icône appropriée
+                    const consoleLogo = getConsoleLogo(item.icone);
+                    const iconDisplay = consoleLogo || (item.icone ? convertIconToEmoji(item.icone) : '📊');
+
+                    // Tendance avec icône appropriée (badge en haut à droite)
                     let tendanceHtml = '';
                     if (item.tendance) {
                         const tendanceLower = item.tendance.toLowerCase();
@@ -1013,14 +1332,24 @@
                             tendanceHtml = '<span class="tendance stable">→</span>';
                         }
                     }
-                    
+
+                    // Séparer valeur et unité si présent (ex: "89M unités" -> "89M" + "unités")
+                    let valeur = item.valeur || item.titre || '';
+                    let unite = '';
+
+                    // Patterns pour extraire valeur/unité
+                    const match = valeur.match(/^([\d,.]+[MKB%€$]?)\s*(.*)$/i);
+                    if (match) {
+                        valeur = match[1];
+                        unite = match[2];
+                    }
+
                     return `
                         <div class="market-card">
-                            <div class="market-icon">${iconEmoji}</div>
-                            <div class="stat-value">
-                                ${item.valeur || item.titre}
-                                ${tendanceHtml}
-                            </div>
+                            ${tendanceHtml}
+                            <div class="market-icon">${iconDisplay}</div>
+                            <div class="stat-value">${valeur}</div>
+                            ${unite ? `<div class="stat-unit">${unite}</div>` : ''}
                             <div class="stat-label">${item.label || item.description}</div>
                         </div>
                     `;
@@ -1032,7 +1361,6 @@
                 insightsGrid.innerHTML = insightsArray.map(item => `
                     <div class="insight-item">
                         <p>${item.description || item.titre}</p>
-                        ${item.lien ? `<a href="/${item.lien}" class="btn-read-more" style="display: inline-block; margin-top: 0.5rem; color: var(--tech-yellow); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: var(--transition-fast);">➜ Lire la suite</a>` : ''}
                     </div>
                 `).join('');
             } else {
@@ -1051,16 +1379,25 @@
                 return;
             }
 
-            timeline.innerHTML = data.map(item => `
-                <div class="prediction-card">
-                    <div class="prediction-year">${item.annee || ''}</div>
-                    <div class="prediction-content">
-                        <h3>${item.titre}</h3>
-                        <p>${item.description || ''}</p>
-                        ${item.lien ? `<a href="/${item.lien}" class="btn-read-more" style="display: inline-block; margin-top: 1rem; color: var(--tech-yellow); text-decoration: none; font-weight: 600; transition: var(--transition-fast);">➜ Lire la suite</a>` : ''}
+            timeline.innerHTML = data.map(item => {
+                const consoleLogo = getConsoleLogo(item.icone);
+                const iconDisplay = consoleLogo || convertIconToEmoji(item.icone);
+                const prob = item.probabilite;
+                const probClass = prob >= 70 ? 'high' : prob >= 40 ? 'medium' : 'low';
+                return `
+                    <div class="prediction-card">
+                        <div class="prediction-year-section">
+                            <div class="prediction-year">${item.annee || ''}</div>
+                            <div class="prediction-icon">${iconDisplay}</div>
+                        </div>
+                        <div class="prediction-content">
+                            <h3>${item.titre}</h3>
+                            <p>${item.description || ''}</p>
+                            ${prob ? `<div class="prediction-prob ${probClass}">Probabilité: ${prob}%</div>` : ''}
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // ========================================

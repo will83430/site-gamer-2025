@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Wiki - HIGH-TECH 2026</title>
+    <meta name="description" content="Documentation technique du projet HIGH-TECH 2026">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/2026/css/theme.css">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Header compact */
+        .wiki-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            z-index: 1000;
+            gap: 1rem;
+        }
+
+        .wiki-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        .wiki-logo-icon { font-size: 1.5rem; }
+        .wiki-logo-text { font-size: 1rem; }
+        .wiki-logo-year { color: var(--tech-yellow); font-size: 0.9rem; }
+
+        .wiki-nav-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .wiki-nav-toggle:hover {
+            border-color: var(--tech-yellow);
+            color: var(--tech-yellow);
+        }
+
+        .wiki-page-title {
+            flex: 1;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .wiki-page-title span {
+            color: var(--tech-yellow);
+        }
+
+        .wiki-fullscreen-btn {
+            background: rgba(212, 255, 0, 0.1);
+            color: var(--tech-yellow);
+            border: 1px solid rgba(212, 255, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.2s;
+        }
+
+        .wiki-fullscreen-btn:hover {
+            background: rgba(212, 255, 0, 0.2);
+            border-color: var(--tech-yellow);
+        }
+
+        .wiki-back-btn {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .wiki-back-btn:hover {
+            border-color: var(--tech-cyan);
+            color: var(--tech-cyan);
+        }
+
+        /* Sidebar overlay */
+        .wiki-sidebar-overlay {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            width: 320px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .wiki-sidebar-overlay.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-backdrop {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 998;
+        }
+
+        .sidebar-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--tech-yellow);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-category {
+            margin-bottom: 1.2rem;
+        }
+
+        .category-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.6rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(212, 255, 0, 0.1);
+            color: var(--tech-yellow);
+        }
+
+        .sidebar-link.active {
+            background: rgba(212, 255, 0, 0.15);
+            color: var(--tech-yellow);
+        }
+
+        .sidebar-link-icon { font-size: 1rem; }
+
+        /* Main content - FULL WIDTH */
+        .wiki-main {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #1a1a2e;
+        }
+
+        .wiki-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Loading */
+        .wiki-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+        }
+
+        .wiki-loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="wiki-header">
+        <a href="/2026/" class="wiki-logo">
+            <span class="wiki-logo-icon">📚</span>
+            <span class="wiki-logo-text">HIGH-TECH</span>
+            <span class="wiki-logo-year">Wiki</span>
+        </a>
+
+        <button class="wiki-nav-toggle" onclick="toggleSidebar()">
+            <span>☰</span>
+            <span>Navigation</span>
+        </button>
+
+        <div class="wiki-page-title" id="page-title-display">
+            <span id="current-page-icon">📚</span>
+            <span id="current-page-name">Documentation</span>
+        </div>
+
+        <a href="/2026/" class="wiki-back-btn">← Retour au site</a>
+        <a href="#" class="wiki-fullscreen-btn" id="fullscreen-btn" target="_blank">
+            ↗️ Plein écran
+        </a>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar()"></div>
+    <aside class="wiki-sidebar-overlay" id="wiki-sidebar">
+        <h2 class="sidebar-title">📑 Pages</h2>
+        <div id="sidebar-content">
+            <div class="wiki-loading">
+                <div class="wiki-loading-spinner"></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="wiki-main" id="wiki-main">
+        <div class="wiki-loading">
+            <div class="wiki-loading-spinner"></div>
+            <p>Chargement...</p>
+        </div>
+    </main>
+
+    <script>
+        const wikiCategories = {
+            'general': 'Général',
+            'getting-started': 'Démarrage',
+            'api': 'API & Backend',
+            'frontend': 'Frontend',
+            'tools': 'Outils',
+            'deployment': 'Déploiement',
+            'support': 'Support'
+        };
+
+        let allPages = [];
+        let currentPage = null;
+
+        function toggleSidebar() {
+            document.getElementById('wiki-sidebar').classList.toggle('open');
+            document.getElementById('sidebar-backdrop').classList.toggle('open');
+        }
+
+        async function loadSidebar() {
+            try {
+                const response = await fetch('/api/wiki');
+                allPages = await response.json();
+
+                if (!Array.isArray(allPages) || allPages.length === 0) {
+                    document.getElementById('sidebar-content').innerHTML = '<p>Aucune page</p>';
+                    return;
+                }
+
+                // Group by category
+                const grouped = {};
+                allPages.forEach(page => {
+                    const cat = page.categorie || 'general';
+                    if (!grouped[cat]) grouped[cat] = [];
+                    grouped[cat].push(page);
+                });
+
+                // Sort categories
+                const catOrder = ['general', 'getting-started', 'api', 'frontend', 'tools', 'deployment', 'support'];
+
+                let html = '';
+                for (const cat of catOrder) {
+                    const pages = grouped[cat];
+                    if (!pages) continue;
+
+                    html += `
+                        <div class="sidebar-category">
+                            <div class="category-title">${wikiCategories[cat] || cat}</div>
+                            ${pages.map(p => `
+                                <a href="?page=${p.slug}" class="sidebar-link" data-slug="${p.slug}" onclick="loadPage('${p.slug}'); toggleSidebar(); return false;">
+                                    <span class="sidebar-link-icon">${p.icone || '📄'}</span>
+                                    <span>${p.titre}</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                document.getElementById('sidebar-content').innerHTML = html;
+
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+
+        async function loadPage(slug) {
+            const mainContent = document.getElementById('wiki-main');
+
+            // Default to index
+            if (!slug) slug = 'index';
+
+            // Update URL
+            history.pushState({}, '', `?page=${slug}`);
+
+            // Show loading
+            mainContent.innerHTML = `
+                <div class="wiki-loading">
+                    <div class="wiki-loading-spinner"></div>
+                    <p>Chargement...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`/api/wiki/page/${slug}`);
+                if (!response.ok) throw new Error('Page non trouvée');
+
+                const page = await response.json();
+                currentPage = page;
+
+                // Update header
+                document.title = `${page.titre} - Wiki HIGH-TECH 2026`;
+                document.getElementById('current-page-icon').textContent = page.icone || '📄';
+                document.getElementById('current-page-name').textContent = page.titre;
+
+                // Get embed path
+                const embedMatch = page.contenu.match(/EMBED_PAGE:\s*([^\s]+)/);
+                const embedPath = embedMatch ? embedMatch[1] : `/wiki/${slug}.html`;
+
+                // Update fullscreen button
+                document.getElementById('fullscreen-btn').href = embedPath;
+
+                // Show iframe
+                mainContent.innerHTML = `<iframe src="${embedPath}" class="wiki-iframe" frameborder="0"></iframe>`;
+
+                // Highlight in sidebar
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    link.classList.toggle('active', link.dataset.slug === slug);
+                });
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                mainContent.innerHTML = `
+                    <div class="wiki-loading">
+                        <p style="color: var(--tech-red);">❌ Page non trouvée</p>
+                        <a href="?page=index" style="color: var(--tech-cyan);">Retour à l'accueil</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', () => {
+            const params = new URLSearchParams(window.location.search);
+            loadPage(params.get('page') || 'index');
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadSidebar();
+            const params = new URLSearchParams(window.location.search);
+            loadPage(params.get('page') || 'index');
+        });
+    </script>
+</body>
+</html>

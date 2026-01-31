@@ -4,8 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tests - Wiki Site Gamer 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="wiki-styles.css">
-</head>
+    <style>
+        h1 { font-family: 'Orbitron', sans-serif; color: #d4ff00; display: inline-block; min-width: max-content; }
+
+        .test-suite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, #d4ff00 0%, #6bff6b 100%);
+            color: #0a0a14 !important;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 255, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .test-suite-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .test-suite-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(212, 255, 0, 0.5), 0 0 40px rgba(107, 255, 107, 0.3);
+        }
+
+        .test-suite-btn:hover::before {
+            left: 100%;
+        }
+
+        .test-suite-btn .btn-icon {
+            font-size: 1.4rem;
+            animation: pulse-icon 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-icon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .test-suite-subtitle {
+            margin-top: 12px;
+            color: #a0a0b0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .test-suite-subtitle .count-badge {
+            background: rgba(212, 255, 0, 0.15);
+            color: #d4ff00;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+    </style>
 <body>
     <div class="header">
         <h1>🧪 Tests et Qualité</h1>
@@ -24,11 +94,15 @@
             <h2>🎯 Suite de Tests Interactive</h2>
             <p>Interface web complète pour tester automatiquement tous les aspects du site.</p>
             
-            <div style="text-align: center; margin: 30px 0;">
-                <a href="../scripts/maintenance/test-suite.html" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; border-radius: 12px; text-decoration: none; font-size: 1.2em; font-weight: bold; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.2s, box-shadow 0.2s;">
-                    🧪 Ouvrir la Suite de Tests
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="../scripts/maintenance/test-suite.html" target="_blank" class="test-suite-btn">
+                    <span class="btn-icon">🧪</span>
+                    <span>Ouvrir la Suite de Tests</span>
                 </a>
-                <p style="margin-top: 10px; opacity: 0.7; font-size: 0.9em;">Nouvelle fenêtre - 23 tests automatisés</p>
+                <p class="test-suite-subtitle">
+                    Nouvelle fenêtre
+                    <span class="count-badge">17 tests</span>
+                </p>
             </div>
             
             <div class="code-block">
@@ -39,7 +113,7 @@
             </div>
 
             <div class="info-box success">
-                <strong>✨ 23 tests automatisés</strong>
+                <strong>✨ 17 tests automatisés</strong>
                 <p>Organisés en 3 priorités : Critique (P1), Important (P2), Recommandé (P3)</p>
             </div>
 
@@ -138,7 +212,7 @@ npm run test:coverage</code></pre>
             
             <h3>Test Console Errors (Interface dédiée)</h3>
             <div style="text-align: center; margin: 20px 0;">
-                <a href="../scripts/maintenance/test-console-errors.html" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-size: 1.1em; font-weight: bold; box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4); transition: transform 0.2s;">
+                <a href="../scripts/maintenance/test-console-errors.html" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: inline-block; min-width: max-content; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-size: 1.1em; font-weight: bold; box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4); transition: transform 0.2s;">
                     🔍 Tester les Erreurs Console
                 </a>
             </div>
@@ -300,7 +374,7 @@ Cmd + Shift + M (Mac)</code></pre>
                     <tr>
                         <td><a href="../scripts/maintenance/test-suite.html">test-suite.html</a></td>
                         <td>🌐 Web</td>
-                        <td>Suite complète de 23 tests automatisés</td>
+                        <td>Suite complète de 17 tests automatisés</td>
                     </tr>
                     <tr>
                         <td><a href="../scripts/maintenance/test-console-errors.html">test-console-errors.html</a></td>
@@ -341,7 +415,7 @@ Cmd + Shift + M (Mac)</code></pre>
             <h2>❓ FAQ Tests</h2>
             
             <h3>Combien de temps prend la suite complète ?</h3>
-            <p>Environ 2-3 minutes pour les 23 tests automatisés.</p>
+            <p>Environ 2-3 minutes pour les 17 tests automatisés.</p>
 
             <h3>Puis-je arrêter les tests en cours ?</h3>
             <p>Oui, bouton <strong>"⏸️ Arrêter"</strong> dans l'interface test-suite.</p>

@@ -4,31 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détail des Composants - Architecture Site Gamer 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="wiki-styles.css">
     <style>
         /* Styles spécifiques à la page de détail */
         .header { padding: 40px 20px; }
-        .header h1 { font-size: 2.5em; color: white; margin-bottom: 10px; }
+        .header h1 { font-size: 2.5em; display: inline-block; min-width: max-content; margin-bottom: 10px; }
         .header p { font-size: 1.1em; opacity: 0.9; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-        .toc { background: rgba(102, 126, 234, 0.1); border: 1px solid #667eea; border-radius: 10px; padding: 25px; margin-bottom: 40px; }
-        .toc h2 { color: #667eea; margin-bottom: 20px; }
+        .toc { background: rgba(212, 255, 0, 0.1); border: 1px solid #667eea; border-radius: 10px; padding: 25px; margin-bottom: 40px; }
+        .toc h2 { color: #d4ff00; margin-bottom: 20px; }
         .toc ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
         .toc li { list-style: none; }
         .toc a { color: #2ecc71; text-decoration: none; padding: 8px 12px; border-radius: 6px; transition: all 0.3s; display: block; }
         .toc a:hover { background: rgba(46, 204, 113, 0.2); transform: translateX(5px); }
         .component { background: linear-gradient(145deg, #2a2a40, #1f1f35); border-left: 4px solid #667eea; border-radius: 8px; padding: 30px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); scroll-margin-top: 100px; }
-        .component h2 { color: #667eea; margin-bottom: 5px; font-size: 1.8em; display: flex; align-items: center; gap: 15px; }
+        .component h2 { color: #d4ff00; margin-bottom: 5px; font-size: 1.8em; display: flex; align-items: center; gap: 15px; }
         .component-icon { font-size: 2.5em; }
         .component-type { color: #2ecc71; font-size: 0.9em; opacity: 0.8; margin-bottom: 15px; }
         .component-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(102, 126, 234, 0.3); }
         .component-section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
         .section-title { color: #f39c12; font-weight: 600; font-size: 1.1em; margin-bottom: 12px; }
         .section-content { opacity: 0.85; line-height: 1.6; }
-        .endpoint { background: rgba(102, 126, 234, 0.1); border-left: 3px solid #2ecc71; padding: 12px; margin: 10px 0; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9em; }
+        .endpoint { background: rgba(212, 255, 0, 0.1); border-left: 3px solid #2ecc71; padding: 12px; margin: 10px 0; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9em; }
         .endpoint-method { color: #f39c12; font-weight: 600; margin-right: 10px; }
         .endpoint-path { color: #2ecc71; }
-        .endpoint-desc { font-family: 'Segoe UI'; color: #b0b0b0; font-size: 0.85em; margin-top: 5px; }
+        .endpoint-desc { font-family: 'Poppins'; color: #b0b0b0; font-size: 0.85em; margin-top: 5px; }
         .list-item { margin: 8px 0; padding: 8px 12px; background: rgba(102, 126, 234, 0.05); border-radius: 4px; }
         .tag { display: inline-block; background: rgba(46, 204, 113, 0.2); color: #2ecc71; padding: 4px 10px; border-radius: 12px; font-size: 0.8em; margin: 4px 4px 4px 0; }
         .connections { background: rgba(52, 152, 219, 0.1); border-left: 3px solid #3498db; padding: 15px; border-radius: 6px; margin: 15px 0; }
@@ -37,11 +38,11 @@
         .connection-item strong { color: #2ecc71; }
         .code-block { background: #000; border: 1px solid #333; padding: 15px; border-radius: 6px; overflow-x: auto; margin: 10px 0; }
         .code-block code { color: #2ecc71; font-family: 'Courier New'; font-size: 0.9em; }
-        .top-nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .top-nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
-        .top-nav a:hover { color: #764ba2; transform: translateY(-2px); }
-        .nav { position: sticky; top: 61px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 15px 20px; margin: -40px -20px 40px -20px; display: flex; gap: 20px; z-index: 99; justify-content: center; flex-wrap: wrap; }
-        .nav a { color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; transition: all 0.3s; background: rgba(255, 255, 255, 0.1); }
+        .top-nav { background: rgba(212, 255, 0, 0.1); padding: 15px 20px; border-bottom: 1px solid #d4ff00; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .top-nav a { color: #d4ff00; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .top-nav a:hover { color: #6bff6b; transform: translateY(-2px); }
+        .nav { position: sticky; top: 61px; background: linear-gradient(135deg, #1a1a2a 0%, #121220 100%); border-bottom: 2px solid #d4ff00; padding: 15px 20px; margin: -40px -20px 40px -20px; display: flex; gap: 20px; z-index: 99; justify-content: center; flex-wrap: wrap; }
+        .nav a { display: inline-block; min-width: max-content; text-decoration: none; padding: 8px 16px; border-radius: 6px; transition: all 0.3s; background: rgba(255, 255, 255, 0.1); }
         .nav a:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
         .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7; }
         .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; font-weight: 600; }
@@ -766,7 +767,7 @@
     <div class="footer">
         <p>📚 Documentation complète de l'architecture Site Gamer 2025</p>
         <p>Dernière mise à jour : 26 décembre 2025</p>
-        <p><a href="project-connections-vue.html" style="color: #667eea; text-decoration: none;">← Retour au diagramme interactif</a> | <a href="wiki.html" style="color: #667eea; text-decoration: none;">Wiki Home</a></p>
+        <p><a href="project-connections-vue.html" style="color: #d4ff00; text-decoration: none;">← Retour au diagramme interactif</a> | <a href="wiki.html" style="color: #d4ff00; text-decoration: none;">Wiki Home</a></p>
     </div>
 </body>
 </html>
