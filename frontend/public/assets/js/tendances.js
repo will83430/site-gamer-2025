@@ -211,7 +211,7 @@ class TendancesDataManager {
             'creality': '🅲',
             'chart': '📊',
             'school': '🏫',
-            'dollar': '💸',
+            'dollar': '💲',
             // Icônes technologies
             'cpu': '🖥️',
             'monitor': '🖥️',
@@ -220,7 +220,9 @@ class TendancesDataManager {
             'shield': '🛡️',
             'pen': '✏️',
             'bluetooth': '📶',
-            '4k': '📺'
+            '4k': '📺',
+            'school': '🏫',
+            'dollar': '💲',
         };
         return iconMap[iconName] || '🔮';
     }

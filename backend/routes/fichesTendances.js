@@ -31,7 +31,38 @@ router.get('/data/:id', async (req, res) => {
       ORDER BY ordre
     `, [id]);
     
-    article.sections = sectionsResult.rows;
+    let sections = sectionsResult.rows;
+    
+    // Si pas de sections en base, générer des sections basées sur la description/contenu
+    if (sections.length === 0 && article.description) {
+      // Extraire le titre du résumé (première phrase avant .)
+      const titleMatch = article.description.match(/^([^.!?]+[.!?])/);
+      const summaryTitle = titleMatch ? titleMatch[1].trim() : article.titre;
+      
+      sections = [
+        {
+          id: `${id}-1`,
+          actualite_id: id,
+          titre: 'Résumé',
+          contenu: summaryTitle,
+          ordre: 1
+        }
+      ];
+      
+      // Si la description a un contenu supplémentaire après le résumé
+      const descRest = article.description.substring((titleMatch?.[0]?.length || 0));
+      if (descRest.trim()) {
+        sections.push({
+          id: `${id}-2`,
+          actualite_id: id,
+          titre: 'Détails',
+          contenu: descRest.trim(),
+          ordre: 2
+        });
+      }
+    }
+    
+    article.sections = sections;
     
     res.json({
       success: true,

@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIGH-TECH 2026 - Comparateur Gaming & Tech | Guides, Tests et Avis</title>
+    <meta name="description" content="Comparez les meilleurs produits gaming et high-tech : casques, consoles, PC gaming, drones, smartphones. Tests, guides d'achat et tendances 2026.">
+    <meta name="keywords" content="comparateur gaming, high-tech 2026, test casque gaming, comparatif console, PC gaming, drone, smartphone, guide achat">
+    <meta name="author" content="HIGH-TECH 2026">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://high-tech-2026.com/">
+    <meta property="og:title" content="HIGH-TECH 2026 - Comparateur Gaming & Tech">
+    <meta property="og:description" content="Comparez les meilleurs produits gaming et high-tech. Tests, guides d'achat et tendances 2026.">
+    <meta property="og:image" content="/assets/images/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HIGH-TECH 2026 - Comparateur Gaming & Tech">
+    <meta name="twitter:description" content="Comparez les meilleurs produits gaming et high-tech. Tests, guides d'achat et tendances 2026.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://high-tech-2026.com/">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           HIGH-TECH SMOOTH DESIGN
+           ======================================== */
+
+        :root {
+            /* Couleurs High-Tech */
+            --tech-yellow: #d4ff00;
+            --tech-green: #6bff6b;
+            --tech-green-dark: #4a9d4a;
+            --tech-blue: #4dd4ff;
+            --tech-purple: #a78bfa;
+            --tech-pink: #ff4da6;
+
+            /* Backgrounds */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a28;
+            --bg-elevated: #222235;
+
+            /* Text */
+            --text-primary: #f0f0f5;
+            --text-secondary: #b8b8c8;
+            --text-muted: #80808f;
+
+            /* Gradients */
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --gradient-card: linear-gradient(145deg, rgba(212, 255, 0, 0.05) 0%, rgba(107, 255, 107, 0.05) 100%);
+
+            /* Glows subtils */
+            --glow-soft: 0 0 20px rgba(212, 255, 0, 0.15);
+        }
+
+        /* ========================================
+           BASE
+           ======================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background dynamique multi-layer PLUS VOYANT */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(212, 255, 0, 0.1) 0%, transparent 60%);
+            z-index: 0;
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        /* Formes géométriques animées PLUS VISIBLES */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(212, 255, 0, 0.18) 0%, transparent 30%),
+                radial-gradient(circle at 85% 80%, rgba(107, 255, 107, 0.18) 0%, transparent 30%),
+                radial-gradient(circle at 70% 30%, rgba(167, 139, 250, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 40% 60%, rgba(77, 212, 255, 0.12) 0%, transparent 28%);
+            z-index: 0;
+            animation: shapesMove 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); }
+        }
+
+        @keyframes shapesMove {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(30px, -30px) rotate(8deg); }
+        }
+
+        /* ========================================
+           HEADER
+           ======================================== */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 255, 0, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 1.2rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--tech-yellow);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(212, 255, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo:hover {
+            transform: scale(1.08) rotate(-5deg);
+            box-shadow: 0 0 30px rgba(212, 255, 0, 0.5);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--tech-yellow) 0%, var(--tech-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--tech-yellow);
+            background: rgba(212, 255, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: var(--tech-yellow);
+            background: rgba(212, 255, 0, 0.1);
+        }
+
+        /* ========================================
+           HERO SECTION
+           ======================================== */
+
+        .hero {
+            min-height: 0.1vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 100%;
+            width: auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid rgba(212, 255, 0, 0.2);
+            padding: 1rem 2.6rem;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: var(--tech-yellow);
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+            white-space: nowrap;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: transform 0.6s ease;
+        }
+
+        .btn:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--tech-yellow) 0%, var(--tech-green) 100%);
+            color: var(--bg-primary);
+            box-shadow: 0 10px 30px rgba(212, 255, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 255, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 1px solid rgba(212, 255, 0, 0.3);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 255, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* ========================================
+           HOW IT WORKS
+           ======================================== */
+
+        .how-it-works {
+            padding: 0.5rem 2rem 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .how-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            margin-top: 2rem;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--tech-yellow) 0%, var(--tech-green) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--bg-primary);
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(212, 255, 0, 0.3);
+            animation: stepPulse 2s ease-in-out infinite;
+        }
+
+        .step-card:nth-child(1) .step-number { animation-delay: 0s; }
+        .step-card:nth-child(2) .step-number { animation-delay: 0.2s; }
+        .step-card:nth-child(3) .step-number { animation-delay: 0.4s; }
+
+        @keyframes stepPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* ========================================
+           FEATURED PRODUCTS
+           ======================================== */
+
+        .featured-section {
+            padding: 2rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--tech-yellow) 0%, var(--tech-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.8rem;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-card);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+        }
+
+        .product-card:hover {
+            transform: translateY(-12px);
+            border-color: rgba(212, 255, 0, 0.3);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 40px rgba(212, 255, 0, 0.15);
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #ff6b6b, #ffd700);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #1a1a28 0%, #222235 100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.08);
+        }
+
+        .product-content {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--tech-green);
+        }
+
+        .product-btn {
+            background: rgba(212, 255, 0, 0.1);
+            border: 1px solid var(--tech-yellow);
+            color: var(--tech-yellow);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .product-btn:hover {
+            background: var(--tech-yellow);
+            color: var(--bg-primary);
+            transform: translateX(5px);
+        }
+
+        /* ========================================
+           CATEGORIES SECTION
+           ======================================== */
+
+        .categories-section {
+            padding: 2rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1.5rem;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Centrer les 4 dernières catégories (ligne 3) */
+        .categories-grid .category-card:nth-child(13),
+        .categories-grid .category-card:nth-child(14),
+        .categories-grid .category-card:nth-child(15),
+        .categories-grid .category-card:nth-child(16) {
+            grid-column: span 1;
+        }
+
+        .categories-grid .category-card:nth-child(13) {
+            grid-column: 2 / 3;
+        }
+
+        .category-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            height: 270px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-card:hover {
+            border-color: rgba(212, 255, 0, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(212, 255, 0, 0.15);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .category-card:hover .category-image {
+            transform: scale(1.1);
+        }
+
+        .category-info {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 15, 0.8) 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .category-count {
+            color: var(--tech-yellow);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff9500 50%, #ffd700 100%);
+            color: white;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.4);
+            animation: categoryBadgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes categoryBadgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        /* ========================================
+           FOOTER
+           ======================================== */
+
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid rgba(212, 255, 0, 0.2);
+            padding: 3rem 3rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--tech-yellow);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            cursor: pointer !important;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-links a:hover {
+            color: var(--tech-yellow);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            user-select: none;
+        }
+
+        /* ========================================
+           SCROLL TO TOP
+           ======================================== */
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 80px;
+            height: 80px;
+            background: var(--bg-card);
+            border: 3px solid var(--tech-yellow);
+            color: var(--tech-yellow);
+            border-radius: 50%;
+            font-size: 2rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999999;
+            user-select: none;
+        }
+
+        .scroll-top.visible {
+            display: flex;
+        }
+
+        .scroll-top:hover {
+            background: var(--tech-yellow);
+            color: var(--bg-primary);
+        }
+
+        /* ========================================
+           STATS SECTION
+           ======================================== */
+
+        .stats-section {
+            padding: 2.5rem 2rem;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, rgba(212, 255, 0, 0.03) 0%, rgba(107, 255, 107, 0.03) 100%);
+            border-top: 1px solid rgba(212, 255, 0, 0.1);
+            border-bottom: 1px solid rgba(212, 255, 0, 0.1);
+            margin-top: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(26, 26, 42, 0.5);
+            border-radius: 20px;
+            border: 1px solid rgba(212, 255, 0, 0.15);
+            transition: all 0.4s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 255, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(212, 255, 0, 0.2);
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--tech-yellow) 0%, var(--tech-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           NEWS BANNER / ANNOUNCEMENTS
+           ======================================== */
+
+        .announcements-section {
+            padding: 1.5rem 2rem 0.5rem;
+            position: relative;
+            z-index: 1;
+            margin-top: 0.5rem;
+            background: transparent;
+        }
+
+        .announcements-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .announcement-card {
+            background: linear-gradient(135deg, rgba(212, 255, 0, 0.08) 0%, rgba(107, 255, 107, 0.08) 100%);
+            border: 1px solid rgba(212, 255, 0, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .announcement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 255, 0, 0.1), transparent);
+            animation: newsShine 3s infinite;
+            pointer-events: none;
+        }
+
+        /* Types d'annonces */
+        .announcement-card.type-promo {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+
+        .announcement-card.type-urgent {
+            background: linear-gradient(135deg, rgba(255, 77, 166, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            border-color: rgba(255, 77, 166, 0.5);
+            animation: urgentPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes urgentPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 77, 166, 0.3); }
+            50% { box-shadow: 0 0 20px 5px rgba(255, 77, 166, 0.2); }
+        }
+
+        .announcement-card.type-nouveau {
+            background: linear-gradient(135deg, rgba(107, 255, 107, 0.1) 0%, rgba(212, 255, 0, 0.1) 100%);
+            border-color: rgba(107, 255, 107, 0.4);
+        }
+
+        @keyframes newsShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .announcement-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 10px rgba(212, 255, 0, 0.5));
+            flex-shrink: 0;
+        }
+
+        .announcement-text {
+            flex: 1;
+        }
+
+        .announcement-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--tech-yellow);
+            margin-bottom: 0.3rem;
+        }
+
+        .announcement-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .announcement-btn {
+            padding: 0.8rem 1.8rem;
+            background: rgba(212, 255, 0, 0.1);
+            border: 1px solid var(--tech-yellow);
+            color: var(--tech-yellow);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .announcement-btn:hover {
+            background: var(--tech-yellow);
+            color: var(--bg-primary);
+            transform: translateX(5px);
+        }
+
+        .announcements-loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           COMPARATOR SECTION
+           ======================================== */
+
+        .comparator-section {
+            padding: 2rem 2rem 0.5rem;
+            position: relative;
+            z-index: 1;
+            margin-top: 0.5rem;
+            background: transparent;
+        }
+
+        .comparator-banner {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, rgba(77, 212, 255, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+            border: 1px solid rgba(77, 212, 255, 0.4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .comparator-banner:hover {
+            border-color: rgba(77, 212, 255, 0.7);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(77, 212, 255, 0.2);
+        }
+
+        .comparator-content {
+            flex: 1;
+        }
+
+        .comparator-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--tech-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .comparator-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .compare-floating-btn {
+            position: relative;
+            width: auto;
+            height: auto;
+            background: linear-gradient(135deg, var(--tech-blue) 0%, var(--tech-purple) 100%);
+            border: none;
+            color: white;
+            border-radius: 50px;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            z-index: auto;
+            box-shadow: 0 8px 25px rgba(77, 212, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .compare-floating-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(77, 212, 255, 0.5);
+        }
+
+        .compare-floating-btn .badge {
+            position: static;
+            background: var(--tech-pink);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none;
+        }
+
+        .compare-floating-btn .tooltip {
+            display: none;
+        }
+
+        .compare-floating-btn:hover .tooltip {
+            display: none;
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .categories-grid .category-card:nth-child(13) {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 8rem 1.5rem 2rem;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .news-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Hexagone principal -->
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg2)" stroke-width="2.5" opacity="0.9"/>
+                    
+                    <!-- Éclair central stylisé -->
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg2)" opacity="0.95"/>
+                    
+                    <!-- Points d'accent -->
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </div>
+
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link active">Accueil</a>
+                <a href="#categories" class="nav-link">Catégories</a>
+                <a href="/2026/recherche.html" class="nav-link">🔍 Rechercher</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                ✨ Nouvelle collection 2026 ✨
+            </div>
+
+            <h1 class="hero-title">
+                L'univers de la High-Tech
+            </h1>
+
+            <p class="hero-subtitle">
+                Découvrez les équipements technologiques de dernière génération.<br>
+                Des analyses détaillées, des comparatifs précis et les meilleures tendances du moment.
+            </p>
+        </div>
+    </section>
+
+    <!-- Comment ça marche -->
+    <section class="how-it-works">
+        <div class="section-header">
+            <h2 class="section-title">Comment ça marche ?</h2>
+            <p class="section-subtitle">Votre parcours tech en 3 étapes simples</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Explorez les catégories</h3>
+                <p class="step-description">
+                    Naviguez parmi 16 catégories de produits high-tech : smartphones, PC gaming, drones, VR, et bien plus encore.
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Faites votre choix</h3>
+                <p class="step-description">
+                    Comparez les produits par catégorie et trouvez celui dont vous avez besoin.
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Découvrez les articles tendances</h3>
+                <p class="step-description">
+                    Consultez nos actualités, les tendances technologiques, les tendances du marché et les prédictions par catégorie.
+                </p>
+            </div>
+        </div>
+
+            </section>
+
+    <!-- Stats Section - Dynamique -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" id="stat-produits">--</div>
+                <div class="stat-label">Produits High-Tech</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="stat-categories">--</div>
+                <div class="stat-label">Catégories de produits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="stat-tendances">--</div>
+                <div class="stat-label">Articles des Tendances 2026</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="stat-visites">--</div>
+                <div class="stat-label">Visites</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Announcements / Bannières dynamiques -->
+    <section class="announcements-section" id="announcements">
+        <div class="announcements-container" id="announcementsContainer">
+            <!-- Chargement dynamique depuis /api/announcements -->
+            <div class="announcements-loading">Chargement des actualités...</div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories-section" id="categories">
+        <div class="section-header">
+            <h2 class="section-title">Toutes nos catégories</h2>
+            <p class="section-subtitle">Explorez l'univers tech par thématique</p>
+        </div>
+
+        <div class="categories-grid">
+            <a href="/2026/produits.html?categorie=smartphone" class="category-card">
+                <img src="/assets/images/smartphone.png" alt="Smartphones" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Smartphones</div>
+                    <div class="category-count">5 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=pc-gaming" class="category-card">
+                <img src="/assets/images/pc-gaming.png" alt="PC Gaming" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">PC Gaming</div>
+                    <div class="category-count">6 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=console" class="category-card">
+                <img src="/assets/images/console.png" alt="Consoles" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Consoles</div>
+                    <div class="category-count">6 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=casque-vr" class="category-card">
+                <img src="/assets/images/casque-vr.png" alt="VR/AR" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">VR/AR</div>
+                    <div class="category-count">5 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=drone" class="category-card">
+                <img src="/assets/images/drone.png" alt="Drones" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Drones</div>
+                    <div class="category-count">9 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=montre-connectee" class="category-card">
+                <img src="/assets/images/montre-connectee.png" alt="Montres" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Montres Connectées</div>
+                    <div class="category-count">5 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=camera" class="category-card">
+                <img src="/assets/images/camera.png" alt="Caméras" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Caméras</div>
+                    <div class="category-count">3 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=casque-audio" class="category-card">
+                <img src="/assets/images/casque-audio.png" alt="Casques Audio" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Casques Audio</div>
+                    <div class="category-count">6 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=ecran-tv" class="category-card">
+                <img src="/assets/images/ecran-tv.png" alt="Écrans & TV" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Écrans & TV</div>
+                    <div class="category-count">4 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=tablette" class="category-card">
+                <img src="/assets/images/tablette.png" alt="Tablettes" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Tablettes</div>
+                    <div class="category-count">6 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=peripheriques" class="category-card">
+                <img src="/assets/images/peripheriques.png" alt="Périphériques" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Périphériques</div>
+                    <div class="category-count">4 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=imprimante-3d" class="category-card">
+                <img src="/assets/images/imprimante-3d.png" alt="Imprimantes 3D" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Imprimantes 3D</div>
+                    <div class="category-count">5 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=box-internet" class="category-card">
+                <img src="/assets/images/box-internet.png" alt="Box Internet" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Box Internet</div>
+                    <div class="category-count">1 produit</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=serveur" class="category-card">
+                <img src="/assets/images/serveur.png" alt="Serveurs" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Serveurs</div>
+                    <div class="category-count">2 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=video-projecteur" class="category-card">
+                <img src="/assets/images/video-projecteur.png" alt="Vidéoprojecteurs" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Vidéoprojecteurs</div>
+                    <div class="category-count">2 produits</div>
+                </div>
+            </a>
+
+            <a href="/2026/produits.html?categorie=tableau-interactif" class="category-card">
+                <img src="/assets/images/tableau-interactif.png" alt="Tableaux" class="category-image">
+                <div class="category-info">
+                    <div class="category-name">Tableaux Interactifs</div>
+                    <div class="category-count">3 produits</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Comparator Section -->
+    <section class="comparator-section">
+        <div class="comparator-banner">
+            <div class="comparator-content">
+                <div class="comparator-title">⚖️ Comparateur de Produits</div>
+                <p class="comparator-description">Comparez vos produits préférés côte à côte et trouvez le meilleur selon vos critères</p>
+            </div>
+            <a href="/2026/comparatif.html" class="compare-floating-btn" id="compareBtn" title="Comparer des produits">
+                Comparer
+                <span class="badge" id="compareBadge" style="display: none;">0</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-section" id="featured">
+        <div class="section-header">
+            <h2 class="section-title">Produits Vedettes</h2>
+            <p class="section-subtitle">Notre sélection pour mettre l'eau à la bouche 🔥</p>
+        </div>
+
+        <div class="products-grid" id="featured-products">
+            <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour tout ce qui concerne la technologie de pointe et les innovations du futur.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-top" id="scrollTop">↑</div>
+
+    <script>
+        // ========================================
+        // SCROLL TO TOP
+        // ========================================
+        
+        function initScrollTop() {
+            const scrollTop = document.getElementById('scrollTop');
+            const footer = document.querySelector('.footer');
+
+            if (!scrollTop) {
+                console.error('❌ scrollTop button not found!');
+                return;
+            }
+
+            console.log('✅ scrollTop button initialized');
+
+            // Gestionnaire de scroll
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    const footerRect = footer.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    if (footerRect.top < windowHeight - 400) {
+                        scrollTop.classList.remove('visible');
+                    } else {
+                        scrollTop.classList.add('visible');
+                    }
+                } else {
+                    scrollTop.classList.remove('visible');
+                }
+            });
+
+            // UN SEUL event listener simple
+            scrollTop.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🎯 SCROLL TO TOP CLICKED!');
+                window.scrollTo({ 
+                    top: 0, 
+                    behavior: 'smooth' 
+                });
+            }, true); // Utiliser la phase de capture
+        }
+
+        // Attendre que le DOM soit prêt
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initScrollTop);
+        } else {
+            initScrollTop();
+        }
+
+        // Smooth scroll pour les ancres
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ========================================
+        // DYNAMIC ANNOUNCEMENTS
+        // ========================================
+        async function loadAnnouncements() {
+            const container = document.getElementById('announcementsContainer');
+
+            try {
+                const response = await fetch('/api/announcements');
+                const data = await response.json();
+
+                if (data.success && data.announcements.length > 0) {
+                    container.innerHTML = data.announcements.map(ann => `
+                        <div class="announcement-card type-${ann.type || 'info'}">
+                            <div class="announcement-icon">${ann.icone || '🚀'}</div>
+                            <div class="announcement-text">
+                                <div class="announcement-title">${ann.titre}</div>
+                                ${ann.description ? `<div class="announcement-description">${ann.description}</div>` : ''}
+                            </div>
+                            <a href="${ann.lien || '#'}" class="announcement-btn">${ann.bouton_texte || 'En savoir plus →'}</a>
+                        </div>
+                    `).join('');
+                } else {
+                    // Pas d'annonces, afficher un message par défaut ou cacher la section
+                    container.innerHTML = `
+                        <div class="announcement-card type-info">
+                            <div class="announcement-icon">📢</div>
+                            <div class="announcement-text">
+                                <div class="announcement-title">Bienvenue sur HIGH-TECH 2026 !</div>
+                                <div class="announcement-description">Découvrez les dernières innovations technologiques</div>
+                            </div>
+                            <a href="#categories" class="announcement-btn">Explorer →</a>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erreur chargement announcements:', error);
+                // Fallback en cas d'erreur
+                container.innerHTML = `
+                    <div class="announcement-card type-nouveau">
+                        <div class="announcement-icon">🚀</div>
+                        <div class="announcement-text">
+                            <div class="announcement-title">Nouveauté : Samsung Galaxy S26 Ultra disponible !</div>
+                            <div class="announcement-description">Découvrez notre test complet du flagship avec IA révolutionnaire</div>
+                        </div>
+                        <a href="/2026/fiche.html?produit=samsung-galaxy-s26-ultra" class="announcement-btn">Lire l'article →</a>
+                    </div>
+                `;
+            }
+        }
+
+        // ========================================
+        // DYNAMIC STATS + VISIT COUNTER
+        // ========================================
+        async function loadStats() {
+            try {
+                // Utiliser l'API homepage qui regroupe toutes les stats
+                const response = await fetch('/api/stats/homepage');
+                const data = await response.json();
+
+                if (data.success && data.stats) {
+                    const { produits, categories, tendances, visites } = data.stats;
+
+                    // Animation de comptage
+                    animateCounter('stat-produits', produits || 78);
+                    animateCounter('stat-categories', categories || 16);
+                    animateCounter('stat-tendances', tendances || 100);
+                    animateCounter('stat-visites', visites || 0);
+                } else {
+                    throw new Error('Stats non disponibles');
+                }
+            } catch (error) {
+                console.error('Erreur chargement stats:', error);
+                // Valeurs par défaut en cas d'erreur
+                document.getElementById('stat-produits').textContent = '78';
+                document.getElementById('stat-categories').textContent = '16';
+                document.getElementById('stat-tendances').textContent = '100';
+                document.getElementById('stat-visites').textContent = '0';
+            }
+        }
+
+        // Animation de comptage fluide
+        function animateCounter(elementId, targetValue, suffix = '') {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            const duration = 1500; // 1.5 secondes
+            const steps = 60;
+            const stepDuration = duration / steps;
+            let currentValue = 0;
+            const increment = targetValue / steps;
+
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= targetValue) {
+                    element.textContent = targetValue + suffix;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(currentValue) + suffix;
+                }
+            }, stepDuration);
+        }
+
+        // Incrémenter le compteur de visites
+        async function incrementVisit() {
+            try {
+                await fetch('/api/stats/visit', { method: 'POST' });
+            } catch (error) {
+                console.error('Erreur incrément visite:', error);
+            }
+        }
+
+        // ========================================
+        // COMPARE BUTTON - Badge update
+        // ========================================
+        function updateCompareBadge() {
+            const badge = document.getElementById('compareBadge');
+            const compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+
+            if (compareList.length > 0) {
+                badge.textContent = compareList.length;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // ========================================
+        // LOAD CATEGORY COUNTS DYNAMICALLY
+        // ========================================
+        async function loadCategoryCounts() {
+            try {
+                const response = await fetch('/api/produits');
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    // Compter par catégorie
+                    const categoryCounts = {};
+                    data.data.forEach(product => {
+                        const cat = product.categorie;
+                        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+                    });
+
+                    // Mapping catégorie DB vers classe HTML (slugifiée)
+                    const categoryMap = {
+                        'SMARTPHONE': 'smartphone',
+                        'PC GAMING': 'pc-gaming',
+                        'CONSOLE': 'console',
+                        'CASQUE VR': 'casque-vr',
+                        'DRONE': 'drone',
+                        'MONTRE CONNECTEE': 'montre-connectee',
+                        'CAMERA': 'camera',
+                        'CASQUE AUDIO': 'casque-audio',
+                        'ECRAN TV': 'ecran-tv',
+                        'TABLETTE': 'tablette',
+                        'PERIPHERIQUES': 'peripheriques',
+                        'IMPRIMANTE 3D': 'imprimante-3d',
+                        'BOX INTERNET': 'box-internet',
+                        'SERVEUR': 'serveur',
+                        'VIDEO PROJECTEUR': 'video-projecteur',
+                        'TABLEAU INTERACTIF': 'tableau-interactif'
+                    };
+
+                    // Mettre à jour chaque catégorie
+                    Object.entries(categoryMap).forEach(([dbCat, slug]) => {
+                        const count = categoryCounts[dbCat] || 0;
+                        const elements = document.querySelectorAll(`a[href*="categorie=${slug}"] .category-count`);
+                        elements.forEach(el => {
+                            el.textContent = `${count} produit${count > 1 ? 's' : ''}`;
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur chargement comptages:', error);
+            }
+        }
+
+        // ========================================
+        // PRODUITS VEDETTES
+        // ========================================
+        async function loadFeaturedProducts() {
+            const section = document.getElementById('featured');
+            const container = document.getElementById('featured-products');
+            try {
+                const response = await fetch(`/api/produits/homepage/list?t=${Date.now()}`, { cache: 'no-store' });
+                const data = await response.json();
+
+                if (data.success && data.data && data.data.length > 0) {
+                    section.style.display = 'block';
+                    container.innerHTML = data.data.map((product) => {
+                        const slug = product.nom.toLowerCase().replace(/\s+/g, '-');
+                        const description = product.description
+                            ? product.description.substring(0, 80) + (product.description.length > 80 ? '...' : '')
+                            : 'Produit high-tech de dernière génération.';
+                        // Badge TOP uniquement si top_du_mois est vrai
+                        const badge = product.top_du_mois ? '<span class="product-badge">⭐ TOP</span>' : '';
+
+                        return `
+                            <div class="product-card">
+                                ${badge}
+                                <img src="${product.image_url}" alt="${product.nom}" class="product-image"
+                                     onerror="this.src='/assets/images/placeholder.png'">
+                                <div class="product-content">
+                                    <h3 class="product-title">${product.titre_affiche || product.nom}</h3>
+                                    <p class="product-description">${description}</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">${product.prix || 'Prix N/C'}</div>
+                                        <a href="/2026/fiche.html?produit=${slug}" class="product-btn">Voir →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    // Masquer la section si aucun produit vedette
+                    section.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Erreur chargement produits vedettes:', error);
+                // Masquer la section en cas d'erreur
+                section.style.display = 'none';
+            }
+        }
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Effacer la sélection de comparaison en revenant à l'accueil
+            localStorage.removeItem('compareList');
+
+            // Charger les données dynamiques
+            loadAnnouncements();
+            loadStats();
+            loadFeaturedProducts();
+            incrementVisit();
+            updateCompareBadge();
+            loadCategoryCounts();
+
+            // Écouter les changements de localStorage pour le comparateur
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'compareList') {
+                    updateCompareBadge();
+                }
+            });
+
+            // ========================================
+            // AJOUTER BADGES DYNAMIQUES AUX CATÉGORIES
+            // ========================================
+            async function addCategoryBadges() {
+                try {
+                    const response = await fetch(`/api/produits?t=${Date.now()}`, { cache: 'no-store' });
+                    const data = await response.json();
+
+                    // Récupérer toutes les catégories avec produits vedettes
+                    const categoriesWithFeatured = {};
+                    if (data.data) {
+                        data.data.forEach(product => {
+                            if (product.top_du_mois) {
+                                const catUrl = product.categorie.toLowerCase().replace(/\s+/g, '-');
+                                categoriesWithFeatured[catUrl] = true;
+                            }
+                        });
+                    }
+
+                    // Ajouter les badges aux catégories qui ont des produits vedettes
+                    const categoryCards = document.querySelectorAll('.category-card');
+                    categoryCards.forEach(card => {
+                        const href = card.getAttribute('href');
+                        const categoryParam = new URL(href, window.location.origin).searchParams.get('categorie');
+
+                        if (categoryParam && categoriesWithFeatured[categoryParam]) {
+                            // Vérifier si le badge n'existe pas déjà
+                            if (!card.querySelector('.category-badge')) {
+                                const badge = document.createElement('span');
+                                badge.className = 'category-badge';
+                                badge.textContent = '🔥 TOP';
+                                card.insertBefore(badge, card.firstChild);
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Erreur badges catégories:', error);
+                }
+            }
+
+            // Appeler la fonction au chargement
+            addCategoryBadges();
+        });
+    </script>
+    <!-- Theme Toggle -->
+    <script src="/assets/js/theme-toggle.js"></script>
+</body>
+</html>

@@ -4,23 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Changelog - Site Gamer 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="wiki-styles.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
-        .header h1 { font-size: 3em; color: white; margin-bottom: 10px; }
+        body { font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #1a1a2a 0%, #121220 100%); border-bottom: 2px solid #d4ff00; padding: 50px 20px; text-align: center; box-shadow: 0 0 30px rgba(212, 255, 0, 0.2); }
+        .header h1 { font-size: 3em; display: inline-block; min-width: max-content; margin-bottom: 10px; }
         .header p { font-size: 1.2em; opacity: 0.9; }
-        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
-        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .nav { background: rgba(212, 255, 0, 0.1); padding: 15px 20px; border-bottom: 1px solid #d4ff00; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #d4ff00; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #6bff6b; transform: translateY(-2px); }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         .version { margin-bottom: 50px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; position: relative; }
         .version::before { content: ''; position: absolute; left: -2px; top: 20px; bottom: 20px; width: 4px; background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); border-radius: 2px; }
         .version-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-        .version-title { font-size: 2em; color: #667eea; display: flex; align-items: center; gap: 10px; }
+        .version-title { font-size: 2em; color: #d4ff00; display: flex; align-items: center; gap: 10px; }
         .version-date { color: #ffc107; font-size: 1.1em; }
-        .version-badge { background: #2ecc71; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .version-badge { background: #2ecc71; display: inline-block; min-width: max-content; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600; }
         .version-badge.deprecated { background: #e74c3c; }
         .version-badge.beta { background: #3498db; }
         .category { margin: 25px 0; }
@@ -32,23 +33,23 @@
         .category-title.security { color: #e74c3c; }
         .change-list { list-style: none; padding-left: 20px; }
         .change-list li { margin: 10px 0; padding-left: 25px; position: relative; }
-        .change-list li::before { content: '▸'; position: absolute; left: 0; color: #667eea; font-weight: bold; }
+        .change-list li::before { content: '▸'; position: absolute; left: 0; color: #d4ff00; font-weight: bold; }
         code { background: rgba(102, 126, 234, 0.2); padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #ffd700; }
         .highlight { background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 5px; }
         .highlight-title { color: #ffc107; font-weight: 600; margin-bottom: 10px; }
-        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; display: inline-block; min-width: max-content; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
         .back-link:hover { background: #764ba2; transform: translateY(-2px); }
         .stats { display: flex; justify-content: space-around; margin: 40px 0; flex-wrap: wrap; gap: 20px; }
-        .stat-item { text-align: center; background: rgba(102, 126, 234, 0.1); padding: 20px; border-radius: 10px; min-width: 150px; }
-        .stat-number { font-size: 2.5em; color: #667eea; font-weight: 700; }
+        .stat-item { text-align: center; background: rgba(212, 255, 0, 0.1); padding: 20px; border-radius: 10px; min-width: 150px; }
+        .stat-number { font-size: 2.5em; color: #d4ff00; font-weight: 700; }
         .stat-label { opacity: 0.7; margin-top: 5px; }
         .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7; }
-        .toc { background: rgba(102, 126, 234, 0.1); padding: 20px; border-radius: 10px; margin-bottom: 30px; }
-        .toc h3 { color: #667eea; margin-bottom: 15px; }
+        .toc { background: rgba(212, 255, 0, 0.1); padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+        .toc h3 { color: #d4ff00; margin-bottom: 15px; }
         .toc ul { list-style: none; }
         .toc li { margin: 8px 0; }
         .toc a { color: #e0e0e0; text-decoration: none; transition: color 0.3s; }
-        .toc a:hover { color: #667eea; }
+        .toc a:hover { color: #d4ff00; }
     </style>
 </head>
 <body>

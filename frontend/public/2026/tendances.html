@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Tendances & Actualités Tech | HIGH-TECH 2026</title>
+    <meta name="description" id="page-description" content="Découvrez les dernières tendances et actualités du monde gaming et high-tech. Guides, tests et analyses des nouveautés 2026.">
+    <meta name="keywords" content="tendances tech 2026, actualités gaming, nouveautés high-tech, guides achat, tests produits">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" id="og-title" content="Tendances & Actualités Tech">
+    <meta property="og:description" content="Découvrez les dernières tendances du monde gaming et high-tech.">
+    <meta property="og:url" id="og-url" content="https://high-tech-2026.com/2026/tendances.html">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/2026/css/theme.css">
+
+    <style>
+        /* ========================================
+           TENDANCES PAGE STYLES
+           ======================================== */
+
+        main {
+            padding-top: 100px;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tendances-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-yellow-green);
+            border-radius: 2px;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: rgba(212, 255, 0, 0.1);
+            color: var(--tech-yellow);
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(212, 255, 0, 0.3);
+            margin-top: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--tech-yellow);
+        }
+
+        .breadcrumb .active {
+            color: var(--tech-yellow);
+        }
+
+        .breadcrumb .current {
+            color: var(--tech-yellow);
+        }
+
+        .breadcrumb .separator {
+            color: var(--text-muted);
+        }
+
+        /* Navigation Tabs */
+        .tendances-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            padding: 0 1rem;
+        }
+
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+        }
+
+        .nav-btn:hover {
+            border-color: rgba(212, 255, 0, 0.3);
+            color: var(--text-primary);
+        }
+
+        .nav-btn.active {
+            background: var(--gradient-yellow-green);
+            color: var(--bg-primary);
+            border-color: transparent;
+        }
+
+        /* Sections */
+        .section-tendances {
+            display: none;
+        }
+
+        .section-tendances.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* Actualites Grid */
+        .actualites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .actualite-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .actualite-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 255, 0, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(212, 255, 0, 0.1);
+        }
+
+        .actualite-card.featured {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .actualite-card.featured {
+                grid-column: span 1;
+            }
+        }
+
+        .card-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .actualite-card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .card-video {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            background: #000;
+        }
+
+        .card-video iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .badge-hot {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff9500 50%, #ffd700 100%);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-date {
+            color: var(--tech-yellow);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .card-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: rgba(212, 255, 0, 0.1);
+            color: var(--tech-yellow);
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Tech Grid */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tech-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .tech-card:hover {
+            border-color: rgba(212, 255, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .tech-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-full);
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--gradient-yellow-green);
+            border-radius: var(--radius-full);
+            transition: width 1s ease;
+        }
+
+        .tech-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Market Grid */
+        .marche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .market-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .market-card:hover {
+            border-color: rgba(212, 255, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .market-card .market-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+        }
+
+        .market-card .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .market-card .stat-unit {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .market-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .market-card .tendance {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            padding-bottom: 1px;
+        }
+
+        .market-card .tendance.up {
+            background: rgba(107, 255, 107, 0.2);
+            color: #6bff6b;
+            padding-bottom: 2px;
+        }
+
+        .market-card .tendance.down {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            padding-top: 1px;
+        }
+
+        .market-card .tendance.stable {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+
+        .market-insights {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+        }
+
+        .market-insights h3 {
+            font-size: 1.3rem;
+            color: var(--tech-yellow);
+            margin-bottom: 1.5rem;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .insight-item {
+            padding: 1rem;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--tech-yellow);
+        }
+
+        .insight-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Predictions Timeline */
+        .predictions-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .prediction-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            transition: var(--transition-smooth);
+        }
+
+        .prediction-card:hover {
+            border-color: rgba(212, 255, 0, 0.3);
+        }
+
+        .prediction-year-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 100px;
+        }
+
+        .prediction-year {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .prediction-content h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .prediction-icon {
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Console Logos */
+        .console-logo {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+
+        .xbox-logo {
+            background: linear-gradient(135deg, #107C10 0%, #0D6E0D 100%);
+        }
+
+        .xbox-logo svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .playstation-logo {
+            background: linear-gradient(135deg, #003087 0%, #001F5C 100%);
+        }
+
+        .playstation-logo svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .nintendo-logo {
+            background: linear-gradient(135deg, #E60012 0%, #B20010 100%);
+        }
+
+        .nintendo-logo svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        .prediction-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .prediction-prob {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-full);
+            white-space: nowrap;
+            margin-top: 0.8rem;
+        }
+
+        .prediction-prob.high {
+            background: rgba(107, 255, 107, 0.15);
+            color: var(--tech-green);
+            border: 1px solid rgba(107, 255, 107, 0.3);
+        }
+
+        .prediction-prob.medium {
+            background: rgba(212, 255, 0, 0.15);
+            color: var(--tech-yellow);
+            border: 1px solid rgba(212, 255, 0, 0.3);
+        }
+
+        .prediction-prob.low {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(212, 255, 0, 0.1);
+            border-top-color: var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        /* Back Button */
+        .back-section {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Read More Button */
+        .btn-read-more:hover {
+            color: var(--tech-green) !important;
+            text-decoration: underline !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/2026/" class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg)" stroke-width="2.5" opacity="0.9"/>
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg)" opacity="0.95"/>
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </a>
+
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link">Accueil</a>
+                <a href="/2026/#categories" class="nav-link">Catégories</a>
+                <a href="/2026/recherche.html" class="nav-link">🔍 Rechercher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="tendances-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb" id="breadcrumb-nav" style="margin-bottom: 2rem; text-align: center;">
+                    <a href="/2026/" class="crumb">Accueil</a>
+                    <span class="separator">/</span>
+                    <a href="/2026/#categories" class="crumb">Catégories</a>
+                    <span class="separator">/</span>
+                    <a href="#" id="breadcrumb-category" class="crumb"></a>
+                    <span class="separator">/</span>
+                    <span class="current">Tendances</span>
+                </nav>
+
+                <h1 class="page-title" id="main-title">Tendances</h1>
+                <p class="page-subtitle" id="main-subtitle">
+                    Découvrez les dernières actualités, technologies et prédictions du secteur.
+                </p>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-state" id="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Chargement des tendances...</p>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="tendances-nav hidden" id="tendances-nav">
+                <button class="nav-btn active" data-section="actualites">Actualités</button>
+                <button class="nav-btn" data-section="technologies">Technologies</button>
+                <button class="nav-btn" data-section="marche">Marché</button>
+                <button class="nav-btn" data-section="predictions">Prédictions</button>
+            </div>
+
+            <!-- Content Sections -->
+            <div id="content-sections" class="hidden">
+                <!-- Section Actualites -->
+                <section id="actualites" class="section-tendances active">
+                    <h2 class="section-title">Actualités Récentes</h2>
+                    <div class="actualites-grid" id="actualites-grid">
+                        <!-- Cards will be inserted here -->
+                    </div>
+                </section>
+
+                <!-- Section Technologies -->
+                <section id="technologies" class="section-tendances">
+                    <h2 class="section-title">Technologies</h2>
+                    <div class="tech-grid" id="tech-grid">
+                        <!-- Cards will be inserted here -->
+                    </div>
+                </section>
+
+                <!-- Section Marche -->
+                <section id="marche" class="section-tendances">
+                    <h2 class="section-title">Analyse du Marché</h2>
+                    <div class="marche-grid" id="marche-grid">
+                        <!-- Stats will be inserted here -->
+                    </div>
+                    <div class="market-insights">
+                        <h3>Insights Clés</h3>
+                        <div class="insights-grid" id="insights-grid">
+                            <!-- Insights will be inserted here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Predictions -->
+                <section id="predictions" class="section-tendances">
+                    <h2 class="section-title">Prédictions</h2>
+                    <div class="predictions-timeline" id="predictions-timeline">
+                        <!-- Predictions will be inserted here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Back Button -->
+            <div class="back-section">
+                <a href="#" id="back-btn" class="btn btn-primary">
+                    Retour aux produits
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top" id="scrollTop">^</button>
+
+    <script>
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        const categoryNames = {
+            'smartphone': 'Smartphones',
+            'pc-gaming': 'PC Gaming',
+            'console': 'Consoles',
+            'casque-vr': 'VR/AR',
+            'drone': 'Drones',
+            'montre-connectee': 'Montres Connectées',
+            'camera': 'Caméras',
+            'casque-audio': 'Casques Audio',
+            'ecran-tv': 'Ecrans & TV',
+            'tablette': 'Tablettes',
+            'peripheriques': 'Périphériques',
+            'imprimante-3d': 'Imprimantes 3D',
+            'box-internet': 'Box Internet',
+            'serveur': 'Serveurs',
+            'video-projecteur': 'Vidéoprojecteurs',
+            'tableau-interactif': 'Tableaux Interactifs'
+        };
+
+        // Convert slug to API category format (routes attendent le slug avec tirets)
+        function slugToApiCategory(slug) {
+            return slug.toLowerCase();
+        }
+
+        // Convert slug to DB category format (pour le fallback /api/tendances?categorie=)
+        function slugToDbCategory(slug) {
+            return slug.toUpperCase().replace(/-/g, ' ');
+        }
+
+        let currentCategory = '';
+        let tendancesData = null;
+
+        // ========================================
+        // ICON CONVERSION UTILITY
+        // ========================================
+        function convertIconToEmoji(iconText) {
+            const iconMap = {
+                // TECHNOLOGIES
+                'bluetooth': '📡',
+                'pen': '✍️',
+                'hand': '✋',
+                'brain': '🧠',
+                'wifi': '📶',
+                'cloud': '☁️',
+                'eye': '👁️',
+                'camera': '📷',
+                'microphone': '🎤',
+                'speaker': '🔊',
+                'display': '🖥️',
+                'touch': '👆',
+                'gesture': '👋',
+                'voice': '🗣️',
+                'ai': '🤖',
+                'chip': '🔧',
+                'battery': '🔋',
+                'power': '⚡',
+                'security': '🔒',
+                'network': '🌐',
+                'data': '💾',
+                'processor': '⚙️',
+                'memory': '🧩',
+                'sensor': '📊',
+                'screen': '📱',
+                'keyboard': '⌨️',
+                'mouse': '🖱️',
+                'vr': '🥽',
+                'ar': '👓',
+                'game': '🎮',
+                'video': '📹',
+                'audio': '🎧',
+                'usb': '🔌',
+                'wireless': '📡',
+                'laser': '🔦',
+                'scanner': '📄',
+                'printer': '🖨️',
+                '3d': '📐',
+                'projection': '📽️',
+                'light': '💡',
+                'sound': '🔈',
+                'signal': '📡',
+                'satellite': '🛰️',
+                'robot': '🤖',
+                'drone': '🚁',
+                'rocket': '🚀',
+                'globe': '🌍',
+                'chart': '📈',
+                'document': '📋',
+                'folder': '📁',
+                'image': '🖼️',
+                'code': '💻',
+                'database': '🗄️',
+                'server': '🖥️',
+                'mobile': '📱',
+                'tablet': '📲',
+                'laptop': '💻',
+                'desktop': '🖥️',
+                'watch': '⌚',
+                'headphone': '🎧',
+                'earphone': '🎧',
+                'controller': '🎮',
+                'gamepad': '🎮',
+                'xbox': '�',
+                'playstation': '🔵',
+                'ps5': '🔵',
+                'nintendo': '🔴',
+                'switch': '🔴',
+                'joystick': '🕹️',
+                'remote': '📱',
+                'dollar': '💲',
+                'money': '💰',
+                'trophy': '🏆',
+                'medal': '🥇',
+                'award': '🏅',
+                // TECHNOLOGIES MISSING
+                'cpu': '🖥️',
+                'cube': '🎲',
+                'droplet': '💧',
+                'file': '📄',
+                'heartbeat': '💓',
+                'home': '🏠',
+                'leaf': '🍃',
+                'monitor': '🖥️',
+                'refresh': '🔄',
+                'sound-wave': '📢',
+                'tv': '📺',
+                'zap': '⚡',
+                // MARCHE
+                'android': '🤖',
+                'apple': '🍎',
+                'building': '🏢',
+                'creality': '🖨️',
+                'euro': '💶',
+                'fold': '📱',
+                'france': '🇫🇷',
+                'lg': '📺',
+                'link': '🔗',
+                'list': '📋',
+                'meta': '👁️',
+                'package': '📦',
+                'phone': '📱',
+                'school': '🏫',
+                'vr-headset': '🥽',
+                'headphones': '🎧',
+                // PREDICTIONS
+                '8k': '📺',
+                'box': '📦',
+                'fingerprint': '👆',
+                'hologram': '✨',
+                'metal': '⚙️',
+                'mic': '🎤',
+                'quantum': '⚛️',
+                'recycle': '♻️',
+                'sparkle': '✨',
+                'translate': '🌐',
+                'zoom': '🔍',
+            };
+
+            if (!iconText) return '🔧';
+            const normalized = iconText.toLowerCase().trim();
+            return iconMap[normalized] || iconText;
+        }
+
+        function getConsoleLogo(iconText) {
+            if (!iconText) return null;
+            const normalized = iconText.toLowerCase().trim();
+            if (normalized === 'xbox') {
+                return '<div class="console-logo xbox-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.102 21.033A11.947 11.947 0 0 0 12 24a11.96 11.96 0 0 0 7.902-2.967c1.877-1.912-4.316-8.709-7.902-11.417-3.582 2.708-9.779 9.505-7.898 11.417zm11.16-14.406c2.5 2.961 7.484 10.313 6.076 12.912A11.942 11.942 0 0 0 24 12.004a11.95 11.95 0 0 0-3.57-8.536s-.027-.022-.082-.042a.824.824 0 0 0-.281-.045c-.592 0-1.985.434-4.805 3.246zM3.654 3.426c-.057.02-.082.041-.086.042A11.956 11.956 0 0 0 0 12.004c0 2.854.998 5.473 2.661 7.533-1.401-2.605 3.579-9.951 6.08-12.91-2.82-2.812-4.213-3.246-4.806-3.246a.725.725 0 0 0-.281.045zM12 3.551S9.055 1.828 6.755 1.746c-.903-.033-1.454.295-1.521.339C7.379.685 9.659 0 12 0c2.342 0 4.622.685 6.766 2.085-.066-.044-.615-.372-1.52-.339C14.946 1.828 12 3.551 12 3.551z"/></svg></div>';
+            }
+            if (normalized === 'playstation' || normalized === 'ps5') {
+                return '<div class="console-logo playstation-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg></div>';
+            }
+            if (normalized === 'nintendo' || normalized === 'switch') {
+                return '<div class="console-logo nintendo-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.176 24h3.674c3.376 0 6.15-2.774 6.15-6.15V6.15C24 2.775 21.226 0 17.85 0H14.1c-.074 0-.15.074-.15.15v23.7c-.001.076.075.15.226.15zm4.574-13.199c1.351 0 2.399 1.125 2.399 2.398 0 1.352-1.125 2.4-2.399 2.4-1.35 0-2.4-1.049-2.4-2.4-.075-1.349 1.05-2.398 2.4-2.398zM11.4 0H6.15C2.775 0 0 2.775 0 6.15v11.7C0 21.226 2.775 24 6.15 24h5.25c.074 0 .15-.074.15-.149V.15c0-.076-.076-.15-.15-.15zM6.15 13.2c-1.35 0-2.4-1.05-2.4-2.4 0-1.35 1.05-2.4 2.4-2.4 1.35 0 2.4 1.05 2.4 2.4 0 1.35-1.05 2.4-2.4 2.4z"/></svg></div>';
+            }
+            return null;
+        }
+
+        function normalizeTags(tags) {
+            if (!tags) return [];
+            if (Array.isArray(tags)) return tags;
+            return String(tags).replace(/[{}]/g, '').split(',').map(t => t.trim()).filter(Boolean);
+        }
+
+        function buildTendanceLink(item) {
+            // Toujours utiliser article.html pour les liens
+            if (item && item.id) {
+                return `/2026/article.html?id=${item.id}`;
+            }
+            // Si y a un lien en BDD, le convertir vers article.html
+            if (item && item.lien) {
+                let link = item.lien.startsWith('/') ? item.lien : `/${item.lien}`;
+                // Remplacer tous les anciens formats de tendance.html
+                link = link.replace(/\/2026\/tendance\.html/, '/2026/article.html');
+                link = link.replace(/fiches\/tendances\/[^\/]+\/([^\.]+)\.html/, `/2026/article.html?id=$1`);
+                return link;
+            }
+            return '';
+        }
+
+        // Convertit les URLs YouTube (watch, youtu.be, shorts) en liens embed pour éviter l'erreur 153
+        function normalizeVideoUrl(url) {
+            if (!url) return '';
+            try {
+                const parsed = new URL(url, window.location.origin);
+                const host = parsed.hostname.replace(/^www\./, '');
+
+                if (host.endsWith('youtube.com') || host === 'youtu.be') {
+                    let videoId = parsed.searchParams.get('v');
+
+                    if (!videoId && host === 'youtu.be') {
+                        videoId = parsed.pathname.split('/').filter(Boolean)[0];
+                    }
+
+                    if (!videoId && parsed.pathname.includes('/shorts/')) {
+                        videoId = parsed.pathname.split('/shorts/')[1]?.split('/')[0];
+                    }
+
+                    if (videoId) {
+                        const startParam = parsed.searchParams.get('t') || parsed.searchParams.get('start');
+                        const start = startParam ? parseInt(startParam, 10) || 0 : 0;
+                        const startSuffix = start > 0 ? `?start=${start}` : '';
+                        return `https://www.youtube.com/embed/${videoId}${startSuffix}`;
+                    }
+                }
+            } catch (err) {
+                console.warn('normalizeVideoUrl failed:', err);
+            }
+            return url;
+        }
+
+        // ========================================
+        // GET CATEGORY FROM URL
+        // ========================================
+        function getCategoryFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('categorie') || urlParams.get('category') || '';
+        }
+
+        function isValidCategory(slug) {
+            return Boolean(slug) && Object.keys(categoryNames).includes(slug);
+        }
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            currentCategory = getCategoryFromURL();
+
+            // Si une catégorie est spécifiée mais invalide, afficher une erreur
+            if (currentCategory && !isValidCategory(currentCategory)) {
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('content-sections').innerHTML = `
+                    <div class="empty-state">
+                        <p>Catégorie inconnue : ${currentCategory}</p>
+                        <p><a href="/2026/tendances.html" style="color: var(--tech-yellow);">← Retour aux tendances globales</a></p>
+                    </div>
+                `;
+                return;
+            }
+
+            setupNavigation();
+            setupScrollTop();
+            loadTendances();
+            updatePageInfo();
+        });
+
+        // ========================================
+        // UPDATE PAGE INFO
+        // ========================================
+        function updatePageInfo() {
+            const categoryName = categoryNames[currentCategory] || 'Tendances';
+            const pageTitle = currentCategory ? `${categoryName}` : 'Tendances';
+
+            document.getElementById('page-title').textContent = `${pageTitle} - HIGH-TECH 2026`;
+            document.getElementById('main-title').textContent = pageTitle;
+            
+            const breadcrumbLink = document.getElementById('breadcrumb-category');
+            const breadcrumbNav = document.getElementById('breadcrumb-nav');
+            
+            if (currentCategory) {
+                // Avec catégorie : Accueil / Catégories / [Cat] / Tendances
+                breadcrumbLink.textContent = categoryName;
+                breadcrumbLink.href = `/2026/produits.html?categorie=${currentCategory}`;
+                breadcrumbLink.style.display = 'inline';
+                breadcrumbNav.style.display = 'flex';
+                document.getElementById('back-btn').href = `/2026/produits.html?categorie=${currentCategory}`;
+                document.getElementById('back-btn').textContent = `Retour à ${categoryName}`;
+            } else {
+                // Sans catégorie : masquer la partie catégorie du breadcrumb
+                // Accueil / Tendances
+                breadcrumbLink.style.display = 'none';
+                breadcrumbLink.previousElementSibling.style.display = 'none'; // span /
+                document.getElementById('back-btn').href = '/2026/';
+                document.getElementById('back-btn').textContent = 'Retour à l\'accueil';
+            }
+        }
+
+        // ========================================
+        // SETUP NAVIGATION
+        // ========================================
+        function setupNavigation() {
+            const navBtns = document.querySelectorAll('.nav-btn');
+
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Show corresponding section
+                    const sectionId = btn.dataset.section;
+                    document.querySelectorAll('.section-tendances').forEach(s => {
+                        s.classList.remove('active');
+                    });
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+        }
+
+        // ========================================
+        // LOAD TENDANCES DATA
+        // ========================================
+        async function loadTendances() {
+            try {
+                let actualites = [];
+                let technologies = [];
+                let marche = [];
+                let insights = [];
+                let predictions = [];
+
+                if (currentCategory) {
+                    // Charger pour une catégorie spécifique
+                    const apiCategory = slugToApiCategory(currentCategory);
+                    const dbCategory = slugToDbCategory(currentCategory);
+
+                    // Charger chaque type depuis les routes dédiées
+                    const [actualitesRes, techRes, marcheRes, insightsRes, predictionsRes] = await Promise.all([
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/actualites`),
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/technologies`),
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/marche`),
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/insights`),
+                        fetch(`/api/${encodeURIComponent(apiCategory)}/predictions`)
+                    ]);
+
+                    const jsonResults = await Promise.all([
+                        actualitesRes.json(),
+                        techRes.json(),
+                        marcheRes.json(),
+                        insightsRes.json(),
+                        predictionsRes.json()
+                    ]);
+
+                    [actualites, technologies, marche, insights, predictions] = jsonResults;
+
+                    const hasContent = [actualites, technologies, marche, insights, predictions].some(arr => Array.isArray(arr) && arr.length > 0);
+
+                    if (!hasContent) {
+                        // Fallback: ancienne route combinée
+                        const fallbackRes = await fetch(`/api/tendances?categorie=${encodeURIComponent(dbCategory)}`);
+                        const fallbackData = await fallbackRes.json();
+
+                        if (Array.isArray(fallbackData) && fallbackData.length > 0) {
+                            const typedFallback = fallbackData.map(item => ({
+                                ...item,
+                                type: (item.type || 'actualite').toLowerCase()
+                            }));
+
+                            actualites = typedFallback.filter(d => d.type === 'actualite');
+                            technologies = typedFallback.filter(d => d.type === 'technologie');
+                            marche = typedFallback.filter(d => d.type === 'marche');
+                            predictions = typedFallback.filter(d => d.type === 'prediction');
+
+                            [actualites, technologies, marche, predictions]
+                                .forEach(list => list.forEach(item => { item.tags = normalizeTags(item.tags); }));
+                        }
+                    }
+                } else {
+                    // Charger TOUTES les tendances (globales)
+                    const fallbackRes = await fetch('/api/tendances');
+                    const fallbackData = await fallbackRes.json();
+
+                    if (Array.isArray(fallbackData) && fallbackData.length > 0) {
+                        const typedFallback = fallbackData.map(item => ({
+                            ...item,
+                            type: (item.type || 'actualite').toLowerCase()
+                        }));
+
+                        actualites = typedFallback.filter(d => d.type === 'actualite');
+                        technologies = typedFallback.filter(d => d.type === 'technologie');
+                        marche = typedFallback.filter(d => d.type === 'marche');
+                        predictions = typedFallback.filter(d => d.type === 'prediction');
+
+                        [actualites, technologies, marche, predictions]
+                            .forEach(list => list.forEach(item => { item.tags = normalizeTags(item.tags); }));
+                    }
+                }
+
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('tendances-nav').classList.remove('hidden');
+                document.getElementById('content-sections').classList.remove('hidden');
+
+                const hasContent = [actualites, technologies, marche, insights, predictions].some(arr => Array.isArray(arr) && arr.length > 0);
+
+                if (hasContent) {
+                    tendancesData = { actualites, technologies, marche, insights, predictions };
+                    renderAllSections({ actualites, technologies, marche, insights, predictions });
+                } else {
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Erreur chargement tendances:', error);
+                document.getElementById('loading-state').innerHTML = '<p>Erreur de chargement</p>';
+            }
+        }
+
+        // ========================================
+        // RENDER ALL SECTIONS
+        // ========================================
+        function renderAllSections(data) {
+            renderActualites(data.actualites || []);
+            renderTechnologies(data.technologies || []);
+            renderMarche(data.marche || [], data.insights || []);
+            renderPredictions(data.predictions || []);
+        }
+
+        // ========================================
+        // RENDER ACTUALITES
+        // ========================================
+        function renderActualites(data) {
+            const grid = document.getElementById('actualites-grid');
+
+            if (data.length === 0) {
+                grid.innerHTML = '<p class="empty-state">Aucune actualite disponible pour cette categorie.</p>';
+                return;
+            }
+
+            grid.innerHTML = data.map((item, index) => {
+                const tags = item.tags || [];
+                const tagsHtml = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+                const fullDate = item.date_publication || item.date || '';
+                const dateText = fullDate.split('T')[0]; // Extract only the date part
+                const ficheLink = buildTendanceLink(item);
+
+                const embedUrl = normalizeVideoUrl(item.video_url);
+                return `
+                    <article class="actualite-card ${index === 0 ? 'featured' : ''}">
+                        ${embedUrl
+                            ? `<div class="card-video">
+                                    <iframe src="${embedUrl}" title="${item.titre}"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        referrerpolicy="strict-origin-when-cross-origin"
+                                        allowfullscreen></iframe>
+                                    ${item.hot ? '<span class="badge-hot">HOT</span>' : ''}
+                               </div>`
+                            : `<div class="card-image">
+                                    <img src="/assets/images/${item.image || 'placeholder.png'}" alt="${item.titre}"
+                                         onerror="this.src='/assets/images/placeholder.png'">
+                                    ${item.hot ? '<span class="badge-hot">HOT</span>' : ''}
+                               </div>`
+                        }
+                        <div class="card-content">
+                            <span class="card-date">${dateText}</span>
+                            <h3>${item.titre}</h3>
+                            <p>${item.description || ''}</p>
+                            <div class="tags">${tagsHtml}</div>
+                            ${ficheLink ? `<a href="${ficheLink}" class="btn-read-more" style="display: inline-block; margin-top: 1rem; color: var(--tech-yellow); text-decoration: none; font-weight: 600; transition: var(--transition-fast);">➜ Lire la suite</a>` : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // ========================================
+        // RENDER TECHNOLOGIES
+        // ========================================
+        function renderTechnologies(data) {
+            const grid = document.getElementById('tech-grid');
+
+            if (data.length === 0) {
+                grid.innerHTML = '<p class="empty-state">Aucune technologie disponible pour cette categorie.</p>';
+                return;
+            }
+
+            grid.innerHTML = data.map(item => `
+                <div class="tech-card">
+                    <div class="tech-icon">${convertIconToEmoji(item.icone)}</div>
+                    <h3>${item.nom || item.titre}</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${item.taux_adoption || 0}%"></div>
+                    </div>
+                    <p><strong>Adoption: ${item.taux_adoption || 0}%</strong></p>
+                    <p>${item.description || ''}</p>
+                </div>
+            `).join('');
+        }
+
+        // ========================================
+        // RENDER MARCHE
+        // ========================================
+        function renderMarche(data, insightsData) {
+            const grid = document.getElementById('marche-grid');
+            const insightsGrid = document.getElementById('insights-grid');
+
+            if (!Array.isArray(data) || data.length === 0) {
+                grid.innerHTML = '<p class="empty-state">Aucune donnée de marché disponible.</p>';
+                insightsGrid.innerHTML = '';
+            } else {
+                grid.innerHTML = data.map(item => {
+                    const consoleLogo = getConsoleLogo(item.icone);
+                    const iconDisplay = consoleLogo || (item.icone ? convertIconToEmoji(item.icone) : '📊');
+
+                    // Tendance avec icône appropriée (badge en haut à droite)
+                    let tendanceHtml = '';
+                    if (item.tendance) {
+                        const tendanceLower = item.tendance.toLowerCase();
+                        if (tendanceLower === 'hausse' || tendanceLower === 'up' || tendanceLower === '↑') {
+                            tendanceHtml = '<span class="tendance up">↑</span>';
+                        } else if (tendanceLower === 'baisse' || tendanceLower === 'down' || tendanceLower === '↓') {
+                            tendanceHtml = '<span class="tendance down">↓</span>';
+                        } else if (tendanceLower === 'stable' || tendanceLower === '→') {
+                            tendanceHtml = '<span class="tendance stable">→</span>';
+                        }
+                    }
+
+                    // Séparer valeur et unité si présent (ex: "89M unités" -> "89M" + "unités")
+                    let valeur = item.valeur || item.titre || '';
+                    let unite = '';
+
+                    // Patterns pour extraire valeur/unité
+                    const match = valeur.match(/^([\d,.]+[MKB%€$]?)\s*(.*)$/i);
+                    if (match) {
+                        valeur = match[1];
+                        unite = match[2];
+                    }
+
+                    return `
+                        <div class="market-card">
+                            ${tendanceHtml}
+                            <div class="market-icon">${iconDisplay}</div>
+                            <div class="stat-value">${valeur}</div>
+                            ${unite ? `<div class="stat-unit">${unite}</div>` : ''}
+                            <div class="stat-label">${item.label || item.description}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const insightsArray = Array.isArray(insightsData) ? insightsData : [];
+            if (insightsArray.length > 0) {
+                insightsGrid.innerHTML = insightsArray.map(item => `
+                    <div class="insight-item">
+                        <p>${item.description || item.titre}</p>
+                    </div>
+                `).join('');
+            } else {
+                insightsGrid.innerHTML = '<p class="empty-state">Aucun insight disponible.</p>';
+            }
+        }
+
+        // ========================================
+        // RENDER PREDICTIONS
+        // ========================================
+        function renderPredictions(data) {
+            const timeline = document.getElementById('predictions-timeline');
+
+            if (data.length === 0) {
+                timeline.innerHTML = '<p class="empty-state">Aucune prediction disponible pour cette categorie.</p>';
+                return;
+            }
+
+            timeline.innerHTML = data.map(item => {
+                const consoleLogo = getConsoleLogo(item.icone);
+                const iconDisplay = consoleLogo || convertIconToEmoji(item.icone);
+                const prob = item.probabilite;
+                const probClass = prob >= 70 ? 'high' : prob >= 40 ? 'medium' : 'low';
+                return `
+                    <div class="prediction-card">
+                        <div class="prediction-year-section">
+                            <div class="prediction-year">${item.annee || ''}</div>
+                            <div class="prediction-icon">${iconDisplay}</div>
+                        </div>
+                        <div class="prediction-content">
+                            <h3>${item.titre}</h3>
+                            <p>${item.description || ''}</p>
+                            ${prob ? `<div class="prediction-prob ${probClass}">Probabilité: ${prob}%</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========================================
+        // SHOW EMPTY STATE
+        // ========================================
+        function showEmptyState() {
+            document.getElementById('content-sections').innerHTML = `
+                <div class="empty-state">
+                    <p>Aucune tendance disponible pour cette categorie.</p>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // SCROLL TO TOP
+        // ========================================
+        function setupScrollTop() {
+            const scrollTop = document.getElementById('scrollTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollTop.classList.add('visible');
+                } else {
+                    scrollTop.classList.remove('visible');
+                }
+            });
+
+            scrollTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+    </script>
+    <script src="/assets/js/theme-toggle.js"></script>
+</body>
+</html>

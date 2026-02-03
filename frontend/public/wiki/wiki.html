@@ -3,299 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wiki - Site Gamer 2025</title>
+    <title>Wiki - HIGH-TECH 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="wiki-styles.css">
     <style>
         /* Styles spécifiques à wiki.html */
         .search-bar { max-width: 600px; margin: 30px auto 0; position: relative; }
         .search-bar input { width: 100%; padding: 15px 50px 15px 20px; border: none; border-radius: 30px; font-size: 1em; background: rgba(255, 255, 255, 0.9); }
-        .search-bar button { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: #667eea; border: none; color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
+        .search-bar button { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: #d4ff00; border: none; color: #0a0a0f; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; }
         .container { max-width: 1400px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
-        .card { background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; transition: all 0.3s; cursor: pointer; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4); border-color: #764ba2; }
+        .card { background: linear-gradient(145deg, #1a1a24, #12121a); border: 2px solid #d4ff00; border-radius: 15px; padding: 30px; transition: all 0.3s; cursor: pointer; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(212, 255, 0, 0.3); border-color: #6bff6b; }
         .card-icon { font-size: 3em; margin-bottom: 15px; text-align: center; }
-        .card-title { font-size: 1.5em; color: #667eea; margin-bottom: 10px; text-align: center; }
+        .card-title { font-size: 1.5em; color: #d4ff00; margin-bottom: 10px; text-align: center; }
         .card-desc { opacity: 0.8; line-height: 1.6; text-align: center; }
-        .card-meta { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(102, 126, 234, 0.3); font-size: 0.85em; opacity: 0.7; text-align: center; }
-        .quick-links { background: rgba(102, 126, 234, 0.1); border: 1px solid #667eea; border-radius: 10px; padding: 25px; margin-bottom: 40px; }
-        .quick-links h2 { color: #667eea; margin-bottom: 20px; }
+        .card-meta { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212, 255, 0, 0.3); font-size: 0.85em; opacity: 0.7; text-align: center; }
+        .quick-links { background: rgba(212, 255, 0, 0.1); border: 1px solid #d4ff00; border-radius: 10px; padding: 25px; margin-bottom: 40px; }
+        .quick-links h2 { color: #d4ff00; margin-bottom: 20px; }
         .quick-links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .quick-link { background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; padding: 15px; border-radius: 8px; text-decoration: none; color: #2ecc71; display: block; transition: all 0.3s; text-align: center; }
-        .quick-link:hover { background: rgba(46, 204, 113, 0.2); transform: scale(1.05); }
+        .quick-link { background: rgba(107, 255, 107, 0.1); border: 1px solid #6bff6b; padding: 15px; border-radius: 8px; text-decoration: none; color: #6bff6b; display: block; transition: all 0.3s; text-align: center; }
+        .quick-link:hover { background: rgba(107, 255, 107, 0.2); transform: scale(1.05); }
         .stats { display: flex; justify-content: space-around; margin: 40px 0; flex-wrap: wrap; gap: 20px; }
         .stat-item { text-align: center; }
-        .stat-number { font-size: 2.5em; color: #667eea; font-weight: 700; }
+        .stat-number { font-size: 2.5em; color: #d4ff00; font-weight: 700; }
         .stat-label { opacity: 0.7; margin-top: 5px; }
         a { color: inherit; text-decoration: none; }
         .hidden { display: none !important; }
-        .no-results { text-align: center; padding: 60px 20px; color: #e74c3c; font-size: 1.2em; }
+        .no-results { text-align: center; padding: 60px 20px; color: #ff6b6b; font-size: 1.2em; }
+        .header { background: linear-gradient(135deg, #0a0a0f 0%, #1a1a24 100%); padding: 60px 20px; text-align: center; border-bottom: 2px solid #d4ff00; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 2.5em; background: linear-gradient(135deg, #d4ff00 0%, #6bff6b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .header p { color: #a0a0b0; font-size: 1.2em; }
+        .nav { background: #12121a; padding: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; border-bottom: 1px solid rgba(212, 255, 0, 0.2); }
+        .nav a { color: #a0a0b0; text-decoration: none; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; }
+        .nav a:hover { background: rgba(212, 255, 0, 0.1); color: #d4ff00; }
+        body { background: #0a0a0f; color: #ffffff; font-family: 'Poppins', sans-serif; margin: 0; min-height: 100vh; }
+        .footer { background: #0a0a0f; padding: 40px 20px; text-align: center; border-top: 1px solid rgba(212, 255, 0, 0.2); margin-top: 60px; }
+        .footer p { color: #6a6a7a; margin: 5px 0; }
+        .tech-badge { display: inline-block; background: rgba(212, 255, 0, 0.1); border: 1px solid #d4ff00; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; margin: 5px; color: #d4ff00; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>📚 Wiki Site Gamer 2025</h1>
-        <p>Documentation complète du projet</p>
+        <h1>HIGH-TECH 2026</h1>
+        <p>Documentation technique du projet</p>
+        <div style="margin-top: 20px;">
+            <span class="tech-badge">Node.js + Express</span>
+            <span class="tech-badge">PostgreSQL</span>
+            <span class="tech-badge">HTML/CSS/JS Vanilla</span>
+            <span class="tech-badge">SEO Optimized</span>
+        </div>
         <div class="search-bar">
             <input type="text" placeholder="Rechercher dans la documentation..." id="searchInput">
-            <button id="searchBtn">🔍</button>
+            <button id="searchBtn">Rechercher</button>
         </div>
-        <div id="searchResults" style="text-align: center; margin-top: 15px; color: #2ecc71; font-size: 0.9em;"></div>
+        <div id="searchResults" style="text-align: center; margin-top: 15px; color: #6bff6b; font-size: 0.9em;"></div>
     </div>
 
     <nav class="nav">
-        <a href="wiki.html">🏠 Accueil Wiki</a>
-        <a href="api-reference.html">📁 API</a>
-        <a href="database.html">🗄️ Base de données</a>
-        <a href="scripts.html">⚙️ Scripts</a>
-        <a href="tests.html">🧪 Tests</a>
+        <a href="wiki.html">Accueil</a>
+        <a href="api-reference.html">API</a>
+        <a href="database.html">Base de donnees</a>
+        <a href="frontend.html">Frontend</a>
+        <a href="/2026/admin.html">Dashboard Admin</a>
     </nav>
 
     <div class="container">
         <div class="stats">
             <div class="stat-item">
-                <div class="stat-number">14</div>
-                <div class="stat-label">Composants</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">61+</div>
-                <div class="stat-label">Produits</div>
-            </div>
-            <div class="stat-item">
                 <div class="stat-number">16</div>
-                <div class="stat-label">Catégories</div>
+                <div class="stat-label">Categories</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">30+</div>
-                <div class="stat-label">Scripts</div>
+                <div class="stat-number">7</div>
+                <div class="stat-label">Pages Frontend</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">20+</div>
+                <div class="stat-label">API Endpoints</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Tables BDD</div>
             </div>
         </div>
 
         <div class="quick-links">
-            <h2>🚀 Démarrage rapide</h2>
+            <h2>Architecture HIGH-TECH 2026</h2>
             <div class="quick-links-grid">
-                <a href="getting-started.html" class="quick-link">🎯 Guide de démarrage</a>
-                <a href="installation.html" class="quick-link">⚙️ Installation</a>
-                <a href="api-reference.html" class="quick-link">📖 Référence API</a>
-                <a href="../scripts/maintenance/test-suite.html" class="quick-link">🧪 Suite de tests</a>
-                <a href="troubleshooting.html" class="quick-link">🔧 Dépannage</a>
+                <a href="project-connections-vue.html" class="quick-link" style="background: rgba(212, 255, 0, 0.15); border-color: #d4ff00; color: #d4ff00;">Schema Interactif</a>
+                <a href="/2026/" class="quick-link">Accueil</a>
+                <a href="/2026/produits.html" class="quick-link">Produits</a>
+                <a href="/2026/tendances.html" class="quick-link">Tendances</a>
+                <a href="/2026/comparatif.html" class="quick-link">Comparatif</a>
+                <a href="/2026/admin.html" class="quick-link">Dashboard Admin</a>
             </div>
         </div>
 
-        <h2 style="color: #667eea; margin-bottom: 30px; font-size: 2em;">📑 Sections principales</h2>
-        
+        <h2 style="color: #d4ff00; margin-bottom: 30px; font-size: 2em;">Structure du Projet</h2>
+
+        <!-- Schema Interactif Card -->
+        <a href="project-connections-vue.html" style="display: block; text-decoration: none; margin-bottom: 30px;">
+            <div class="card" style="background: linear-gradient(145deg, rgba(212, 255, 0, 0.1), rgba(107, 255, 107, 0.05)); border: 2px solid #d4ff00;">
+                <div class="card-icon">🗺️</div>
+                <div class="card-title">Schema Interactif d'Architecture</div>
+                <div class="card-desc">
+                    Visualisez toutes les connexions entre les composants du projet.<br>
+                    Survolez un element pour voir ses dependances.<br>
+                    Filtrez par couche : Frontend, Backend, Database, SEO.
+                </div>
+                <div class="card-meta" style="color: #d4ff00;">Cliquez pour explorer</div>
+            </div>
+        </a>
+
         <div class="grid">
-            <a href="project-connections-vue.html">
-                <div class="card">
-                    <div class="card-icon">🔄</div>
-                    <div class="card-title">Architecture Interactive</div>
-                    <div class="card-desc">Diagramme visuel interactif montrant les connexions entre tous les composants du système</div>
-                    <div class="card-meta">📊 Vue d'ensemble visuelle</div>
+            <div class="card">
+                <div class="card-icon">🗂️</div>
+                <div class="card-title">Structure Fichiers</div>
+                <div class="card-desc">
+                    <code style="display: block; text-align: left; background: #0a0a0f; padding: 15px; border-radius: 8px; font-size: 0.85em; line-height: 1.8;">
+├── server-2026.js<br>
+├── backend/<br>
+│   ├── routes/<br>
+│   │   ├── produits.js<br>
+│   │   ├── stats.js<br>
+│   │   ├── sitemap.js<br>
+│   │   └── ...<br>
+│   └── config/<br>
+├── frontend/public/2026/<br>
+│   ├── index.html<br>
+│   ├── produits.html<br>
+│   ├── fiche.html<br>
+│   ├── tendances.html<br>
+│   ├── article.html<br>
+│   ├── comparatif.html<br>
+│   └── admin.html
+                    </code>
                 </div>
-            </a>
+            </div>
 
-            <a href="project-details.html">
-                <div class="card">
-                    <div class="card-icon">📋</div>
-                    <div class="card-title">Documentation Composants</div>
-                    <div class="card-desc">Documentation détaillée de chaque composant avec endpoints, configuration et exemples</div>
-                    <div class="card-meta">📚 14 composants documentés</div>
+            <div class="card">
+                <div class="card-icon">🎨</div>
+                <div class="card-title">Frontend Pages</div>
+                <div class="card-desc">
+                    <strong>index.html</strong> - Accueil avec hero, categories, produits vedettes<br><br>
+                    <strong>produits.html</strong> - Liste produits avec filtres par categorie<br><br>
+                    <strong>fiche.html</strong> - Fiche produit dynamique (Schema.org Product)<br><br>
+                    <strong>tendances.html</strong> - Articles par categorie avec cards<br><br>
+                    <strong>article.html</strong> - Article complet avec sections (Schema.org Article)<br><br>
+                    <strong>comparatif.html</strong> - Comparateur jusqu'a 4 produits<br><br>
+                    <strong>admin.html</strong> - Dashboard admin complet
                 </div>
-            </a>
+            </div>
 
-            <a href="api-reference.html">
-                <div class="card">
-                    <div class="card-icon">🔌</div>
-                    <div class="card-title">Référence API</div>
-                    <div class="card-desc">Liste complète de toutes les API REST avec paramètres, exemples de requêtes et réponses</div>
-                    <div class="card-meta">🔥 API Produits, Tendances, Fiches</div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title">Backend API</div>
+                <div class="card-desc">
+                    <strong>Serveur:</strong> Express.js sur port 3000<br><br>
+                    <strong>Routes principales:</strong><br>
+                    • /api/produits - CRUD produits<br>
+                    • /api/actualites - CRUD articles<br>
+                    • /api/fiche-tendance - Sections articles<br>
+                    • /api/stats - Statistiques<br>
+                    • /api/wiki - Pages wiki<br>
+                    • /api/announcements - Annonces<br>
+                    • /sitemap.xml - Sitemap dynamique
                 </div>
-            </a>
+            </div>
 
-            <a href="database.html">
-                <div class="card">
-                    <div class="card-icon">🐘</div>
-                    <div class="card-title">Base de Données</div>
-                    <div class="card-desc">Schéma PostgreSQL, tables, relations et exemples de requêtes SQL</div>
-                    <div class="card-meta">💾 gamer_2025 database</div>
+            <div class="card">
+                <div class="card-icon">🗄️</div>
+                <div class="card-title">Base de Donnees</div>
+                <div class="card-desc">
+                    <strong>PostgreSQL</strong> - Tables principales:<br><br>
+                    • <strong>produits</strong> - Produits avec donnees_fiche JSONB<br>
+                    • <strong>actualites</strong> - Articles tendances<br>
+                    • <strong>actualites_sections</strong> - Sections d'articles<br>
+                    • <strong>categories</strong> - 16 categories produits<br>
+                    • <strong>wiki</strong> - Pages documentation<br>
+                    • <strong>site_stats</strong> - Compteurs visites<br>
+                    • <strong>activity_logs</strong> - Journal d'activite
                 </div>
-            </a>
+            </div>
 
-            <a href="scripts.html">
-                <div class="card">
-                    <div class="card-icon">⚙️</div>
-                    <div class="card-title">Scripts</div>
-                    <div class="card-desc">Documentation de tous les scripts : génération, vérification, normalisation</div>
-                    <div class="card-meta">🔄 30+ scripts disponibles</div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <div class="card-title">Dashboard Admin</div>
+                <div class="card-desc">
+                    <strong>/2026/admin.html</strong> - Interface complete:<br><br>
+                    • Gestion Produits (CRUD + 16 categories)<br>
+                    • Gestion Articles avec sections<br>
+                    • Ordre articles par categorie<br>
+                    • Gestion Annonces homepage<br>
+                    • Statistiques detaillees<br>
+                    • Wiki documentation<br>
+                    • Logs d'activite
                 </div>
-            </a>
+            </div>
 
-            <a href="tests.html">
-                <div class="card">
-                    <div class="card-icon">🧪</div>
-                    <div class="card-title">Tests et Qualité</div>
-                    <div class="card-desc">Suite de tests interactive (23 tests automatisés), scripts de vérification et outils de qualité</div>
-                    <div class="card-meta">✨ Suite complète P1/P2/P3</div>
+            <div class="card">
+                <div class="card-icon">🔍</div>
+                <div class="card-title">SEO</div>
+                <div class="card-desc">
+                    <strong>Optimisations implementees:</strong><br><br>
+                    • Meta tags (title, description, keywords)<br>
+                    • Open Graph pour partage social<br>
+                    • Schema.org Product & Article<br>
+                    • Sitemap.xml dynamique<br>
+                    • robots.txt configure<br>
+                    • URLs propres avec slugs<br>
+                    • Canonical URLs
                 </div>
-            </a>
+            </div>
 
-            <a href="deployment.html">
-                <div class="card">
-                    <div class="card-icon">🚀</div>
-                    <div class="card-title">Déploiement</div>
-                    <div class="card-desc">Guide de déploiement en production, configuration serveur et optimisations</div>
-                    <div class="card-meta">☁️ Production ready</div>
+            <div class="card">
+                <div class="card-icon">📦</div>
+                <div class="card-title">16 Categories</div>
+                <div class="card-desc" style="font-size: 0.9em;">
+                    Drone • Console • Tablette • Smartphone<br>
+                    PC Gaming • Serveur • Casque Audio<br>
+                    Montre Connectee • Camera • Peripheriques<br>
+                    Casque VR • Imprimante 3D • Ecran TV<br>
+                    Video Projecteur • Box Internet • Tableau Interactif
                 </div>
-            </a>
+                <div class="card-meta">Champs specifiques par categorie</div>
+            </div>
 
-            <a href="frontend.html">
-                <div class="card">
-                    <div class="card-icon">🌐</div>
-                    <div class="card-title">Frontend</div>
-                    <div class="card-desc">Structure des pages HTML, assets CSS/JS, optimisations et build</div>
-                    <div class="card-meta">🎨 17 pages statiques</div>
+            <div class="card">
+                <div class="card-icon">🌓</div>
+                <div class="card-title">Theme Toggle</div>
+                <div class="card-desc">
+                    <strong>Mode Sombre/Clair</strong><br><br>
+                    • Bouton integre dans la navigation<br>
+                    • Persistance via localStorage<br>
+                    • Variables CSS dynamiques<br>
+                    • Transition fluide<br>
+                    • Fallback position fixe
                 </div>
-            </a>
+            </div>
+        </div>
 
-            <a href="workflows.html">
-                <div class="card">
-                    <div class="card-icon">🔁</div>
-                    <div class="card-title">Workflows</div>
-                    <div class="card-desc">Processus et workflows : ajout produit, génération fiches, mise à jour données</div>
-                    <div class="card-meta">📝 Guides étape par étape</div>
-                </div>
-            </a>
+        <h2 style="color: #d4ff00; margin: 60px 0 30px; font-size: 2em;">Workflows</h2>
 
-            <a href="troubleshooting.html">
-                <div class="card">
-                    <div class="card-icon">🔧</div>
-                    <div class="card-title">Dépannage</div>
-                    <div class="card-desc">Solutions aux problèmes courants, erreurs fréquentes et debugging</div>
-                    <div class="card-meta">🐛 FAQ & Solutions</div>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">➕</div>
+                <div class="card-title">Ajouter un Produit</div>
+                <div class="card-desc" style="text-align: left;">
+                    1. Aller sur /2026/admin.html<br>
+                    2. Section "Produits" → "+ Nouveau Produit"<br>
+                    3. Remplir nom, categorie, prix, image<br>
+                    4. Champs specifiques selon categorie<br>
+                    5. Sauvegarder<br><br>
+                    <strong>Resultat:</strong> Fiche accessible via<br>
+                    /2026/fiche.html?produit=nom-produit
                 </div>
-            </a>
+            </div>
 
-            <a href="changelog.html">
-                <div class="card">
-                    <div class="card-icon">📝</div>
-                    <div class="card-title">Changelog</div>
-                    <div class="card-desc">Historique des versions, nouveautés et modifications du projet</div>
-                    <div class="card-meta">🕐 Historique complet</div>
+            <div class="card">
+                <div class="card-icon">📝</div>
+                <div class="card-title">Ajouter un Article</div>
+                <div class="card-desc" style="text-align: left;">
+                    1. Dashboard Admin → "Articles"<br>
+                    2. "+ Nouvel Article"<br>
+                    3. Titre, categorie, description, image<br>
+                    4. Sauvegarder l'article<br>
+                    5. Modifier → Ajouter des sections<br>
+                    6. Gerer l'ordre par categorie<br><br>
+                    <strong>Resultat:</strong> Article sur /2026/tendances.html
                 </div>
-            </a>
+            </div>
 
-            <a href="best-practices.html">
-                <div class="card">
-                    <div class="card-icon">⭐</div>
-                    <div class="card-title">Bonnes Pratiques</div>
-                    <div class="card-desc">Conventions de code, patterns recommandés et guidelines du projet</div>
-                    <div class="card-meta">✨ Standards & Guidelines</div>
+            <div class="card">
+                <div class="card-icon">🔄</div>
+                <div class="card-title">Lancer le Serveur</div>
+                <div class="card-desc" style="text-align: left;">
+                    <code style="background: #0a0a0f; padding: 10px; display: block; border-radius: 5px;">
+                    # Demarrer le serveur 2026<br>
+                    node server-2026.js<br><br>
+                    # Accessible sur<br>
+                    http://localhost:3000/2026/
+                    </code>
                 </div>
-            </a>
-
-            <a href="glossary.html">
-                <div class="card">
-                    <div class="card-icon">📖</div>
-                    <div class="card-title">Glossaire</div>
-                    <div class="card-desc">Définitions des termes techniques et concepts utilisés dans le projet</div>
-                    <div class="card-meta">🔤 A-Z Terminology</div>
-                </div>
-            </a>
+            </div>
         </div>
     </div>
 
     <div class="footer">
-        <p>📚 Wiki Site Gamer 2025 - Documentation complète</p>
-        <p>Dernière mise à jour : 27 décembre 2025</p>
+        <p>HIGH-TECH 2026 - Documentation technique</p>
+        <p>Derniere mise a jour : Fevrier 2026</p>
+        <p style="margin-top: 20px;">
+            <a href="/2026/" style="color: #d4ff00;">Retour au site</a>
+        </p>
     </div>
 
     <script>
-        // Fonction de recherche en temps réel
+        // Fonction de recherche en temps reel
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
         const searchResults = document.getElementById('searchResults');
-        const cards = document.querySelectorAll('.grid > a');
-        const quickLinks = document.querySelectorAll('.quick-link');
+        const cards = document.querySelectorAll('.grid .card');
 
         function performSearch() {
             const query = searchInput.value.toLowerCase().trim();
-            
+
             if (query === '') {
-                // Réafficher toutes les cartes
-                cards.forEach(card => card.classList.remove('hidden'));
-                quickLinks.forEach(link => link.classList.remove('hidden'));
+                cards.forEach(card => card.parentElement ? card.parentElement.classList.remove('hidden') : card.classList.remove('hidden'));
                 searchResults.textContent = '';
-                
-                // Retirer le message "no results"
-                const noResults = document.querySelector('.no-results');
-                if (noResults) noResults.remove();
-                
                 return;
             }
 
             let visibleCards = 0;
-            let visibleQuickLinks = 0;
 
-            // Filtrer les cartes
             cards.forEach(card => {
-                const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
-                const desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
-                const meta = card.querySelector('.card-meta')?.textContent.toLowerCase() || '';
-                
-                const hasMatch = title.includes(query) || desc.includes(query) || meta.includes(query);
-                
-                if (hasMatch) {
-                    card.classList.remove('hidden');
+                const text = card.textContent.toLowerCase();
+                const parent = card.closest('a') || card;
+
+                if (text.includes(query)) {
+                    parent.classList.remove('hidden');
                     visibleCards++;
                 } else {
-                    card.classList.add('hidden');
+                    parent.classList.add('hidden');
                 }
             });
 
-            // Filtrer les liens rapides
-            quickLinks.forEach(link => {
-                const text = link.textContent.toLowerCase();
-                if (text.includes(query)) {
-                    link.classList.remove('hidden');
-                    visibleQuickLinks++;
-                } else {
-                    link.classList.add('hidden');
-                }
-            });
-
-            // Afficher les résultats
-            const totalVisible = visibleCards + visibleQuickLinks;
-            
-            if (totalVisible === 0) {
-                searchResults.textContent = '❌ Aucun résultat trouvé';
-                searchResults.style.color = '#e74c3c';
-                
-                // Ajouter un message dans la grille
-                const grid = document.querySelector('.grid');
-                let noResults = document.querySelector('.no-results');
-                if (!noResults) {
-                    noResults = document.createElement('div');
-                    noResults.className = 'no-results';
-                    noResults.innerHTML = '🔍 Aucune page ne correspond à votre recherche<br><small>Essayez un autre terme : API, database, scripts, etc.</small>';
-                    grid.parentNode.insertBefore(noResults, grid.nextSibling);
-                }
+            if (visibleCards === 0) {
+                searchResults.textContent = 'Aucun resultat trouve';
+                searchResults.style.color = '#ff6b6b';
             } else {
-                searchResults.textContent = `✅ ${totalVisible} résultat(s) trouvé(s) (${visibleCards} pages, ${visibleQuickLinks} liens rapides)`;
-                searchResults.style.color = '#2ecc71';
-                
-                // Retirer le message "no results"
-                const noResults = document.querySelector('.no-results');
-                if (noResults) noResults.remove();
+                searchResults.textContent = `${visibleCards} resultat(s) trouve(s)`;
+                searchResults.style.color = '#6bff6b';
             }
         }
 
-        // Recherche en temps réel pendant la saisie
         searchInput.addEventListener('input', performSearch);
-
-        // Recherche au clic sur le bouton
         searchBtn.addEventListener('click', performSearch);
-
-        // Recherche à l'appui sur Entrée
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -303,7 +346,7 @@
             }
         });
 
-        // Raccourci clavier : Ctrl/Cmd + K pour focus sur la recherche
+        // Raccourci Ctrl+K
         document.addEventListener('keydown', function(e) {
             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                 e.preventDefault();

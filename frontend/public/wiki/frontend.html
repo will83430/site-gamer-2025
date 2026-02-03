@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frontend - Site Gamer 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="wiki-styles.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
-        .header h1 { font-size: 3em; color: white; margin-bottom: 10px; }
+        body { font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #1a1a2a 0%, #121220 100%); border-bottom: 2px solid #d4ff00; padding: 50px 20px; text-align: center; box-shadow: 0 0 30px rgba(212, 255, 0, 0.2); }
+        .header h1 { font-size: 3em; display: inline-block; min-width: max-content; margin-bottom: 10px; }
         .header p { font-size: 1.2em; opacity: 0.9; }
-        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
-        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .nav { background: rgba(212, 255, 0, 0.1); padding: 15px 20px; border-bottom: 1px solid #d4ff00; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #d4ff00; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #6bff6b; transform: translateY(-2px); }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         .section { margin-bottom: 50px; background: linear-gradient(145deg, #2a2a40, #1f1f35); border: 2px solid #667eea; border-radius: 15px; padding: 30px; }
-        .section h2 { color: #667eea; margin-bottom: 20px; font-size: 2em; }
+        .section h2 { color: #d4ff00; margin-bottom: 20px; font-size: 2em; }
         .section h3 { color: #2ecc71; margin: 25px 0 15px; font-size: 1.4em; }
-        .file-list { background: rgba(102, 126, 234, 0.1); padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .file-list { background: rgba(212, 255, 0, 0.1); padding: 20px; border-radius: 8px; margin: 15px 0; }
         .file-list ul { margin-left: 20px; }
         .file-list li { margin: 8px 0; }
         code { background: rgba(102, 126, 234, 0.2); padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #ffd700; }
@@ -28,8 +29,8 @@
         .warning { background: rgba(243, 156, 18, 0.1); border-left: 4px solid #f39c12; padding: 15px; margin: 20px 0; border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; margin: 20px 0; background: rgba(102, 126, 234, 0.05); }
         table th, table td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(102, 126, 234, 0.2); }
-        table th { background: rgba(102, 126, 234, 0.2); color: #667eea; font-weight: 600; }
-        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        table th { background: rgba(102, 126, 234, 0.2); color: #d4ff00; font-weight: 600; }
+        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #667eea; display: inline-block; min-width: max-content; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
         .back-link:hover { background: #764ba2; transform: translateY(-2px); }
         .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); opacity: 0.7; }
     </style>
@@ -191,8 +192,8 @@
             <h3>Structure CSS</h3>
             <pre><code>/* Variables CSS */
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
+    --primary-color: #d4ff00;
+    --secondary-color: #6bff6b;
     --bg-dark: #0f0f1e;
     --text-light: #e0e0e0;
     --accent-green: #2ecc71;

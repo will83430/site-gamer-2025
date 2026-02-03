@@ -1,0 +1,29 @@
+# Robots.txt pour HIGH-TECH 2026
+# https://high-tech-2026.com
+
+User-agent: *
+Allow: /
+
+# Pages à indexer
+Allow: /2026/
+Allow: /2026/index.html
+Allow: /2026/produits.html
+Allow: /2026/fiche.html
+Allow: /2026/tendances.html
+Allow: /2026/article.html
+Allow: /2026/comparatif.html
+
+# Pages à ne pas indexer
+Disallow: /2026/admin.html
+Disallow: /api/
+
+# Assets autorisés pour le rendu
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/images/
+
+# Sitemap
+Sitemap: https://high-tech-2026.com/sitemap.xml
+
+# Crawl-delay (optionnel, respecté par certains bots)
+Crawl-delay: 1

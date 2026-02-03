@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guide de Démarrage - Wiki Site Gamer 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="wiki-styles.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; box-shadow: 0 5px 30px rgba(102, 126, 234, 0.4); }
-        .header h1 { font-size: 2.5em; color: white; margin-bottom: 10px; }
+        body { font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; }
+        .header { background: linear-gradient(135deg, #1a1a2a 0%, #121220 100%); border-bottom: 2px solid #d4ff00; padding: 40px 20px; text-align: center; box-shadow: 0 0 30px rgba(212, 255, 0, 0.2); }
+        .header h1 { font-size: 2.5em; display: inline-block; min-width: max-content; margin-bottom: 10px; }
         .breadcrumb { max-width: 1200px; margin: 20px auto; padding: 0 20px; opacity: 0.7; }
-        .breadcrumb a { color: #667eea; text-decoration: none; }
+        .breadcrumb a { color: #d4ff00; text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         .content { background: linear-gradient(145deg, #2a2a40, #1f1f35); border-radius: 15px; padding: 40px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); }
-        h2 { color: #667eea; margin-top: 30px; margin-bottom: 15px; font-size: 1.8em; }
+        h2 { color: #d4ff00; margin-top: 30px; margin-bottom: 15px; font-size: 1.8em; }
         h3 { color: #2ecc71; margin-top: 20px; margin-bottom: 10px; }
         p { line-height: 1.8; margin-bottom: 15px; opacity: 0.9; }
-        .step { background: rgba(102, 126, 234, 0.1); border-left: 4px solid #667eea; padding: 20px; margin: 20px 0; border-radius: 8px; }
-        .step-number { display: inline-block; background: #667eea; color: white; width: 35px; height: 35px; border-radius: 50%; text-align: center; line-height: 35px; font-weight: 700; margin-right: 10px; }
+        .step { background: rgba(212, 255, 0, 0.1); border-left: 4px solid #667eea; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .step-number { display: inline-block; background: #667eea; display: inline-block; min-width: max-content; width: 35px; height: 35px; border-radius: 50%; text-align: center; line-height: 35px; font-weight: 700; margin-right: 10px; }
         .code-block { background: #000; border: 1px solid #333; padding: 15px; border-radius: 8px; margin: 15px 0; overflow-x: auto; }
         .code-block code { color: #2ecc71; font-family: 'Courier New', monospace; }
         .warning { background: rgba(243, 156, 18, 0.1); border-left: 4px solid #f39c12; padding: 15px; margin: 20px 0; border-radius: 8px; }
@@ -27,11 +28,11 @@
         .success { background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 15px; margin: 20px 0; border-radius: 8px; }
         ul { margin-left: 20px; line-height: 2; }
         .nav-bottom { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); }
-        .nav-button { background: #667eea; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .nav-button { background: #667eea; display: inline-block; min-width: max-content; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
         .nav-button:hover { background: #764ba2; transform: translateY(-2px); }
-        .nav { background: rgba(102, 126, 234, 0.1); padding: 15px 20px; border-bottom: 1px solid #667eea; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .nav a { color: #667eea; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
-        .nav a:hover { color: #764ba2; transform: translateY(-2px); }
+        .nav { background: rgba(212, 255, 0, 0.1); padding: 15px 20px; border-bottom: 1px solid #d4ff00; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #d4ff00; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #6bff6b; transform: translateY(-2px); }
     </style>
 </head>
 <body>
