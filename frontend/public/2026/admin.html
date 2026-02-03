@@ -371,6 +371,7 @@
         .badge-warning { background: rgba(212, 255, 0, 0.15); color: var(--tech-yellow); }
         .badge-info { background: rgba(77, 212, 255, 0.15); color: var(--tech-blue); }
         .badge-danger { background: rgba(255, 107, 107, 0.15); color: var(--tech-red); }
+        .badge-secondary { background: rgba(160, 160, 176, 0.15); color: var(--text-secondary); }
 
         .action-btn {
             background: none;
@@ -804,6 +805,10 @@
                     <span class="nav-item-icon">📉</span>
                     <span>Statistiques</span>
                 </a>
+                <a class="nav-item" data-section="logs">
+                    <span class="nav-item-icon">📋</span>
+                    <span>Logs d'activité</span>
+                </a>
                 <a class="nav-item" data-section="wiki">
                     <span class="nav-item-icon">📚</span>
                     <span>Wiki</span>
@@ -876,6 +881,13 @@
             <div class="page-header">
                 <h1 class="page-title">Gestion des Produits</h1>
                 <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="exportCSV()" title="Exporter tous les produits">
+                        <span style="margin-right: 5px;">📥</span> Export CSV
+                    </button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('csv-import-input').click()" title="Importer des produits depuis un fichier CSV">
+                        <span style="margin-right: 5px;">📤</span> Import CSV
+                    </button>
+                    <input type="file" id="csv-import-input" accept=".csv" style="display: none;" onchange="importCSV(this)">
                     <button class="btn btn-primary" onclick="openModal('produit')">+ Nouveau Produit</button>
                 </div>
             </div>
@@ -898,7 +910,7 @@
                                 <th>Nom</th>
                                 <th>Catégorie</th>
                                 <th>Prix</th>
-                                <th>Statut</th>
+                                <th style="width: 60px;">Vedette</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -983,14 +995,125 @@
         <section id="section-stats" class="section">
             <div class="page-header">
                 <h1 class="page-title">Statistiques</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="loadFullStats()">🔄 Actualiser</button>
+                </div>
             </div>
+
+            <!-- Stats Overview Cards -->
+            <div class="stats-grid-full" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div class="stat-card-large" style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--tech-cyan);" id="fs-produits">--</div>
+                    <div style="color: var(--text-secondary); margin-top: 0.5rem;">📦 Produits</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;" id="fs-top-mois">-- en vedette</div>
+                </div>
+                <div class="stat-card-large" style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--tech-green);" id="fs-tendances">--</div>
+                    <div style="color: var(--text-secondary); margin-top: 0.5rem;">📰 Articles Tendances</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;" id="fs-tendances-detail">--</div>
+                </div>
+                <div class="stat-card-large" style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--tech-purple);" id="fs-visites">--</div>
+                    <div style="color: var(--text-secondary); margin-top: 0.5rem;">👁️ Visites Totales</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;" id="fs-derniere-visite">--</div>
+                </div>
+                <div class="stat-card-large" style="background: var(--bg-elevated); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--tech-orange);" id="fs-prix-moyen">--</div>
+                    <div style="color: var(--text-secondary); margin-top: 0.5rem;">💰 Prix Moyen</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;" id="fs-prix-range">--</div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <!-- Category Distribution -->
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title">📊 Répartition par Catégorie</h2>
+                    </div>
+                    <div class="content-card-body" id="fs-categories-chart" style="min-height: 300px;">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+
+                <!-- Tendances Breakdown -->
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title">📈 Détail Tendances</h2>
+                    </div>
+                    <div class="content-card-body" id="fs-tendances-chart" style="min-height: 300px;">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logs Section -->
+        <section id="section-logs" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Logs d'activité</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="loadActivityLogs()">🔄 Actualiser</button>
+                    <button class="btn btn-secondary" onclick="clearOldLogs()">🗑️ Nettoyer (+30j)</button>
+                </div>
+            </div>
+
+            <!-- Stats rapides -->
+            <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                <div class="stat-card">
+                    <div class="stat-value" id="logs-total">0</div>
+                    <div class="stat-label">Total logs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="logs-24h">0</div>
+                    <div class="stat-label">Dernières 24h</div>
+                </div>
+            </div>
+
+            <!-- Filtres -->
+            <div class="search-bar">
+                <select class="form-select filter-select" id="filter-action-logs" onchange="loadActivityLogs()">
+                    <option value="">Toutes les actions</option>
+                    <option value="create">Création</option>
+                    <option value="update">Modification</option>
+                    <option value="delete">Suppression</option>
+                    <option value="feature">Mise en vedette</option>
+                    <option value="unfeature">Retrait vedette</option>
+                    <option value="export">Export</option>
+                    <option value="import">Import</option>
+                </select>
+                <select class="form-select filter-select" id="filter-entity-logs" onchange="loadActivityLogs()">
+                    <option value="">Tous les types</option>
+                    <option value="produit">Produits</option>
+                    <option value="article">Articles</option>
+                    <option value="categorie">Catégories</option>
+                </select>
+            </div>
+
             <div class="content-card">
                 <div class="content-card-body">
-                    <p class="empty-state">
-                        <span class="empty-state-icon">📊</span><br>
-                        Module statistiques en cours de développement
-                    </p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 150px;">Date</th>
+                                <th style="width: 100px;">Action</th>
+                                <th style="width: 100px;">Type</th>
+                                <th>Élément</th>
+                                <th style="width: 120px;">Détails</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-logs">
+                            <tr><td colspan="5"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+                <button class="btn btn-secondary" id="logs-prev" onclick="logsPage > 0 && (logsPage--, loadActivityLogs())" disabled>← Précédent</button>
+                <span id="logs-page-info" style="display: flex; align-items: center; color: var(--text-secondary);">Page 1</span>
+                <button class="btn btn-secondary" id="logs-next" onclick="logsPage++; loadActivityLogs()">Suivant →</button>
             </div>
         </section>
 
@@ -1162,7 +1285,25 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+            <button class="btn btn-secondary" id="modal-preview" onclick="previewItem()" style="display: none;">👁️ Prévisualiser</button>
             <button class="btn btn-primary" id="modal-submit">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Overlay -->
+<div class="modal-overlay" id="preview-overlay" style="z-index: 10001;">
+    <div class="modal" style="max-width: 900px; max-height: 90vh;">
+        <div class="modal-header">
+            <h3 class="modal-title">Prévisualisation</h3>
+            <button class="modal-close" onclick="closePreview()">&times;</button>
+        </div>
+        <div class="modal-body" id="preview-body" style="max-height: 70vh; overflow-y: auto;">
+            <!-- Preview content -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closePreview()">Fermer</button>
+            <button class="btn btn-primary" onclick="closePreview(); document.getElementById('modal-submit').click();">Enregistrer</button>
         </div>
     </div>
 </div>
@@ -1203,6 +1344,8 @@
             case 'marche': loadMarche(); break;
             case 'predictions': loadPredictions(); break;
             case 'wiki': loadWiki(); break;
+            case 'stats': loadFullStats(); break;
+            case 'logs': loadActivityLogs(); break;
         }
     }
 
@@ -1278,7 +1421,7 @@
                 fetch('/api/produits'),
                 fetch('/api/actualites'),
                 fetch('/api/categories'),
-                fetch('/api/stats/visits').catch(() => ({ ok: false }))
+                fetch('/api/stats/homepage').catch(() => ({ ok: false }))
             ]);
 
             const produitsData = await produitsRes.json();
@@ -1297,10 +1440,11 @@
             document.getElementById('count-articles').textContent = articles.length || 0;
 
             if (statsRes.ok) {
-                const stats = await statsRes.json();
-                document.getElementById('stat-visites').textContent = stats.total || '--';
+                const statsData = await statsRes.json();
+                const visites = statsData.stats?.visites || 0;
+                document.getElementById('stat-visites').textContent = visites;
             } else {
-                document.getElementById('stat-visites').textContent = '--';
+                document.getElementById('stat-visites').textContent = '0';
             }
 
             // Annonces count
@@ -1320,6 +1464,91 @@
             `;
         } catch (error) {
             console.error('Erreur chargement stats:', error);
+        }
+    }
+
+    // Statistiques complètes pour la section Stats
+    async function loadFullStats() {
+        try {
+            const response = await fetch('/api/stats/admin');
+            const result = await response.json();
+
+            if (!result.success || !result.stats) {
+                throw new Error('Données invalides');
+            }
+
+            const { produits, tendances, visites, prix } = result.stats;
+
+            // Update cards
+            document.getElementById('fs-produits').textContent = produits.total;
+            document.getElementById('fs-top-mois').textContent = `${produits.topDuMois} en vedette`;
+            document.getElementById('fs-tendances').textContent = tendances.total;
+            document.getElementById('fs-tendances-detail').textContent =
+                `${tendances.actualites} actus · ${tendances.technologies} tech`;
+            document.getElementById('fs-visites').textContent = visites.total.toLocaleString('fr-FR');
+
+            if (visites.derniereVisite) {
+                const date = new Date(parseInt(visites.derniereVisite));
+                document.getElementById('fs-derniere-visite').textContent =
+                    `Dernière: ${date.toLocaleDateString('fr-FR')} ${date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`;
+            }
+
+            document.getElementById('fs-prix-moyen').textContent = `${prix.avg_prix || 0}€`;
+            document.getElementById('fs-prix-range').textContent =
+                `${prix.min_prix || 0}€ - ${prix.max_prix || 0}€`;
+
+            // Category chart
+            const maxCount = Math.max(...produits.parCategorie.map(c => parseInt(c.count)));
+            const catChartHtml = produits.parCategorie.map(cat => {
+                const pct = Math.round((parseInt(cat.count) / maxCount) * 100);
+                const colors = ['#00d4ff', '#d4ff00', '#bf7fff', '#ff9500', '#ff6b9d', '#00e5a0', '#ffcc00', '#ff5757', '#7c4dff', '#00bcd4'];
+                const color = colors[produits.parCategorie.indexOf(cat) % colors.length];
+                return `
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;">${cat.categorie}</span>
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">${cat.count} produits</span>
+                        </div>
+                        <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                            <div style="height: 100%; width: ${pct}%; background: ${color}; border-radius: 4px; transition: width 0.5s ease;"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('fs-categories-chart').innerHTML = catChartHtml || '<p class="empty-state">Aucune donnée</p>';
+
+            // Tendances chart
+            const tendanceItems = [
+                { label: 'Actualités', count: tendances.actualites, color: '#00d4ff', icon: '📰' },
+                { label: 'Technologies', count: tendances.technologies, color: '#d4ff00', icon: '💻' },
+                { label: 'Marché', count: tendances.marche, color: '#bf7fff', icon: '📈' },
+                { label: 'Prédictions', count: tendances.predictions, color: '#ff9500', icon: '🔮' }
+            ];
+            const maxTendance = Math.max(...tendanceItems.map(t => t.count));
+
+            const tendChartHtml = tendanceItems.map(t => {
+                const pct = maxTendance > 0 ? Math.round((t.count / maxTendance) * 100) : 0;
+                return `
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="font-size: 1.2rem;">${t.icon}</span>
+                            <span style="color: var(--text-primary); font-weight: 500;">${t.label}</span>
+                            <span style="margin-left: auto; color: ${t.color}; font-weight: 700; font-size: 1.1rem;">${t.count}</span>
+                        </div>
+                        <div style="height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden;">
+                            <div style="height: 100%; width: ${pct}%; background: ${t.color}; border-radius: 6px; transition: width 0.5s ease;"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('fs-tendances-chart').innerHTML = tendChartHtml;
+
+        } catch (error) {
+            console.error('Erreur chargement stats complètes:', error);
+            document.getElementById('fs-categories-chart').innerHTML =
+                '<p class="empty-state">Erreur de chargement</p>';
+            document.getElementById('fs-tendances-chart').innerHTML =
+                '<p class="empty-state">Erreur de chargement</p>';
         }
     }
 
@@ -1343,7 +1572,7 @@
     function renderProduits(produits) {
         const tbody = document.getElementById('table-produits');
         if (produits.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Aucun produit trouvé</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Aucun produit trouvé</td></tr>';
             return;
         }
 
@@ -1352,13 +1581,19 @@
             const imgHtml = imgSrc
                 ? `<img src="${imgSrc}" class="data-table-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="data-table-img" style="display:none;background:var(--bg-elevated);align-items:center;justify-content:center;">📦</div>`
                 : `<div class="data-table-img" style="background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;">📦</div>`;
+            const isFeatured = p.top_du_mois === true;
+            const starClass = isFeatured ? 'featured-active' : '';
+            const starIcon = isFeatured ? '⭐' : '☆';
+            const starTitle = isFeatured ? 'Retirer des vedettes' : 'Ajouter aux vedettes';
             return `
                 <tr>
                     <td>${imgHtml}</td>
                     <td><strong>${p.nom || p.name || 'Sans nom'}</strong></td>
                     <td><span class="data-table-badge badge-info">${p.categorie || p.category || '-'}</span></td>
                     <td>${p.prix || '-'}</td>
-                    <td><span class="data-table-badge badge-success">Actif</span></td>
+                    <td>
+                        <button class="action-btn ${starClass}" title="${starTitle}" onclick="toggleFeatured('${p.id}', ${!isFeatured})" style="${isFeatured ? 'color: #ffcc00;' : ''}">${starIcon}</button>
+                    </td>
                     <td>
                         <button class="action-btn edit" title="Modifier" onclick="editProduit('${p.id}')">✏️</button>
                         <button class="action-btn" title="Voir la fiche" onclick="window.open('/2026/fiche.html?produit=${encodeURIComponent(p.nom || '')}', '_blank')">👁️</button>
@@ -1367,6 +1602,90 @@
                 </tr>
             `;
         }).join('');
+    }
+
+    async function toggleFeatured(id, featured) {
+        try {
+            const response = await fetch(`/api/produits/${id}/featured`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ featured })
+            });
+            const data = await response.json();
+            if (data.success) {
+                // Mettre à jour localement
+                const product = allProduits.find(p => p.id == id);
+                if (product) product.top_du_mois = featured;
+                renderProduits(allProduits);
+                showNotification(data.message, 'success');
+            } else {
+                showNotification('Erreur: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur toggle featured:', error);
+            showNotification('Erreur de connexion', 'error');
+        }
+    }
+
+    // ==================== IMPORT/EXPORT CSV ====================
+
+    function exportCSV() {
+        showNotification('Téléchargement du fichier CSV...', 'info');
+        // Créer un lien de téléchargement direct
+        const link = document.createElement('a');
+        link.href = '/api/produits/export/csv';
+        link.download = `produits_export_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => {
+            showNotification('Export CSV terminé!', 'success');
+        }, 500);
+    }
+
+    async function importCSV(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        // Vérifier l'extension
+        if (!file.name.endsWith('.csv')) {
+            showNotification('Erreur: Seuls les fichiers CSV sont acceptés', 'error');
+            input.value = '';
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        showNotification('Import en cours...', 'info');
+
+        try {
+            const response = await fetch('/api/produits/import/csv', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                let message = `Import terminé: ${data.results.created} créés, ${data.results.updated} mis à jour`;
+                if (data.results.errors && data.results.errors.length > 0) {
+                    message += ` (${data.results.errors.length} erreurs)`;
+                    console.warn('Erreurs import CSV:', data.results.errors);
+                }
+                showNotification(message, 'success');
+                // Recharger la liste des produits
+                await loadProduits();
+            } else {
+                showNotification('Erreur: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur import CSV:', error);
+            showNotification('Erreur de connexion lors de l\'import', 'error');
+        }
+
+        // Reset le champ file
+        input.value = '';
     }
 
     async function loadArticles() {
@@ -1846,6 +2165,8 @@
                 currentImageFile = null;
                 setupImageUpload();
                 document.getElementById('modal-submit').onclick = saveProduit;
+                document.getElementById('modal-preview').style.display = 'inline-block';
+                document.getElementById('modal-preview').dataset.type = 'produit';
                 break;
 
             case 'article':
@@ -1856,12 +2177,15 @@
                 articleSections = [];
                 renderSections([]);
                 document.getElementById('modal-submit').onclick = saveArticle;
+                document.getElementById('modal-preview').style.display = 'inline-block';
+                document.getElementById('modal-preview').dataset.type = 'article';
                 break;
 
             case 'annonce':
                 title.textContent = 'Nouvelle Annonce';
                 body.innerHTML = getAnnonceFormHtml();
                 document.getElementById('modal-submit').onclick = saveAnnonce;
+                document.getElementById('modal-preview').style.display = 'none';
                 break;
 
             case 'technologie':
@@ -1869,6 +2193,7 @@
                 body.innerHTML = getTechnologieFormHtml();
                 await populateFormCategories('form-tech-categorie');
                 document.getElementById('modal-submit').onclick = saveTechnologie;
+                document.getElementById('modal-preview').style.display = 'none';
                 break;
 
             case 'marche':
@@ -1876,6 +2201,7 @@
                 body.innerHTML = getMarcheFormHtml();
                 await populateFormCategories('form-marche-categorie');
                 document.getElementById('modal-submit').onclick = saveMarche;
+                document.getElementById('modal-preview').style.display = 'none';
                 break;
 
             case 'prediction':
@@ -1883,12 +2209,14 @@
                 body.innerHTML = getPredictionFormHtml();
                 await populateFormCategories('form-pred-categorie');
                 document.getElementById('modal-submit').onclick = savePrediction;
+                document.getElementById('modal-preview').style.display = 'none';
                 break;
 
             case 'wiki':
                 title.textContent = 'Nouvelle Page Wiki';
                 body.innerHTML = getWikiFormHtml();
                 document.getElementById('modal-submit').onclick = saveWiki;
+                document.getElementById('modal-preview').style.display = 'none';
                 break;
         }
 
@@ -3727,6 +4055,233 @@
 
     function refreshStats() {
         loadDashboardStats();
+    }
+
+    // ========================================
+    // PRÉVISUALISATION
+    // ========================================
+    function previewItem() {
+        const type = document.getElementById('modal-preview').dataset.type;
+
+        if (type === 'produit') {
+            previewProduit();
+        } else if (type === 'article') {
+            previewArticle();
+        }
+    }
+
+    function previewProduit() {
+        const nom = document.getElementById('form-produit-nom')?.value || 'Sans titre';
+        const titreAffiche = document.getElementById('form-produit-titre-affiche')?.value || nom;
+        const categorie = document.getElementById('form-produit-categorie')?.value || 'Non catégorisé';
+        const prix = document.getElementById('form-produit-prix')?.value || '-';
+        const description = document.getElementById('form-produit-description')?.value || '';
+
+        // Image preview
+        let imgHtml = '<div style="width: 200px; height: 200px; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 4rem;">📦</div>';
+        const imgPreview = document.getElementById('image-preview-img');
+        if (imgPreview && imgPreview.style.display !== 'none') {
+            imgHtml = `<img src="${imgPreview.src}" style="max-width: 200px; max-height: 200px; border-radius: 12px; object-fit: cover;">`;
+        }
+
+        const previewHtml = `
+            <div style="background: var(--bg-primary); padding: 2rem; border-radius: 12px;">
+                <div style="display: flex; gap: 2rem; margin-bottom: 2rem;">
+                    ${imgHtml}
+                    <div style="flex: 1;">
+                        <span style="color: var(--tech-cyan); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">${categorie}</span>
+                        <h1 style="font-size: 1.8rem; margin: 0.5rem 0; color: var(--text-primary);">${titreAffiche}</h1>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">${description || 'Aucune description'}</p>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--tech-cyan);">${prix}</div>
+                    </div>
+                </div>
+                <div style="padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                    <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center;">
+                        Cette prévisualisation montre l'aperçu du produit tel qu'il apparaîtra sur la fiche produit.
+                    </p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('preview-body').innerHTML = previewHtml;
+        document.getElementById('preview-overlay').classList.add('active');
+    }
+
+    function previewArticle() {
+        const titre = document.getElementById('form-article-titre')?.value || 'Sans titre';
+        const categorie = document.getElementById('form-article-categorie')?.value || 'Non catégorisé';
+        const resume = document.getElementById('form-article-resume')?.value || '';
+        const imageUrl = document.getElementById('form-article-image')?.value || '';
+
+        // Prévisualiser les sections
+        let sectionsHtml = '';
+        if (articleSections && articleSections.length > 0) {
+            sectionsHtml = articleSections.map(section => `
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--tech-cyan); margin-bottom: 0.5rem;">${section.titre || 'Section sans titre'}</h3>
+                    <p style="color: var(--text-secondary);">${section.contenu || ''}</p>
+                </div>
+            `).join('');
+        } else {
+            sectionsHtml = '<p style="color: var(--text-muted); text-align: center;">Aucune section ajoutée</p>';
+        }
+
+        const imgHtml = imageUrl
+            ? `<img src="${imageUrl}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem;">`
+            : '';
+
+        const previewHtml = `
+            <div style="background: var(--bg-primary); padding: 2rem; border-radius: 12px;">
+                ${imgHtml}
+                <span style="color: var(--tech-purple); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">${categorie}</span>
+                <h1 style="font-size: 2rem; margin: 0.5rem 0 1rem; color: var(--text-primary);">${titre}</h1>
+                ${resume ? `<p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">${resume}</p>` : ''}
+                <div style="color: var(--text-primary);">
+                    ${sectionsHtml}
+                </div>
+                <div style="padding-top: 1rem; border-top: 1px solid var(--border-color); margin-top: 1rem;">
+                    <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center;">
+                        Cette prévisualisation montre l'aperçu de l'article tel qu'il apparaîtra sur la page tendances.
+                    </p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('preview-body').innerHTML = previewHtml;
+        document.getElementById('preview-overlay').classList.add('active');
+    }
+
+    function closePreview() {
+        document.getElementById('preview-overlay').classList.remove('active');
+    }
+
+    // ========================================
+    // LOGS D'ACTIVITÉ
+    // ========================================
+    let logsPage = 0;
+    const logsLimit = 20;
+
+    async function loadActivityLogs() {
+        const action = document.getElementById('filter-action-logs')?.value || '';
+        const entityType = document.getElementById('filter-entity-logs')?.value || '';
+
+        try {
+            const params = new URLSearchParams({
+                limit: logsLimit,
+                offset: logsPage * logsLimit
+            });
+            if (action) params.append('action', action);
+            if (entityType) params.append('entity_type', entityType);
+
+            const [logsResponse, statsResponse] = await Promise.all([
+                fetch(`/api/activity-logs?${params}`),
+                fetch('/api/activity-logs/stats')
+            ]);
+
+            const logsData = await logsResponse.json();
+            const statsData = await statsResponse.json();
+
+            if (logsData.success) {
+                renderActivityLogs(logsData.data);
+
+                // Pagination
+                const totalPages = Math.ceil(logsData.total / logsLimit);
+                document.getElementById('logs-page-info').textContent = `Page ${logsPage + 1} / ${totalPages || 1}`;
+                document.getElementById('logs-prev').disabled = logsPage === 0;
+                document.getElementById('logs-next').disabled = logsPage >= totalPages - 1;
+
+                // Stats
+                document.getElementById('logs-total').textContent = logsData.total;
+            }
+
+            if (statsData.success) {
+                document.getElementById('logs-24h').textContent = statsData.stats.last24h;
+            }
+
+        } catch (error) {
+            console.error('Erreur chargement logs:', error);
+            document.getElementById('table-logs').innerHTML = '<tr><td colspan="5" class="empty-state">Erreur de chargement</td></tr>';
+        }
+    }
+
+    function renderActivityLogs(logs) {
+        const tbody = document.getElementById('table-logs');
+
+        if (!logs || logs.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucune activité enregistrée</td></tr>';
+            return;
+        }
+
+        const actionLabels = {
+            'create': { label: 'Création', class: 'badge-success' },
+            'update': { label: 'Modification', class: 'badge-warning' },
+            'delete': { label: 'Suppression', class: 'badge-danger' },
+            'feature': { label: 'Vedette +', class: 'badge-info' },
+            'unfeature': { label: 'Vedette -', class: 'badge-secondary' },
+            'export': { label: 'Export', class: 'badge-info' },
+            'import': { label: 'Import', class: 'badge-info' }
+        };
+
+        const entityLabels = {
+            'produit': 'Produit',
+            'produits': 'Produits',
+            'article': 'Article',
+            'categorie': 'Catégorie'
+        };
+
+        tbody.innerHTML = logs.map(log => {
+            const date = new Date(log.created_at);
+            const dateStr = date.toLocaleDateString('fr-FR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+
+            const actionInfo = actionLabels[log.action] || { label: log.action, class: 'badge-secondary' };
+            const entityLabel = entityLabels[log.entity_type] || log.entity_type;
+
+            let detailsHtml = '-';
+            if (log.details) {
+                try {
+                    const details = typeof log.details === 'string' ? JSON.parse(log.details) : log.details;
+                    const detailsStr = Object.entries(details)
+                        .filter(([k, v]) => v !== null && v !== undefined)
+                        .map(([k, v]) => `${k}: ${v}`)
+                        .join(', ');
+                    if (detailsStr) {
+                        detailsHtml = `<span title="${detailsStr}" style="cursor: help;">📄</span>`;
+                    }
+                } catch (e) {}
+            }
+
+            return `
+                <tr>
+                    <td style="font-size: 0.85rem; color: var(--text-secondary);">${dateStr}</td>
+                    <td><span class="data-table-badge ${actionInfo.class}">${actionInfo.label}</span></td>
+                    <td>${entityLabel}</td>
+                    <td><strong>${log.entity_name || log.entity_id || '-'}</strong></td>
+                    <td>${detailsHtml}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    async function clearOldLogs() {
+        if (!confirm('Supprimer les logs de plus de 30 jours ?')) return;
+
+        try {
+            const response = await fetch('/api/activity-logs/clear?days=30', { method: 'DELETE' });
+            const data = await response.json();
+
+            if (data.success) {
+                showNotification(data.message, 'success');
+                loadActivityLogs();
+            } else {
+                showNotification('Erreur: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur nettoyage logs:', error);
+            showNotification('Erreur lors du nettoyage', 'error');
+        }
     }
 
     // ========================================

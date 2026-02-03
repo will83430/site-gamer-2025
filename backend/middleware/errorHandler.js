@@ -75,8 +75,21 @@ const errorHandler = (err, req, res, next) => {
 
 // Middleware pour gérer les routes non trouvées (404)
 const notFoundHandler = (req, res, next) => {
-  const error = new ApiError(404, `Route non trouvée: ${req.originalUrl}`);
-  next(error);
+  // Pour les requêtes API, renvoyer du JSON
+  if (req.path.startsWith('/api/')) {
+    const error = new ApiError(404, `Route non trouvée: ${req.originalUrl}`);
+    return next(error);
+  }
+
+  // Pour les autres requêtes, servir la page 404 HTML
+  const path = require('path');
+  const page404 = path.join(__dirname, '../../frontend/public/2026/404.html');
+  res.status(404).sendFile(page404, (err) => {
+    if (err) {
+      // Fallback si le fichier n'existe pas
+      res.status(404).send('<h1>404 - Page non trouvée</h1>');
+    }
+  });
 };
 
 module.exports = {

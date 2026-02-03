@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Tendance - HIGH-TECH 2026</title>
-    <meta name="description" id="page-description" content="Fiche tendance HIGH-TECH 2026">
+    <title id="page-title">Article | HIGH-TECH 2026</title>
+    <meta name="description" id="page-description" content="Découvrez cet article sur les tendances gaming et high-tech.">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph (dynamique via JS) -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" id="og-title" content="Article - HIGH-TECH 2026">
+    <meta property="og:description" id="og-description" content="Article sur les tendances tech.">
+    <meta property="og:image" id="og-image" content="">
+    <meta property="og:url" id="og-url" content="">
+    <meta property="article:published_time" id="og-published" content="">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -203,6 +212,7 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/tendances.html" class="nav-link" id="nav-tendances">Tendances</a>
+                <a href="/2026/recherche.html" class="nav-link">🔍 Rechercher</a>
             </div>
         </nav>
     </header>
@@ -275,7 +285,7 @@
                 <ul class="footer-links">
                     <li><a href="/2026/">Accueil</a></li>
                     <li><a href="/2026/produits.html">Produits</a></li>
-                    <li><a href="/top-du-mois">Top du Mois</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
                     <li><a href="/2026/comparatif.html">Comparatif</a></li>
                 </ul>
             </div>
@@ -293,14 +303,16 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/wiki/wiki.html">Wiki</a></li>
-                    <li><a href="/admin">Admin</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2026 HIGH-TECH 2026. Tous droits réservés.</p>
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
         </div>
     </footer>
 
@@ -320,5 +332,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
+    <script src="/assets/js/theme-toggle.js"></script>
 </body>
 </html>

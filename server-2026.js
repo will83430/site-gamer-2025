@@ -29,6 +29,8 @@ const categoriesRoutes = require('./backend/routes/categories');
 const statsRoutes = require('./backend/routes/stats');
 const announcementsRoutes = require('./backend/routes/announcements');
 const wikiRoutes = require('./backend/routes/wiki');
+const activityLogsRoutes = require('./backend/routes/activity-logs');
+const sitemapRoutes = require('./backend/routes/sitemap');
 
 // ========== CONFIGURATION ==========
 const app = express();
@@ -154,6 +156,12 @@ app.get('/2026/', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'public', '2026', 'index.html'));
 });
 
+// Raccourcis URLs
+app.get('/admin', (req, res) => res.redirect('/2026/admin.html'));
+app.get('/wiki', (req, res) => res.redirect('/2026/wiki.html'));
+app.get('/produits', (req, res) => res.redirect('/2026/produits.html'));
+app.get('/tendances', (req, res) => res.redirect('/2026/tendances.html'));
+
 // Autres fichiers statiques (APRÈS les routes explicites)
 app.use(express.static(path.join(__dirname, 'frontend', 'public')));
 
@@ -236,6 +244,10 @@ app.use('/api/categories', categoriesRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/announcements', announcementsRoutes);
 app.use('/api/wiki', wikiRoutes);
+app.use('/api/activity-logs', activityLogsRoutes);
+
+// Sitemap SEO (accessible à /sitemap.xml)
+app.use('/sitemap.xml', sitemapRoutes);
 
 // Servir les fiches HTML
 app.get('/fiches/:category/:fiche', (req, res) => {

@@ -3,7 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ HIGH-TECH 2026 - L'univers du futur</title>
+    <title>HIGH-TECH 2026 - Comparateur Gaming & Tech | Guides, Tests et Avis</title>
+    <meta name="description" content="Comparez les meilleurs produits gaming et high-tech : casques, consoles, PC gaming, drones, smartphones. Tests, guides d'achat et tendances 2026.">
+    <meta name="keywords" content="comparateur gaming, high-tech 2026, test casque gaming, comparatif console, PC gaming, drone, smartphone, guide achat">
+    <meta name="author" content="HIGH-TECH 2026">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://high-tech-2026.com/">
+    <meta property="og:title" content="HIGH-TECH 2026 - Comparateur Gaming & Tech">
+    <meta property="og:description" content="Comparez les meilleurs produits gaming et high-tech. Tests, guides d'achat et tendances 2026.">
+    <meta property="og:image" content="/assets/images/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HIGH-TECH 2026 - Comparateur Gaming & Tech">
+    <meta name="twitter:description" content="Comparez les meilleurs produits gaming et high-tech. Tests, guides d'achat et tendances 2026.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://high-tech-2026.com/">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1120,6 +1139,7 @@
             <div class="nav-links">
                 <a href="/2026/" class="nav-link active">Accueil</a>
                 <a href="#categories" class="nav-link">Catégories</a>
+                <a href="/2026/recherche.html" class="nav-link">🔍 Rechercher</a>
             </div>
         </nav>
     </header>
@@ -1375,67 +1395,9 @@
             <p class="section-subtitle">Notre sélection pour mettre l'eau à la bouche 🔥</p>
         </div>
 
-        <div class="products-grid">
-            <!-- Product 1 -->
-            <div class="product-card">
-                <span class="product-badge">🔥 TOP</span>
-                <img src="/assets/images/galaxy-s26-ultra.png" alt="Product" class="product-image">
-                <div class="product-content">
-                    <h3 class="product-title">Samsung Galaxy S26 Ultra</h3>
-                    <p class="product-description">
-                        Le smartphone flagship ultime avec IA révolutionnaire et photo 200MP.
-                    </p>
-                    <div class="product-footer">
-                        <div class="product-price">1 299€</div>
-                        <button class="product-btn">Voir →</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="product-card">
-                <img src="/assets/images/rtx-5090.jpg" alt="Product" class="product-image">
-                <div class="product-content">
-                    <h3 class="product-title">NVIDIA RTX 5090</h3>
-                    <p class="product-description">
-                        Carte graphique ultime pour gaming 4K et ray-tracing en temps réel.
-                    </p>
-                    <div class="product-footer">
-                        <div class="product-price">1 999€</div>
-                        <button class="product-btn">Voir →</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="product-card">
-                <span class="product-badge">🔥 TOP</span>
-                <img src="/assets/images/apple-vision-pro-2.png" alt="Product" class="product-image">
-                <div class="product-content">
-                    <h3 class="product-title">Apple Vision Pro 2</h3>
-                    <p class="product-description">
-                        Casque VR/AR révolutionnaire avec écran microLED et spatial computing.
-                    </p>
-                    <div class="product-footer">
-                        <div class="product-price">3 999€</div>
-                        <button class="product-btn">Voir →</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="product-card">
-                <img src="/assets/images/playstation-5-slim.png" alt="Product" class="product-image">
-                <div class="product-content">
-                    <h3 class="product-title">Sony PlayStation 6</h3>
-                    <p class="product-description">
-                        Console next-gen avec 8K natif, SSD ultra-rapide et exclus incroyables.
-                    </p>
-                    <div class="product-footer">
-                        <div class="product-price">599€</div>
-                        <button class="product-btn">Voir →</button>
-                    </div>
-                </div>
+        <div class="products-grid" id="featured-products">
+            <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                <div class="loading-spinner"></div>
             </div>
         </div>
     </section>
@@ -1455,7 +1417,7 @@
                 <ul class="footer-links">
                     <li><a href="/2026/">Accueil</a></li>
                     <li><a href="/2026/produits.html">Produits</a></li>
-                    <li><a href="/top-du-mois">Top du Mois</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
                     <li><a href="/2026/comparatif.html">Comparatif</a></li>
                 </ul>
             </div>
@@ -1606,35 +1568,27 @@
         // ========================================
         async function loadStats() {
             try {
-                // Récupérer tous les produits pour compter le total
-                const prodResponse = await fetch('/api/produits');
-                const prodData = await prodResponse.json();
+                // Utiliser l'API homepage qui regroupe toutes les stats
+                const response = await fetch('/api/stats/homepage');
+                const data = await response.json();
 
-                // Récupérer les tendances
-                const tendResponse = await fetch('/api/tendances');
-                const tendData = await tendResponse.json();
+                if (data.success && data.stats) {
+                    const { produits, categories, tendances, visites } = data.stats;
 
-                // Récupérer les stats de visites
-                const statsResponse = await fetch('/api/stats/homepage');
-                const statsData = await statsResponse.json();
-
-                if (prodData.success && prodData.data) {
-                    const totalProduits = prodData.data.length;
-                    const totalTendances = Array.isArray(tendData) ? tendData.length : 0;
-                    const totalVisites = (statsData.success && statsData.stats) ? statsData.stats.visites : 0;
-                    
                     // Animation de comptage
-                    animateCounter('stat-produits', totalProduits, '');
-                    animateCounter('stat-categories', 16); // 16 catégories fixes
-                    animateCounter('stat-tendances', totalTendances, '');
-                    animateCounter('stat-visites', totalVisites);
+                    animateCounter('stat-produits', produits || 78);
+                    animateCounter('stat-categories', categories || 16);
+                    animateCounter('stat-tendances', tendances || 100);
+                    animateCounter('stat-visites', visites || 0);
+                } else {
+                    throw new Error('Stats non disponibles');
                 }
             } catch (error) {
                 console.error('Erreur chargement stats:', error);
                 // Valeurs par défaut en cas d'erreur
-                document.getElementById('stat-produits').textContent = '72';
+                document.getElementById('stat-produits').textContent = '78';
                 document.getElementById('stat-categories').textContent = '16';
-                document.getElementById('stat-tendances').textContent = '77';
+                document.getElementById('stat-tendances').textContent = '100';
                 document.getElementById('stat-visites').textContent = '0';
             }
         }
@@ -1736,6 +1690,53 @@
         }
 
         // ========================================
+        // PRODUITS VEDETTES
+        // ========================================
+        async function loadFeaturedProducts() {
+            const section = document.getElementById('featured');
+            const container = document.getElementById('featured-products');
+            try {
+                const response = await fetch('/api/produits/featured/list?limit=4');
+                const data = await response.json();
+
+                if (data.success && data.data && data.data.length > 0) {
+                    section.style.display = 'block';
+                    container.innerHTML = data.data.map((product) => {
+                        const slug = product.nom.toLowerCase().replace(/\s+/g, '-');
+                        const description = product.description
+                            ? product.description.substring(0, 80) + (product.description.length > 80 ? '...' : '')
+                            : 'Produit high-tech de dernière génération.';
+                        // Badge affiché pour tous les produits vedettes
+                        const badge = '<span class="product-badge">⭐ TOP</span>';
+
+                        return `
+                            <div class="product-card">
+                                ${badge}
+                                <img src="${product.image_url}" alt="${product.nom}" class="product-image"
+                                     onerror="this.src='/assets/images/placeholder.png'">
+                                <div class="product-content">
+                                    <h3 class="product-title">${product.titre_affiche || product.nom}</h3>
+                                    <p class="product-description">${description}</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">${product.prix || 'Prix N/C'}</div>
+                                        <a href="/2026/fiche.html?produit=${slug}" class="product-btn">Voir →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    // Masquer la section si aucun produit vedette
+                    section.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Erreur chargement produits vedettes:', error);
+                // Masquer la section en cas d'erreur
+                section.style.display = 'none';
+            }
+        }
+
+        // ========================================
         // INITIALIZATION
         // ========================================
         document.addEventListener('DOMContentLoaded', () => {
@@ -1745,6 +1746,7 @@
             // Charger les données dynamiques
             loadAnnouncements();
             loadStats();
+            loadFeaturedProducts();
             incrementVisit();
             updateCompareBadge();
             loadCategoryCounts();
@@ -1757,5 +1759,7 @@
             });
         });
     </script>
+    <!-- Theme Toggle -->
+    <script src="/assets/js/theme-toggle.js"></script>
 </body>
 </html>

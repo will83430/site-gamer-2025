@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparatif Produits - HIGH-TECH 2026</title>
-    <meta name="description" content="Comparez les meilleurs produits high-tech cote a cote">
+    <title>Comparateur de Produits Gaming & High-Tech | HIGH-TECH 2026</title>
+    <meta name="description" content="Comparez jusqu'à 4 produits gaming et high-tech côte à côte : specs, prix, fonctionnalités. Trouvez le meilleur rapport qualité-prix.">
+    <meta name="keywords" content="comparateur produits, comparatif gaming, comparer high-tech, versus produits, meilleur rapport qualité prix">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Comparateur de Produits Gaming & High-Tech">
+    <meta property="og:description" content="Comparez jusqu'à 4 produits gaming et high-tech côte à côte.">
+    <meta property="og:url" content="https://high-tech-2026.com/2026/comparatif.html">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -453,6 +461,13 @@
             margin-bottom: 2rem;
         }
 
+        /* Available Products Section */
+        .available-products-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         /* Loading State */
         .loading-state {
             text-align: center;
@@ -485,6 +500,8 @@
             }
         }
     </style>
+    <!-- html2pdf.js for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -510,6 +527,7 @@
             <div class="nav-links">
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Categories</a>
+                <a href="/2026/recherche.html" class="nav-link">🔍 Rechercher</a>
             </div>
         </nav>
     </header>
@@ -575,6 +593,14 @@
             <!-- ========================================
                  COMPARISON MODE (when products selected)
                  ======================================== -->
+            <!-- Available Products to Add -->
+            <div class="available-products-section hidden" id="available-products-section">
+                <p class="selection-info">Cliquez sur les produits pour les ajouter à la comparaison (max 4)</p>
+                <div class="products-selection-grid" id="available-products-grid">
+                    <!-- Available products will be inserted here -->
+                </div>
+            </div>
+
             <!-- Comparison Grid -->
             <div class="comparison-grid hidden" id="comparison-grid">
                 <!-- Compare cards will be inserted here -->
@@ -593,6 +619,9 @@
             <div class="actions-bar hidden" id="actions-bar">
                 <button class="btn btn-secondary" onclick="clearComparison()">Vider la comparaison</button>
                 <button class="btn btn-outline" onclick="switchToSelectionMode()">Nouvelle selection</button>
+                <button class="btn btn-primary" onclick="exportToPDF()" style="background: linear-gradient(135deg, #ff6b9d, #bf7fff);">
+                    Exporter PDF
+                </button>
             </div>
         </div>
     </main>
@@ -612,13 +641,13 @@
                 <ul class="footer-links">
                     <li><a href="/2026/">Accueil</a></li>
                     <li><a href="/2026/produits.html">Produits</a></li>
-                    <li><a href="/top-du-mois">Top du Mois</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
                     <li><a href="/2026/comparatif.html">Comparatif</a></li>
                 </ul>
             </div>
 
             <div class="footer-section">
-                <h3>Categories</h3>
+                <h3>Catégories</h3>
                 <ul class="footer-links">
                     <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
                     <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
@@ -630,8 +659,10 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/wiki/wiki.html">Wiki</a></li>
-                    <li><a href="/admin">Admin</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
                 </ul>
             </div>
         </div>
@@ -696,14 +727,12 @@
         });
 
         // ========================================
-        // CLEAR ON PAGE LEAVE (selection mode only)
+        // CLEAR ON PAGE LEAVE
         // ========================================
         function setupPageLeaveHandler() {
+            // Toujours vider le localStorage quand on quitte la page
             window.addEventListener('beforeunload', () => {
-                // Clear localStorage when leaving page in selection mode
-                if (currentMode === 'selection') {
-                    localStorage.setItem('compareList', JSON.stringify([]));
-                }
+                localStorage.setItem('compareList', JSON.stringify([]));
             });
         }
 
@@ -916,6 +945,7 @@
             const grid = document.getElementById('comparison-grid');
             const emptyState = document.getElementById('empty-state');
             const actionsBar = document.getElementById('actions-bar');
+            const availableSection = document.getElementById('available-products-section');
 
             // Get products in compare list
             const productsToCompare = allProducts.filter(p => compareList.includes(String(p.id)));
@@ -927,6 +957,7 @@
             if (productsToCompare.length === 0) {
                 grid.classList.add('hidden');
                 actionsBar.classList.add('hidden');
+                availableSection.classList.add('hidden');
                 // Switch back to selection mode
                 switchToSelectionMode();
                 return;
@@ -936,8 +967,63 @@
             grid.classList.remove('hidden');
             actionsBar.classList.remove('hidden');
 
-            // Render cards
+            // Show available products section if less than MAX_COMPARE
+            if (productsToCompare.length < MAX_COMPARE) {
+                availableSection.classList.remove('hidden');
+                renderAvailableProducts();
+            } else {
+                availableSection.classList.add('hidden');
+            }
+
+            // Render comparison cards
             grid.innerHTML = productsToCompare.map(product => renderCompareCard(product)).join('');
+        }
+
+        // ========================================
+        // AVAILABLE PRODUCTS (to add to comparison)
+        // ========================================
+        function renderAvailableProducts() {
+            const grid = document.getElementById('available-products-grid');
+
+            // Get products from the same category that are not already in comparison
+            const availableProducts = allProducts.filter(p =>
+                p.categorie === selectedCategory &&
+                !compareList.includes(String(p.id))
+            );
+
+            if (availableProducts.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);width:100%;padding:1rem;">Tous les produits de cette catégorie sont déjà dans la comparaison</p>';
+                return;
+            }
+
+            grid.innerHTML = availableProducts.map(product => {
+                const imageUrl = product.image_url || `/assets/images/${product.image || 'placeholder.png'}`;
+                const title = decodeText(product.titre_affiche || product.nom);
+
+                return `
+                    <div class="selection-card" onclick="addProductToComparison('${product.id}')">
+                        <img src="${imageUrl}" alt="${title}" class="selection-card-image"
+                             onerror="this.src='/assets/images/placeholder.png'">
+                        <div class="selection-card-info">
+                            <div class="selection-card-title">${title}</div>
+                            <div class="selection-card-price">${product.prix || 'N/C'}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addProductToComparison(productId) {
+            if (compareList.length >= MAX_COMPARE) {
+                alert('Maximum ' + MAX_COMPARE + ' produits');
+                return;
+            }
+
+            compareList.push(String(productId));
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+
+            updateURL();
+            renderComparison();
         }
 
         // ========================================
@@ -1053,6 +1139,89 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
+
+        // Export comparison to PDF
+        function exportToPDF() {
+            const grid = document.getElementById('comparison-grid');
+            if (!grid || grid.classList.contains('hidden')) {
+                alert('Aucune comparaison à exporter');
+                return;
+            }
+
+            // Create a wrapper for better PDF styling
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `
+                <div style="padding: 20px; font-family: Arial, sans-serif; background: white; color: black;">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h1 style="color: #0a0a0f; margin: 0;">HIGH-TECH 2026</h1>
+                        <h2 style="color: #666; font-weight: normal; margin: 10px 0;">Comparatif Produits</h2>
+                        <p style="color: #999; font-size: 12px;">Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
+                    </div>
+                    <div id="pdf-content"></div>
+                    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <p style="color: #999; font-size: 11px;">www.high-tech-2026.fr - Votre source d'information tech</p>
+                    </div>
+                </div>
+            `;
+
+            // Clone and style the comparison grid for PDF
+            const clonedGrid = grid.cloneNode(true);
+            clonedGrid.style.display = 'grid';
+            clonedGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+            clonedGrid.style.gap = '15px';
+            clonedGrid.style.background = 'white';
+
+            // Style all cards for PDF (light theme)
+            clonedGrid.querySelectorAll('.compare-card').forEach(card => {
+                card.style.background = '#f8f9fa';
+                card.style.border = '1px solid #ddd';
+                card.style.borderRadius = '8px';
+                card.style.padding = '15px';
+                card.style.color = '#333';
+            });
+
+            clonedGrid.querySelectorAll('.compare-card-title').forEach(el => {
+                el.style.color = '#0a0a0f';
+                el.style.fontSize = '14px';
+                el.style.fontWeight = 'bold';
+            });
+
+            clonedGrid.querySelectorAll('.compare-card-price').forEach(el => {
+                el.style.color = '#00a86b';
+                el.style.fontSize = '16px';
+                el.style.fontWeight = 'bold';
+            });
+
+            clonedGrid.querySelectorAll('.spec-label').forEach(el => {
+                el.style.color = '#666';
+                el.style.fontSize = '11px';
+            });
+
+            clonedGrid.querySelectorAll('.spec-value').forEach(el => {
+                el.style.color = '#333';
+                el.style.fontSize = '12px';
+            });
+
+            wrapper.querySelector('#pdf-content').appendChild(clonedGrid);
+
+            // PDF options
+            const opt = {
+                margin: 10,
+                filename: `comparatif-high-tech-${Date.now()}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+
+            // Generate PDF
+            html2pdf().set(opt).from(wrapper).save().then(() => {
+                console.log('PDF exported successfully');
+            }).catch(err => {
+                console.error('PDF export error:', err);
+                alert('Erreur lors de l\'export PDF');
+            });
+        }
     </script>
+    <script src="/assets/js/theme-toggle.js"></script>
 </body>
 </html>

@@ -257,7 +257,80 @@ function afficherDonneesArticle(article) {
         }
     }
     
+    // Update Open Graph meta tags
+    const ogTitle = document.getElementById('og-title');
+    const ogDesc = document.getElementById('og-description');
+    const ogImage = document.getElementById('og-image');
+    const ogUrl = document.getElementById('og-url');
+    const ogPublished = document.getElementById('og-published');
+
+    if (ogTitle) ogTitle.setAttribute('content', `${titleText} - HIGH-TECH 2026`);
+    if (ogDesc) ogDesc.setAttribute('content', article.description || titleText);
+    if (ogImage && article.image) ogImage.setAttribute('content', `/assets/images/${article.image}`);
+    if (ogUrl) ogUrl.setAttribute('content', window.location.href);
+    if (ogPublished && article.date_publication) ogPublished.setAttribute('content', article.date_publication);
+
+    // Add Schema.org Article structured data
+    injectArticleSchema(article, titleText);
+
     console.log('✅ Article chargé:', article.titre);
+}
+
+// SCHEMA.ORG STRUCTURED DATA FOR ARTICLES
+function injectArticleSchema(article, titleText) {
+    // Remove existing schema if any
+    const existingSchema = document.getElementById('schema-article');
+    if (existingSchema) existingSchema.remove();
+
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": titleText,
+        "description": article.description || article.resume || '',
+        "author": {
+            "@type": "Organization",
+            "name": "HIGH-TECH 2026"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "HIGH-TECH 2026",
+            "logo": {
+                "@type": "ImageObject",
+                "url": window.location.origin + "/assets/images/logo.png"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": window.location.href
+        }
+    };
+
+    // Add image if available
+    if (article.image) {
+        schema.image = window.location.origin + "/assets/images/" + article.image;
+    }
+
+    // Add dates
+    if (article.date_publication) {
+        schema.datePublished = article.date_publication;
+        schema.dateModified = article.date_publication;
+    }
+
+    // Add category as articleSection
+    if (article.categorie) {
+        schema.articleSection = article.categorie;
+    }
+
+    // Add keywords from tags
+    if (article.tags && Array.isArray(article.tags)) {
+        schema.keywords = article.tags.join(', ');
+    }
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'schema-article';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
 }
 
 // FONCTION D'ERREUR
