@@ -4,6 +4,44 @@ const pool = require('../config/database');
 const logger = require('../config/logger');
 
 /**
+ * Initialise la table des annonces si elle n'existe pas
+ */
+async function initAnnouncementsTable() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS announcements (
+        id SERIAL PRIMARY KEY,
+        titre VARCHAR(255) NOT NULL,
+        description TEXT,
+        icone VARCHAR(20) DEFAULT '🚀',
+        lien VARCHAR(255),
+        bouton_texte VARCHAR(255) DEFAULT 'En savoir plus →',
+        type VARCHAR(50) DEFAULT 'info',
+        actif BOOLEAN DEFAULT true,
+        ordre INT DEFAULT 0,
+        date_debut TIMESTAMP,
+        date_fin TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Créer un index pour les recherches par statut et ordre
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_announcements_actif_ordre
+      ON announcements(actif, ordre ASC, created_at DESC)
+    `);
+
+    logger.info('Table announcements initialisée');
+  } catch (error) {
+    logger.error('Erreur initialisation table announcements:', error);
+  }
+}
+
+// Initialiser la table au démarrage
+initAnnouncementsTable();
+
+/**
  * GET /api/announcements
  * Récupère les annonces actives
  */

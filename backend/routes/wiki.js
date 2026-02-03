@@ -4,6 +4,49 @@ const router = express.Router();
 const pool = require('../config/database');
 const logger = require('../config/logger');
 
+/**
+ * Initialise la table des pages wiki si elle n'existe pas
+ */
+async function initWikiPagesTable() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS wiki_pages (
+                id SERIAL PRIMARY KEY,
+                titre VARCHAR(255) NOT NULL,
+                slug VARCHAR(255) UNIQUE NOT NULL,
+                contenu TEXT,
+                description TEXT,
+                icone VARCHAR(20),
+                categorie VARCHAR(100),
+                ordre INT DEFAULT 0,
+                type VARCHAR(50),
+                actif BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Créer un index pour les recherches par slug
+        await pool.query(`
+            CREATE INDEX IF NOT EXISTS idx_wiki_pages_slug
+            ON wiki_pages(slug)
+        `);
+
+        // Créer un index pour les recherches par catégorie et ordre
+        await pool.query(`
+            CREATE INDEX IF NOT EXISTS idx_wiki_pages_categorie_ordre
+            ON wiki_pages(categorie, ordre ASC)
+        `);
+
+        logger.info('Table wiki_pages initialisée');
+    } catch (error) {
+        logger.error('Erreur initialisation table wiki_pages:', error);
+    }
+}
+
+// Initialiser la table au démarrage
+initWikiPagesTable();
+
 // GET toutes les pages wiki (actives uniquement pour le front)
 router.get('/', async (req, res) => {
     try {
@@ -170,7 +213,8 @@ router.put('/:id', async (req, res) => {
                 icone = COALESCE($5, icone),
                 categorie = COALESCE($6, categorie),
                 ordre = COALESCE($7, ordre),
-                actif = COALESCE($8, actif)
+                actif = COALESCE($8, actif),
+                updated_at = CURRENT_TIMESTAMP
             WHERE id = $9
             RETURNING *
         `, [titre, slug, contenu, description, icone, categorie, ordre, actif, id]);
