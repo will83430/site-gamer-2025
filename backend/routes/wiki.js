@@ -213,7 +213,8 @@ router.put('/:id', async (req, res) => {
                 icone = COALESCE($5, icone),
                 categorie = COALESCE($6, categorie),
                 ordre = COALESCE($7, ordre),
-                actif = COALESCE($8, actif)
+                actif = COALESCE($8, actif),
+                updated_at = CURRENT_TIMESTAMP
             WHERE id = $9
             RETURNING *
         `, [titre, slug, contenu, description, icone, categorie, ordre, actif, id]);
