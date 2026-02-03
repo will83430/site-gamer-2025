@@ -394,11 +394,11 @@
 
             try {
                 // Recherche dans les produits
-                const produitsRes = await fetch('/api/produits');
+                const produitsRes = await fetch(`/api/produits?t=${Date.now()}`, { cache: 'no-store' });
                 const produitsData = await produitsRes.json();
 
                 // Recherche dans les articles
-                const articlesRes = await fetch('/api/actualites');
+                const articlesRes = await fetch(`/api/actualites?t=${Date.now()}`, { cache: 'no-store' });
                 const articlesData = await articlesRes.json();
 
                 const queryLower = query.toLowerCase();

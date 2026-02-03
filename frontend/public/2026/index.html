@@ -1236,7 +1236,6 @@
 
         <div class="categories-grid">
             <a href="/2026/produits.html?categorie=smartphone" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/smartphone.png" alt="Smartphones" class="category-image">
                 <div class="category-info">
                     <div class="category-name">Smartphones</div>
@@ -1245,7 +1244,6 @@
             </a>
 
             <a href="/2026/produits.html?categorie=pc-gaming" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/pc-gaming.png" alt="PC Gaming" class="category-image">
                 <div class="category-info">
                     <div class="category-name">PC Gaming</div>
@@ -1254,7 +1252,6 @@
             </a>
 
             <a href="/2026/produits.html?categorie=console" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/console.png" alt="Consoles" class="category-image">
                 <div class="category-info">
                     <div class="category-name">Consoles</div>
@@ -1263,7 +1260,6 @@
             </a>
 
             <a href="/2026/produits.html?categorie=casque-vr" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/casque-vr.png" alt="VR/AR" class="category-image">
                 <div class="category-info">
                     <div class="category-name">VR/AR</div>
@@ -1272,7 +1268,6 @@
             </a>
 
             <a href="/2026/produits.html?categorie=drone" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/drone.png" alt="Drones" class="category-image">
                 <div class="category-info">
                     <div class="category-name">Drones</div>
@@ -1281,7 +1276,6 @@
             </a>
 
             <a href="/2026/produits.html?categorie=montre-connectee" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/montre-connectee.png" alt="Montres" class="category-image">
                 <div class="category-info">
                     <div class="category-name">Montres Connectées</div>
@@ -1298,7 +1292,6 @@
             </a>
 
             <a href="/2026/produits.html?categorie=casque-audio" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/casque-audio.png" alt="Casques Audio" class="category-image">
                 <div class="category-info">
                     <div class="category-name">Casques Audio</div>
@@ -1307,7 +1300,6 @@
             </a>
 
             <a href="/2026/produits.html?categorie=ecran-tv" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/ecran-tv.png" alt="Écrans & TV" class="category-image">
                 <div class="category-info">
                     <div class="category-name">Écrans & TV</div>
@@ -1332,7 +1324,6 @@
             </a>
 
             <a href="/2026/produits.html?categorie=imprimante-3d" class="category-card">
-                <span class="category-badge">🔥 TOP</span>
                 <img src="/assets/images/imprimante-3d.png" alt="Imprimantes 3D" class="category-image">
                 <div class="category-info">
                     <div class="category-name">Imprimantes 3D</div>
@@ -1696,7 +1687,7 @@
             const section = document.getElementById('featured');
             const container = document.getElementById('featured-products');
             try {
-                const response = await fetch('/api/produits/featured/list?limit=4');
+                const response = await fetch(`/api/produits/homepage/list?t=${Date.now()}`, { cache: 'no-store' });
                 const data = await response.json();
 
                 if (data.success && data.data && data.data.length > 0) {
@@ -1706,8 +1697,8 @@
                         const description = product.description
                             ? product.description.substring(0, 80) + (product.description.length > 80 ? '...' : '')
                             : 'Produit high-tech de dernière génération.';
-                        // Badge affiché pour tous les produits vedettes
-                        const badge = '<span class="product-badge">⭐ TOP</span>';
+                        // Badge TOP uniquement si top_du_mois est vrai
+                        const badge = product.top_du_mois ? '<span class="product-badge">⭐ TOP</span>' : '';
 
                         return `
                             <div class="product-card">
@@ -1757,6 +1748,49 @@
                     updateCompareBadge();
                 }
             });
+
+            // ========================================
+            // AJOUTER BADGES DYNAMIQUES AUX CATÉGORIES
+            // ========================================
+            async function addCategoryBadges() {
+                try {
+                    const response = await fetch(`/api/produits?t=${Date.now()}`, { cache: 'no-store' });
+                    const data = await response.json();
+
+                    // Récupérer toutes les catégories avec produits vedettes
+                    const categoriesWithFeatured = {};
+                    if (data.data) {
+                        data.data.forEach(product => {
+                            if (product.top_du_mois) {
+                                const catUrl = product.categorie.toLowerCase().replace(/\s+/g, '-');
+                                categoriesWithFeatured[catUrl] = true;
+                            }
+                        });
+                    }
+
+                    // Ajouter les badges aux catégories qui ont des produits vedettes
+                    const categoryCards = document.querySelectorAll('.category-card');
+                    categoryCards.forEach(card => {
+                        const href = card.getAttribute('href');
+                        const categoryParam = new URL(href, window.location.origin).searchParams.get('categorie');
+
+                        if (categoryParam && categoriesWithFeatured[categoryParam]) {
+                            // Vérifier si le badge n'existe pas déjà
+                            if (!card.querySelector('.category-badge')) {
+                                const badge = document.createElement('span');
+                                badge.className = 'category-badge';
+                                badge.textContent = '🔥 TOP';
+                                card.insertBefore(badge, card.firstChild);
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Erreur badges catégories:', error);
+                }
+            }
+
+            // Appeler la fonction au chargement
+            addCategoryBadges();
         });
     </script>
     <!-- Theme Toggle -->

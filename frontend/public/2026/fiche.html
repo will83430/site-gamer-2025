@@ -657,12 +657,12 @@
 
             try {
                 // Try to load by name first
-                let response = await fetch(`/api/produits/by-name/${encodeURIComponent(productName)}`);
+                let response = await fetch(`/api/produits/by-name/${encodeURIComponent(productName)}?t=${Date.now()}`, { cache: 'no-store' });
                 let data = await response.json();
 
                 // If not found by name, try by ID
                 if (!data.success) {
-                    response = await fetch(`/api/produits/${encodeURIComponent(productName)}`);
+                    response = await fetch(`/api/produits/${encodeURIComponent(productName)}?t=${Date.now()}`, { cache: 'no-store' });
                     data = await response.json();
                 }
 

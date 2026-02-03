@@ -771,7 +771,7 @@
         // ========================================
         async function loadAllProducts() {
             try {
-                const response = await fetch('/api/produits');
+                const response = await fetch(`/api/produits?t=${Date.now()}`, { cache: 'no-store' });
                 const data = await response.json();
 
                 if (data.success && data.data) {
@@ -958,8 +958,11 @@
                 grid.classList.add('hidden');
                 actionsBar.classList.add('hidden');
                 availableSection.classList.add('hidden');
-                // Switch back to selection mode
-                switchToSelectionMode();
+                // Show selection mode instead of redirecting
+                currentMode = 'selection';
+                document.getElementById('page-subtitle').textContent = 'Sélectionnez une catégorie et choisissez les produits à comparer';
+                document.getElementById('products-count').classList.add('hidden');
+                renderSelectionMode();
                 return;
             }
 
@@ -1148,78 +1151,134 @@
                 return;
             }
 
-            // Create a wrapper for better PDF styling
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = `
-                <div style="padding: 20px; font-family: Arial, sans-serif; background: white; color: black;">
-                    <div style="text-align: center; margin-bottom: 30px;">
-                        <h1 style="color: #0a0a0f; margin: 0;">HIGH-TECH 2026</h1>
-                        <h2 style="color: #666; font-weight: normal; margin: 10px 0;">Comparatif Produits</h2>
-                        <p style="color: #999; font-size: 12px;">Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
+            const cards = grid.querySelectorAll('.compare-card');
+            const productCount = cards.length;
+
+            // Ouvrir une nouvelle fenêtre pour l'impression
+            const printWindow = window.open('', '_blank');
+
+            // Construire le HTML pour les produits
+            let productsHTML = '';
+            cards.forEach(card => {
+                const img = card.querySelector('img');
+                const title = card.querySelector('.compare-card-title')?.textContent || '';
+                const category = card.querySelector('.compare-card-category')?.textContent || '';
+                const price = card.querySelector('.price-value')?.textContent || 'N/C';
+                const desc = card.querySelector('.compare-card-description')?.textContent || '';
+
+                // Récupérer les caractéristiques
+                const featuresList = card.querySelector('.features-list');
+                let featuresHTML = '';
+                if (featuresList) {
+                    const features = Array.from(featuresList.querySelectorAll('li')).map(li => li.textContent);
+                    if (features.length > 0) {
+                        featuresHTML = `
+                            <div class="section">
+                                <div class="section-title">Caractéristiques</div>
+                                <ul class="features">${features.map(f => `<li>${f}</li>`).join('')}</ul>
+                            </div>
+                        `;
+                    }
+                }
+
+                // Récupérer la fiche technique
+                const specsList = card.querySelector('.specs-list');
+                let specsHTML = '';
+                if (specsList) {
+                    const specs = Array.from(specsList.querySelectorAll('li')).map(li => li.textContent);
+                    if (specs.length > 0) {
+                        specsHTML = `
+                            <div class="section">
+                                <div class="section-title">Fiche Technique</div>
+                                <ul class="specs">${specs.map(s => `<li>${s}</li>`).join('')}</ul>
+                            </div>
+                        `;
+                    }
+                }
+
+                productsHTML += `
+                    <div class="product-card">
+                        ${img ? `<img src="${img.src}" alt="${title}">` : '<div class="no-image">Image</div>'}
+                        <h3>${title}</h3>
+                        <p class="category">${category}</p>
+                        <div class="price-box">
+                            <span class="price-label">Prix</span>
+                            <span class="price">${price}</span>
+                        </div>
+                        <p class="desc">${desc}</p>
+                        ${featuresHTML}
+                        ${specsHTML}
                     </div>
-                    <div id="pdf-content"></div>
-                    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                        <p style="color: #999; font-size: 11px;">www.high-tech-2026.fr - Votre source d'information tech</p>
+                `;
+            });
+
+            // HTML complet de la page d'impression
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Comparatif HIGH-TECH 2026</title>
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: Arial, sans-serif; padding: 20px; background: #fff; }
+                        .header { text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #4CAF50; }
+                        .header h1 { color: #1a1a2e; font-size: 28px; }
+                        .header h2 { color: #666; font-weight: normal; font-size: 18px; margin-top: 5px; }
+                        .header p { color: #999; font-size: 12px; margin-top: 5px; }
+                        .products { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+                        .product-card {
+                            width: ${productCount > 2 ? '280px' : '320px'};
+                            background: #f5f5f5;
+                            border: 2px solid #ddd;
+                            border-radius: 10px;
+                            padding: 15px;
+                            text-align: center;
+                        }
+                        .product-card img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; }
+                        .product-card .no-image { width: 100px; height: 100px; background: #ddd; margin: 0 auto 10px; line-height: 100px; }
+                        .product-card h3 { color: #1a1a2e; font-size: 14px; margin: 10px 0 5px; }
+                        .product-card .category { color: #4CAF50; font-size: 11px; font-weight: bold; margin-bottom: 8px; }
+                        .product-card .price-box { background: #e8f5e9; border: 1px solid #4caf50; border-radius: 8px; padding: 8px; margin: 8px 0; }
+                        .product-card .price-label { display: block; color: #666; font-size: 9px; }
+                        .product-card .price { display: block; color: #2e7d32; font-size: 18px; font-weight: bold; }
+                        .product-card .desc { color: #555; font-size: 10px; line-height: 1.4; margin-top: 8px; text-align: left; }
+                        .product-card .section { margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd; text-align: left; }
+                        .product-card .section-title { color: #4CAF50; font-size: 11px; font-weight: bold; margin-bottom: 5px; }
+                        .product-card .features, .product-card .specs { padding-left: 15px; margin: 0; }
+                        .product-card .features li, .product-card .specs li { color: #555; font-size: 9px; line-height: 1.5; margin-bottom: 2px; }
+                        .product-card .features li::marker { color: #4CAF50; }
+                        .product-card .specs li::marker { color: #2196F3; }
+                        .footer { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
+                        .footer p { color: #999; font-size: 11px; }
+                        @media print {
+                            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                            .product-card { page-break-inside: avoid; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>HIGH-TECH 2026</h1>
+                        <h2>Comparatif Produits</h2>
+                        <p>Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
                     </div>
-                </div>
-            `;
-
-            // Clone and style the comparison grid for PDF
-            const clonedGrid = grid.cloneNode(true);
-            clonedGrid.style.display = 'grid';
-            clonedGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
-            clonedGrid.style.gap = '15px';
-            clonedGrid.style.background = 'white';
-
-            // Style all cards for PDF (light theme)
-            clonedGrid.querySelectorAll('.compare-card').forEach(card => {
-                card.style.background = '#f8f9fa';
-                card.style.border = '1px solid #ddd';
-                card.style.borderRadius = '8px';
-                card.style.padding = '15px';
-                card.style.color = '#333';
-            });
-
-            clonedGrid.querySelectorAll('.compare-card-title').forEach(el => {
-                el.style.color = '#0a0a0f';
-                el.style.fontSize = '14px';
-                el.style.fontWeight = 'bold';
-            });
-
-            clonedGrid.querySelectorAll('.compare-card-price').forEach(el => {
-                el.style.color = '#00a86b';
-                el.style.fontSize = '16px';
-                el.style.fontWeight = 'bold';
-            });
-
-            clonedGrid.querySelectorAll('.spec-label').forEach(el => {
-                el.style.color = '#666';
-                el.style.fontSize = '11px';
-            });
-
-            clonedGrid.querySelectorAll('.spec-value').forEach(el => {
-                el.style.color = '#333';
-                el.style.fontSize = '12px';
-            });
-
-            wrapper.querySelector('#pdf-content').appendChild(clonedGrid);
-
-            // PDF options
-            const opt = {
-                margin: 10,
-                filename: `comparatif-high-tech-${Date.now()}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-            };
-
-            // Generate PDF
-            html2pdf().set(opt).from(wrapper).save().then(() => {
-                console.log('PDF exported successfully');
-            }).catch(err => {
-                console.error('PDF export error:', err);
-                alert('Erreur lors de l\'export PDF');
-            });
+                    <div class="products">
+                        ${productsHTML}
+                    </div>
+                    <div class="footer">
+                        <p>www.high-tech-2026.fr - Votre source d'information tech</p>
+                    </div>
+                    <scr` + `ipt>
+                        window.onload = function() {
+                            setTimeout(function() {
+                                window.print();
+                            }, 500);
+                        };
+                    </scr` + `ipt>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         }
     </script>
     <script src="/assets/js/theme-toggle.js"></script>

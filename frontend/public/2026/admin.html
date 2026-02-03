@@ -881,6 +881,7 @@
             <div class="page-header">
                 <h1 class="page-title">Gestion des Produits</h1>
                 <div class="header-actions">
+                    <span id="featured-counter" style="padding: 0.5rem 1rem; background: var(--bg-elevated); border-radius: var(--radius-md); font-size: 0.9rem; margin-right: 1rem;">⭐ Vedettes: <strong>0/4</strong></span>
                     <button class="btn btn-secondary" onclick="exportCSV()" title="Exporter tous les produits">
                         <span style="margin-right: 5px;">📥</span> Export CSV
                     </button>
@@ -910,12 +911,13 @@
                                 <th>Nom</th>
                                 <th>Catégorie</th>
                                 <th>Prix</th>
-                                <th style="width: 60px;">Vedette</th>
+                                <th style="width: 60px;" title="Badge vedette sur le produit">⭐</th>
+                                <th style="width: 60px;" title="Afficher sur l'accueil (max 4)">🏠</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="table-produits">
-                            <tr><td colspan="6"><div class="loading-spinner"></div></td></tr>
+                            <tr><td colspan="7"><div class="loading-spinner"></div></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1564,6 +1566,7 @@
             allProduits = extractData(data);
             renderProduits(allProduits);
             populateFilters();
+            updateHomepageCounter();
         } catch (error) {
             console.error('Erreur chargement produits:', error);
         }
@@ -1576,15 +1579,28 @@
             return;
         }
 
+        const homepageCount = countHomepageProducts();
+        const maxHomepageReached = homepageCount >= MAX_HOMEPAGE_PRODUCTS;
+
         tbody.innerHTML = produits.slice(0, 100).map(p => {
             const imgSrc = p.image ? `/assets/images/${p.image}` : '';
             const imgHtml = imgSrc
                 ? `<img src="${imgSrc}" class="data-table-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="data-table-img" style="display:none;background:var(--bg-elevated);align-items:center;justify-content:center;">📦</div>`
                 : `<div class="data-table-img" style="background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;">📦</div>`;
+
+            // Vedette (badge) - illimité
             const isFeatured = p.top_du_mois === true;
-            const starClass = isFeatured ? 'featured-active' : '';
             const starIcon = isFeatured ? '⭐' : '☆';
-            const starTitle = isFeatured ? 'Retirer des vedettes' : 'Ajouter aux vedettes';
+            const starTitle = isFeatured ? 'Retirer le badge vedette' : 'Ajouter le badge vedette';
+            const starStyle = isFeatured ? 'color: #ffcc00;' : '';
+
+            // Accueil (affichage homepage) - max 4
+            const isOnHomepage = p.affiche_accueil === true;
+            const cannotAddHomepage = !isOnHomepage && maxHomepageReached;
+            const homeIcon = isOnHomepage ? '🏠' : '🏚️';
+            const homeTitle = isOnHomepage ? 'Retirer de l\'accueil' : (cannotAddHomepage ? 'Maximum 4 produits sur l\'accueil' : 'Afficher sur l\'accueil');
+            const homeStyle = isOnHomepage ? 'color: #6bff6b;' : (cannotAddHomepage ? 'opacity: 0.3; cursor: not-allowed;' : '');
+
             return `
                 <tr>
                     <td>${imgHtml}</td>
@@ -1592,7 +1608,10 @@
                     <td><span class="data-table-badge badge-info">${p.categorie || p.category || '-'}</span></td>
                     <td>${p.prix || '-'}</td>
                     <td>
-                        <button class="action-btn ${starClass}" title="${starTitle}" onclick="toggleFeatured('${p.id}', ${!isFeatured})" style="${isFeatured ? 'color: #ffcc00;' : ''}">${starIcon}</button>
+                        <button class="action-btn" title="${starTitle}" onclick="toggleFeatured('${p.id}', ${!isFeatured})" style="${starStyle}">${starIcon}</button>
+                    </td>
+                    <td>
+                        <button class="action-btn" title="${homeTitle}" onclick="toggleHomepage('${p.id}', ${!isOnHomepage})" style="${homeStyle}">${homeIcon}</button>
                     </td>
                     <td>
                         <button class="action-btn edit" title="Modifier" onclick="editProduit('${p.id}')">✏️</button>
@@ -1604,6 +1623,13 @@
         }).join('');
     }
 
+    const MAX_HOMEPAGE_PRODUCTS = 4;
+
+    function countHomepageProducts() {
+        return allProduits.filter(p => p.affiche_accueil === true).length;
+    }
+
+    // Toggle badge vedette (illimité)
     async function toggleFeatured(id, featured) {
         try {
             const response = await fetch(`/api/produits/${id}/featured`, {
@@ -1624,6 +1650,49 @@
         } catch (error) {
             console.error('Erreur toggle featured:', error);
             showNotification('Erreur de connexion', 'error');
+        }
+    }
+
+    // Toggle affichage sur l'accueil (max 4)
+    async function toggleHomepage(id, display) {
+        // Vérifier la limite côté client aussi
+        if (display) {
+            const currentCount = countHomepageProducts();
+            if (currentCount >= MAX_HOMEPAGE_PRODUCTS) {
+                showNotification(`⚠️ Maximum ${MAX_HOMEPAGE_PRODUCTS} produits sur l'accueil ! Retirez-en un d'abord.`, 'error');
+                return;
+            }
+        }
+
+        try {
+            const response = await fetch(`/api/produits/${id}/homepage`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ display })
+            });
+            const data = await response.json();
+            if (data.success) {
+                // Mettre à jour localement
+                const product = allProduits.find(p => p.id == id);
+                if (product) product.affiche_accueil = display;
+                renderProduits(allProduits);
+                updateHomepageCounter();
+                showNotification(data.message, 'success');
+            } else {
+                showNotification('Erreur: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur toggle homepage:', error);
+            showNotification('Erreur de connexion', 'error');
+        }
+    }
+
+    function updateHomepageCounter() {
+        const count = countHomepageProducts();
+        const counterEl = document.getElementById('featured-counter');
+        if (counterEl) {
+            counterEl.innerHTML = `🏠 Accueil: <strong>${count}/${MAX_HOMEPAGE_PRODUCTS}</strong>`;
+            counterEl.style.color = count >= MAX_HOMEPAGE_PRODUCTS ? '#ff6b6b' : '#6bff6b';
         }
     }
 

@@ -125,7 +125,7 @@ router.get('/by-name/:nom', async (req, res) => {
   }
 });
 
-// GET - Récupérer les produits vedettes (top_du_mois)
+// GET - Récupérer les produits vedettes (top_du_mois) - pour badges
 router.get('/featured/list', async (req, res) => {
   try {
     const { limit = 8 } = req.query;
@@ -155,6 +155,92 @@ router.get('/featured/list', async (req, res) => {
     });
   } catch (error) {
     console.error('❌ Erreur GET produits vedettes:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// GET - Récupérer les produits pour la section Accueil (affiche_accueil)
+router.get('/homepage/list', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        p.*,
+        COALESCE(p.titre_affiche, p.nom) as titre_affiche
+      FROM produits p
+      WHERE affiche_accueil = TRUE
+      ORDER BY categorie, nom
+      LIMIT 4
+    `);
+
+    const productsWithImages = result.rows.map(product => {
+      if (product.image) {
+        product.image_url = `/assets/images/${product.image}`;
+      } else {
+        product.image_url = '/assets/images/placeholder.png';
+      }
+      return product;
+    });
+
+    res.json({
+      success: true,
+      data: productsWithImages,
+      total: result.rows.length
+    });
+  } catch (error) {
+    console.error('❌ Erreur GET produits homepage:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// PATCH - Toggle affiche_accueil pour un produit (max 4)
+router.patch('/:id/homepage', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { display } = req.body;
+
+    // Vérifier la limite de 4 produits si on veut ajouter
+    if (display === true) {
+      const countResult = await pool.query('SELECT COUNT(*) FROM produits WHERE affiche_accueil = TRUE');
+      const currentCount = parseInt(countResult.rows[0].count);
+      if (currentCount >= 4) {
+        return res.status(400).json({
+          success: false,
+          error: 'Maximum 4 produits peuvent être affichés sur l\'accueil'
+        });
+      }
+    }
+
+    const result = await pool.query(`
+      UPDATE produits
+      SET affiche_accueil = $1
+      WHERE id = $2
+      RETURNING *
+    `, [display === true, id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Produit non trouvé'
+      });
+    }
+
+    // Log de l'activité
+    const actionType = display ? 'homepage_add' : 'homepage_remove';
+    getLogActivity()(actionType, 'produit', id, result.rows[0].nom, null, req.ip);
+
+    res.json({
+      success: true,
+      data: result.rows[0],
+      message: display ? 'Produit ajouté à l\'accueil' : 'Produit retiré de l\'accueil'
+    });
+  } catch (error) {
+    console.error('❌ Erreur toggle homepage:', error);
     res.status(500).json({
       success: false,
       error: error.message
