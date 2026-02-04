@@ -3,7 +3,8 @@
     "allow": [
       "Bash(curl:*)",
       "Bash(ls:*)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(ssh:*)"
     ]
   }
 }

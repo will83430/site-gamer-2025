@@ -14,6 +14,13 @@
     <meta property="og:description" content="Comparez jusqu'à 4 produits gaming et high-tech côte à côte.">
     <meta property="og:url" content="https://high-tech-2026.com/2026/comparatif.html">
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1282,5 +1289,15 @@
         }
     </script>
     <script src="/assets/js/theme-toggle.js"></script>
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW enregistré'))
+                    .catch(err => console.log('SW erreur:', err));
+            });
+        }
+    </script>
 </body>
 </html>

@@ -175,6 +175,18 @@ app.get('/api/test', (req, res) => {
   });
 });
 
+// ========== ADMIN AUTH ==========
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body;
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin2026!';
+
+  if (password === adminPassword) {
+    res.json({ success: true, message: 'Authentification reussie' });
+  } else {
+    res.status(401).json({ success: false, message: 'Mot de passe incorrect' });
+  }
+});
+
 // Route pour initialiser la colonne image
 app.post('/api/init-image-column', async (req, res) => {
   try {

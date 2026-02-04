@@ -15,6 +15,13 @@
     <meta property="og:url" id="og-url" content="">
     <meta property="article:published_time" id="og-published" content="">
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -185,6 +192,134 @@
             text-align: center;
             margin-top: 2.5rem;
         }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            /* Header ultra-compact */
+            .header, header {
+                height: 28px !important;
+                min-height: 28px !important;
+                max-height: 28px !important;
+                padding: 0 !important;
+            }
+
+            .nav-container {
+                padding: 0.1rem 0.3rem !important;
+                height: 28px !important;
+            }
+
+            .logo, .logo svg {
+                width: 18px !important;
+                height: 18px !important;
+            }
+
+            .logo-text {
+                font-size: 0.5rem !important;
+            }
+
+            .logo-section {
+                gap: 0.15rem !important;
+            }
+
+            .nav-links {
+                display: none !important;
+            }
+
+            main {
+                padding-top: 32px !important;
+            }
+
+            .article-container {
+                padding: 0.5rem !important;
+            }
+
+            .breadcrumb {
+                font-size: 0.4rem !important;
+                margin-bottom: 0.5rem !important;
+                gap: 0.2rem !important;
+            }
+
+            .article-header {
+                margin-bottom: 1rem !important;
+            }
+
+            .article-title {
+                font-size: 0.8rem !important;
+                margin-bottom: 0.3rem !important;
+            }
+
+            .publication-date {
+                font-size: 0.45rem !important;
+            }
+
+            .badge-hot {
+                font-size: 0.4rem !important;
+                padding: 0.2rem 0.5rem !important;
+            }
+
+            .article-media {
+                margin: 0.5rem 0 !important;
+                border-radius: 8px !important;
+            }
+
+            .resume-card {
+                padding: 0.5rem !important;
+                font-size: 0.45rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .article-content {
+                padding: 0.5rem !important;
+            }
+
+            .article-content h2 {
+                font-size: 0.6rem !important;
+                margin: 0.5rem 0 0.3rem 0 !important;
+            }
+
+            .article-content p {
+                font-size: 0.45rem !important;
+                line-height: 1.5 !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .back-section {
+                margin-top: 1rem !important;
+            }
+
+            .back-section .btn {
+                padding: 0.3rem 0.5rem !important;
+                font-size: 0.4rem !important;
+            }
+
+            /* Footer ultra-compact */
+            .footer, footer {
+                padding: 0.3rem 0.2rem !important;
+                margin-top: 0.5rem !important;
+            }
+
+            .footer-content {
+                display: none !important;
+            }
+
+            .footer-bottom {
+                padding: 0.2rem 0 !important;
+                border: none !important;
+            }
+
+            .footer-bottom p {
+                font-size: 0.3rem !important;
+            }
+
+            /* Scroll top mini */
+            .scroll-top {
+                width: 22px !important;
+                height: 22px !important;
+                font-size: 0.5rem !important;
+                bottom: 5px !important;
+                right: 5px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -333,5 +468,15 @@
         });
     </script>
     <script src="/assets/js/theme-toggle.js"></script>
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW enregistré'))
+                    .catch(err => console.log('SW erreur:', err));
+            });
+        }
+    </script>
 </body>
 </html>

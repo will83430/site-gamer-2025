@@ -745,6 +745,113 @@
 </head>
 <body>
 
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+">
+    <div style="
+        background: var(--bg-card);
+        padding: 3rem;
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(212, 255, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+    ">
+        <h1 style="
+            font-family: 'Orbitron', sans-serif;
+            background: var(--gradient-yellow-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        ">HIGH-TECH 2026</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Administration</p>
+
+        <div id="login-error" style="
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid var(--tech-red);
+            color: var(--tech-red);
+            padding: 0.8rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1rem;
+            display: none;
+        ">Mot de passe incorrect</div>
+
+        <input type="password" id="admin-password" placeholder="Mot de passe" style="
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        " onkeypress="if(event.key==='Enter')adminLogin()">
+
+        <button onclick="adminLogin()" style="
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient-yellow-green);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--bg-primary);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+        ">Connexion</button>
+
+        <a href="/2026/" style="
+            display: block;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        ">Retour au site</a>
+    </div>
+</div>
+
+<script>
+// Check if already logged in
+if (sessionStorage.getItem('adminAuth') === 'true') {
+    document.getElementById('login-overlay').style.display = 'none';
+}
+
+async function adminLogin() {
+    const password = document.getElementById('admin-password').value;
+    const errorDiv = document.getElementById('login-error');
+
+    try {
+        const response = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            sessionStorage.setItem('adminAuth', 'true');
+            document.getElementById('login-overlay').style.display = 'none';
+        } else {
+            errorDiv.style.display = 'block';
+            document.getElementById('admin-password').value = '';
+        }
+    } catch (error) {
+        errorDiv.textContent = 'Erreur de connexion';
+        errorDiv.style.display = 'block';
+    }
+}
+</script>
+
 <div class="admin-layout">
     <!-- Sidebar -->
     <aside class="sidebar">
