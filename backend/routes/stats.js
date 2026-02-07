@@ -105,11 +105,7 @@ router.get('/homepage', async (req, res) => {
     const [produits, categories, tendances, visites] = await Promise.all([
       pool.query('SELECT COUNT(*) as count FROM produits'),
       pool.query('SELECT COUNT(*) as count FROM categories'),
-      pool.query(`
-        SELECT
-          (SELECT COUNT(*) FROM actualites) +
-          (SELECT COUNT(*) FROM technologies) as count
-      `),
+      pool.query('SELECT COUNT(*) as count FROM actualites'),
       pool.query('SELECT valeur FROM site_stats WHERE cle = $1', ['visites_total'])
     ]);
 

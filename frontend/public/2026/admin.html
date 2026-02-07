@@ -211,6 +211,275 @@
             border-color: var(--tech-yellow);
         }
 
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: var(--tech-red);
+            color: var(--tech-red);
+        }
+
+        .btn-danger:hover {
+            background: var(--tech-red);
+            color: white;
+        }
+
+        /* Bulk Actions Bar */
+        .bulk-actions-bar {
+            background: linear-gradient(135deg, rgba(212, 255, 0, 0.1) 0%, rgba(107, 255, 107, 0.1) 100%);
+            border: 1px solid var(--tech-yellow);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .bulk-actions-bar span {
+            font-weight: 600;
+            color: var(--tech-yellow);
+        }
+
+        /* View Toggle */
+        .view-btn {
+            opacity: 0.6;
+            transition: all 0.2s ease;
+        }
+
+        .view-btn.active {
+            opacity: 1;
+            background: var(--tech-yellow);
+            color: var(--bg-primary);
+        }
+
+        /* Calendar */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-header h3 {
+            margin: 0;
+            color: var(--tech-yellow);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 0.3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 60px;
+        }
+
+        .calendar-day:hover {
+            border: 1px solid var(--tech-yellow);
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.3;
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--tech-yellow);
+        }
+
+        .calendar-day-number {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .calendar-day-events {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            justify-content: center;
+        }
+
+        .calendar-event-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .calendar-event-dot.type-info { background: var(--tech-blue); }
+        .calendar-event-dot.type-nouveau { background: var(--tech-green); }
+        .calendar-event-dot.type-promo { background: #ffd700; }
+        .calendar-event-dot.type-urgent { background: var(--tech-red); }
+
+        .calendar-legend {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .calendar-legend span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.type-info { background: var(--tech-blue); }
+        .legend-dot.type-nouveau { background: var(--tech-green); }
+        .legend-dot.type-promo { background: #ffd700; }
+        .legend-dot.type-urgent { background: var(--tech-red); }
+
+        /* Calendar Filter Buttons */
+        .calendar-filter .filter-btn {
+            opacity: 0.6;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .calendar-filter .filter-btn.active {
+            opacity: 1;
+            background: var(--tech-yellow);
+            color: var(--bg-primary);
+            border-color: var(--tech-yellow);
+        }
+
+        .calendar-day.has-events {
+            cursor: pointer;
+        }
+
+        .calendar-day.has-events:hover {
+            background: rgba(212, 255, 0, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* Calendar Popup */
+        .calendar-popup {
+            position: absolute;
+            z-index: 1000;
+            background: var(--bg-card);
+            border: 1px solid var(--tech-yellow);
+            border-radius: 12px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(212, 255, 0, 0.1);
+        }
+
+        .popup-close {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .popup-close:hover {
+            color: var(--tech-red);
+        }
+
+        .popup-content {
+            padding: 0.5rem;
+        }
+
+        .popup-event {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: var(--bg-elevated);
+        }
+
+        .popup-event:last-child {
+            margin-bottom: 0;
+        }
+
+        .popup-event-icon {
+            font-size: 1.5rem;
+        }
+
+        .popup-event-info {
+            flex: 1;
+        }
+
+        .popup-event-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .popup-event-meta {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .popup-badge {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .popup-badge.type-info { background: rgba(77, 212, 255, 0.2); color: var(--tech-blue); }
+        .popup-badge.type-nouveau { background: rgba(107, 255, 107, 0.2); color: var(--tech-green); }
+        .popup-badge.type-promo { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
+        .popup-badge.type-urgent { background: rgba(255, 107, 107, 0.2); color: var(--tech-red); }
+        .popup-badge.active { background: rgba(107, 255, 107, 0.2); color: var(--tech-green); }
+        .popup-badge.inactive { background: rgba(255, 107, 107, 0.2); color: var(--tech-red); }
+
+        .popup-edit-btn {
+            background: none;
+            border: 1px solid var(--tech-yellow);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .popup-edit-btn:hover {
+            background: var(--tech-yellow);
+        }
+
         /* ========================================
            STATS CARDS
            ======================================== */
@@ -390,6 +659,165 @@
 
         .action-btn.edit:hover { color: var(--tech-blue); }
         .action-btn.delete:hover { color: var(--tech-red); }
+
+        /* Toggle Switch - Style amélioré */
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 28px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            border-radius: 28px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 107, 107, 0.5);
+        }
+
+        .toggle-slider::before {
+            content: '✕';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            left: 2px;
+            bottom: 1px;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #ff6b6b;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: linear-gradient(135deg, #6bff6b 0%, #4ade4a 100%);
+            border-color: rgba(107, 255, 107, 0.5);
+        }
+
+        .toggle-switch input:checked + .toggle-slider::before {
+            content: '✓';
+            transform: translateX(28px);
+            color: #4ade4a;
+        }
+
+        .toggle-switch:hover .toggle-slider {
+            box-shadow: 0 0 12px rgba(107, 255, 107, 0.5);
+            transform: scale(1.05);
+        }
+
+        .toggle-switch:active .toggle-slider::before {
+            width: 26px;
+        }
+
+        /* Drag & Drop */
+        .draggable-row {
+            cursor: grab;
+        }
+
+        .draggable-row:active {
+            cursor: grabbing;
+        }
+
+        .draggable-row.dragging {
+            opacity: 0.5;
+            background: rgba(212, 255, 0, 0.1);
+        }
+
+        .draggable-row.drag-over {
+            border-top: 2px solid var(--tech-yellow);
+        }
+
+        .drag-handle {
+            cursor: grab;
+            padding: 0.5rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .drag-handle:hover {
+            color: var(--tech-yellow);
+        }
+
+        /* Prévisualisation Annonce */
+        .annonce-preview {
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(212, 255, 0, 0.08) 0%, rgba(107, 255, 107, 0.08) 100%);
+            border: 1px solid rgba(212, 255, 0, 0.3);
+        }
+
+        .preview-card.type-promo {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+
+        .preview-card.type-urgent {
+            background: linear-gradient(135deg, rgba(255, 77, 166, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            border-color: rgba(255, 77, 166, 0.5);
+        }
+
+        .preview-card.type-nouveau {
+            background: linear-gradient(135deg, rgba(107, 255, 107, 0.1) 0%, rgba(212, 255, 0, 0.1) 100%);
+            border-color: rgba(107, 255, 107, 0.4);
+        }
+
+        .preview-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .preview-text {
+            flex: 1;
+        }
+
+        .preview-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--tech-yellow);
+            margin-bottom: 0.2rem;
+        }
+
+        .preview-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .preview-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(212, 255, 0, 0.1);
+            border: 1px solid var(--tech-yellow);
+            border-radius: 20px;
+            color: var(--tech-yellow);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
 
         /* ========================================
            FORMS
@@ -1080,11 +1508,62 @@ async function adminLogin() {
                 </div>
             </div>
 
-            <div class="content-card">
+            <!-- Templates rapides -->
+            <div class="templates-bar" style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <span style="color: var(--text-muted); font-size: 0.85rem; align-self: center;">Templates :</span>
+                <button class="btn btn-secondary btn-sm" onclick="createFromTemplate('nouveau')">🆕 Nouveau produit</button>
+                <button class="btn btn-secondary btn-sm" onclick="createFromTemplate('promo')">🏷️ Promo flash</button>
+                <button class="btn btn-secondary btn-sm" onclick="createFromTemplate('urgent')">🚨 Alerte stock</button>
+                <button class="btn btn-secondary btn-sm" onclick="createFromTemplate('info')">ℹ️ Info générale</button>
+            </div>
+
+            <!-- Toggle Vue Liste / Calendrier -->
+            <div class="view-toggle" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                <button class="btn btn-sm view-btn active" id="view-list-btn" onclick="switchAnnonceView('list')">📋 Liste</button>
+                <button class="btn btn-sm view-btn" id="view-calendar-btn" onclick="switchAnnonceView('calendar')">📅 Calendrier</button>
+            </div>
+
+            <!-- Barre d'actions groupées -->
+            <div id="bulk-actions-bar" class="bulk-actions-bar" style="display: none;">
+                <span id="selected-count">0 sélectionné(s)</span>
+                <button class="btn btn-sm" onclick="bulkToggleActive(true)">✅ Activer</button>
+                <button class="btn btn-sm" onclick="bulkToggleActive(false)">❌ Désactiver</button>
+                <button class="btn btn-sm btn-danger" onclick="bulkDelete()">🗑️ Supprimer</button>
+                <button class="btn btn-sm" onclick="clearSelection()">Annuler</button>
+            </div>
+
+            <!-- Vue Calendrier -->
+            <div id="annonces-calendar-view" class="content-card" style="display: none;">
                 <div class="content-card-body">
-                    <table class="data-table">
+                    <div class="calendar-header">
+                        <button class="btn btn-sm" onclick="changeCalendarMonth(-1)">◀ Préc.</button>
+                        <h3 id="calendar-month-title">Février 2026</h3>
+                        <button class="btn btn-sm" onclick="changeCalendarMonth(1)">Suiv. ▶</button>
+                    </div>
+                    <!-- Filtre calendrier -->
+                    <div class="calendar-filter" style="display: flex; gap: 0.5rem; margin-bottom: 1rem; justify-content: center;">
+                        <button class="btn btn-sm filter-btn active" id="filter-all" onclick="setCalendarFilter('all')">📋 Toutes</button>
+                        <button class="btn btn-sm filter-btn" id="filter-scheduled" onclick="setCalendarFilter('scheduled')">📅 Programmées</button>
+                        <button class="btn btn-sm filter-btn" id="filter-permanent" onclick="setCalendarFilter('permanent')">♾️ Permanentes</button>
+                    </div>
+                    <div id="annonces-calendar" class="calendar-grid"></div>
+                    <div id="calendar-legend" class="calendar-legend">
+                        <span><span class="legend-dot type-info"></span> Info</span>
+                        <span><span class="legend-dot type-nouveau"></span> Nouveau</span>
+                        <span><span class="legend-dot type-promo"></span> Promo</span>
+                        <span><span class="legend-dot type-urgent"></span> Urgent</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vue Liste -->
+            <div id="annonces-list-view" class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table" id="annonces-table">
                         <thead>
                             <tr>
+                                <th style="width: 30px;"><input type="checkbox" id="select-all-annonces" onchange="toggleSelectAll(this.checked)"></th>
+                                <th style="width: 30px;"></th>
                                 <th>Icône</th>
                                 <th>Titre</th>
                                 <th>Type</th>
@@ -1093,7 +1572,7 @@ async function adminLogin() {
                             </tr>
                         </thead>
                         <tbody id="table-annonces">
-                            <tr><td colspan="5"><div class="loading-spinner"></div></td></tr>
+                            <tr><td colspan="7"><div class="loading-spinner"></div></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1487,7 +1966,7 @@ async function adminLogin() {
             'laptop': '💻', 'desktop': '🖥️', 'watch': '⌚', 'headphone': '🎧',
             'earphone': '🎧', 'controller': '🎮', 'gamepad': '🎮',
             'joystick': '🕹️', 'remote': '📱', 'dollar': '💲', 'money': '💰',
-            'trophy': '🏆', 'medal': '🥇', 'award': '🏅',
+            'trophy': '🏆', 'medal': '🥇', 'award': '🏅', 'shield': '🛡️',
             // TECH EXTRA
             'cpu': '🖥️', 'cube': '🎲', 'droplet': '💧', 'file': '📄',
             'heartbeat': '💓', 'home': '🏠', 'leaf': '🍃', 'monitor': '🖥️',
@@ -2058,22 +2537,39 @@ async function adminLogin() {
 
             const tbody = document.getElementById('table-annonces');
             if (annonces.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucune annonce</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Aucune annonce</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = annonces.map(a => `
-                <tr>
-                    <td style="font-size: 1.5rem;">${a.icone || '📢'}</td>
+            tbody.innerHTML = annonces.map((a, index) => {
+                const iconDisplay = convertIconToEmoji(a.icone) || a.icone || '📢';
+                return `
+                <tr data-id="${a.id}" data-ordre="${a.ordre || index}" class="draggable-row" draggable="true">
+                    <td><input type="checkbox" class="annonce-checkbox" data-id="${a.id}" onchange="updateBulkSelection()"></td>
+                    <td><span class="drag-handle" title="Glisser pour réordonner">⠿</span></td>
+                    <td style="font-size: 1.5rem;">${iconDisplay}</td>
                     <td><strong>${a.titre}</strong><br><small style="color: var(--text-muted);">${a.description || ''}</small></td>
                     <td><span class="data-table-badge badge-${a.type === 'urgent' ? 'danger' : a.type === 'promo' ? 'warning' : 'info'}">${a.type || 'info'}</span></td>
-                    <td><span class="data-table-badge ${a.actif !== false ? 'badge-success' : 'badge-danger'}">${a.actif !== false ? 'Oui' : 'Non'}</span></td>
+                    <td>
+                        <label class="toggle-switch" title="Activer/Désactiver">
+                            <input type="checkbox" ${a.actif !== false ? 'checked' : ''} onchange="toggleAnnonceActive(${a.id}, this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </td>
                     <td>
                         <button class="action-btn edit" title="Modifier" onclick="editAnnonce(${a.id})">✏️</button>
+                        <button class="action-btn" title="Dupliquer" onclick="duplicateAnnonce(${a.id})">📋</button>
                         <button class="action-btn delete" title="Supprimer" onclick="deleteAnnonce(${a.id}, '${(a.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
+
+            // Initialiser le drag & drop
+            initAnnoncesDragDrop();
+
+            // Reset selection
+            document.getElementById('select-all-annonces').checked = false;
+            updateBulkSelection();
         } catch (error) {
             console.error('Erreur chargement annonces:', error);
         }
@@ -2090,12 +2586,13 @@ async function adminLogin() {
                     ${categories.map(c => `
                         <div style="background: var(--bg-elevated); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
                             <div>
+                                <span style="font-size: 1.3rem; margin-right: 0.5rem;">${c.icone || '📁'}</span>
                                 <strong style="font-size: 1.1rem;">${c.nom}</strong>
                                 <br><small style="color: var(--text-muted);">slug: ${c.slug || c.nom}</small>
                             </div>
                             <div>
-                                <button class="action-btn edit" title="Modifier">✏️</button>
-                                <button class="action-btn delete" title="Supprimer">🗑️</button>
+                                <button class="action-btn edit" title="Modifier" onclick="editCategorie(${c.id})">✏️</button>
+                                <button class="action-btn delete" title="Supprimer" onclick="deleteCategorie(${c.id}, '${(c.nom || '').replace(/'/g, "\\'")}')">🗑️</button>
                             </div>
                         </div>
                     `).join('')}
@@ -2103,6 +2600,131 @@ async function adminLogin() {
             `;
         } catch (error) {
             console.error('Erreur chargement catégories:', error);
+        }
+    }
+
+    // ========================================
+    // CATEGORIES CRUD
+    // ========================================
+    function getCategorieFormHtml() {
+        return `
+            <input type="hidden" id="form-categorie-id">
+            <div class="form-group">
+                <label class="form-label">Nom de la catégorie *</label>
+                <input type="text" class="form-input" id="form-categorie-nom" placeholder="Ex: CASQUE AUDIO" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Slug (identifiant)</label>
+                <input type="text" class="form-input" id="form-categorie-slug" placeholder="Ex: CASQUE_AUDIO (généré auto si vide)">
+                <small style="color: var(--text-muted);">Laissez vide pour générer automatiquement</small>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Icône (emoji)</label>
+                <input type="text" class="form-input" id="form-categorie-icone" placeholder="Ex: 🎧">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="form-categorie-description" placeholder="Description de la catégorie..." rows="3"></textarea>
+            </div>
+        `;
+    }
+
+    async function saveCategorie() {
+        const id = document.getElementById('form-categorie-id').value;
+        const nom = document.getElementById('form-categorie-nom').value.trim();
+        const slug = document.getElementById('form-categorie-slug').value.trim();
+        const icone = document.getElementById('form-categorie-icone').value.trim();
+        const description = document.getElementById('form-categorie-description').value.trim();
+
+        if (!nom) {
+            showToast('Le nom est requis', 'error');
+            return;
+        }
+
+        try {
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `/api/categories/${id}` : '/api/categories';
+
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nom, slug, icone, description })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showToast(id ? 'Catégorie mise à jour' : 'Catégorie créée', 'success');
+                closeModal();
+                loadCategories();
+            } else {
+                showToast(data.error || 'Erreur', 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde catégorie:', error);
+            showToast('Erreur de sauvegarde', 'error');
+        }
+    }
+
+    async function editCategorie(id) {
+        try {
+            const response = await fetch(`/api/categories/${id}`);
+            const data = await response.json();
+
+            if (!data.success) {
+                showToast('Catégorie non trouvée', 'error');
+                return;
+            }
+
+            const cat = data.data;
+
+            // Ouvrir le modal
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = 'Modifier la Catégorie';
+            body.innerHTML = getCategorieFormHtml();
+
+            // Remplir les champs
+            document.getElementById('form-categorie-id').value = cat.id;
+            document.getElementById('form-categorie-nom').value = cat.nom || '';
+            document.getElementById('form-categorie-slug').value = cat.slug || '';
+            document.getElementById('form-categorie-icone').value = cat.icone || '';
+            document.getElementById('form-categorie-description').value = cat.description || '';
+
+            document.getElementById('modal-submit').onclick = saveCategorie;
+            document.getElementById('modal-preview').style.display = 'none';
+
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement catégorie:', error);
+            showToast('Erreur de chargement', 'error');
+        }
+    }
+
+    async function deleteCategorie(id, nom) {
+        // Confirmation avant suppression
+        if (!confirm(`⚠️ Êtes-vous sûr de vouloir supprimer la catégorie "${nom}" ?\n\nCette action est irréversible.`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/categories/${id}`, {
+                method: 'DELETE'
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showToast('Catégorie supprimée', 'success');
+                loadCategories();
+            } else {
+                showToast(data.error || 'Erreur de suppression', 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression catégorie:', error);
+            showToast('Erreur de suppression', 'error');
         }
     }
 
@@ -2362,6 +2984,7 @@ async function adminLogin() {
                 body.innerHTML = getAnnonceFormHtml();
                 document.getElementById('modal-submit').onclick = saveAnnonce;
                 document.getElementById('modal-preview').style.display = 'none';
+                setTimeout(initAnnoncePreview, 50); // Initialiser après le rendu
                 break;
 
             case 'technologie':
@@ -2392,6 +3015,13 @@ async function adminLogin() {
                 title.textContent = 'Nouvelle Page Wiki';
                 body.innerHTML = getWikiFormHtml();
                 document.getElementById('modal-submit').onclick = saveWiki;
+                document.getElementById('modal-preview').style.display = 'none';
+                break;
+
+            case 'categorie':
+                title.textContent = 'Nouvelle Catégorie';
+                body.innerHTML = getCategorieFormHtml();
+                document.getElementById('modal-submit').onclick = saveCategorie;
                 document.getElementById('modal-preview').style.display = 'none';
                 break;
         }
@@ -3396,7 +4026,120 @@ async function adminLogin() {
                 <input type="number" class="form-input" id="form-annonce-ordre" placeholder="0" value="0" min="0">
                 <small style="color: var(--text-muted);">Plus petit = affiché en premier</small>
             </div>
+
+            <!-- Prévisualisation live -->
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label class="form-label">Aperçu en direct</label>
+                <div id="annonce-preview" class="annonce-preview">
+                    <div class="preview-card type-info">
+                        <div class="preview-icon">🚀</div>
+                        <div class="preview-text">
+                            <div class="preview-title">Titre de l'annonce</div>
+                            <div class="preview-description">Description de l'annonce...</div>
+                        </div>
+                        <span class="preview-btn">En savoir plus →</span>
+                    </div>
+                </div>
+            </div>
         `;
+    }
+
+    // Mise à jour de la prévisualisation en temps réel
+    function initAnnoncePreview() {
+        const fields = ['icone', 'titre', 'description', 'type', 'bouton'];
+        fields.forEach(field => {
+            const el = document.getElementById('form-annonce-' + field);
+            if (el) {
+                el.addEventListener('input', updateAnnoncePreview);
+                el.addEventListener('change', updateAnnoncePreview);
+            }
+        });
+        updateAnnoncePreview();
+    }
+
+    function updateAnnoncePreview() {
+        const icone = document.getElementById('form-annonce-icone')?.value || '🚀';
+        const titre = document.getElementById('form-annonce-titre')?.value || 'Titre de l\'annonce';
+        const description = document.getElementById('form-annonce-description')?.value || 'Description de l\'annonce...';
+        const type = document.getElementById('form-annonce-type')?.value || 'info';
+        const bouton = document.getElementById('form-annonce-bouton')?.value || 'En savoir plus →';
+
+        const preview = document.getElementById('annonce-preview');
+        if (!preview) return;
+
+        preview.innerHTML = `
+            <div class="preview-card type-${type}">
+                <div class="preview-icon">${icone}</div>
+                <div class="preview-text">
+                    <div class="preview-title">${titre || 'Titre de l\'annonce'}</div>
+                    <div class="preview-description">${description || 'Description...'}</div>
+                </div>
+                <span class="preview-btn">${bouton}</span>
+            </div>
+        `;
+    }
+
+    // Templates prédéfinis
+    const annonceTemplates = {
+        nouveau: {
+            icone: '🆕',
+            titre: 'Nouveau : [Nom du produit] disponible !',
+            description: 'Découvrez notre dernier arrivage en boutique.',
+            type: 'nouveau',
+            bouton_texte: 'Voir le produit →',
+            lien: '/2026/fiche.html?produit='
+        },
+        promo: {
+            icone: '🏷️',
+            titre: 'Promo Flash : -XX% sur [Produit] !',
+            description: 'Offre limitée, profitez-en vite !',
+            type: 'promo',
+            bouton_texte: 'En profiter →',
+            lien: '/2026/produits.html'
+        },
+        urgent: {
+            icone: '🚨',
+            titre: 'Stock limité : [Produit] bientôt épuisé',
+            description: 'Plus que quelques unités disponibles.',
+            type: 'urgent',
+            bouton_texte: 'Commander →',
+            lien: '/2026/fiche.html?produit='
+        },
+        info: {
+            icone: 'ℹ️',
+            titre: 'Information importante',
+            description: 'Consultez notre dernière actualité.',
+            type: 'info',
+            bouton_texte: 'En savoir plus →',
+            lien: '/2026/article.html?id='
+        }
+    };
+
+    function createFromTemplate(templateType) {
+        const template = annonceTemplates[templateType];
+        if (!template) return;
+
+        // Ouvrir le modal
+        const overlay = document.getElementById('modal-overlay');
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+
+        title.textContent = 'Nouvelle Annonce (Template)';
+        body.innerHTML = getAnnonceFormHtml();
+
+        // Pré-remplir avec le template
+        document.getElementById('form-annonce-icone').value = template.icone;
+        document.getElementById('form-annonce-titre').value = template.titre;
+        document.getElementById('form-annonce-description').value = template.description;
+        document.getElementById('form-annonce-type').value = template.type;
+        document.getElementById('form-annonce-bouton').value = template.bouton_texte;
+        document.getElementById('form-annonce-lien').value = template.lien;
+
+        document.getElementById('modal-submit').onclick = saveAnnonce;
+        document.getElementById('modal-preview').style.display = 'none';
+        overlay.classList.add('active');
+
+        setTimeout(initAnnoncePreview, 50);
     }
 
     async function saveAnnonce() {
@@ -3499,6 +4242,7 @@ async function adminLogin() {
 
             document.getElementById('modal-submit').onclick = saveAnnonce;
             overlay.classList.add('active');
+            setTimeout(initAnnoncePreview, 50); // Initialiser la preview avec les données
         } catch (error) {
             console.error('Erreur chargement annonce:', error);
             showNotification('Erreur lors du chargement de l\'annonce', 'error');
@@ -3523,6 +4267,471 @@ async function adminLogin() {
             console.error('Erreur suppression annonce:', error);
             showNotification('Erreur lors de la suppression', 'error');
         }
+    }
+
+    // Toggle rapide actif/inactif
+    async function toggleAnnonceActive(id, actif) {
+        try {
+            const response = await fetch(`/api/announcements/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ actif })
+            });
+            const result = await response.json();
+
+            if (result.success || result.announcement) {
+                showNotification(actif ? 'Annonce activée' : 'Annonce désactivée', 'success');
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+                loadAnnonces(); // Recharger pour rétablir l'état
+            }
+        } catch (error) {
+            console.error('Erreur toggle annonce:', error);
+            showNotification('Erreur de connexion', 'error');
+            loadAnnonces();
+        }
+    }
+
+    // Dupliquer une annonce
+    async function duplicateAnnonce(id) {
+        try {
+            const response = await fetch(`/api/announcements/${id}`);
+            const result = await response.json();
+
+            if (!result.success || !result.announcement) {
+                showNotification('Annonce non trouvée', 'error');
+                return;
+            }
+
+            const original = result.announcement;
+            const duplicate = {
+                titre: original.titre + ' (copie)',
+                description: original.description,
+                icone: original.icone,
+                type: original.type,
+                actif: false, // Désactivée par défaut
+                lien: original.lien,
+                bouton_texte: original.bouton_texte,
+                ordre: (original.ordre || 0) + 1
+            };
+
+            const createResponse = await fetch('/api/announcements', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(duplicate)
+            });
+            const createResult = await createResponse.json();
+
+            if (createResult.success || createResult.announcement) {
+                loadAnnonces();
+                loadDashboardStats();
+                showNotification('Annonce dupliquée !', 'success');
+            } else {
+                showNotification('Erreur: ' + (createResult.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur duplication annonce:', error);
+            showNotification('Erreur lors de la duplication', 'error');
+        }
+    }
+
+    // Drag & Drop pour réordonner les annonces
+    let draggedRow = null;
+
+    function initAnnoncesDragDrop() {
+        const tbody = document.getElementById('table-annonces');
+        const rows = tbody.querySelectorAll('.draggable-row');
+
+        rows.forEach(row => {
+            row.addEventListener('dragstart', handleDragStart);
+            row.addEventListener('dragend', handleDragEnd);
+            row.addEventListener('dragover', handleDragOver);
+            row.addEventListener('dragenter', handleDragEnter);
+            row.addEventListener('dragleave', handleDragLeave);
+            row.addEventListener('drop', handleDrop);
+        });
+    }
+
+    function handleDragStart(e) {
+        draggedRow = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', this.dataset.id);
+    }
+
+    function handleDragEnd(e) {
+        this.classList.remove('dragging');
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragEnter(e) {
+        e.preventDefault();
+        if (this !== draggedRow) {
+            this.classList.add('drag-over');
+        }
+    }
+
+    function handleDragLeave(e) {
+        this.classList.remove('drag-over');
+    }
+
+    async function handleDrop(e) {
+        e.preventDefault();
+        this.classList.remove('drag-over');
+
+        if (this === draggedRow) return;
+
+        const tbody = document.getElementById('table-annonces');
+        const rows = Array.from(tbody.querySelectorAll('.draggable-row'));
+        const draggedIndex = rows.indexOf(draggedRow);
+        const targetIndex = rows.indexOf(this);
+
+        // Réorganiser visuellement
+        if (draggedIndex < targetIndex) {
+            this.parentNode.insertBefore(draggedRow, this.nextSibling);
+        } else {
+            this.parentNode.insertBefore(draggedRow, this);
+        }
+
+        // Sauvegarder le nouvel ordre
+        await saveAnnoncesOrder();
+    }
+
+    async function saveAnnoncesOrder() {
+        const tbody = document.getElementById('table-annonces');
+        const rows = tbody.querySelectorAll('.draggable-row');
+        const updates = [];
+
+        rows.forEach((row, index) => {
+            updates.push({
+                id: parseInt(row.dataset.id),
+                ordre: index
+            });
+        });
+
+        try {
+            // Mettre à jour chaque annonce
+            for (const update of updates) {
+                await fetch(`/api/announcements/${update.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ordre: update.ordre })
+                });
+            }
+            showNotification('Ordre mis à jour !', 'success');
+        } catch (error) {
+            console.error('Erreur sauvegarde ordre:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+            loadAnnonces(); // Recharger en cas d'erreur
+        }
+    }
+
+    // ========================================
+    // ACTIONS GROUPÉES ANNONCES
+    // ========================================
+
+    function toggleSelectAll(checked) {
+        const checkboxes = document.querySelectorAll('.annonce-checkbox');
+        checkboxes.forEach(cb => cb.checked = checked);
+        updateBulkSelection();
+    }
+
+    function updateBulkSelection() {
+        const checkboxes = document.querySelectorAll('.annonce-checkbox:checked');
+        const count = checkboxes.length;
+        const bar = document.getElementById('bulk-actions-bar');
+        const countSpan = document.getElementById('selected-count');
+
+        if (count > 0) {
+            bar.style.display = 'flex';
+            countSpan.textContent = `${count} sélectionné(s)`;
+        } else {
+            bar.style.display = 'none';
+        }
+    }
+
+    function getSelectedIds() {
+        const checkboxes = document.querySelectorAll('.annonce-checkbox:checked');
+        return Array.from(checkboxes).map(cb => parseInt(cb.dataset.id));
+    }
+
+    function clearSelection() {
+        document.getElementById('select-all-annonces').checked = false;
+        toggleSelectAll(false);
+    }
+
+    async function bulkToggleActive(actif) {
+        const ids = getSelectedIds();
+        if (ids.length === 0) return;
+
+        const action = actif ? 'activer' : 'désactiver';
+        if (!confirm(`${action.charAt(0).toUpperCase() + action.slice(1)} ${ids.length} annonce(s) ?`)) return;
+
+        try {
+            for (const id of ids) {
+                await fetch(`/api/announcements/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ actif })
+                });
+            }
+            loadAnnonces();
+            showNotification(`${ids.length} annonce(s) ${actif ? 'activée(s)' : 'désactivée(s)'}`, 'success');
+        } catch (error) {
+            console.error('Erreur bulk toggle:', error);
+            showNotification('Erreur lors de la mise à jour', 'error');
+        }
+    }
+
+    async function bulkDelete() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) return;
+
+        if (!confirm(`Supprimer définitivement ${ids.length} annonce(s) ?`)) return;
+
+        try {
+            for (const id of ids) {
+                await fetch(`/api/announcements/${id}`, { method: 'DELETE' });
+            }
+            loadAnnonces();
+            loadDashboardStats();
+            showNotification(`${ids.length} annonce(s) supprimée(s)`, 'success');
+        } catch (error) {
+            console.error('Erreur bulk delete:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // CALENDRIER ANNONCES
+    // ========================================
+
+    let calendarDate = new Date();
+    let calendarAnnonces = [];
+    let calendarFilter = 'all'; // 'all', 'scheduled', 'permanent'
+
+    function setCalendarFilter(filter) {
+        calendarFilter = filter;
+
+        // Update button states
+        document.querySelectorAll('.calendar-filter .filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById('filter-' + filter).classList.add('active');
+
+        renderCalendar();
+    }
+
+    function switchAnnonceView(view) {
+        const listView = document.getElementById('annonces-list-view');
+        const calendarView = document.getElementById('annonces-calendar-view');
+        const listBtn = document.getElementById('view-list-btn');
+        const calendarBtn = document.getElementById('view-calendar-btn');
+
+        if (view === 'list') {
+            listView.style.display = 'block';
+            calendarView.style.display = 'none';
+            listBtn.classList.add('active');
+            calendarBtn.classList.remove('active');
+        } else {
+            listView.style.display = 'none';
+            calendarView.style.display = 'block';
+            listBtn.classList.remove('active');
+            calendarBtn.classList.add('active');
+            renderCalendar();
+        }
+    }
+
+    function changeCalendarMonth(delta) {
+        calendarDate.setMonth(calendarDate.getMonth() + delta);
+        renderCalendar();
+    }
+
+    async function renderCalendar() {
+        // Charger TOUTES les annonces (avec dates) via l'endpoint admin
+        try {
+            const response = await fetch('/api/announcements/admin/all');
+            const data = await response.json();
+            calendarAnnonces = data.announcements || [];
+            console.log('📅 Annonces chargées:', calendarAnnonces.map(a => ({
+                titre: a.titre,
+                date_debut: a.date_debut,
+                date_fin: a.date_fin,
+                actif: a.actif
+            })));
+        } catch (error) {
+            console.error('Erreur chargement annonces calendrier:', error);
+        }
+
+        const year = calendarDate.getFullYear();
+        const month = calendarDate.getMonth();
+
+        // Mettre à jour le titre
+        const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        document.getElementById('calendar-month-title').textContent = `${monthNames[month]} ${year}`;
+
+        // Calculer les jours
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startDayOfWeek = (firstDay.getDay() + 6) % 7; // Lundi = 0
+        const daysInMonth = lastDay.getDate();
+
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+
+        // Générer le HTML
+        let html = '';
+
+        // En-têtes jours
+        const dayHeaders = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+        dayHeaders.forEach(d => {
+            html += `<div class="calendar-day-header">${d}</div>`;
+        });
+
+        // Jours du mois précédent
+        const prevMonth = new Date(year, month, 0);
+        const prevDays = prevMonth.getDate();
+        for (let i = startDayOfWeek - 1; i >= 0; i--) {
+            const day = prevDays - i;
+            html += `<div class="calendar-day other-month"><span class="calendar-day-number">${day}</span></div>`;
+        }
+
+        // Jours du mois actuel
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const isToday = dateStr === todayStr;
+            const events = getEventsForDate(dateStr);
+            const hasEvents = events.length > 0;
+
+            html += `<div class="calendar-day ${isToday ? 'today' : ''} ${hasEvents ? 'has-events' : ''}" data-date="${dateStr}" onclick="showDayDetails('${dateStr}', event)">
+                <span class="calendar-day-number">${day}</span>
+                <div class="calendar-day-events">
+                    ${events.map(e => `<span class="calendar-event-dot type-${e.type}" title="${e.titre}"></span>`).join('')}
+                </div>
+            </div>`;
+        }
+
+        // Jours du mois suivant
+        const totalCells = startDayOfWeek + daysInMonth;
+        const remaining = 7 - (totalCells % 7);
+        if (remaining < 7) {
+            for (let i = 1; i <= remaining; i++) {
+                html += `<div class="calendar-day other-month"><span class="calendar-day-number">${i}</span></div>`;
+            }
+        }
+
+        document.getElementById('annonces-calendar').innerHTML = html;
+    }
+
+    // Popup détails du jour
+    function showDayDetails(dateStr, event) {
+        const events = getEventsForDate(dateStr);
+        if (events.length === 0) return;
+
+        // Formater la date
+        const [year, month, day] = dateStr.split('-');
+        const dateFormatted = `${day}/${month}/${year}`;
+
+        // Créer ou récupérer le popup
+        let popup = document.getElementById('calendar-popup');
+        if (!popup) {
+            popup = document.createElement('div');
+            popup.id = 'calendar-popup';
+            popup.className = 'calendar-popup';
+            document.body.appendChild(popup);
+
+            // Fermer au clic extérieur
+            document.addEventListener('click', (e) => {
+                if (!popup.contains(e.target) && !e.target.closest('.calendar-day')) {
+                    popup.style.display = 'none';
+                }
+            });
+        }
+
+        // Contenu du popup
+        popup.innerHTML = `
+            <div class="popup-header">
+                <strong>📅 ${dateFormatted}</strong>
+                <span class="popup-close" onclick="document.getElementById('calendar-popup').style.display='none'">✕</span>
+            </div>
+            <div class="popup-content">
+                ${events.map(e => {
+                    const iconDisplay = convertIconToEmoji(e.icone) || e.icone || '📢';
+                    return `
+                    <div class="popup-event">
+                        <span class="popup-event-icon">${iconDisplay}</span>
+                        <div class="popup-event-info">
+                            <div class="popup-event-title">${e.titre}</div>
+                            <div class="popup-event-meta">
+                                <span class="popup-badge type-${e.type}">${e.type}</span>
+                                ${e.actif ? '<span class="popup-badge active">Actif</span>' : '<span class="popup-badge inactive">Inactif</span>'}
+                            </div>
+                        </div>
+                        <button class="popup-edit-btn" onclick="editAnnonce(${e.id}); document.getElementById('calendar-popup').style.display='none';">✏️</button>
+                    </div>
+                `}).join('')}
+            </div>
+        `;
+
+        // Positionner le popup près du clic
+        const rect = event.target.closest('.calendar-day').getBoundingClientRect();
+        popup.style.display = 'block';
+        popup.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+        popup.style.left = Math.min(rect.left, window.innerWidth - 320) + 'px';
+    }
+
+    function getEventsForDate(dateStr) {
+        // dateStr format: "2026-02-05"
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const checkDate = new Date(year, month - 1, day, 12, 0, 0); // Midi pour éviter timezone issues
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        return calendarAnnonces.filter(a => {
+            if (a.actif === false) return false;
+
+            const isPermanent = !a.date_debut && !a.date_fin;
+            const isScheduled = a.date_debut || a.date_fin;
+
+            // Appliquer le filtre
+            if (calendarFilter === 'scheduled' && isPermanent) return false;
+            if (calendarFilter === 'permanent' && isScheduled) return false;
+
+            // Pour les permanentes
+            if (isPermanent) {
+                if (calendarFilter === 'all' && checkDate > today) {
+                    const weekFromNow = new Date(today);
+                    weekFromNow.setDate(weekFromNow.getDate() + 7);
+                    if (checkDate > weekFromNow) return false;
+                }
+                return true;
+            }
+
+            // Pour les programmées, vérifier les dates
+            let debutDate = new Date(0);
+            let finDate = new Date('2099-12-31');
+
+            if (a.date_debut) {
+                const d = new Date(a.date_debut);
+                debutDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0);
+            }
+            if (a.date_fin) {
+                const f = new Date(a.date_fin);
+                finDate = new Date(f.getFullYear(), f.getMonth(), f.getDate(), 23, 59, 59);
+            }
+
+            const dayStart = new Date(year, month - 1, day, 0, 0, 0);
+            const dayEnd = new Date(year, month - 1, day, 23, 59, 59);
+
+            // Le jour chevauche la période de l'annonce ?
+            return dayEnd >= debutDate && dayStart <= finDate;
+        });
     }
 
     // ========================================
