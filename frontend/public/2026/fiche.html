@@ -14,6 +14,13 @@
     <meta property="og:image" id="og-image" content="">
     <meta property="og:url" id="og-url" content="">
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -434,6 +441,266 @@
         .category-display {
             text-transform: capitalize;
         }
+
+        /* ========================================
+           MOBILE STYLES
+           ======================================== */
+        @media (max-width: 768px) {
+            /* Header ultra-compact */
+            .header, header {
+                height: 28px !important;
+                min-height: 28px !important;
+                max-height: 28px !important;
+                padding: 0 !important;
+            }
+
+            .nav-container {
+                padding: 0.1rem 0.3rem !important;
+                height: 28px !important;
+            }
+
+            .logo, .logo svg {
+                width: 18px !important;
+                height: 18px !important;
+            }
+
+            .logo-text {
+                font-size: 0.5rem !important;
+            }
+
+            .logo-section {
+                gap: 0.15rem !important;
+            }
+
+            .nav-links {
+                display: none !important;
+            }
+
+            main {
+                padding-top: 32px !important;
+            }
+
+            .product-container {
+                padding: 0.5rem !important;
+            }
+
+            /* Breadcrumb compact */
+            .breadcrumb {
+                font-size: 0.4rem !important;
+                margin-bottom: 0.5rem !important;
+                gap: 0.2rem !important;
+            }
+
+            /* Product Header compact */
+            .product-header {
+                padding: 0.6rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .product-header::before {
+                height: 2px !important;
+            }
+
+            .product-title {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.4rem !important;
+            }
+
+            /* Meta badges (prix, catégorie, top) */
+            .product-meta {
+                gap: 0.3rem !important;
+            }
+
+            .meta-badge {
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.4rem !important;
+                border-radius: 8px !important;
+            }
+
+            .meta-badge.price {
+                padding: 0.2rem 0.5rem !important;
+            }
+
+            .meta-badge.top {
+                padding: 0.2rem 0.4rem !important;
+            }
+
+            /* Product Overview */
+            .product-overview {
+                gap: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .product-image-section {
+                padding: 0.5rem !important;
+                min-height: 120px !important;
+            }
+
+            .product-image-section img {
+                max-height: 100px !important;
+            }
+
+            .product-summary {
+                padding: 0.5rem !important;
+            }
+
+            .summary-title {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.4rem !important;
+            }
+
+            .product-description {
+                font-size: 0.4rem !important;
+                line-height: 1.5 !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .product-link {
+                padding: 0.4rem 0.8rem !important;
+                font-size: 0.4rem !important;
+            }
+
+            /* Section Cards (Specs, Features) */
+            .section-card {
+                padding: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .section-card-title {
+                font-size: 0.6rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            /* Specs Grid - descriptions techniques */
+            .specs-grid {
+                grid-template-columns: 1fr !important;
+                gap: 0.4rem !important;
+            }
+
+            .spec-item {
+                padding: 0.4rem !important;
+                border-left-width: 2px !important;
+                border-radius: 6px !important;
+            }
+
+            .spec-label {
+                font-size: 0.45rem !important;
+                margin-bottom: 0.3rem !important;
+                gap: 0.2rem !important;
+            }
+
+            .spec-icon {
+                font-size: 0.55rem !important;
+            }
+
+            .spec-value {
+                font-size: 0.4rem !important;
+                line-height: 1.4 !important;
+            }
+
+            .spec-value .spec-line {
+                padding: 0.15rem 0 !important;
+            }
+
+            /* Features Tags */
+            .features-grid {
+                gap: 0.3rem !important;
+            }
+
+            .feature-tag {
+                padding: 0.25rem 0.4rem !important;
+                font-size: 0.4rem !important;
+                gap: 0.2rem !important;
+            }
+
+            /* Product Footer */
+            .product-footer {
+                margin-top: 0.5rem !important;
+            }
+
+            .navigation-buttons {
+                gap: 0.3rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .navigation-buttons .btn {
+                padding: 0.3rem 0.5rem !important;
+                font-size: 0.4rem !important;
+            }
+
+            .share-section {
+                padding: 0.5rem !important;
+            }
+
+            .share-title {
+                font-size: 0.4rem !important;
+                margin-bottom: 0.4rem !important;
+            }
+
+            .share-buttons {
+                gap: 0.3rem !important;
+            }
+
+            .share-btn {
+                padding: 0.25rem 0.5rem !important;
+                font-size: 0.35rem !important;
+            }
+
+            /* Loading/Error states */
+            .loading-state,
+            .error-state {
+                padding: 1rem !important;
+            }
+
+            .loading-spinner {
+                width: 30px !important;
+                height: 30px !important;
+            }
+
+            .loading-text {
+                font-size: 0.5rem !important;
+            }
+
+            .error-icon {
+                font-size: 1.5rem !important;
+            }
+
+            .error-title {
+                font-size: 0.6rem !important;
+            }
+
+            .error-text {
+                font-size: 0.4rem !important;
+            }
+
+            /* Footer ultra-compact */
+            .footer, footer {
+                padding: 0.3rem 0.2rem !important;
+                margin-top: 0.5rem !important;
+            }
+
+            .footer-content {
+                display: none !important;
+            }
+
+            .footer-bottom {
+                padding: 0.2rem 0 !important;
+                border: none !important;
+            }
+
+            .footer-bottom p {
+                font-size: 0.3rem !important;
+            }
+
+            /* Scroll top mini */
+            .scroll-top {
+                width: 22px !important;
+                height: 22px !important;
+                font-size: 0.5rem !important;
+                bottom: 5px !important;
+                right: 5px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -460,7 +727,9 @@
             <div class="nav-links">
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
-                <a href="/2026/recherche.html" class="nav-link">🔍 Rechercher</a>
+                <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/timeline.html" class="nav-link">Timeline</a>
+                <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
         </nav>
     </header>
@@ -576,6 +845,9 @@
                     <li><a href="/2026/produits.html">Produits</a></li>
                     <li><a href="/2026/tendances.html">Tendances</a></li>
                     <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/configurateur.html">Configurateur</a></li>
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                    <li><a href="/2026/versus.html">Versus</a></li>
                 </ul>
             </div>
 
@@ -594,8 +866,9 @@
                 <ul class="footer-links">
                     <li><a href="/2026/wiki.html">Wiki</a></li>
                     <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="#">À propos</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>
             </div>
         </div>
@@ -772,7 +1045,7 @@
                             content = content
                                 .split(/\s*[•]\s*/)
                                 .filter(s => s.trim())
-                                .map(s => `<span class="spec-line"><span class="spec-bullet">▸</span> ${s.trim()}</span>`)
+                                .map(s => `<span class="spec-line">${s.trim()}</span>`)
                                 .join('');
 
                             // Si pas de bullets, afficher tel quel
@@ -949,5 +1222,15 @@
         document.addEventListener('DOMContentLoaded', loadProduct);
     </script>
     <script src="/assets/js/theme-toggle.js"></script>
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(() => {})
+                    .catch(() => {});
+            });
+        }
+    </script>
 </body>
 </html>

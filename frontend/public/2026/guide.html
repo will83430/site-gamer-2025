@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide d'achat - HIGH-TECH 2026</title>
+    <meta name="description" content="Guide d'achat complet avec critères, produits recommandés et conseils.">
+    <meta name="robots" content="index, follow">
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/theme.css">
+
+    <style>
+        main { padding-top: 100px; }
+
+        .guide-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            margin-bottom: 2rem;
+        }
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .breadcrumb a:hover { color: var(--tech-yellow); }
+        .breadcrumb .separator {
+            color: var(--text-muted);
+            margin: 0 0.5rem;
+        }
+        .breadcrumb .current {
+            color: var(--tech-yellow);
+        }
+
+        /* Guide Header */
+        .guide-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .guide-category-badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(77,212,255,0.1);
+            border: 1px solid rgba(77,212,255,0.2);
+            border-radius: 50px;
+            color: var(--tech-blue);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        .guide-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--tech-yellow), var(--tech-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .guide-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .guide-budget {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.5rem;
+            background: rgba(212,255,0,0.1);
+            border: 1px solid rgba(212,255,0,0.3);
+            border-radius: 50px;
+            color: var(--tech-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Sections */
+        .guide-section {
+            margin-bottom: 3rem;
+        }
+        .guide-section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(212,255,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .guide-section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Criteria */
+        .criteria-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: criteria;
+        }
+        .criteria-item {
+            counter-increment: criteria;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            margin-bottom: 0.75rem;
+            transition: 0.3s ease;
+        }
+        .criteria-item:hover {
+            border-color: rgba(212,255,0,0.15);
+        }
+        .criteria-number {
+            width: 36px;
+            height: 36px;
+            background: rgba(212,255,0,0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--tech-yellow);
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .criteria-number::before {
+            content: counter(criteria);
+        }
+        .criteria-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Products */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: block;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212,255,0,0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .product-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            background: var(--bg-elevated);
+            padding: 1rem;
+        }
+        .product-card-body {
+            padding: 1.2rem;
+        }
+        .product-card-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .product-card-price {
+            color: var(--tech-yellow);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .product-card-rec {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* Tips */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .tip-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: 0.3s ease;
+        }
+        .tip-card:hover {
+            border-color: rgba(107,255,107,0.2);
+        }
+        .tip-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .tip-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Loading & Empty */
+        .loading-container {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(212,255,0,0.1);
+            border-top: 3px solid var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Back Link */
+        .back-link-wrapper {
+            text-align: center;
+            margin-top: 3rem;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--tech-yellow), var(--tech-green));
+            color: #0a0a0f;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.9rem 2.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 255, 0, 0.3);
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 255, 0, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            main { padding-top: 80px; }
+            .guide-container { padding: 0 1rem 3rem; }
+            .guide-title { font-size: 1.6rem !important; }
+            .guide-description { font-size: 1rem; }
+            .products-grid { grid-template-columns: 1fr; }
+            .tips-grid { grid-template-columns: 1fr; }
+            .guide-section-title { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/2026/" class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg)" stroke-width="2.5" opacity="0.9"/>
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg)" opacity="0.95"/>
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </a>
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link">Accueil</a>
+                <a href="/2026/#categories" class="nav-link">Catégories</a>
+                <a href="/2026/guides.html" class="nav-link active">Guides</a>
+                <a href="/2026/timeline.html" class="nav-link">Timeline</a>
+                <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="guide-container" id="guide-content">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p style="color: var(--text-muted);">Chargement du guide...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/guides.html">Guides</a></li>
+                    <li><a href="/2026/configurateur.html">Configurateur</a></li>
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop">^</button>
+
+    <script src="/assets/js/theme-toggle.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('slug');
+            if (slug) {
+                loadGuide(slug);
+            } else {
+                document.getElementById('guide-content').innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem; color: var(--text-muted);">
+                        <p>Aucun guide spécifié.</p>
+                        <a href="/2026/guides.html" class="back-link">← Voir tous les guides</a>
+                    </div>
+                `;
+            }
+            initScrollTop();
+        });
+
+        async function loadGuide(slug) {
+            const container = document.getElementById('guide-content');
+            try {
+                const res = await fetch(`/api/guides/by-slug/${slug}`);
+                const data = await res.json();
+
+                if (!data.success || !data.data) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 4rem 2rem; color: var(--text-muted);">
+                            <p>Guide non trouvé.</p>
+                            <a href="/2026/guides.html" class="back-link">← Voir tous les guides</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const guide = data.data;
+                document.title = `${guide.titre} - HIGH-TECH 2026`;
+
+                const criteres = Array.isArray(guide.criteres) ? guide.criteres : [];
+                const conseils = Array.isArray(guide.conseils) ? guide.conseils : [];
+                const produits = guide.produits || [];
+                const budgetText = guide.budget_min && guide.budget_max
+                    ? `${Math.round(guide.budget_min)}€ - ${Math.round(guide.budget_max)}€`
+                    : '';
+
+                let html = `
+                    <nav class="breadcrumb">
+                        <a href="/2026/">Accueil</a>
+                        <span class="separator">/</span>
+                        <a href="/2026/guides.html">Guides</a>
+                        <span class="separator">/</span>
+                        <span class="current">${guide.titre}</span>
+                    </nav>
+
+                    <div class="guide-header">
+                        ${guide.categorie_nom ? `<span class="guide-category-badge">${guide.categorie_nom}</span>` : ''}
+                        <h1 class="guide-title">${guide.titre}</h1>
+                        ${guide.description ? `<p class="guide-description">${guide.description}</p>` : ''}
+                        ${budgetText ? `<div class="guide-budget">Budget : ${budgetText}</div>` : ''}
+                    </div>
+                `;
+
+                // Critères
+                if (criteres.length > 0) {
+                    html += `
+                        <div class="guide-section">
+                            <h2 class="guide-section-title">
+                                <span class="guide-section-icon">🎯</span>
+                                Critères d'achat
+                            </h2>
+                            <ol class="criteria-list">
+                                ${criteres.map(c => `
+                                    <li class="criteria-item">
+                                        <div class="criteria-number"></div>
+                                        <div class="criteria-text">${c}</div>
+                                    </li>
+                                `).join('')}
+                            </ol>
+                        </div>
+                    `;
+                }
+
+                // Produits recommandés
+                if (produits.length > 0) {
+                    html += `
+                        <div class="guide-section">
+                            <h2 class="guide-section-title">
+                                <span class="guide-section-icon">⭐</span>
+                                Produits recommandés
+                            </h2>
+                            <div class="products-grid">
+                                ${produits.map(p => {
+                                    const productSlug = (p.nom || '').toLowerCase()
+                                        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                                        .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                                    return `
+                                        <a href="/2026/fiche.html?produit=${productSlug}" class="product-card">
+                                            ${p.image ? `<img class="product-card-image" src="/assets/images/${p.image}" alt="${p.nom}" onerror="this.src='/assets/images/placeholder.jpg'">` : ''}
+                                            <div class="product-card-body">
+                                                <div class="product-card-name">${p.nom}</div>
+                                                ${p.prix ? `<div class="product-card-price">${p.prix}</div>` : ''}
+                                                ${p.recommendation ? `<div class="product-card-rec">${p.recommendation}</div>` : ''}
+                                            </div>
+                                        </a>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Conseils
+                if (conseils.length > 0) {
+                    html += `
+                        <div class="guide-section">
+                            <h2 class="guide-section-title">
+                                <span class="guide-section-icon">💡</span>
+                                Conseils pratiques
+                            </h2>
+                            <div class="tips-grid">
+                                ${conseils.map(c => `
+                                    <div class="tip-card">
+                                        <span class="tip-icon">✅</span>
+                                        <div class="tip-text">${c}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `<div class="back-link-wrapper"><a href="/2026/guides.html" class="back-link">← Retour aux guides</a></div>`;
+                container.innerHTML = html;
+
+            } catch (e) {
+                console.error('Erreur guide:', e);
+                container.innerHTML = '<div style="text-align: center; padding: 4rem; color: var(--text-muted);"><p>Erreur de chargement.</p></div>';
+            }
+        }
+
+        function initScrollTop() {
+            const btn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+            });
+            btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>

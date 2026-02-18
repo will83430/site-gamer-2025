@@ -14,6 +14,12 @@
     <meta property="og:description" content="Explorez notre catalogue de produits gaming et high-tech par catégorie.">
     <meta property="og:url" id="og-url" content="https://high-tech-2026.com/2026/produits.html">
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -693,32 +699,421 @@
         }
 
         @media (max-width: 768px) {
+            /* Header ultra-compact */
+            .header, header {
+                height: 28px !important;
+                min-height: 28px !important;
+                max-height: 28px !important;
+                padding: 0 !important;
+            }
+
+            .nav-container {
+                padding: 0.1rem 0.3rem !important;
+                height: 28px !important;
+            }
+
+            .logo, .logo svg {
+                width: 18px !important;
+                height: 18px !important;
+            }
+
+            .logo-text {
+                font-size: 0.5rem !important;
+            }
+
+            .logo-section {
+                gap: 0.15rem !important;
+            }
+
+            .nav-links {
+                display: none !important;
+            }
+
+            main {
+                padding-top: 32px !important;
+            }
+
+            /* How it works - compact */
+            .how-it-works {
+                padding: 0.3rem !important;
+            }
+
+            .steps-grid {
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                gap: 0.3rem !important;
+            }
+
+            .step-card {
+                min-width: 45% !important;
+                flex: 1 1 45% !important;
+                padding: 0.2rem !important;
+            }
+
+            .step-number {
+                width: 20px !important;
+                height: 20px !important;
+                font-size: 0.5rem !important;
+                margin-bottom: 0.2rem !important;
+            }
+
+            .step-title {
+                font-size: 0.4rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .step-description {
+                font-size: 0.35rem !important;
+                display: none !important;
+            }
+
+            /* Page header compact */
+            .page-header {
+                padding: 0.3rem !important;
+            }
+
+            .breadcrumb {
+                font-size: 0.4rem !important;
+                margin-bottom: 0.3rem !important;
+                gap: 0.2rem !important;
+            }
+
             .page-title-row {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center !important;
+                gap: 0.3rem !important;
+                text-align: center !important;
+            }
+
+            .page-title {
+                font-size: 0.7rem !important;
+            }
+
+            .page-meta {
+                flex-direction: column !important;
+                gap: 0.3rem !important;
+                width: 100% !important;
+            }
+
+            .product-count {
+                font-size: 0.4rem !important;
+                padding: 0.2rem 0.5rem !important;
+            }
+
+            /* Bouton Tendances visible sur mobile */
+            #btn-tendances {
+                display: inline-flex !important;
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.4rem !important;
+                min-height: 20px !important;
+                max-height: 24px !important;
+                border-radius: 4px !important;
+            }
+
+            /* Filters compact */
+            .filters-bar {
+                padding: 0.2rem !important;
             }
 
             .filters-container {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 0.3rem !important;
+                padding: 0.3rem !important;
             }
 
             .filter-group {
                 flex-wrap: wrap;
+                gap: 0.2rem !important;
+                justify-content: center !important;
+            }
+
+            .filter-label {
+                font-size: 0.35rem !important;
+            }
+
+            .filter-select {
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.35rem !important;
+            }
+
+            .filter-checkbox-label {
+                padding: 0.15rem 0.3rem !important;
+                font-size: 0.35rem !important;
+            }
+
+            .filter-checkbox {
+                width: 12px !important;
+                height: 12px !important;
+            }
+
+            .filter-checkbox-text {
+                font-size: 0.35rem !important;
+            }
+
+            .view-toggle {
+                display: none !important;
+            }
+
+            /* Products grid - 2 colonnes */
+            .products-section {
+                padding: 0.3rem !important;
             }
 
             .products-grid {
-                grid-template-columns: 1fr;
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.3rem !important;
             }
 
-            .products-grid.view-list .product-card {
-                grid-template-columns: 1fr;
+            .products-grid .product-card {
+                width: 100% !important;
             }
 
+            /* Product card - taille moyenne lisible */
+            .product-card {
+                padding: 0 !important;
+                border-radius: 8px !important;
+                overflow: hidden !important;
+            }
+
+            .product-image-container {
+                height: 140px !important;
+                padding: 0 !important;
+                position: relative !important;
+                display: block !important;
+                background: var(--bg-elevated) !important;
+                overflow: hidden !important;
+            }
+
+            .product-image {
+                width: 100% !important;
+                height: 140px !important;
+                min-width: 100% !important;
+                min-height: 140px !important;
+                object-fit: cover !important;
+                object-position: center !important;
+                display: block !important;
+            }
+
+            /* Badges bien positionnés */
+            .product-badges {
+                position: absolute !important;
+                top: 0.3rem !important;
+                left: 0.3rem !important;
+                right: 0.3rem !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+                z-index: 10 !important;
+            }
+
+            .product-badge {
+                font-size: 0.4rem !important;
+                padding: 0.15rem 0.3rem !important;
+                border-radius: 4px !important;
+                white-space: nowrap !important;
+            }
+
+            .compare-checkbox {
+                width: 20px !important;
+                height: 20px !important;
+                flex-shrink: 0 !important;
+            }
+
+            .product-content {
+                padding: 0.4rem !important;
+            }
+
+            .product-category {
+                font-size: 0.4rem !important;
+                margin-bottom: 0.15rem !important;
+            }
+
+            .product-title {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.25rem !important;
+                line-height: 1.25 !important;
+            }
+
+            .product-description {
+                display: none !important;
+            }
+
+            .product-footer {
+                gap: 0.3rem !important;
+                flex-wrap: wrap !important;
+            }
+
+            .product-price {
+                font-size: 0.6rem !important;
+            }
+
+            .product-btn {
+                padding: 0.2rem 0.35rem !important;
+                font-size: 0.4rem !important;
+                min-height: 20px !important;
+                max-height: 24px !important;
+                border-radius: 4px !important;
+            }
+
+            /* Compare bar compact */
             .compare-bar {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                gap: 0.3rem !important;
+                padding: 0.3rem !important;
+                justify-content: center !important;
+            }
+
+            .compare-bar-info {
+                font-size: 0.4rem !important;
+            }
+
+            .compare-bar-btn, .compare-bar-clear {
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.35rem !important;
+            }
+
+            /* Category selector compact - horizontal scroll */
+            .category-selector {
+                padding: 0.3rem !important;
+            }
+
+            .category-selector-header {
+                margin-bottom: 0.3rem !important;
+            }
+
+            .category-selector-icon {
+                font-size: 1.2rem !important;
+                margin-bottom: 0.2rem !important;
+            }
+
+            .category-selector-title {
+                font-size: 0.6rem !important;
+            }
+
+            .category-selector-text {
+                font-size: 0.35rem !important;
+                display: none !important;
+            }
+
+            .category-selector-grid {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                gap: 0.4rem !important;
+                padding: 0.3rem 0 !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            .category-selector-grid::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            .category-card {
+                flex: 0 0 auto !important;
+                min-width: 60px !important;
+                width: 60px !important;
+                padding: 0.4rem 0.3rem !important;
+                border-radius: 8px !important;
+            }
+
+            .category-card-icon {
+                font-size: 1.2rem !important;
+                margin-bottom: 0.15rem !important;
+            }
+
+            .category-card-name {
+                font-size: 0.35rem !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+
+            .category-card-count {
+                display: none !important;
+            }
+
+            /* Footer ultra-compact */
+            .footer, footer {
+                padding: 0.3rem 0.2rem !important;
+                margin-top: 0.5rem !important;
+            }
+
+            .footer-content {
+                display: none !important;
+            }
+
+            .footer-bottom {
+                padding: 0.2rem 0 !important;
+                border: none !important;
+            }
+
+            .footer-bottom p {
+                font-size: 0.3rem !important;
+            }
+
+            /* Scroll top mini */
+            .scroll-top {
+                width: 22px !important;
+                height: 22px !important;
+                font-size: 0.5rem !important;
+                bottom: 5px !important;
+                right: 5px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding-top: 30px !important;
+            }
+
+            .page-title {
+                font-size: 0.6rem !important;
+            }
+
+            .product-image-container {
+                height: 130px !important;
+            }
+
+            .product-image {
+                height: 130px !important;
+                min-height: 130px !important;
+            }
+
+            .product-badge {
+                font-size: 0.35rem !important;
+                padding: 0.1rem 0.25rem !important;
+            }
+
+            .product-title {
+                font-size: 0.5rem !important;
+            }
+
+            .product-price {
+                font-size: 0.55rem !important;
+            }
+
+            .category-selector-grid {
+                gap: 0.3rem !important;
+            }
+
+            .category-card {
+                min-width: 55px !important;
+                width: 55px !important;
+                padding: 0.3rem 0.2rem !important;
+            }
+
+            .category-card-icon {
+                font-size: 1rem !important;
+            }
+
+            .category-card-name {
+                font-size: 0.3rem !important;
             }
         }
     </style>
@@ -747,7 +1142,9 @@
             <div class="nav-links">
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
-                <a href="/2026/recherche.html" class="nav-link">🔍 Rechercher</a>
+                <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/timeline.html" class="nav-link">Timeline</a>
+                <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
         </nav>
     </header>
@@ -916,6 +1313,9 @@
                     <li><a href="/2026/produits.html">Produits</a></li>
                     <li><a href="/2026/tendances.html">Tendances</a></li>
                     <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/configurateur.html">Configurateur</a></li>
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                    <li><a href="/2026/versus.html">Versus</a></li>
                 </ul>
             </div>
 
@@ -934,8 +1334,9 @@
                 <ul class="footer-links">
                     <li><a href="/2026/wiki.html">Wiki</a></li>
                     <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="#">À propos</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>
             </div>
         </div>

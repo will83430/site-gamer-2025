@@ -21,6 +21,14 @@
     <meta name="twitter:title" content="HIGH-TECH 2026 - Comparateur Gaming & Tech">
     <meta name="twitter:description" content="Comparez les meilleurs produits gaming et high-tech. Tests, guides d'achat et tendances 2026.">
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HIGH-TECH">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
     <!-- Canonical -->
     <link rel="canonical" href="https://high-tech-2026.com/">
 
@@ -421,6 +429,257 @@
         }
 
         /* ========================================
+           DISCOVER SECTION
+           ======================================== */
+
+        .discover-section {
+            padding: 2rem 2rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .discover-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .discover-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discover-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .discover-card.card-guides::before {
+            background: linear-gradient(90deg, var(--tech-yellow), var(--tech-green));
+        }
+
+        .discover-card.card-timeline::before {
+            background: linear-gradient(90deg, var(--tech-blue), var(--tech-purple));
+        }
+
+        .discover-card.card-apropos::before {
+            background: linear-gradient(90deg, var(--tech-pink), var(--tech-purple));
+        }
+
+        /* ========================================
+           CONFIGURATEUR BANNER
+           ======================================== */
+
+        .configurateur-section {
+            padding: 2rem 2rem 0.5rem;
+            position: relative;
+            z-index: 1;
+            background: transparent;
+        }
+
+        .configurateur-banner {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .configurateur-banner:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .configurateur-content {
+            flex: 1;
+        }
+
+        .configurateur-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--tech-yellow);
+            margin-bottom: 0.5rem;
+        }
+
+        .configurateur-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .configurateur-btn {
+            position: relative;
+            width: auto;
+            height: auto;
+            background: linear-gradient(135deg, var(--tech-yellow) 0%, var(--tech-green) 100%);
+            border: none;
+            color: #0a0a0f;
+            border-radius: 50px;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            z-index: auto;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .configurateur-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
+        }
+
+        /* ========================================
+           EVOLUTION PRIX BANNER
+           ======================================== */
+
+        .evolution-section {
+            padding: 2rem 2rem 0.5rem;
+            position: relative;
+            z-index: 1;
+            background: transparent;
+        }
+
+        .evolution-banner {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(238, 90, 36, 0.1) 100%);
+            border: 1px solid rgba(255, 107, 107, 0.4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .evolution-banner:hover {
+            border-color: rgba(255, 107, 107, 0.7);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 107, 107, 0.2);
+        }
+
+        .evolution-content {
+            flex: 1;
+        }
+
+        .evolution-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+        }
+
+        .evolution-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .evolution-btn {
+            position: relative;
+            width: auto;
+            height: auto;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            border: none;
+            color: white;
+            border-radius: 50px;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            z-index: auto;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .evolution-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.5);
+        }
+
+        .discover-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 255, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(212, 255, 0, 0.1);
+        }
+
+        .discover-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
+        .discover-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .discover-card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .discover-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--tech-yellow);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: auto;
+            transition: gap 0.3s ease;
+        }
+
+        .discover-card:hover .discover-card-link {
+            gap: 0.8rem;
+        }
+
+        /* ========================================
            FEATURED PRODUCTS
            ======================================== */
 
@@ -469,6 +728,12 @@
         @media (max-width: 768px) {
             .products-grid {
                 grid-template-columns: 1fr;
+            }
+            .discover-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .discover-section {
+                padding: 1.5rem 1rem 2rem;
             }
         }
 
@@ -1082,29 +1347,690 @@
         }
 
         @media (max-width: 768px) {
+            /* Header ultra-compact */
+            .header, header {
+                height: 28px !important;
+                min-height: 28px !important;
+                max-height: 28px !important;
+                padding: 0 !important;
+            }
+
+            .nav-container {
+                padding: 0.1rem 0.3rem !important;
+                height: 28px !important;
+            }
+
+            .logo, .logo svg {
+                width: 18px !important;
+                height: 18px !important;
+            }
+
+            .logo-text {
+                font-size: 0.5rem !important;
+            }
+
+            .logo-section {
+                gap: 0.15rem !important;
+            }
+
             .nav-links {
                 display: none;
             }
 
-            .hero {
-                padding: 8rem 1.5rem 2rem;
+            /* Tous les boutons ultra-compacts */
+            .btn, button, .product-btn, .announcement-btn, .compare-floating-btn {
+                padding: 0.15rem 0.25rem !important;
+                font-size: 0.4rem !important;
+                min-height: 18px !important;
+                max-height: 22px !important;
+                border-radius: 3px !important;
+                line-height: 1 !important;
             }
 
+            .hero {
+                padding: 1.8rem 0.3rem 0.3rem !important;
+                min-height: auto !important;
+            }
+
+            .hero-title {
+                font-size: 0.85rem !important;
+                line-height: 1.2 !important;
+                margin: 0.1rem 0 !important;
+            }
+
+            .hero-subtitle {
+                font-size: 0.5rem !important;
+                line-height: 1.2 !important;
+                margin: 0.1rem 0 !important;
+            }
+
+            .hero-badge {
+                font-size: 0.4rem !important;
+                padding: 0.1rem 0.25rem !important;
+            }
+
+            .hero-cta {
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                gap: 0.2rem !important;
+                justify-content: center !important;
+            }
+
+            .hero-cta .btn {
+                flex: 1 1 45% !important;
+                padding: 0.1rem 0.2rem !important;
+                font-size: 0.35rem !important;
+                min-height: 16px !important;
+                max-height: 20px !important;
+            }
+
+            /* Comment ça marche - style horizontal */
             .steps-grid {
-                grid-template-columns: 1fr;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0.4rem !important;
+                padding: 0.5rem !important;
+            }
+
+            .step-card {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 0.6rem !important;
+                text-align: left !important;
+            }
+
+            .step-number {
+                width: 32px !important;
+                height: 32px !important;
+                min-width: 32px !important;
+                font-size: 0.8rem !important;
+                margin: 0 !important;
+            }
+
+            .step-title {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .step-description {
+                font-size: 0.4rem !important;
+                display: block !important;
+                line-height: 1.3 !important;
+                color: var(--text-muted) !important;
             }
 
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 0.2rem !important;
+                padding: 0.3rem !important;
             }
 
+            .stat-item {
+                padding: 0.3rem !important;
+            }
+
+            .stat-number {
+                font-size: 1rem !important;
+            }
+
+            .stat-label {
+                font-size: 0.4rem !important;
+            }
+
+            /* Announcements mobile */
+            .announcements-section {
+                padding: 0.5rem !important;
+            }
+
+            .announcement-card {
+                padding: 0.5rem 0.7rem !important;
+                gap: 0.5rem !important;
+            }
+
+            .announcement-icon {
+                font-size: 1.2rem !important;
+            }
+
+            .announcement-title {
+                font-size: 0.65rem !important;
+            }
+
+            .announcement-description {
+                font-size: 0.5rem !important;
+            }
+
+            /* Catégories style annonces - scroll horizontal */
             .categories-grid {
-                grid-template-columns: repeat(2, 1fr);
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0.4rem !important;
+                padding: 0.5rem !important;
+            }
+
+            .category-card {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                width: 100% !important;
+                padding: 0.5rem 0.7rem !important;
+                gap: 0.6rem !important;
+                border-radius: 12px !important;
+                height: auto !important;
+                min-height: auto !important;
+            }
+
+            .category-image {
+                width: 45px !important;
+                height: 45px !important;
+                min-width: 45px !important;
+                border-radius: 8px !important;
+                object-fit: cover !important;
+            }
+
+            .category-info {
+                flex: 1 !important;
+                padding: 0 !important;
+                text-align: left !important;
+            }
+
+            .category-name {
+                font-size: 0.65rem !important;
+                font-weight: 600 !important;
+                line-height: 1.2 !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .category-count {
+                font-size: 0.45rem !important;
+                color: var(--text-muted) !important;
+            }
+
+            /* Badge TOP réduit sur mobile - à droite */
+            .category-badge {
+                position: absolute !important;
+                top: 50% !important;
+                right: 0.4rem !important;
+                transform: translateY(-50%) !important;
+                padding: 0.1rem 0.3rem !important;
+                font-size: 0.35rem !important;
+                border-radius: 6px !important;
+                animation: none !important;
             }
 
             .news-content {
                 flex-direction: column;
                 text-align: center;
+                padding: 0.2rem !important;
+            }
+
+            .news-section {
+                padding: 0.3rem !important;
+            }
+
+            .section-header h2 {
+                font-size: 0.65rem !important;
+            }
+
+            .section-header p {
+                font-size: 0.45rem !important;
+            }
+
+            .product-card {
+                padding: 0.25rem !important;
+                border-radius: 6px !important;
+            }
+
+            .product-card img {
+                max-height: 50px !important;
+            }
+
+            .product-image {
+                height: 70px !important;
+                max-height: 70px !important;
+            }
+
+            .product-content {
+                padding: 0.3rem !important;
+            }
+
+            .product-title {
+                font-size: 0.5rem !important;
+            }
+
+            .product-description {
+                display: none !important;
+            }
+
+            .product-footer {
+                gap: 0.2rem !important;
+            }
+
+            .product-price {
+                font-size: 0.55rem !important;
+            }
+
+            .product-btn {
+                padding: 0.15rem 0.3rem !important;
+                font-size: 0.35rem !important;
+                min-height: 16px !important;
+                max-height: 20px !important;
+            }
+
+            .product-badge {
+                font-size: 0.3rem !important;
+                padding: 0.1rem 0.25rem !important;
+                top: 0.2rem !important;
+                right: 0.2rem !important;
+            }
+
+            /* Comparateur compact */
+            .comparator-section {
+                padding: 0.4rem !important;
+                margin-top: 0.3rem !important;
+            }
+
+            .comparator-banner {
+                padding: 0.5rem 0.6rem !important;
+                border-radius: 8px !important;
+                gap: 0.5rem !important;
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .comparator-title {
+                font-size: 0.6rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .comparator-description {
+                font-size: 0.45rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .compare-floating-btn {
+                padding: 0.2rem 0.5rem !important;
+                font-size: 0.4rem !important;
+                min-height: 20px !important;
+                max-height: 24px !important;
+                border-radius: 4px !important;
+            }
+
+            /* Configurateur compact */
+            .configurateur-section {
+                padding: 0.4rem !important;
+                margin-top: 0.3rem !important;
+            }
+
+            .configurateur-banner {
+                padding: 0.5rem 0.6rem !important;
+                border-radius: 8px !important;
+                gap: 0.5rem !important;
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .configurateur-title {
+                font-size: 0.6rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .configurateur-description {
+                font-size: 0.45rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .configurateur-btn {
+                padding: 0.2rem 0.5rem !important;
+                font-size: 0.4rem !important;
+                min-height: 20px !important;
+                max-height: 24px !important;
+                border-radius: 4px !important;
+            }
+
+            /* Evolution prix compact */
+            .evolution-section {
+                padding: 0.4rem !important;
+                margin-top: 0.3rem !important;
+            }
+
+            .evolution-banner {
+                padding: 0.5rem 0.6rem !important;
+                border-radius: 8px !important;
+                gap: 0.5rem !important;
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .evolution-title {
+                font-size: 0.6rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .evolution-description {
+                font-size: 0.45rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .evolution-btn {
+                padding: 0.2rem 0.5rem !important;
+                font-size: 0.4rem !important;
+                min-height: 20px !important;
+                max-height: 24px !important;
+                border-radius: 4px !important;
+            }
+
+            /* Featured Section compact */
+            .featured-section {
+                padding: 0.4rem !important;
+            }
+
+            .featured-section .section-header {
+                margin-bottom: 0.4rem !important;
+            }
+
+            .featured-section .section-title {
+                font-size: 0.65rem !important;
+            }
+
+            .featured-section .section-subtitle {
+                font-size: 0.45rem !important;
+            }
+
+            /* Footer ultra-compact */
+            .footer, footer {
+                padding: 0.3rem 0.2rem !important;
+                margin-top: 0.5rem !important;
+            }
+
+            .footer-content {
+                display: none !important;
+            }
+
+            .footer-bottom {
+                padding: 0.2rem 0 !important;
+                border: none !important;
+            }
+
+            .footer-bottom p {
+                font-size: 0.3rem !important;
+            }
+
+            /* Scroll top mini */
+            .scroll-top {
+                width: 22px !important;
+                height: 22px !important;
+                font-size: 0.5rem !important;
+                bottom: 5px !important;
+                right: 5px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 1.6rem 0.2rem 0.2rem !important;
+            }
+
+            .hero-title {
+                font-size: 0.75rem !important;
+            }
+
+            .hero-subtitle {
+                font-size: 0.45rem !important;
+            }
+
+            /* Catégories style annonces - petits écrans */
+            .categories-grid {
+                gap: 0.3rem !important;
+                padding: 0.3rem !important;
+            }
+
+            .category-card {
+                padding: 0.4rem 0.5rem !important;
+                gap: 0.5rem !important;
+            }
+
+            .category-image {
+                width: 38px !important;
+                height: 38px !important;
+                min-width: 38px !important;
+            }
+
+            .category-name {
+                font-size: 0.55rem !important;
+            }
+
+            .category-count {
+                font-size: 0.4rem !important;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 0.15rem !important;
+                padding: 0.2rem !important;
+            }
+
+            .stat-item {
+                padding: 0.2rem !important;
+                border-radius: 8px !important;
+            }
+
+            .stat-number {
+                font-size: 0.8rem !important;
+                margin-bottom: 0 !important;
+            }
+
+            .stat-label {
+                font-size: 0.3rem !important;
+                line-height: 1.1 !important;
+            }
+
+            /* Announcements / News */
+            .announcements-section {
+                padding: 0.3rem !important;
+            }
+
+            .announcements-container {
+                gap: 0.3rem !important;
+            }
+
+            .announcement-card {
+                padding: 0.4rem 0.5rem !important;
+                border-radius: 8px !important;
+                gap: 0.4rem !important;
+                flex-direction: row !important;
+            }
+
+            .announcement-icon {
+                font-size: 1rem !important;
+            }
+
+            .announcement-title {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .announcement-description {
+                font-size: 0.4rem !important;
+                display: -webkit-box !important;
+                -webkit-line-clamp: 2 !important;
+                -webkit-box-orient: vertical !important;
+                overflow: hidden !important;
+            }
+
+            .announcement-cta {
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.4rem !important;
+            }
+
+            /* Products Vedettes */
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.3rem !important;
+            }
+
+            .product-card {
+                padding: 0.3rem !important;
+            }
+
+            .product-card img {
+                max-height: 50px !important;
+            }
+
+            .product-title {
+                font-size: 0.5rem !important;
+            }
+
+            .product-description {
+                display: none !important;
+            }
+
+            .product-price {
+                font-size: 0.6rem !important;
+            }
+
+            /* Comparateur ultra-compact */
+            .comparator-section {
+                padding: 0.3rem !important;
+                margin-top: 0.2rem !important;
+            }
+
+            .comparator-banner {
+                padding: 0.4rem 0.5rem !important;
+                border-radius: 8px !important;
+                gap: 0.4rem !important;
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .comparator-title {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .comparator-description {
+                font-size: 0.4rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .compare-floating-btn {
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.4rem !important;
+                min-height: 20px !important;
+                max-height: 24px !important;
+                border-radius: 4px !important;
+            }
+
+            /* Configurateur ultra-compact */
+            .configurateur-section {
+                padding: 0.3rem !important;
+                margin-top: 0.2rem !important;
+            }
+
+            .configurateur-banner {
+                padding: 0.4rem 0.5rem !important;
+                border-radius: 8px !important;
+                gap: 0.4rem !important;
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .configurateur-title {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .configurateur-description {
+                font-size: 0.4rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .configurateur-btn {
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.4rem !important;
+                min-height: 20px !important;
+                max-height: 24px !important;
+                border-radius: 4px !important;
+            }
+
+            /* Evolution prix ultra-compact */
+            .evolution-section {
+                padding: 0.3rem !important;
+                margin-top: 0.2rem !important;
+            }
+
+            .evolution-banner {
+                padding: 0.4rem 0.5rem !important;
+                border-radius: 8px !important;
+                gap: 0.4rem !important;
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .evolution-title {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .evolution-description {
+                font-size: 0.4rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .evolution-btn {
+                padding: 0.2rem 0.4rem !important;
+                font-size: 0.4rem !important;
+                min-height: 20px !important;
+                max-height: 24px !important;
+                border-radius: 4px !important;
+            }
+
+            /* Featured Section ultra-compact */
+            .featured-section {
+                padding: 0.3rem !important;
+            }
+
+            .featured-section .section-header {
+                margin-bottom: 0.3rem !important;
+            }
+
+            .featured-section .section-title {
+                font-size: 0.6rem !important;
+            }
+
+            .featured-section .section-subtitle {
+                font-size: 0.4rem !important;
+            }
+
+            .product-card {
+                border-radius: 6px !important;
+            }
+
+            .product-image {
+                height: 60px !important;
+                max-height: 60px !important;
+            }
+
+            .product-content {
+                padding: 0.3rem !important;
+            }
+
+            .product-footer {
+                gap: 0.2rem !important;
+            }
+
+            .product-btn {
+                padding: 0.15rem 0.3rem !important;
+                font-size: 0.35rem !important;
+                min-height: 16px !important;
+                max-height: 20px !important;
+            }
+
+            .product-badge {
+                font-size: 0.3rem !important;
+                padding: 0.1rem 0.25rem !important;
+                top: 0.2rem !important;
+                right: 0.2rem !important;
             }
         }
     </style>
@@ -1139,7 +2065,9 @@
             <div class="nav-links">
                 <a href="/2026/" class="nav-link active">Accueil</a>
                 <a href="#categories" class="nav-link">Catégories</a>
-                <a href="/2026/recherche.html" class="nav-link">🔍 Rechercher</a>
+                <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/timeline.html" class="nav-link">Timeline</a>
+                <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
         </nav>
     </header>
@@ -1172,30 +2100,29 @@
         <div class="steps-grid">
             <div class="step-card">
                 <div class="step-number">1</div>
-                <h3 class="step-title">Explorez les catégories</h3>
+                <h3 class="step-title">Explorez & Comparez</h3>
                 <p class="step-description">
-                    Naviguez parmi 16 catégories de produits high-tech : smartphones, PC gaming, drones, VR, et bien plus encore.
+                    Naviguez parmi <span id="step-stat-categories">16</span> catégories et <span id="step-stat-produits">107</span> produits high-tech. Comparez jusqu'à 4 produits côte à côte ou lancez un duel 1-contre-1 pour un verdict immédiat.
                 </p>
             </div>
 
             <div class="step-card">
                 <div class="step-number">2</div>
-                <h3 class="step-title">Faites votre choix</h3>
+                <h3 class="step-title">Configurez votre budget</h3>
                 <p class="step-description">
-                    Comparez les produits par catégorie et trouvez celui dont vous avez besoin.
+                    Composez votre setup idéal avec le Budget Builder selon votre profil — gaming, mobilité, création ou VR. Suivez aussi l'évolution des prix pour acheter au bon moment.
                 </p>
             </div>
 
             <div class="step-card">
                 <div class="step-number">3</div>
-                <h3 class="step-title">Découvrez les articles tendances</h3>
+                <h3 class="step-title">Restez informé</h3>
                 <p class="step-description">
-                    Consultez nos actualités, les tendances technologiques, les tendances du marché et les prédictions par catégorie.
+                    Consultez nos guides d'achat, les articles tendances, la timeline tech et les actualités pour toujours faire le meilleur choix.
                 </p>
             </div>
         </div>
-
-            </section>
+    </section>
 
     <!-- Stats Section - Dynamique -->
     <section class="stats-section">
@@ -1372,9 +2299,40 @@
                 <div class="comparator-title">⚖️ Comparateur de Produits</div>
                 <p class="comparator-description">Comparez vos produits préférés côte à côte et trouvez le meilleur selon vos critères</p>
             </div>
-            <a href="/2026/comparatif.html" class="compare-floating-btn" id="compareBtn" title="Comparer des produits">
-                Comparer
-                <span class="badge" id="compareBadge" style="display: none;">0</span>
+            <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+                <a href="/2026/comparatif.html" class="compare-floating-btn" id="compareBtn" title="Comparer des produits">
+                    Comparer
+                    <span class="badge" id="compareBadge" style="display: none;">0</span>
+                </a>
+                <a href="/2026/versus.html" class="compare-floating-btn" style="background: linear-gradient(135deg, #4dd4ff, #ff4da6); border-color: transparent;" title="Duel 2 produits">
+                    ⚔️ Versus
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configurateur Banner -->
+    <section class="configurateur-section">
+        <div class="configurateur-banner">
+            <div class="configurateur-content">
+                <div class="configurateur-title">💰 Budget Builder</div>
+                <p class="configurateur-description">Composez votre setup tech idéal selon votre budget et votre profil d'usage : gaming, mobilité, création ou VR</p>
+            </div>
+            <a href="/2026/configurateur.html" class="configurateur-btn">
+                Configurer
+            </a>
+        </div>
+    </section>
+
+    <!-- Evolution Prix Banner -->
+    <section class="evolution-section">
+        <div class="evolution-banner">
+            <div class="evolution-content">
+                <div class="evolution-title">📈 Évolution des Prix</div>
+                <p class="evolution-description">Suivez les tendances de prix de tous nos produits tech : hausses, baisses et historique complet</p>
+            </div>
+            <a href="/2026/evolution-prix.html" class="evolution-btn">
+                Voir les prix
             </a>
         </div>
     </section>
@@ -1390,6 +2348,38 @@
             <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
                 <div class="loading-spinner"></div>
             </div>
+        </div>
+    </section>
+
+    <!-- Discover Section -->
+    <section class="discover-section">
+        <div class="section-header">
+            <h2 class="section-title">Découvrir</h2>
+            <p class="section-subtitle">Explorez nos ressources pour aller plus loin</p>
+        </div>
+
+        <div class="discover-grid">
+            <a href="/2026/guides.html" class="discover-card card-guides">
+                <div class="discover-icon">📖</div>
+                <h3 class="discover-card-title">Guides d'achat</h3>
+                <p class="discover-card-desc">Des guides complets par catégorie avec critères d'achat, budgets et produits recommandés pour faire le bon choix.</p>
+                <span class="discover-card-link">Consulter les guides <span>→</span></span>
+            </a>
+
+            <a href="/2026/timeline.html" class="discover-card card-timeline">
+                <div class="discover-icon">📅</div>
+                <h3 class="discover-card-title">Timeline Tech</h3>
+                <p class="discover-card-desc">Revivez 40 ans d'évolution technologique, des premiers PC aux dernières innovations en IA et réalité virtuelle.</p>
+                <span class="discover-card-link">Explorer la frise <span>→</span></span>
+            </a>
+
+            <a href="/2026/apropos.html" class="discover-card card-apropos">
+                <div class="discover-icon">ℹ️</div>
+                <h3 class="discover-card-title">À propos</h3>
+                <p class="discover-card-desc">Découvrez le projet HIGH-TECH 2026, sa stack technique, son architecture et les fonctionnalités du site.</p>
+                <span class="discover-card-link">En savoir plus <span>→</span></span>
+            </a>
+
         </div>
     </section>
 
@@ -1410,6 +2400,9 @@
                     <li><a href="/2026/produits.html">Produits</a></li>
                     <li><a href="/2026/tendances.html">Tendances</a></li>
                     <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/configurateur.html">Configurateur</a></li>
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                    <li><a href="/2026/versus.html">Versus</a></li>
                 </ul>
             </div>
 
@@ -1428,8 +2421,9 @@
                 <ul class="footer-links">
                     <li><a href="/2026/wiki.html">Wiki</a></li>
                     <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="#">À propos</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>
             </div>
         </div>
@@ -1456,8 +2450,6 @@
                 return;
             }
 
-            console.log('✅ scrollTop button initialized');
-
             // Gestionnaire de scroll
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 300) {
@@ -1478,7 +2470,6 @@
             scrollTop.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('🎯 SCROLL TO TOP CLICKED!');
                 window.scrollTo({ 
                     top: 0, 
                     behavior: 'smooth' 
@@ -1571,6 +2562,10 @@
                     animateCounter('stat-categories', categories || 16);
                     animateCounter('stat-tendances', tendances || 100);
                     animateCounter('stat-visites', visites || 0);
+
+                    // Mise à jour texte étape 1
+                    document.getElementById('step-stat-produits').textContent = produits || 107;
+                    document.getElementById('step-stat-categories').textContent = categories || 16;
                 } else {
                     throw new Error('Stats non disponibles');
                 }
@@ -1795,5 +2790,16 @@
     </script>
     <!-- Theme Toggle -->
     <script src="/assets/js/theme-toggle.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(() => {})
+                    .catch(() => {});
+            });
+        }
+    </script>
 </body>
 </html>

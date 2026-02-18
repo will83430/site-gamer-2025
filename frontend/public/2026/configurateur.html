@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Builder - Configurateur | HIGH-TECH 2026</title>
+    <meta name="description" content="Composez votre setup tech idéal selon votre budget. PC Gaming, mobilité, création, smart home ou VR : trouvez les meilleurs produits.">
+    <meta name="robots" content="index, follow">
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/theme.css">
+
+    <style>
+        main { padding-top: 100px; min-height: 100vh; }
+
+        .builder-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb { margin-bottom: 2rem; font-size: 0.9rem; }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+        .breadcrumb a:hover { color: var(--tech-yellow); }
+        .breadcrumb .separator { color: var(--text-muted); margin: 0 0.5rem; }
+        .breadcrumb .current { color: var(--tech-yellow); }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .page-badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(212,255,0,0.1);
+            border: 1px solid rgba(212,255,0,0.3);
+            border-radius: 50px;
+            color: var(--tech-yellow);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--tech-yellow), var(--tech-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Budget Section */
+        .config-section {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .config-section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Budget Slider */
+        .budget-controls {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .budget-slider-wrapper {
+            flex: 1;
+            min-width: 250px;
+        }
+        .budget-slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(90deg, var(--tech-yellow), var(--tech-green));
+            border-radius: 4px;
+            outline: none;
+            opacity: 0.9;
+        }
+        .budget-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--tech-yellow);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212,255,0,0.5);
+            border: 3px solid var(--bg-primary);
+        }
+        .budget-slider::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--tech-yellow);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212,255,0,0.5);
+            border: 3px solid var(--bg-primary);
+        }
+        .budget-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .budget-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .budget-input {
+            width: 120px;
+            padding: 0.8rem 1rem;
+            background: var(--bg-elevated);
+            border: 2px solid rgba(212,255,0,0.3);
+            border-radius: 14px;
+            color: var(--tech-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+        }
+        .budget-input:focus {
+            border-color: var(--tech-yellow);
+            box-shadow: 0 0 20px rgba(212,255,0,0.2);
+        }
+        .budget-currency {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--tech-yellow);
+        }
+
+        /* Profiles */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .profile-card {
+            background: var(--bg-elevated);
+            border: 2px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .profile-card:hover {
+            border-color: rgba(212,255,0,0.2);
+            transform: translateY(-3px);
+        }
+        .profile-card.active {
+            border-color: var(--tech-yellow);
+            background: rgba(212,255,0,0.05);
+            box-shadow: 0 0 30px rgba(212,255,0,0.15);
+        }
+        .profile-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .profile-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+        .profile-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Generate Button */
+        .generate-wrapper {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .generate-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, var(--tech-yellow), var(--tech-green));
+            color: #0a0a0f;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 25px rgba(212,255,0,0.3);
+        }
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(212,255,0,0.5);
+        }
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results */
+        .results-section {
+            display: none;
+        }
+        .results-section.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Budget Summary Bar */
+        .budget-summary {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+        .budget-summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .budget-summary-total {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .budget-economy {
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .budget-economy.positive {
+            background: rgba(107,255,107,0.1);
+            color: var(--tech-green);
+            border: 1px solid rgba(107,255,107,0.3);
+        }
+        .budget-economy.negative {
+            background: rgba(255,77,166,0.1);
+            color: var(--tech-pink);
+            border: 1px solid rgba(255,77,166,0.3);
+        }
+        .budget-bar {
+            height: 10px;
+            background: var(--bg-elevated);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .budget-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.6s ease;
+        }
+
+        /* Setup Grid */
+        .setup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .setup-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .setup-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212,255,0,0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .setup-card-header {
+            padding: 0.6rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .setup-card-category {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--tech-blue);
+            background: rgba(77,212,255,0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+        }
+        .setup-card-budget-alloc {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .setup-card-image {
+            width: 100%;
+            height: 160px;
+            object-fit: contain;
+            background: var(--bg-elevated);
+            padding: 1rem;
+        }
+        .setup-card-image-placeholder {
+            width: 100%;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-elevated);
+            font-size: 3rem;
+        }
+        .setup-card-body {
+            padding: 1.2rem;
+        }
+        .setup-card-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .setup-card-price {
+            color: var(--tech-yellow);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        .setup-card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .setup-card-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-fiche {
+            background: linear-gradient(135deg, var(--tech-yellow), var(--tech-green));
+            color: #0a0a0f;
+        }
+        .btn-fiche:hover { box-shadow: 0 4px 15px rgba(212,255,0,0.3); }
+        .btn-alternatives {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-alternatives:hover {
+            border-color: rgba(212,255,0,0.3);
+            color: var(--text-primary);
+        }
+
+        /* No product found */
+        .setup-card-empty {
+            background: var(--bg-card);
+            border: 2px dashed rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+        .setup-card-empty-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .setup-card-empty-text { color: var(--text-muted); font-size: 0.9rem; }
+        .setup-card-empty-budget { color: var(--tech-yellow); font-size: 0.8rem; margin-top: 0.3rem; }
+
+        /* Alternatives Modal */
+        .alternatives-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .alternatives-overlay.visible {
+            display: flex;
+        }
+        .alternatives-panel {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(212,255,0,0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .alternatives-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .alternatives-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .alt-product {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .alt-product:hover {
+            border-color: rgba(212,255,0,0.3);
+        }
+        .alt-product-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 0.3rem;
+        }
+        .alt-product-info { flex: 1; }
+        .alt-product-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        .alt-product-price {
+            color: var(--tech-yellow);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .alt-product-select {
+            padding: 0.4rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(212,255,0,0.3);
+            border-radius: 8px;
+            color: var(--tech-yellow);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .alt-product-select:hover {
+            background: rgba(212,255,0,0.1);
+        }
+
+        /* Loading */
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(212,255,0,0.1);
+            border-top: 3px solid var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main { padding-top: 80px; }
+            .builder-container { padding: 0 1rem 3rem; }
+            .budget-controls { flex-direction: column; }
+            .budget-slider-wrapper { min-width: 100%; }
+            .profiles-grid { grid-template-columns: repeat(2, 1fr); }
+            .setup-grid { grid-template-columns: 1fr; }
+            .page-title { font-size: 1.6rem !important; }
+            .config-section { padding: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .profiles-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/2026/" class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg)" stroke-width="2.5" opacity="0.9"/>
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg)" opacity="0.95"/>
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </a>
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link">Accueil</a>
+                <a href="/2026/#categories" class="nav-link">Catégories</a>
+                <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/timeline.html" class="nav-link">Timeline</a>
+                <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="builder-container">
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="/2026/">Accueil</a>
+                <span class="separator">/</span>
+                <span class="current">Budget Builder</span>
+            </nav>
+
+            <!-- Header -->
+            <div class="page-header">
+                <div class="page-badge">Configurateur</div>
+                <h1 class="page-title">Budget Builder</h1>
+                <p class="page-subtitle">Définissez votre budget et votre usage, on compose le setup idéal avec nos produits.</p>
+            </div>
+
+            <!-- Budget -->
+            <div class="config-section">
+                <div class="config-section-title">💰 Votre budget</div>
+                <div class="budget-controls">
+                    <div class="budget-slider-wrapper">
+                        <input type="range" class="budget-slider" id="budgetSlider" min="300" max="15000" value="1500" step="50">
+                        <div class="budget-labels">
+                            <span>300€</span>
+                            <span>15 000€</span>
+                        </div>
+                    </div>
+                    <div class="budget-input-wrapper">
+                        <input type="number" class="budget-input" id="budgetInput" value="1500" min="300" max="15000" step="50">
+                        <span class="budget-currency">€</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profiles -->
+            <div class="config-section">
+                <div class="config-section-title">🎯 Votre usage</div>
+                <div class="profiles-grid" id="profilesGrid">
+                    <div class="profile-card active" data-profile="gaming">
+                        <div class="profile-icon">🎮</div>
+                        <div class="profile-name">Gaming</div>
+                        <div class="profile-desc">PC + Écran + Casque + Périphériques</div>
+                    </div>
+                    <div class="profile-card" data-profile="mobilite">
+                        <div class="profile-icon">📱</div>
+                        <div class="profile-name">Mobilité</div>
+                        <div class="profile-desc">Smartphone + Tablette + Montre + Casque</div>
+                    </div>
+                    <div class="profile-card" data-profile="creation">
+                        <div class="profile-icon">🎬</div>
+                        <div class="profile-name">Création</div>
+                        <div class="profile-desc">PC + Écran + Caméra + Casque</div>
+                    </div>
+                    <div class="profile-card" data-profile="smarthome">
+                        <div class="profile-icon">🏠</div>
+                        <div class="profile-name">Smart Home</div>
+                        <div class="profile-desc">Box + TV + Vidéoprojecteur + Tablette</div>
+                    </div>
+                    <div class="profile-card" data-profile="vr">
+                        <div class="profile-icon">🕶️</div>
+                        <div class="profile-name">VR & Immersion</div>
+                        <div class="profile-desc">PC + Casque VR + Périphériques + Écran</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <div class="generate-wrapper">
+                <button class="generate-btn" id="generateBtn" onclick="generateSetup()">
+                    ⚡ Générer mon setup
+                </button>
+            </div>
+
+            <!-- Results -->
+            <div class="results-section" id="resultsSection">
+                <div class="budget-summary" id="budgetSummary"></div>
+                <div class="setup-grid" id="setupGrid"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Alternatives Modal -->
+    <div class="alternatives-overlay" id="altOverlay">
+        <div class="alternatives-panel">
+            <div class="alternatives-title">
+                <span id="altTitle">Alternatives</span>
+                <button class="alternatives-close" onclick="closeAlternatives()">✕</button>
+            </div>
+            <div id="altList"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/guides.html">Guides</a></li>
+                    <li><a href="/2026/configurateur.html">Configurateur</a></li>
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                    <li><a href="/2026/versus.html">Versus</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop">^</button>
+
+    <script>
+        // ========================================
+        // DATA
+        // ========================================
+        let allProducts = [];
+        let currentProfile = 'gaming';
+        let currentSetup = {};
+
+        const PROFILES = {
+            gaming: {
+                nom: 'Gaming',
+                icone: '🎮',
+                categories: [
+                    { cat: 'PC GAMING', pct: 0.50, label: 'PC Gaming' },
+                    { cat: 'ECRAN TV', pct: 0.20, label: 'Écran / TV' },
+                    { cat: 'CASQUE AUDIO', pct: 0.10, label: 'Casque Audio' },
+                    { cat: 'PERIPHERIQUES', pct: 0.15, label: 'Périphériques' },
+                    { cat: 'MONTRE CONNECTEE', pct: 0.05, label: 'Montre Connectée' }
+                ]
+            },
+            mobilite: {
+                nom: 'Mobilité',
+                icone: '📱',
+                categories: [
+                    { cat: 'SMARTPHONE', pct: 0.45, label: 'Smartphone' },
+                    { cat: 'TABLETTE', pct: 0.25, label: 'Tablette' },
+                    { cat: 'MONTRE CONNECTEE', pct: 0.15, label: 'Montre Connectée' },
+                    { cat: 'CASQUE AUDIO', pct: 0.15, label: 'Casque Audio' }
+                ]
+            },
+            creation: {
+                nom: 'Création / Studio',
+                icone: '🎬',
+                categories: [
+                    { cat: 'PC GAMING', pct: 0.40, label: 'PC / Station' },
+                    { cat: 'ECRAN TV', pct: 0.25, label: 'Écran' },
+                    { cat: 'CAMERA', pct: 0.25, label: 'Caméra / Photo' },
+                    { cat: 'CASQUE AUDIO', pct: 0.10, label: 'Casque Audio' }
+                ]
+            },
+            smarthome: {
+                nom: 'Smart Home',
+                icone: '🏠',
+                categories: [
+                    { cat: 'ECRAN TV', pct: 0.40, label: 'TV' },
+                    { cat: 'VIDEO PROJECTEUR', pct: 0.25, label: 'Vidéoprojecteur' },
+                    { cat: 'TABLETTE', pct: 0.20, label: 'Tablette' },
+                    { cat: 'BOX INTERNET', pct: 0.15, label: 'Box Internet' }
+                ]
+            },
+            vr: {
+                nom: 'VR & Immersion',
+                icone: '🕶️',
+                categories: [
+                    { cat: 'PC GAMING', pct: 0.40, label: 'PC Gaming' },
+                    { cat: 'CASQUE VR', pct: 0.35, label: 'Casque VR' },
+                    { cat: 'PERIPHERIQUES', pct: 0.15, label: 'Périphériques' },
+                    { cat: 'ECRAN TV', pct: 0.10, label: 'Écran' }
+                ]
+            }
+        };
+
+        // ========================================
+        // PRICE PARSER
+        // ========================================
+        function parsePrice(prix) {
+            if (!prix) return null;
+            // Remove everything except digits, comma, dot, space
+            let clean = prix.replace(/[^0-9,.\s]/g, '').trim();
+            // Replace comma with dot for decimal
+            clean = clean.replace(',', '.');
+            // Remove spaces (thousands separator)
+            clean = clean.replace(/\s/g, '');
+            const num = parseFloat(clean);
+            return isNaN(num) || num <= 0 ? null : num;
+        }
+
+        // ========================================
+        // INIT
+        // ========================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load products
+            try {
+                const res = await fetch('/api/produits');
+                const data = await res.json();
+                allProducts = (data.data || data.produits || []).map(p => ({
+                    ...p,
+                    parsedPrice: parsePrice(p.prix)
+                })).filter(p => p.parsedPrice !== null);
+            } catch (e) {
+                console.error('Erreur chargement produits:', e);
+            }
+
+            // Budget sync
+            const slider = document.getElementById('budgetSlider');
+            const input = document.getElementById('budgetInput');
+            slider.addEventListener('input', () => {
+                input.value = slider.value;
+            });
+            input.addEventListener('input', () => {
+                const val = Math.max(300, Math.min(15000, parseInt(input.value) || 300));
+                slider.value = val;
+            });
+
+            // Profile selection
+            document.querySelectorAll('.profile-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    currentProfile = card.dataset.profile;
+                });
+            });
+
+            initScrollTop();
+        });
+
+        // ========================================
+        // GENERATE SETUP
+        // ========================================
+        function generateSetup() {
+            const budget = parseInt(document.getElementById('budgetInput').value) || 1500;
+            const profile = PROFILES[currentProfile];
+            if (!profile) return;
+
+            currentSetup = {};
+            let totalPrice = 0;
+
+            const gridHtml = profile.categories.map(slot => {
+                const budgetAlloc = Math.round(budget * slot.pct);
+                // Filter products in category + within budget
+                const candidates = allProducts
+                    .filter(p => p.categorie === slot.cat && p.parsedPrice <= budgetAlloc)
+                    .sort((a, b) => b.parsedPrice - a.parsedPrice);
+
+                const best = candidates[0] || null;
+                currentSetup[slot.cat] = { best, candidates, budgetAlloc, label: slot.label };
+
+                if (best) {
+                    totalPrice += best.parsedPrice;
+                    const imgHtml = best.image
+                        ? `<img class="setup-card-image" src="/assets/images/${best.image}" alt="${best.titre_affiche || best.nom}" onerror="this.outerHTML='<div class=\\'setup-card-image-placeholder\\'>📦</div>'">`
+                        : `<div class="setup-card-image-placeholder">📦</div>`;
+
+                    return `
+                        <div class="setup-card">
+                            <div class="setup-card-header">
+                                <span class="setup-card-category">${slot.label}</span>
+                                <span class="setup-card-budget-alloc">Budget: ${budgetAlloc}€</span>
+                            </div>
+                            ${imgHtml}
+                            <div class="setup-card-body">
+                                <div class="setup-card-name">${best.titre_affiche || best.nom}</div>
+                                <div class="setup-card-price">${best.prix}</div>
+                                <div class="setup-card-actions">
+                                    <a href="/2026/fiche.html?id=${best.id}" class="setup-card-btn btn-fiche">Voir la fiche</a>
+                                    ${candidates.length > 1 ? `<button class="setup-card-btn btn-alternatives" onclick="showAlternatives('${slot.cat}')">Alternatives (${candidates.length - 1})</button>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="setup-card-empty">
+                            <div class="setup-card-empty-icon">🚫</div>
+                            <div class="setup-card-empty-text">Aucun produit ${slot.label}</div>
+                            <div class="setup-card-empty-budget">dans le budget de ${budgetAlloc}€</div>
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            // Budget summary
+            const economy = budget - totalPrice;
+            const pct = Math.min(100, Math.round((totalPrice / budget) * 100));
+            const barColor = pct <= 100
+                ? 'linear-gradient(90deg, var(--tech-yellow), var(--tech-green))'
+                : 'linear-gradient(90deg, var(--tech-pink), #ff6b6b)';
+
+            document.getElementById('budgetSummary').innerHTML = `
+                <div class="budget-summary-header">
+                    <span class="budget-summary-total" style="color: var(--text-primary);">
+                        Total: <span style="color: var(--tech-yellow);">${Math.round(totalPrice)}€</span> / ${budget}€
+                    </span>
+                    <span class="budget-economy ${economy >= 0 ? 'positive' : 'negative'}">
+                        ${economy >= 0 ? '✓ Économie: ' + Math.round(economy) + '€' : '⚠ Dépassement: ' + Math.abs(Math.round(economy)) + '€'}
+                    </span>
+                </div>
+                <div class="budget-bar">
+                    <div class="budget-bar-fill" style="width: ${pct}%; background: ${barColor};"></div>
+                </div>
+            `;
+
+            document.getElementById('setupGrid').innerHTML = gridHtml;
+
+            const results = document.getElementById('resultsSection');
+            results.classList.add('visible');
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ========================================
+        // ALTERNATIVES
+        // ========================================
+        function showAlternatives(cat) {
+            const data = currentSetup[cat];
+            if (!data) return;
+
+            document.getElementById('altTitle').textContent = `Alternatives — ${data.label} (budget: ${data.budgetAlloc}€)`;
+
+            document.getElementById('altList').innerHTML = data.candidates.map(p => {
+                const imgSrc = p.image ? `/assets/images/${p.image}` : '';
+                return `
+                    <div class="alt-product" onclick="selectAlternative('${cat}', '${p.id}')">
+                        ${imgSrc ? `<img class="alt-product-img" src="${imgSrc}" alt="${p.titre_affiche || p.nom}" onerror="this.style.display='none'">` : ''}
+                        <div class="alt-product-info">
+                            <div class="alt-product-name">${p.titre_affiche || p.nom}</div>
+                            <div class="alt-product-price">${p.prix}</div>
+                        </div>
+                        <button class="alt-product-select">${p.id === data.best?.id ? '✓ Sélectionné' : 'Choisir'}</button>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('altOverlay').classList.add('visible');
+        }
+
+        function selectAlternative(cat, productId) {
+            const data = currentSetup[cat];
+            if (!data) return;
+            const product = data.candidates.find(p => p.id === productId);
+            if (product) {
+                data.best = product;
+                closeAlternatives();
+                // Re-render with updated selection
+                generateSetup();
+            }
+        }
+
+        function closeAlternatives() {
+            document.getElementById('altOverlay').classList.remove('visible');
+        }
+
+        // Close on click outside
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'altOverlay') closeAlternatives();
+        });
+
+        // ========================================
+        // SCROLL TOP
+        // ========================================
+        function initScrollTop() {
+            const btn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+            });
+            btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>

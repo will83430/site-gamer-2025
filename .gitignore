@@ -39,6 +39,8 @@ dist-ssr/
 tmpclaude-*
 
 # Backups et brouillons locaux
+*.dump
+backup_*.sql
 backup_gamer_2025.sql
 CLEANUP-SUMMARY.md
 check-prod1.js

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Tech - HIGH-TECH 2026</title>
+    <meta name="description" content="Frise chronologique de l'évolution technologique par catégorie : smartphones, consoles, PC gaming et plus.">
+    <meta name="keywords" content="timeline tech, évolution technologique, histoire tech, high-tech 2026">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://high-tech-2026.com/2026/timeline.html">
+    <meta property="og:title" content="Timeline Tech - HIGH-TECH 2026">
+    <meta property="og:description" content="Frise chronologique de l'évolution technologique par catégorie.">
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/theme.css">
+
+    <style>
+        main { padding-top: 100px; }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--tech-yellow), var(--tech-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Category Filters */
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0 2rem 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        .filter-btn:hover {
+            border-color: rgba(212,255,0,0.3);
+            color: var(--tech-yellow);
+        }
+        .filter-btn.active {
+            background: rgba(212,255,0,0.15);
+            border-color: var(--tech-yellow);
+            color: var(--tech-yellow);
+        }
+
+        /* Timeline Container */
+        .timeline-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            position: relative;
+        }
+
+        /* Vertical Line */
+        .timeline {
+            position: relative;
+            padding: 1rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--tech-yellow), var(--tech-green), rgba(212,255,0,0.1));
+            transform: translateX(-50%);
+        }
+
+        /* Year Marker */
+        .timeline-year {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            margin: 2.5rem 0 1.5rem;
+        }
+        .timeline-year:first-child {
+            margin-top: 0;
+        }
+        .timeline-year-badge {
+            display: inline-block;
+            padding: 0.5rem 2rem;
+            background: var(--bg-primary);
+            border: 2px solid var(--tech-yellow);
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--tech-yellow);
+        }
+
+        /* Timeline Item */
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Alternating layout */
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+            padding-right: calc(50% + 30px);
+        }
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+            padding-left: calc(50% + 30px);
+        }
+
+        /* Connector Dot */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            width: 16px;
+            height: 16px;
+            background: var(--tech-yellow);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            box-shadow: 0 0 15px rgba(212,255,0,0.4);
+        }
+
+        /* Timeline Card */
+        .timeline-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            width: 100%;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .timeline-card:hover {
+            border-color: rgba(212,255,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 20px rgba(212,255,0,0.08);
+            transform: translateY(-3px);
+        }
+        .timeline-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .timeline-card-icon {
+            font-size: 1.5rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212,255,0,0.08);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+        .timeline-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .timeline-card-date {
+            font-size: 0.8rem;
+            color: var(--tech-yellow);
+            font-weight: 500;
+        }
+        .timeline-card-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .timeline-card-category {
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(77,212,255,0.1);
+            border: 1px solid rgba(77,212,255,0.2);
+            border-radius: 50px;
+            color: var(--tech-blue);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .timeline-card-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 1rem;
+            object-fit: cover;
+            max-height: 200px;
+        }
+
+        /* Loading & Empty */
+        .loading-container {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(212,255,0,0.1);
+            border-top: 3px solid var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main { padding-top: 80px; }
+            .page-header { padding: 2rem 1rem; }
+            .page-title { font-size: 1.8rem !important; }
+            .category-filters { padding: 0 1rem 2rem; gap: 0.5rem; }
+            .filter-btn { font-size: 0.8rem; padding: 0.5rem 1rem; }
+            .timeline-wrapper { padding: 0 1rem 3rem; }
+
+            /* Single column on mobile */
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+                padding-right: 0;
+                padding-left: 50px;
+            }
+            .timeline-item::before {
+                left: 20px;
+                top: 15px;
+                width: 12px;
+                height: 12px;
+            }
+            .timeline-year-badge {
+                font-size: 1rem;
+                padding: 0.4rem 1.5rem;
+            }
+            .timeline-card { padding: 1.2rem; }
+            .timeline-card-title { font-size: 0.9rem; }
+        }
+        @media (max-width: 480px) {
+            .category-filters { flex-direction: column; align-items: center; }
+            .filter-btn { width: 100%; max-width: 250px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/2026/" class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg)" stroke-width="2.5" opacity="0.9"/>
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg)" opacity="0.95"/>
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </a>
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link">Accueil</a>
+                <a href="/2026/#categories" class="nav-link">Catégories</a>
+                <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/timeline.html" class="nav-link active">Timeline</a>
+                <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <nav style="margin-bottom: 1.5rem;">
+                <a href="/2026/" style="color: var(--text-muted); text-decoration: none;">Accueil</a>
+                <span style="color: var(--text-muted); margin: 0 0.5rem;">/</span>
+                <span style="color: var(--tech-yellow);">Timeline Tech</span>
+            </nav>
+            <h1 class="page-title">Timeline Tech</h1>
+            <p class="page-subtitle">
+                L'évolution technologique par catégorie, de la genèse aux innovations de demain.
+            </p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="category-filters" id="category-filters">
+            <button class="filter-btn active" data-category="all">Toutes</button>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-wrapper">
+            <div class="timeline" id="timeline-container">
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p style="color: var(--text-muted);">Chargement de la timeline...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/guides.html">Guides</a></li>
+                    <li><a href="/2026/configurateur.html">Configurateur</a></li>
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                    <li><a href="/2026/versus.html">Versus</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop">^</button>
+
+    <script src="/assets/js/theme-toggle.js"></script>
+    <script>
+        let allEvents = [];
+        let currentCategory = 'all';
+
+        const months = ['', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+                         'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCategories();
+            loadTimeline();
+            initScrollTop();
+        });
+
+        // ===== CATEGORIES FILTER =====
+        async function loadCategories() {
+            try {
+                const res = await fetch('/api/categories');
+                const data = await res.json();
+                const categories = Array.isArray(data) ? data : (data.data || []);
+                const container = document.getElementById('category-filters');
+
+                categories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn';
+                    btn.dataset.category = cat.nom;
+                    btn.textContent = cat.nom;
+                    btn.addEventListener('click', () => filterByCategory(cat.nom));
+                    container.appendChild(btn);
+                });
+
+                // Event for "Toutes"
+                container.querySelector('[data-category="all"]').addEventListener('click', () => filterByCategory('all'));
+            } catch (e) {
+                console.error('Erreur categories:', e);
+            }
+        }
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+
+            const filtered = category === 'all'
+                ? allEvents
+                : allEvents.filter(e => e.categorie_nom === category);
+
+            renderTimeline(filtered);
+        }
+
+        // ===== TIMELINE =====
+        async function loadTimeline() {
+            const container = document.getElementById('timeline-container');
+            try {
+                const res = await fetch('/api/timeline');
+                const data = await res.json();
+                allEvents = data.data || [];
+
+                if (allEvents.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📅</div>
+                            <p>La timeline sera bientôt disponible.</p>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem;">Ajoutez des événements depuis le panel Admin.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                renderTimeline(allEvents);
+            } catch (e) {
+                console.error('Erreur timeline:', e);
+                container.innerHTML = '<div class="empty-state"><p>Erreur de chargement.</p></div>';
+            }
+        }
+
+        function renderTimeline(events) {
+            const container = document.getElementById('timeline-container');
+
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔍</div>
+                        <p>Aucun événement pour cette catégorie.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group by year
+            const grouped = {};
+            events.forEach(e => {
+                if (!grouped[e.annee]) grouped[e.annee] = [];
+                grouped[e.annee].push(e);
+            });
+
+            // Sort years descending
+            const years = Object.keys(grouped).sort((a, b) => b - a);
+
+            let html = '';
+            years.forEach(year => {
+                html += `
+                    <div class="timeline-year">
+                        <span class="timeline-year-badge">${year}</span>
+                    </div>
+                `;
+
+                grouped[year].forEach(event => {
+                    const dateStr = event.mois ? months[event.mois] + ' ' + event.annee : event.annee;
+                    html += `
+                        <div class="timeline-item">
+                            <div class="timeline-card">
+                                <div class="timeline-card-header">
+                                    <div class="timeline-card-icon">${event.icone || '📅'}</div>
+                                    <div>
+                                        <div class="timeline-card-title">${event.titre}</div>
+                                        <div class="timeline-card-date">${dateStr}</div>
+                                    </div>
+                                </div>
+                                ${event.description ? `<div class="timeline-card-desc">${event.description.replace(/\n/g, '<br>')}</div>` : ''}
+                                ${event.categorie_nom ? `<span class="timeline-card-category">${event.categorie_nom}</span>` : ''}
+                                ${event.image ? `<img class="timeline-card-image" src="${event.image}" alt="${event.titre}" onerror="this.style.display='none'">` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            container.innerHTML = html;
+
+            // Animate items on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            container.querySelectorAll('.timeline-item').forEach(item => {
+                observer.observe(item);
+            });
+        }
+
+        // ===== SCROLL TOP =====
+        function initScrollTop() {
+            const btn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+            });
+            btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>

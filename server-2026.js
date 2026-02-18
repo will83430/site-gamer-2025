@@ -31,6 +31,10 @@ const announcementsRoutes = require('./backend/routes/announcements');
 const wikiRoutes = require('./backend/routes/wiki');
 const activityLogsRoutes = require('./backend/routes/activity-logs');
 const sitemapRoutes = require('./backend/routes/sitemap');
+const aboutRoutes = require('./backend/routes/about');
+const timelineRoutes = require('./backend/routes/timeline');
+const guidesRoutes = require('./backend/routes/guides');
+const priceEvolutionRoutes = require('./backend/routes/price-evolution');
 
 // ========== CONFIGURATION ==========
 const app = express();
@@ -161,6 +165,12 @@ app.get('/admin', (req, res) => res.redirect('/2026/admin.html'));
 app.get('/wiki', (req, res) => res.redirect('/2026/wiki.html'));
 app.get('/produits', (req, res) => res.redirect('/2026/produits.html'));
 app.get('/tendances', (req, res) => res.redirect('/2026/tendances.html'));
+app.get('/apropos', (req, res) => res.redirect('/2026/apropos.html'));
+app.get('/timeline', (req, res) => res.redirect('/2026/timeline.html'));
+app.get('/guides', (req, res) => res.redirect('/2026/guides.html'));
+app.get('/configurateur', (req, res) => res.redirect('/2026/configurateur.html'));
+app.get('/evolution-prix', (req, res) => res.redirect('/2026/evolution-prix.html'));
+app.get('/versus', (req, res) => res.redirect('/2026/versus.html'));
 
 // Autres fichiers statiques (APRÈS les routes explicites)
 app.use(express.static(path.join(__dirname, 'frontend', 'public')));
@@ -173,6 +183,18 @@ app.get('/api/test', (req, res) => {
     version: '2026.1.0',
     timestamp: new Date().toISOString()
   });
+});
+
+// ========== ADMIN AUTH ==========
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body;
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin2026!';
+
+  if (password === adminPassword) {
+    res.json({ success: true, message: 'Authentification reussie' });
+  } else {
+    res.status(401).json({ success: false, message: 'Mot de passe incorrect' });
+  }
 });
 
 // Route pour initialiser la colonne image
@@ -245,6 +267,10 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/announcements', announcementsRoutes);
 app.use('/api/wiki', wikiRoutes);
 app.use('/api/activity-logs', activityLogsRoutes);
+app.use('/api/about', aboutRoutes);
+app.use('/api/timeline', timelineRoutes);
+app.use('/api/guides', guidesRoutes);
+app.use('/api/price-evolution', priceEvolutionRoutes);
 
 // Sitemap SEO (accessible à /sitemap.xml)
 app.use('/sitemap.xml', sitemapRoutes);

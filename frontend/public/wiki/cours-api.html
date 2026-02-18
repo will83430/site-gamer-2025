@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours API pour les Nuls - Wiki HIGH-TECH 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="wiki-styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1e; color: #e0e0e0; }
+        .header { background: linear-gradient(135deg, #1a1a2a 0%, #121220 100%); border-bottom: 2px solid #d4ff00; padding: 40px 20px; text-align: center; box-shadow: 0 0 30px rgba(212, 255, 0, 0.2); }
+        .header h1 { font-size: 2.5em; display: inline-block; min-width: max-content; margin-bottom: 10px; }
+        .header p { opacity: 0.8; font-size: 1.1em; }
+        .breadcrumb { max-width: 1200px; margin: 20px auto; padding: 0 20px; opacity: 0.7; }
+        .breadcrumb a { color: #d4ff00; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .content { background: linear-gradient(145deg, #2a2a40, #1f1f35); border-radius: 15px; padding: 40px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); }
+        h2 { color: #d4ff00; margin-top: 40px; margin-bottom: 15px; font-size: 1.8em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2ecc71; margin-top: 25px; margin-bottom: 10px; font-size: 1.3em; }
+        h4 { color: #667eea; margin-top: 15px; margin-bottom: 8px; }
+        p { line-height: 1.8; margin-bottom: 15px; opacity: 0.9; }
+        .step { background: rgba(212, 255, 0, 0.1); border-left: 4px solid #667eea; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .step-number { display: inline-block; background: #667eea; width: 35px; height: 35px; border-radius: 50%; text-align: center; line-height: 35px; font-weight: 700; margin-right: 10px; }
+        .code-block { background: #000; border: 1px solid #333; padding: 15px; border-radius: 8px; margin: 15px 0; overflow-x: auto; }
+        .code-block code { color: #2ecc71; font-family: 'Courier New', monospace; font-size: 0.95em; }
+        .comment { color: #666; }
+        .keyword { color: #667eea; }
+        .string { color: #e6db74; }
+        .method-get { color: #2ecc71; font-weight: 700; }
+        .method-post { color: #f39c12; font-weight: 700; }
+        .method-put { color: #3498db; font-weight: 700; }
+        .method-delete { color: #e74c3c; font-weight: 700; }
+        .warning { background: rgba(243, 156, 18, 0.1); border-left: 4px solid #f39c12; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .info { background: rgba(52, 152, 219, 0.1); border-left: 4px solid #3498db; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .success { background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .danger { background: rgba(231, 76, 60, 0.1); border-left: 4px solid #e74c3c; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        ul, ol { margin-left: 20px; line-height: 2; margin-bottom: 15px; }
+
+        /* Analogie boxes */
+        .analogy { background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15)); border: 1px solid rgba(102, 126, 234, 0.4); border-radius: 12px; padding: 25px; margin: 25px 0; }
+        .analogy-title { color: #667eea; font-size: 1.2em; font-weight: 700; margin-bottom: 10px; }
+        .analogy-emoji { font-size: 2.5em; float: left; margin-right: 15px; margin-top: -5px; }
+
+        /* Schema visuel */
+        .schema { background: #0a0a18; border: 2px solid rgba(212, 255, 0, 0.3); border-radius: 12px; padding: 30px; margin: 25px 0; text-align: center; font-family: 'Courier New', monospace; }
+        .schema-row { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 10px 0; flex-wrap: wrap; }
+        .schema-box { background: rgba(212, 255, 0, 0.1); border: 1px solid #d4ff00; border-radius: 8px; padding: 10px 20px; font-weight: 600; }
+        .schema-box.client { background: rgba(52, 152, 219, 0.2); border-color: #3498db; color: #3498db; }
+        .schema-box.server { background: rgba(46, 204, 113, 0.2); border-color: #2ecc71; color: #2ecc71; }
+        .schema-box.db { background: rgba(243, 156, 18, 0.2); border-color: #f39c12; color: #f39c12; }
+        .schema-arrow { color: #d4ff00; font-size: 1.5em; }
+
+        /* Table des méthodes */
+        .methods-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .methods-table th, .methods-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .methods-table th { background: rgba(212, 255, 0, 0.1); color: #d4ff00; }
+        .methods-table tr:hover { background: rgba(255,255,255,0.03); }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 700; font-family: 'Courier New', monospace; }
+        .badge-get { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+        .badge-post { background: rgba(243, 156, 18, 0.2); color: #f39c12; }
+        .badge-put { background: rgba(52, 152, 219, 0.2); color: #3498db; }
+        .badge-delete { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+
+        /* Sommaire */
+        .toc { background: rgba(212, 255, 0, 0.05); border: 1px solid rgba(212, 255, 0, 0.2); border-radius: 12px; padding: 25px; margin-bottom: 30px; }
+        .toc h3 { color: #d4ff00; margin-top: 0; }
+        .toc ol { margin-left: 25px; }
+        .toc a { color: #667eea; text-decoration: none; }
+        .toc a:hover { color: #d4ff00; text-decoration: underline; }
+
+        /* Interactive demo */
+        .demo-box { background: #0a0a18; border: 2px solid rgba(46, 204, 113, 0.3); border-radius: 12px; padding: 20px; margin: 20px 0; }
+        .demo-title { color: #2ecc71; font-weight: 700; margin-bottom: 10px; }
+        .demo-url { background: #1a1a2a; padding: 8px 15px; border-radius: 6px; font-family: 'Courier New', monospace; margin: 8px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .demo-url .method { font-weight: 700; min-width: 60px; }
+        .demo-url .url { color: #e6db74; }
+        .demo-response { background: #1a1a2a; padding: 15px; border-radius: 6px; margin-top: 10px; font-family: 'Courier New', monospace; font-size: 0.9em; color: #2ecc71; white-space: pre-wrap; }
+
+        /* Quick links */
+        .quick-links { margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); }
+        .quick-links h2 { margin-top: 0; }
+        .quick-links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 15px; }
+        .quick-link { display: block; background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; padding: 12px 16px; color: #667eea; text-decoration: none; text-align: center; transition: all 0.3s; font-weight: 500; }
+        .quick-link:hover { background: rgba(102, 126, 234, 0.2); transform: translateY(-2px); border-color: #667eea; }
+
+        .nav { background: rgba(212, 255, 0, 0.1); padding: 15px 20px; border-bottom: 1px solid #d4ff00; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .nav a { color: #d4ff00; text-decoration: none; margin-right: 25px; transition: all 0.3s; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        .nav a:hover { color: #6bff6b; transform: translateY(-2px); }
+
+        .nav-bottom { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(102, 126, 234, 0.3); }
+        .nav-button { background: #667eea; display: inline-block; min-width: max-content; padding: 12px 24px; border-radius: 8px; text-decoration: none; color: white; transition: all 0.3s; }
+        .nav-button:hover { background: #764ba2; transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.6em; }
+            .content { padding: 20px; }
+            .schema-row { flex-direction: column; }
+            .schema-arrow { transform: rotate(90deg); }
+            .analogy-emoji { float: none; display: block; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📡 Cours API pour les Nuls</h1>
+        <p>Comprendre les API REST avec des analogies simples et des exemples concrets</p>
+    </div>
+
+    <nav class="nav">
+        <a href="wiki.html">🏠 Accueil Wiki</a>
+        <a href="api-reference.html">📁 API Référence</a>
+        <a href="database.html">🗄️ Base de données</a>
+        <a href="getting-started.html">🚀 Démarrage</a>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="wiki.html">🏠 Wiki</a> > Cours API pour les Nuls
+    </div>
+
+    <div class="container">
+        <div class="content">
+
+            <!-- SOMMAIRE -->
+            <div class="toc">
+                <h3>📋 Sommaire</h3>
+                <ol>
+                    <li><a href="#cest-quoi">C'est quoi une API ?</a></li>
+                    <li><a href="#analogie-restaurant">L'analogie du restaurant</a></li>
+                    <li><a href="#comment-ca-marche">Comment ça marche concrètement ?</a></li>
+                    <li><a href="#methodes-http">Les 4 méthodes HTTP (CRUD)</a></li>
+                    <li><a href="#json">Le JSON : la langue de l'API</a></li>
+                    <li><a href="#codes-reponse">Les codes de réponse</a></li>
+                    <li><a href="#routes">Les routes (URL de l'API)</a></li>
+                    <li><a href="#exemples-concrets">Exemples concrets avec notre site</a></li>
+                    <li><a href="#securite">La sécurité</a></li>
+                    <li><a href="#outils">Les outils pour tester</a></li>
+                    <li><a href="#resume">Résumé</a></li>
+                </ol>
+            </div>
+
+            <!-- CHAPITRE 1 -->
+            <h2 id="cest-quoi">1. C'est quoi une API ?</h2>
+
+            <p><strong>API</strong> signifie <strong>Application Programming Interface</strong> (Interface de Programmation d'Application). C'est un système qui permet à deux logiciels de communiquer entre eux.</p>
+
+            <div class="analogy">
+                <span class="analogy-emoji">🔌</span>
+                <div class="analogy-title">Analogie : La prise électrique</div>
+                <p>Une prise électrique est une <strong>interface</strong>. Tu n'as pas besoin de savoir comment l'électricité est produite (centrale nucléaire, éolienne...). Tu branches ta prise, et ça marche. L'API, c'est pareil : tu envoies une demande, tu reçois une réponse, sans savoir ce qui se passe derrière.</p>
+            </div>
+
+            <p>Dans notre site HIGH-TECH 2026, l'API permet à la page web (le <strong>frontend</strong>) de demander des données au serveur (le <strong>backend</strong>) :</p>
+
+            <div class="schema">
+                <div class="schema-row">
+                    <div class="schema-box client">🖥️ Navigateur<br><small>(Frontend)</small></div>
+                    <div class="schema-arrow">→ requête →</div>
+                    <div class="schema-box server">⚙️ Serveur API<br><small>(Backend Node.js)</small></div>
+                    <div class="schema-arrow">→ requête →</div>
+                    <div class="schema-box db">🗄️ Base de données<br><small>(PostgreSQL)</small></div>
+                </div>
+                <br>
+                <div class="schema-row">
+                    <div class="schema-box client">🖥️ Navigateur</div>
+                    <div class="schema-arrow">← réponse ←</div>
+                    <div class="schema-box server">⚙️ Serveur API</div>
+                    <div class="schema-arrow">← données ←</div>
+                    <div class="schema-box db">🗄️ PostgreSQL</div>
+                </div>
+            </div>
+
+            <!-- CHAPITRE 2 -->
+            <h2 id="analogie-restaurant">2. L'analogie du restaurant 🍽️</h2>
+
+            <p>C'est l'analogie la plus utilisée pour comprendre une API, et pour cause : elle est parfaite !</p>
+
+            <div class="analogy">
+                <span class="analogy-emoji">🍽️</span>
+                <div class="analogy-title">Le restaurant</div>
+                <p>Imagine que tu es au restaurant :</p>
+                <ul>
+                    <li><strong>Toi (le client)</strong> = le navigateur web (Chrome, Firefox...)</li>
+                    <li><strong>Le menu</strong> = la documentation de l'API (les routes disponibles)</li>
+                    <li><strong>Le serveur (la personne)</strong> = l'API elle-même</li>
+                    <li><strong>La cuisine</strong> = le backend + la base de données</li>
+                    <li><strong>Le plat</strong> = les données renvoyées (en JSON)</li>
+                </ul>
+                <p style="margin-top: 15px;">Tu ne vas jamais en cuisine toi-même ! Tu passes ta commande au serveur, il va en cuisine, et il te rapporte ton plat. <strong>L'API fait exactement ça : elle sert d'intermédiaire.</strong></p>
+            </div>
+
+            <div class="schema">
+                <p style="color: #d4ff00; margin-bottom: 15px;">🍽️ Comment ça se passe au restaurant :</p>
+                <div class="schema-row">
+                    <div class="schema-box client">👤 Client<br>"Je veux la liste des produits"</div>
+                    <div class="schema-arrow">📝</div>
+                    <div class="schema-box" style="background: rgba(212, 255, 0, 0.2); border-color: #d4ff00; color: #d4ff00;">🤵 Serveur API<br>GET /api/produits</div>
+                    <div class="schema-arrow">🏃</div>
+                    <div class="schema-box db">👨‍🍳 Cuisine (BDD)<br>SELECT * FROM produits</div>
+                </div>
+                <br>
+                <div class="schema-row">
+                    <div class="schema-box client">👤 Client<br>"Merci ! J'ai mes 107 produits"</div>
+                    <div class="schema-arrow">🍽️</div>
+                    <div class="schema-box" style="background: rgba(212, 255, 0, 0.2); border-color: #d4ff00; color: #d4ff00;">🤵 Serveur API<br>Voici le JSON</div>
+                    <div class="schema-arrow">📦</div>
+                    <div class="schema-box db">👨‍🍳 Cuisine<br>Résultat prêt !</div>
+                </div>
+            </div>
+
+            <!-- CHAPITRE 3 -->
+            <h2 id="comment-ca-marche">3. Comment ça marche concrètement ?</h2>
+
+            <p>Une API REST fonctionne avec le protocole <strong>HTTP</strong> (le même que celui de ton navigateur). Voici le cycle complet :</p>
+
+            <div class="step">
+                <h3><span class="step-number">1</span> Le client envoie une requête HTTP</h3>
+                <p>Le navigateur (ou une app) envoie une demande à une <strong>URL</strong> avec une <strong>méthode</strong> (GET, POST, PUT, DELETE).</p>
+                <div class="code-block">
+                    <code><span class="method-get">GET</span> http://localhost:3000<span class="string">/api/produits/prod_46</span></code>
+                </div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">2</span> Le serveur reçoit et traite</h3>
+                <p>Express.js reçoit la requête, la route vers le bon fichier (<code>backend/routes/produits.js</code>), qui interroge PostgreSQL.</p>
+                <div class="code-block">
+                    <code><span class="comment">// Dans produits.js</span><br>
+router.<span class="keyword">get</span>(<span class="string">'/:id'</span>, async (req, res) => {<br>
+&nbsp;&nbsp;<span class="keyword">const</span> result = <span class="keyword">await</span> pool.query(<span class="string">'SELECT * FROM produits WHERE id = $1'</span>, [req.params.id]);<br>
+&nbsp;&nbsp;res.json({ success: <span class="keyword">true</span>, data: result.rows[0] });<br>
+});</code>
+                </div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">3</span> Le serveur renvoie une réponse</h3>
+                <p>Le serveur répond avec un <strong>code de statut</strong> (200 = OK) et des <strong>données en JSON</strong>.</p>
+                <div class="code-block">
+                    <code><span class="comment">// Réponse du serveur (JSON)</span><br>
+{<br>
+&nbsp;&nbsp;<span class="string">"success"</span>: <span class="keyword">true</span>,<br>
+&nbsp;&nbsp;<span class="string">"data"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"id"</span>: <span class="string">"prod_46"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"titre_affiche"</span>: <span class="string">"Freebox Ultra"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"prix"</span>: <span class="string">"49,99€/mois"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"categorie"</span>: <span class="string">"BOX INTERNET"</span><br>
+&nbsp;&nbsp;}<br>
+}</code>
+                </div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">4</span> Le frontend affiche les données</h3>
+                <p>JavaScript reçoit le JSON et l'affiche dans la page HTML.</p>
+                <div class="code-block">
+                    <code><span class="comment">// Dans le frontend</span><br>
+<span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">'/api/produits/prod_46'</span>);<br>
+<span class="keyword">const</span> data = <span class="keyword">await</span> response.json();<br>
+document.getElementById(<span class="string">'titre'</span>).textContent = data.data.titre_affiche;<br>
+<span class="comment">// Affiche : "Freebox Ultra"</span></code>
+                </div>
+            </div>
+
+            <!-- CHAPITRE 4 -->
+            <h2 id="methodes-http">4. Les 4 méthodes HTTP (CRUD)</h2>
+
+            <p>Il existe 4 actions de base qu'on peut faire sur des données. On appelle ça le <strong>CRUD</strong> :</p>
+
+            <div class="analogy">
+                <span class="analogy-emoji">📋</span>
+                <div class="analogy-title">Analogie : La liste de courses</div>
+                <p>Imagine une liste de courses sur ton frigo :</p>
+                <ul>
+                    <li><strong>CREATE</strong> (POST) = Ajouter "lait" sur la liste ✍️</li>
+                    <li><strong>READ</strong> (GET) = Lire la liste pour voir ce qu'il y a 👀</li>
+                    <li><strong>UPDATE</strong> (PUT) = Barrer "lait" et écrire "lait bio" à la place ✏️</li>
+                    <li><strong>DELETE</strong> = Effacer "lait" de la liste 🗑️</li>
+                </ul>
+            </div>
+
+            <table class="methods-table">
+                <thead>
+                    <tr>
+                        <th>Méthode</th>
+                        <th>CRUD</th>
+                        <th>Ce que ça fait</th>
+                        <th>Exemple sur notre site</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge badge-get">GET</span></td>
+                        <td>Read (Lire)</td>
+                        <td>Récupérer des données</td>
+                        <td><code>GET /api/produits</code> → liste des produits</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-post">POST</span></td>
+                        <td>Create (Créer)</td>
+                        <td>Ajouter une nouvelle donnée</td>
+                        <td><code>POST /api/produits</code> → créer un produit</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-put">PUT</span></td>
+                        <td>Update (Modifier)</td>
+                        <td>Modifier une donnée existante</td>
+                        <td><code>PUT /api/produits/prod_46</code> → modifier la Freebox</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-delete">DELETE</span></td>
+                        <td>Delete (Supprimer)</td>
+                        <td>Supprimer une donnée</td>
+                        <td><code>DELETE /api/produits/prod_01</code> → supprimer un produit</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning">
+                <strong>⚠️ Attention :</strong> GET est "safe" (il ne modifie rien). POST, PUT et DELETE modifient les données, il faut donc les protéger (authentification admin dans notre cas).
+            </div>
+
+            <!-- CHAPITRE 5 -->
+            <h2 id="json">5. Le JSON : la langue de l'API</h2>
+
+            <p><strong>JSON</strong> (JavaScript Object Notation) est le format universel pour échanger des données entre le client et le serveur. C'est du texte structuré, facile à lire pour les humains ET les machines.</p>
+
+            <div class="analogy">
+                <span class="analogy-emoji">📦</span>
+                <div class="analogy-title">Analogie : Le colis</div>
+                <p>Le JSON, c'est comme un colis avec une étiquette bien organisée. Au lieu d'envoyer un vrac de données incompréhensibles, tout est rangé dans des paires <strong>clé: valeur</strong>, comme l'adresse sur un colis (nom, rue, ville, code postal).</p>
+            </div>
+
+            <h3>Les types de données en JSON</h3>
+
+            <div class="code-block">
+                <code><span class="comment">// Un produit de notre site en JSON :</span><br>
+{<br>
+&nbsp;&nbsp;<span class="string">"id"</span>: <span class="string">"prod_46"</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Texte (string) → entre guillemets</span><br>
+&nbsp;&nbsp;<span class="string">"titre_affiche"</span>: <span class="string">"Freebox Ultra"</span>,&nbsp;<span class="comment">// Texte</span><br>
+&nbsp;&nbsp;<span class="string">"prix"</span>: <span class="string">"49,99€/mois"</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Texte</span><br>
+&nbsp;&nbsp;<span class="string">"top_du_mois"</span>: <span class="keyword">false</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Booléen (true/false)</span><br>
+&nbsp;&nbsp;<span class="string">"fonctionnalites_avancees"</span>: [&nbsp;&nbsp;&nbsp;<span class="comment">// Tableau (array) → entre crochets</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Wi-Fi 7"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Fibre 8 Gbit/s"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"NAS 1 To"</span><br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;<span class="string">"donnees_fiche"</span>: [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Tableau de textes (les sections)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"📝 Description\n- Wi-Fi 7..."</span><br>
+&nbsp;&nbsp;]<br>
+}</code>
+            </div>
+
+            <div class="info">
+                <strong>💡 Bon à savoir :</strong> Dans notre site, <code>donnees_fiche</code> est un tableau de strings. Chaque string est une section de la fiche produit. Le <code>\n</code> crée un retour à la ligne dans chaque section.
+            </div>
+
+            <!-- CHAPITRE 6 -->
+            <h2 id="codes-reponse">6. Les codes de réponse HTTP</h2>
+
+            <p>Quand le serveur répond, il envoie un <strong>code numérique</strong> pour dire si tout s'est bien passé ou non.</p>
+
+            <div class="analogy">
+                <span class="analogy-emoji">🚦</span>
+                <div class="analogy-title">Analogie : Les feux tricolores</div>
+                <p>Les codes HTTP fonctionnent comme des feux de signalisation :</p>
+                <ul>
+                    <li><strong style="color: #2ecc71;">2xx (Vert)</strong> = Tout va bien, fonce !</li>
+                    <li><strong style="color: #f39c12;">4xx (Orange)</strong> = Erreur de ta part, arrête-toi</li>
+                    <li><strong style="color: #e74c3c;">5xx (Rouge)</strong> = Problème du serveur, panne</li>
+                </ul>
+            </div>
+
+            <table class="methods-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nom</th>
+                        <th>Signification</th>
+                        <th>Exemple</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge badge-get">200</span></td>
+                        <td>OK</td>
+                        <td>Tout s'est bien passé</td>
+                        <td>GET /api/produits → liste renvoyée</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-get">201</span></td>
+                        <td>Created</td>
+                        <td>Nouvelle ressource créée</td>
+                        <td>POST /api/produits → produit créé</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-post">400</span></td>
+                        <td>Bad Request</td>
+                        <td>Ta requête est mal formée</td>
+                        <td>POST sans le champ "nom" obligatoire</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-post">401</span></td>
+                        <td>Unauthorized</td>
+                        <td>Pas authentifié</td>
+                        <td>Mot de passe admin incorrect</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-post">404</span></td>
+                        <td>Not Found</td>
+                        <td>La ressource n'existe pas</td>
+                        <td>GET /api/produits/prod_999</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-delete">500</span></td>
+                        <td>Internal Server Error</td>
+                        <td>Le serveur a planté</td>
+                        <td>Bug dans le code ou BDD en panne</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- CHAPITRE 7 -->
+            <h2 id="routes">7. Les routes (URL de l'API)</h2>
+
+            <p>Une <strong>route</strong>, c'est l'adresse URL à laquelle le serveur va répondre. Dans notre projet, toutes les routes commencent par <code>/api/</code>.</p>
+
+            <div class="analogy">
+                <span class="analogy-emoji">🏠</span>
+                <div class="analogy-title">Analogie : Les adresses postales</div>
+                <p>Pense aux routes comme des adresses :</p>
+                <ul>
+                    <li><code>/api/produits</code> = le quartier "Produits" → tous les produits</li>
+                    <li><code>/api/produits/prod_46</code> = la maison n°46 du quartier → un produit précis</li>
+                    <li><code>/api/categories/BOX_INTERNET/produits</code> = les maisons du quartier "Box Internet"</li>
+                </ul>
+            </div>
+
+            <h3>Structure des routes de notre site</h3>
+
+            <div class="code-block">
+                <code><span class="comment">// PRODUITS</span><br>
+<span class="method-get">GET</span>&nbsp;&nbsp;&nbsp;&nbsp; /api/produits&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Tous les produits</span><br>
+<span class="method-get">GET</span>&nbsp;&nbsp;&nbsp;&nbsp; /api/produits/:id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Un produit par son ID</span><br>
+<span class="method-post">POST</span>&nbsp;&nbsp;&nbsp; /api/produits&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Créer un produit</span><br>
+<span class="method-put">PUT</span>&nbsp;&nbsp;&nbsp;&nbsp; /api/produits/:id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Modifier un produit</span><br>
+<span class="method-delete">DELETE</span>&nbsp; /api/produits/:id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Supprimer un produit</span><br>
+<br>
+<span class="comment">// ARTICLES</span><br>
+<span class="method-get">GET</span>&nbsp;&nbsp;&nbsp;&nbsp; /api/actualites&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Tous les articles</span><br>
+<span class="method-post">POST</span>&nbsp;&nbsp;&nbsp; /api/actualites&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Créer un article</span><br>
+<br>
+<span class="comment">// CATEGORIES</span><br>
+<span class="method-get">GET</span>&nbsp;&nbsp;&nbsp;&nbsp; /api/categories&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Toutes les catégories</span><br>
+<span class="method-get">GET</span>&nbsp;&nbsp;&nbsp;&nbsp; /api/categories/:slug/produits <span class="comment">// Produits d'une catégorie</span><br>
+<br>
+<span class="comment">// ANNONCES</span><br>
+<span class="method-get">GET</span>&nbsp;&nbsp;&nbsp;&nbsp; /api/announcements&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// Annonces actives</span><br>
+<span class="method-get">GET</span>&nbsp;&nbsp;&nbsp;&nbsp; /api/announcements/admin/all&nbsp;&nbsp; <span class="comment">// Toutes (admin)</span></code>
+            </div>
+
+            <div class="info">
+                <strong>💡 Le <code>:id</code> c'est quoi ?</strong> C'est un <strong>paramètre dynamique</strong>. Quand tu appelles <code>/api/produits/prod_46</code>, Express remplace <code>:id</code> par <code>prod_46</code> et tu peux le récupérer avec <code>req.params.id</code>.
+            </div>
+
+            <!-- CHAPITRE 8 -->
+            <h2 id="exemples-concrets">8. Exemples concrets avec notre site</h2>
+
+            <p>Voyons des exemples réels que tu peux tester toi-même dans ton navigateur ou avec curl :</p>
+
+            <h3>Lire tous les produits</h3>
+
+            <div class="demo-box">
+                <div class="demo-title">Requête</div>
+                <div class="demo-url">
+                    <span class="method badge badge-get">GET</span>
+                    <span class="url">http://localhost:3000/api/produits</span>
+                </div>
+                <div class="demo-title" style="margin-top: 15px;">Réponse (simplifié)</div>
+                <div class="demo-response">{
+  "success": true,
+  "data": [
+    { "id": "prod_46", "titre_affiche": "Freebox Ultra", "prix": "49,99€/mois" },
+    { "id": "prod_77", "titre_affiche": "Bouygues Bbox Ultym 2026", "prix": "39,99€/mois" },
+    ... (107 produits au total)
+  ]
+}</div>
+            </div>
+
+            <h3>Lire un produit précis</h3>
+
+            <div class="demo-box">
+                <div class="demo-title">Requête</div>
+                <div class="demo-url">
+                    <span class="method badge badge-get">GET</span>
+                    <span class="url">http://localhost:3000/api/produits/prod_46</span>
+                </div>
+                <div class="demo-title" style="margin-top: 15px;">Réponse</div>
+                <div class="demo-response">{
+  "success": true,
+  "data": {
+    "id": "prod_46",
+    "titre_affiche": "Freebox Ultra",
+    "prix": "49,99€/mois",
+    "categorie": "BOX INTERNET",
+    "fonctionnalites_avancees": ["Wi-Fi 7 tri-bande BE19000", "Fibre 8 Gbit/s", ...],
+    "donnees_fiche": ["📝 Description détaillée\n- Box internet premium...", ...]
+  }
+}</div>
+            </div>
+
+            <h3>Créer un nouveau produit</h3>
+
+            <div class="demo-box">
+                <div class="demo-title">Requête</div>
+                <div class="demo-url">
+                    <span class="method badge badge-post">POST</span>
+                    <span class="url">http://localhost:3000/api/produits</span>
+                </div>
+                <div class="demo-title" style="margin-top: 10px;">Corps de la requête (body)</div>
+                <div class="demo-response">{
+  "id": "prod_108",
+  "nom": "mon-nouveau-produit",
+  "titre_affiche": "Mon Nouveau Produit",
+  "categorie": "SMARTPHONES",
+  "prix": "999€",
+  "description": "Un smartphone incroyable"
+}</div>
+                <div class="demo-title" style="margin-top: 10px;">Réponse (201 Created)</div>
+                <div class="demo-response">{
+  "success": true,
+  "data": { "id": "prod_108", "nom": "mon-nouveau-produit", ... },
+  "message": "Produit créé avec succès"
+}</div>
+            </div>
+
+            <h3>Modifier un produit</h3>
+
+            <div class="demo-box">
+                <div class="demo-title">Requête</div>
+                <div class="demo-url">
+                    <span class="method badge badge-put">PUT</span>
+                    <span class="url">http://localhost:3000/api/produits/prod_46</span>
+                </div>
+                <div class="demo-title" style="margin-top: 10px;">Corps de la requête</div>
+                <div class="demo-response">{
+  "nom": "freebox-ultra",
+  "prix": "44,99€/mois",
+  "description": "Nouveau prix promo !"
+}</div>
+            </div>
+
+            <div class="danger">
+                <strong>🚨 Important :</strong> Dans notre API, le <code>PUT</code> remplace <strong>TOUS</strong> les champs. Si tu envoies seulement le prix, les autres champs (description, image...) seront vidés ! Il faut toujours envoyer le produit complet.
+            </div>
+
+            <h3>Supprimer un produit</h3>
+
+            <div class="demo-box">
+                <div class="demo-title">Requête</div>
+                <div class="demo-url">
+                    <span class="method badge badge-delete">DELETE</span>
+                    <span class="url">http://localhost:3000/api/produits/prod_108</span>
+                </div>
+                <div class="demo-title" style="margin-top: 10px;">Réponse</div>
+                <div class="demo-response">{
+  "success": true,
+  "message": "Produit supprimé avec succès"
+}</div>
+            </div>
+
+            <h3>Tester avec curl (dans le terminal)</h3>
+
+            <div class="code-block">
+                <code><span class="comment"># Lire tous les produits</span><br>
+curl http://localhost:3000/api/produits<br>
+<br>
+<span class="comment"># Lire un produit</span><br>
+curl http://localhost:3000/api/produits/prod_46<br>
+<br>
+<span class="comment"># Créer un produit</span><br>
+curl -X POST http://localhost:3000/api/produits \<br>
+&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+&nbsp;&nbsp;-d '{"id":"prod_108","nom":"test","prix":"99€"}'<br>
+<br>
+<span class="comment"># Modifier un produit</span><br>
+curl -X PUT http://localhost:3000/api/produits/prod_46 \<br>
+&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+&nbsp;&nbsp;-d '{"nom":"freebox-ultra","prix":"44,99€/mois"}'<br>
+<br>
+<span class="comment"># Supprimer un produit</span><br>
+curl -X DELETE http://localhost:3000/api/produits/prod_108</code>
+            </div>
+
+            <!-- CHAPITRE 9 -->
+            <h2 id="securite">9. La sécurité</h2>
+
+            <div class="analogy">
+                <span class="analogy-emoji">🔐</span>
+                <div class="analogy-title">Analogie : Le videur de boîte de nuit</div>
+                <p>La sécurité d'une API, c'est comme un videur à l'entrée d'une boîte :</p>
+                <ul>
+                    <li><strong>Rate Limiting</strong> = "Pas plus de 100 personnes par heure" (limite les requêtes pour éviter les abus)</li>
+                    <li><strong>Helmet</strong> = Les caméras de sécurité (protège les en-têtes HTTP)</li>
+                    <li><strong>Validation</strong> = "Carte d'identité svp" (vérifie que les données envoyées sont correctes)</li>
+                    <li><strong>Authentification</strong> = "Mot de passe pour le VIP" (accès admin protégé)</li>
+                    <li><strong>CORS</strong> = "Seuls les invités de cette liste peuvent entrer" (contrôle quels sites peuvent appeler l'API)</li>
+                </ul>
+            </div>
+
+            <h3>Dans notre site</h3>
+
+            <div class="code-block">
+                <code><span class="comment">// server-2026.js - Les couches de sécurité</span><br>
+<br>
+app.use(helmet());            <span class="comment">// 🛡️ Protège les en-têtes HTTP</span><br>
+app.use(compression());       <span class="comment">// 📦 Compresse les réponses (plus rapide)</span><br>
+app.use(cors());              <span class="comment">// 🌐 Contrôle les origines autorisées</span><br>
+app.use(rateLimit({           <span class="comment">// 🚦 Limite à 100 requêtes / 15 min</span><br>
+&nbsp;&nbsp;windowMs: 15 * 60 * 1000,<br>
+&nbsp;&nbsp;max: 100<br>
+}));<br>
+<br>
+<span class="comment">// Authentification admin</span><br>
+app.post(<span class="string">'/api/admin/login'</span>, (req, res) => {<br>
+&nbsp;&nbsp;<span class="keyword">if</span> (req.body.password === process.env.ADMIN_PASSWORD) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;res.json({ success: <span class="keyword">true</span> });<br>
+&nbsp;&nbsp;} <span class="keyword">else</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;res.status(401).json({ success: <span class="keyword">false</span> });<br>
+&nbsp;&nbsp;}<br>
+});</code>
+            </div>
+
+            <!-- CHAPITRE 10 -->
+            <h2 id="outils">10. Les outils pour tester une API</h2>
+
+            <table class="methods-table">
+                <thead>
+                    <tr>
+                        <th>Outil</th>
+                        <th>Type</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Navigateur</strong></td>
+                        <td>Basique</td>
+                        <td>Taper l'URL directement (GET uniquement)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>curl</strong></td>
+                        <td>Terminal</td>
+                        <td>Commandes en ligne, toutes les méthodes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Postman</strong></td>
+                        <td>Application</td>
+                        <td>Interface graphique pour tester, sauvegarder des requêtes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thunder Client</strong></td>
+                        <td>Extension VS Code</td>
+                        <td>Comme Postman mais directement dans VS Code</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Console navigateur</strong></td>
+                        <td>DevTools (F12)</td>
+                        <td>Utiliser <code>fetch()</code> dans la console pour tester</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Tester dans la console du navigateur (F12)</h3>
+
+            <div class="code-block">
+                <code><span class="comment">// Ouvre la console (F12) sur http://localhost:3000 et tape :</span><br>
+<br>
+<span class="comment">// Lire tous les produits</span><br>
+fetch(<span class="string">'/api/produits'</span>).then(r => r.json()).then(console.log)<br>
+<br>
+<span class="comment">// Lire les stats</span><br>
+fetch(<span class="string">'/api/stats/homepage'</span>).then(r => r.json()).then(console.log)<br>
+<br>
+<span class="comment">// Lire les catégories</span><br>
+fetch(<span class="string">'/api/categories'</span>).then(r => r.json()).then(console.log)</code>
+            </div>
+
+            <!-- CHAPITRE 11 -->
+            <h2 id="resume">11. Résumé</h2>
+
+            <div class="success">
+                <h3 style="color: #2ecc71; margin-top: 0;">Ce qu'il faut retenir</h3>
+                <ul>
+                    <li>Une <strong>API</strong> est un intermédiaire entre le frontend et la base de données</li>
+                    <li>Elle fonctionne avec des <strong>requêtes HTTP</strong> (GET, POST, PUT, DELETE)</li>
+                    <li>Les données sont échangées en format <strong>JSON</strong></li>
+                    <li>Chaque <strong>route</strong> correspond à une action (<code>/api/produits</code>, <code>/api/categories</code>...)</li>
+                    <li>Les <strong>codes de réponse</strong> indiquent si ça a marché (200) ou pas (404, 500)</li>
+                    <li>La sécurité protège l'API contre les abus (rate limiting, validation, authentification)</li>
+                </ul>
+            </div>
+
+            <div class="schema">
+                <p style="color: #d4ff00; margin-bottom: 15px; font-size: 1.2em;">Résumé visuel de notre architecture</p>
+                <div class="schema-row">
+                    <div class="schema-box client">
+                        🖥️ <strong>Frontend</strong><br>
+                        <small>index.html, produits.html<br>admin.html, fiche.html</small>
+                    </div>
+                    <div class="schema-arrow">⟷</div>
+                    <div class="schema-box server">
+                        ⚙️ <strong>API REST</strong><br>
+                        <small>server-2026.js<br>Express.js + Routes</small>
+                    </div>
+                    <div class="schema-arrow">⟷</div>
+                    <div class="schema-box db">
+                        🗄️ <strong>PostgreSQL</strong><br>
+                        <small>produits, actualites<br>categories, announcements</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIENS -->
+            <div class="quick-links">
+                <h2>Pour aller plus loin</h2>
+                <div class="quick-links-grid">
+                    <a href="api-reference.html" class="quick-link" style="background: rgba(212, 255, 0, 0.15); border-color: #d4ff00; color: #d4ff00;">Référence API complète</a>
+                    <a href="database.html" class="quick-link">Base de données</a>
+                    <a href="project-connections-vue.html" class="quick-link">Architecture du projet</a>
+                    <a href="getting-started.html" class="quick-link">Guide de démarrage</a>
+                    <a href="/2026/admin.html" class="quick-link">Dashboard Admin</a>
+                    <a href="/2026/" class="quick-link">Accueil du site</a>
+                </div>
+            </div>
+
+            <div class="nav-bottom">
+                <a href="wiki.html" class="nav-button">← Retour au Wiki</a>
+                <a href="api-reference.html" class="nav-button">Référence API →</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

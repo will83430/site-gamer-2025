@@ -1,8 +1,7 @@
 // assets/js/fiche-tendance.js - Chargement dynamique des articles tendances depuis PostgreSQL
 
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:3000/api'
-  : `http://${window.location.hostname}:3000/api`;
+// API URL - utilise l'origine actuelle (fonctionne avec tunnel localhost.run)
+const API_URL = window.location.origin + '/api';
 
 // Mapping slug -> nom de catégorie lisible
 const categoryNames = {
