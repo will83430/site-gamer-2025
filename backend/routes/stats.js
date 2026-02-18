@@ -140,7 +140,12 @@ router.get('/admin', async (req, res) => {
       tendances,
       visites,
       derniereVisite,
-      prixStats
+      prixStats,
+      guidesCount,
+      timelineCount,
+      aboutCount,
+      wikiCount,
+      annoncesCount
     ] = await Promise.all([
       pool.query('SELECT COUNT(*) as count FROM produits'),
       pool.query(`
@@ -163,12 +168,25 @@ router.get('/admin', async (req, res) => {
       pool.query('SELECT valeur FROM site_stats WHERE cle = $1', ['derniere_visite']),
       pool.query(`
         SELECT
-          MIN(CAST(REGEXP_REPLACE(prix, '[^0-9.]', '', 'g') AS NUMERIC)) as min_prix,
-          MAX(CAST(REGEXP_REPLACE(prix, '[^0-9.]', '', 'g') AS NUMERIC)) as max_prix,
-          AVG(CAST(REGEXP_REPLACE(prix, '[^0-9.]', '', 'g') AS NUMERIC))::INTEGER as avg_prix
-        FROM produits
-        WHERE prix IS NOT NULL AND prix ~ '[0-9]'
-      `)
+          MIN(parsed) as min_prix, MAX(parsed) as max_prix, AVG(parsed)::INTEGER as avg_prix
+        FROM (
+          SELECT CAST(
+            REGEXP_REPLACE(
+              REPLACE(
+                REGEXP_REPLACE(prix, '[^0-9,. ]', '', 'g'),
+              ',', '.'),
+            '\\s', '', 'g')
+          AS NUMERIC) as parsed
+          FROM produits
+          WHERE prix IS NOT NULL AND prix ~ '[0-9]'
+        ) sub
+        WHERE parsed < 100000
+      `),
+      pool.query('SELECT COUNT(*) as count FROM guides'),
+      pool.query('SELECT COUNT(*) as count FROM timeline_events'),
+      pool.query('SELECT COUNT(*) as count FROM about_sections'),
+      pool.query('SELECT COUNT(*) as count FROM wiki_pages'),
+      pool.query('SELECT COUNT(*) as count FROM announcements WHERE actif = true')
     ]);
 
     const tendancesData = tendances.rows[0];
@@ -196,7 +214,12 @@ router.get('/admin', async (req, res) => {
           total: parseInt(visites.rows[0]?.valeur || 0),
           derniereVisite: derniereVisite.rows[0]?.valeur || null
         },
-        prix: prixStats.rows[0] || { min_prix: 0, max_prix: 0, avg_prix: 0 }
+        prix: prixStats.rows[0] || { min_prix: 0, max_prix: 0, avg_prix: 0 },
+        guides: parseInt(guidesCount.rows[0].count),
+        timeline: parseInt(timelineCount.rows[0].count),
+        about: parseInt(aboutCount.rows[0].count),
+        wiki: parseInt(wikiCount.rows[0].count),
+        annonces: parseInt(annoncesCount.rows[0].count)
       }
     });
   } catch (error) {

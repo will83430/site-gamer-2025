@@ -491,6 +491,54 @@
             margin-bottom: 2rem;
         }
 
+        .dashboard-recap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .recap-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.2rem;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .recap-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 255, 0, 0.1);
+        }
+
+        .recap-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .recap-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recap-count {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .recap-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
         .stat-card {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
@@ -1199,6 +1247,7 @@
             font-family: 'Orbitron', sans-serif;
             background: var(--gradient-yellow-green);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
         ">HIGH-TECH 2026</h1>
@@ -1332,6 +1381,18 @@ async function adminLogin() {
                     <span class="nav-item-icon">🔮</span>
                     <span>Prédictions</span>
                 </a>
+                <a class="nav-item" data-section="about">
+                    <span class="nav-item-icon">ℹ️</span>
+                    <span>À propos</span>
+                </a>
+                <a class="nav-item" data-section="timeline">
+                    <span class="nav-item-icon">📅</span>
+                    <span>Timeline</span>
+                </a>
+                <a class="nav-item" data-section="guides">
+                    <span class="nav-item-icon">📖</span>
+                    <span>Guides</span>
+                </a>
             </div>
 
             <div class="nav-section">
@@ -1339,6 +1400,10 @@ async function adminLogin() {
                 <a class="nav-item" data-section="stats">
                     <span class="nav-item-icon">📉</span>
                     <span>Statistiques</span>
+                </a>
+                <a class="nav-item" data-section="prix">
+                    <span class="nav-item-icon">📈</span>
+                    <span>Suivi des Prix</span>
                 </a>
                 <a class="nav-item" data-section="logs">
                     <span class="nav-item-icon">📋</span>
@@ -1367,11 +1432,11 @@ async function adminLogin() {
                 </div>
             </div>
 
+            <!-- Stats principales -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-card-header">
                         <div class="stat-card-icon yellow">📦</div>
-                        <span class="stat-card-trend up">↑ Actif</span>
                     </div>
                     <div class="stat-card-value" id="stat-produits">--</div>
                     <div class="stat-card-label">Produits</div>
@@ -1379,7 +1444,6 @@ async function adminLogin() {
                 <div class="stat-card">
                     <div class="stat-card-header">
                         <div class="stat-card-icon green">📰</div>
-                        <span class="stat-card-trend up">↑ Actif</span>
                     </div>
                     <div class="stat-card-value" id="stat-articles">--</div>
                     <div class="stat-card-label">Articles</div>
@@ -1387,10 +1451,9 @@ async function adminLogin() {
                 <div class="stat-card">
                     <div class="stat-card-header">
                         <div class="stat-card-icon blue">👁️</div>
-                        <span class="stat-card-trend up">↑ 12%</span>
                     </div>
                     <div class="stat-card-value" id="stat-visites">--</div>
-                    <div class="stat-card-label">Visites (30j)</div>
+                    <div class="stat-card-label">Visites</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-card-header">
@@ -1401,7 +1464,20 @@ async function adminLogin() {
                 </div>
             </div>
 
-            <div class="content-card">
+            <!-- Récap de tous les contenus -->
+            <div class="content-card" style="margin-top: 1.5rem;">
+                <div class="content-card-header">
+                    <h3 class="content-card-title">Récapitulatif des contenus</h3>
+                </div>
+                <div class="content-card-body">
+                    <div class="dashboard-recap-grid" id="dashboard-recap">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activité récente -->
+            <div class="content-card" style="margin-top: 1.5rem;">
                 <div class="content-card-header">
                     <h3 class="content-card-title">Activité récente</h3>
                 </div>
@@ -1636,6 +1712,77 @@ async function adminLogin() {
             </div>
         </section>
 
+        <!-- Prix Section -->
+        <section id="section-prix" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Suivi des Prix</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="loadPrixSection()">🔄 Actualiser</button>
+                    <button class="btn btn-primary" onclick="prendrePrixSnapshot()">📸 Snapshot maintenant</button>
+                </div>
+            </div>
+
+            <!-- Stats résumé -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;" id="prix-stats-grid">
+                <div class="content-card" style="text-align:center;padding:1.2rem;">
+                    <div style="font-family:'Orbitron',sans-serif;font-size:1.8rem;color:var(--tech-blue);" id="px-total">-</div>
+                    <div style="color:var(--text-muted);font-size:0.85rem;">Produits suivis</div>
+                </div>
+                <div class="content-card" style="text-align:center;padding:1.2rem;">
+                    <div style="font-family:'Orbitron',sans-serif;font-size:1.8rem;color:#ff6b6b;" id="px-hausses">-</div>
+                    <div style="color:var(--text-muted);font-size:0.85rem;">En hausse</div>
+                </div>
+                <div class="content-card" style="text-align:center;padding:1.2rem;">
+                    <div style="font-family:'Orbitron',sans-serif;font-size:1.8rem;color:var(--tech-green);" id="px-baisses">-</div>
+                    <div style="color:var(--text-muted);font-size:0.85rem;">En baisse</div>
+                </div>
+                <div class="content-card" style="text-align:center;padding:1.2rem;">
+                    <div style="font-family:'Orbitron',sans-serif;font-size:1.8rem;color:var(--tech-yellow);" id="px-releves">-</div>
+                    <div style="color:var(--text-muted);font-size:0.85rem;">Relevés totaux</div>
+                </div>
+            </div>
+
+            <!-- Filtre + recherche -->
+            <div style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center;">
+                <input type="text" id="px-search" placeholder="🔍 Rechercher un produit..." class="form-input" style="flex:1;min-width:200px;" oninput="filterPrixTable()">
+                <select id="px-filter-cat" class="form-select" style="width:200px;" onchange="filterPrixTable()">
+                    <option value="">Toutes catégories</option>
+                </select>
+                <select id="px-filter-trend" class="form-select" style="width:160px;" onchange="filterPrixTable()">
+                    <option value="">Toutes tendances</option>
+                    <option value="hausse">↗ En hausse</option>
+                    <option value="baisse">↘ En baisse</option>
+                    <option value="stable">→ Stables</option>
+                </select>
+            </div>
+
+            <!-- Tableau produits -->
+            <div class="content-card">
+                <div class="content-card-body" style="padding:0;overflow-x:auto;">
+                    <table class="data-table" id="prix-table">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Catégorie</th>
+                                <th>Prix actuel</th>
+                                <th>Prix nov. 2025</th>
+                                <th>Variation</th>
+                                <th>Nouveau prix</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prix-tbody">
+                            <tr><td colspan="7" style="text-align:center;padding:2rem;"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <p style="color:var(--text-muted);font-size:0.8rem;margin-top:1rem;text-align:center;">
+                💡 Cliquez sur <strong>🔍 Rechercher</strong> pour ouvrir Google Shopping et trouver le prix actuel, puis entrez-le dans le champ et cliquez <strong>✅ Appliquer</strong>.
+            </p>
+        </section>
+
         <!-- Logs Section -->
         <section id="section-logs" class="section">
             <div class="page-header">
@@ -1858,6 +2005,91 @@ async function adminLogin() {
                 </div>
             </div>
         </section>
+
+        <!-- About Section -->
+        <section id="section-about" class="section">
+            <div class="page-header">
+                <h1 class="page-title">À propos</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('about')">+ Nouvelle Section</button>
+                </div>
+            </div>
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Icône</th>
+                                <th>Titre</th>
+                                <th>Type</th>
+                                <th>Ordre</th>
+                                <th style="width: 120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-about">
+                            <tr><td colspan="5"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section id="section-timeline" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Timeline Tech</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('timeline')">+ Nouvel Événement</button>
+                </div>
+            </div>
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Icône</th>
+                                <th>Titre</th>
+                                <th>Année</th>
+                                <th>Catégorie</th>
+                                <th style="width: 120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-timeline">
+                            <tr><td colspan="5"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guides Section -->
+        <section id="section-guides" class="section">
+            <div class="page-header">
+                <h1 class="page-title">Guides d'achat</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openModal('guide')">+ Nouveau Guide</button>
+                </div>
+            </div>
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Catégorie</th>
+                                <th>Budget</th>
+                                <th>Produits</th>
+                                <th style="width: 120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-guides">
+                            <tr><td colspan="5"><div class="loading-spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
     </main>
 </div>
 
@@ -1932,8 +2164,12 @@ async function adminLogin() {
             case 'marche': loadMarche(); break;
             case 'predictions': loadPredictions(); break;
             case 'wiki': loadWiki(); break;
+            case 'about': loadAbout(); break;
+            case 'timeline': loadTimeline(); break;
+            case 'guides': loadGuides(); break;
             case 'stats': loadFullStats(); break;
             case 'logs': loadActivityLogs(); break;
+            case 'prix': loadPrixSection(); break;
         }
     }
 
@@ -2004,14 +2240,14 @@ async function adminLogin() {
 
     async function loadDashboardStats() {
         try {
-            // Charger les stats
-            const [produitsRes, articlesRes, categoriesRes, statsRes] = await Promise.all([
+            const [adminStatsRes, produitsRes, articlesRes, categoriesRes] = await Promise.all([
+                fetch('/api/stats/admin'),
                 fetch('/api/produits'),
                 fetch('/api/actualites'),
-                fetch('/api/categories'),
-                fetch('/api/stats/homepage').catch(() => ({ ok: false }))
+                fetch('/api/categories')
             ]);
 
+            const adminStats = await adminStatsRes.json();
             const produitsData = await produitsRes.json();
             const articlesData = await articlesRes.json();
             const categoriesData = await categoriesRes.json();
@@ -2019,36 +2255,53 @@ async function adminLogin() {
             const produits = extractData(produitsData);
             const articles = extractData(articlesData);
             const categories = extractData(categoriesData);
+            const s = adminStats.stats || {};
 
+            // Top stat cards
             document.getElementById('stat-produits').textContent = produits.length || 0;
             document.getElementById('stat-articles').textContent = articles.length || 0;
             document.getElementById('stat-categories').textContent = categories.length || 0;
+            document.getElementById('stat-visites').textContent = s.visites?.total || 0;
 
+            // Nav counters
             document.getElementById('count-produits').textContent = produits.length || 0;
             document.getElementById('count-articles').textContent = articles.length || 0;
+            document.getElementById('count-annonces').textContent = s.annonces || 0;
 
-            if (statsRes.ok) {
-                const statsData = await statsRes.json();
-                const visites = statsData.stats?.visites || 0;
-                document.getElementById('stat-visites').textContent = visites;
-            } else {
-                document.getElementById('stat-visites').textContent = '0';
-            }
+            // Recap grid
+            const recapItems = [
+                { icon: '📦', count: produits.length, label: 'Produits', section: 'produits' },
+                { icon: '📰', count: articles.length, label: 'Articles', section: 'articles' },
+                { icon: '🏷️', count: categories.length, label: 'Catégories', section: 'categories' },
+                { icon: '📢', count: s.annonces || 0, label: 'Annonces actives', section: 'annonces' },
+                { icon: '📖', count: s.guides || 0, label: 'Guides d\'achat', section: 'guides' },
+                { icon: '📅', count: s.timeline || 0, label: 'Événements timeline', section: 'timeline' },
+                { icon: 'ℹ️', count: s.about || 0, label: 'Sections à propos', section: 'about' },
+                { icon: '📚', count: s.wiki || 0, label: 'Pages wiki', section: 'wiki' },
+                { icon: '⭐', count: s.produits?.topDuMois || 0, label: 'Produits vedettes', section: 'produits' },
+                { icon: '👁️', count: s.visites?.total || 0, label: 'Visites totales', section: null },
+            ];
 
-            // Annonces count
-            const annoncesRes = await fetch('/api/announcements');
-            const annoncesData = await annoncesRes.json();
-            const annoncesCount = annoncesData.announcements?.length || 0;
-            document.getElementById('count-annonces').textContent = annoncesCount;
+            document.getElementById('dashboard-recap').innerHTML = recapItems.map(item => `
+                <div class="recap-item" ${item.section ? `onclick="navigateToSection('${item.section}')"` : ''}>
+                    <span class="recap-icon">${item.icon}</span>
+                    <div class="recap-info">
+                        <span class="recap-count">${item.count}</span>
+                        <span class="recap-label">${item.label}</span>
+                    </div>
+                </div>
+            `).join('');
 
             // Recent activity
+            const tendTotal = s.tendances?.total || 0;
             document.getElementById('recent-activity').innerHTML = `
-                <p style="color: var(--text-secondary);">
-                    📦 ${produits.length} produits en base<br>
-                    📰 ${articles.length} articles publiés<br>
-                    📢 ${annoncesCount} annonces actives<br>
-                    🏷️ ${categories.length} catégories
-                </p>
+                <div style="color: var(--text-secondary); line-height: 2;">
+                    📦 <strong>${produits.length}</strong> produits en base (${s.produits?.topDuMois || 0} vedettes)<br>
+                    📰 <strong>${articles.length}</strong> articles · ${s.tendances?.technologies || 0} techno · ${s.tendances?.marche || 0} marché · ${s.tendances?.predictions || 0} prédictions<br>
+                    📖 <strong>${s.guides || 0}</strong> guides d'achat · 📅 <strong>${s.timeline || 0}</strong> événements timeline<br>
+                    📚 <strong>${s.wiki || 0}</strong> pages wiki · ℹ️ <strong>${s.about || 0}</strong> sections à propos<br>
+                    💰 Prix moyen: <strong>${s.prix?.avg_prix || 0}€</strong> (${s.prix?.min_prix || 0}€ - ${s.prix?.max_prix || 0}€)
+                </div>
             `;
         } catch (error) {
             console.error('Erreur chargement stats:', error);
@@ -2531,7 +2784,7 @@ async function adminLogin() {
 
     async function loadAnnonces() {
         try {
-            const response = await fetch('/api/announcements');
+            const response = await fetch('/api/announcements/admin/all');
             const data = await response.json();
             const annonces = data.announcements || [];
 
@@ -3022,6 +3275,29 @@ async function adminLogin() {
                 title.textContent = 'Nouvelle Catégorie';
                 body.innerHTML = getCategorieFormHtml();
                 document.getElementById('modal-submit').onclick = saveCategorie;
+                document.getElementById('modal-preview').style.display = 'none';
+                break;
+
+            case 'about':
+                title.textContent = 'Nouvelle Section À propos';
+                body.innerHTML = getAboutFormHtml();
+                document.getElementById('modal-submit').onclick = saveAbout;
+                document.getElementById('modal-preview').style.display = 'none';
+                break;
+
+            case 'timeline':
+                title.textContent = 'Nouvel Événement Timeline';
+                body.innerHTML = getTimelineFormHtml();
+                await populateFormCategories('form-timeline-categorie');
+                document.getElementById('modal-submit').onclick = saveTimeline;
+                document.getElementById('modal-preview').style.display = 'none';
+                break;
+
+            case 'guide':
+                title.textContent = 'Nouveau Guide d\'achat';
+                body.innerHTML = getGuideFormHtml();
+                await populateFormCategories('form-guide-categorie');
+                document.getElementById('modal-submit').onclick = saveGuide;
                 document.getElementById('modal-preview').style.display = 'none';
                 break;
         }
@@ -4558,12 +4834,6 @@ async function adminLogin() {
             const response = await fetch('/api/announcements/admin/all');
             const data = await response.json();
             calendarAnnonces = data.announcements || [];
-            console.log('📅 Annonces chargées:', calendarAnnonces.map(a => ({
-                titre: a.titre,
-                date_debut: a.date_debut,
-                date_fin: a.date_fin,
-                actif: a.actif
-            })));
         } catch (error) {
             console.error('Erreur chargement annonces calendrier:', error);
         }
@@ -5442,6 +5712,11 @@ async function adminLogin() {
         loadDashboardStats();
     }
 
+    function navigateToSection(section) {
+        const navItem = document.querySelector(`.nav-item[data-section="${section}"]`);
+        if (navItem) navItem.click();
+    }
+
     // ========================================
     // PRÉVISUALISATION
     // ========================================
@@ -5541,6 +5816,155 @@ async function adminLogin() {
     }
 
     // ========================================
+    // ========================================
+    // SUIVI DES PRIX
+    // ========================================
+    let prixData = [];
+
+    async function loadPrixSection() {
+        try {
+            const [statsRes, summaryRes] = await Promise.all([
+                fetch('/api/price-evolution/stats'),
+                fetch('/api/price-evolution/products-summary')
+            ]);
+            const stats = await statsRes.json();
+            const summary = await summaryRes.json();
+
+            if (stats.success) {
+                document.getElementById('px-total').textContent = stats.stats.produits_suivis;
+                document.getElementById('px-hausses').textContent = stats.stats.hausses;
+                document.getElementById('px-baisses').textContent = stats.stats.baisses;
+                document.getElementById('px-releves').textContent = stats.stats.total_enregistrements;
+            }
+
+            if (summary.success) {
+                prixData = summary.data.map(p => {
+                    const premier = parseFloat(p.premier_prix) || 0;
+                    const dernier = parseFloat(p.dernier_prix) || 0;
+                    const variation = premier > 0 ? ((dernier - premier) / premier * 100) : 0;
+                    return { ...p, premier_num: premier, dernier_num: dernier, variation };
+                });
+
+                // Remplir filtre catégories
+                const cats = [...new Set(prixData.map(p => p.categorie).filter(Boolean))].sort();
+                const sel = document.getElementById('px-filter-cat');
+                sel.innerHTML = '<option value="">Toutes catégories</option>';
+                cats.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c; opt.textContent = c;
+                    sel.appendChild(opt);
+                });
+
+                filterPrixTable();
+            }
+        } catch (e) {
+            console.error('Erreur loadPrixSection:', e);
+        }
+    }
+
+    function filterPrixTable() {
+        const search = document.getElementById('px-search').value.toLowerCase();
+        const cat = document.getElementById('px-filter-cat').value;
+        const trend = document.getElementById('px-filter-trend').value;
+
+        let filtered = prixData.filter(p => {
+            if (search && !p.nom.toLowerCase().includes(search)) return false;
+            if (cat && p.categorie !== cat) return false;
+            if (trend === 'hausse' && p.variation <= 1) return false;
+            if (trend === 'baisse' && p.variation >= -1) return false;
+            if (trend === 'stable' && Math.abs(p.variation) > 1) return false;
+            return true;
+        });
+
+        renderPrixTable(filtered);
+    }
+
+    function renderPrixTable(data) {
+        const tbody = document.getElementById('prix-tbody');
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Aucun produit trouvé</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = data.map(p => {
+            const variation = p.variation;
+            let badgeHtml, trendClass;
+            if (variation > 1) {
+                badgeHtml = `<span class="data-table-badge badge-danger">↗ +${variation.toFixed(1)}%</span>`;
+                trendClass = 'hausse';
+            } else if (variation < -1) {
+                badgeHtml = `<span class="data-table-badge badge-success">↘ ${variation.toFixed(1)}%</span>`;
+                trendClass = 'baisse';
+            } else {
+                badgeHtml = `<span class="data-table-badge badge-secondary">→ Stable</span>`;
+                trendClass = 'stable';
+            }
+
+            const prixNov = p.premier_num > 0 ? p.premier_num.toFixed(0) + ' €' : '-';
+            const searchQuery = encodeURIComponent('prix ' + p.nom.replace(/-/g, ' ') + ' france');
+            const googleUrl = `https://www.google.fr/search?q=${searchQuery}&tbm=shop`;
+
+            return `
+                <tr>
+                    <td><strong>${p.nom}</strong></td>
+                    <td><span class="data-table-badge badge-info" style="font-size:0.7rem;">${p.categorie || '-'}</span></td>
+                    <td style="color:var(--tech-yellow);font-weight:600;">${p.prix_actuel || '-'}</td>
+                    <td style="color:var(--text-muted);">${prixNov}</td>
+                    <td>${badgeHtml}</td>
+                    <td>
+                        <input type="text" id="new-prix-${p.id}" placeholder="ex: 199 €" class="form-input" style="width:130px;padding:0.4rem 0.6rem;font-size:0.85rem;">
+                    </td>
+                    <td style="display:flex;gap:0.4rem;align-items:center;">
+                        <a href="${googleUrl}" target="_blank" class="btn btn-secondary" style="padding:0.4rem 0.7rem;font-size:0.8rem;" title="Rechercher le prix en ligne">🔍</a>
+                        <button onclick="appliquerPrix('${p.id}', '${p.nom}')" class="btn btn-primary" style="padding:0.4rem 0.7rem;font-size:0.8rem;">✅</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    async function appliquerPrix(produitId, nom) {
+        const input = document.getElementById('new-prix-' + produitId);
+        const nouveauPrix = input.value.trim();
+        if (!nouveauPrix) {
+            showNotification('Entrez un prix valide', 'error');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/price-evolution/update-manual', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ produit_id: produitId, nouveau_prix: nouveauPrix })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showNotification(`✅ ${nom} : ${data.ancien_prix} → ${data.nouveau_prix}`, 'success');
+                input.value = '';
+                input.style.borderColor = 'var(--tech-green)';
+                setTimeout(() => { input.style.borderColor = ''; loadPrixSection(); }, 2000);
+            } else {
+                showNotification('Erreur : ' + data.error, 'error');
+            }
+        } catch (e) {
+            showNotification('Erreur réseau', 'error');
+        }
+    }
+
+    async function prendrePrixSnapshot() {
+        if (!confirm('Prendre un snapshot des prix actuels de tous les produits ?')) return;
+        try {
+            const res = await fetch('/api/price-evolution/snapshot', { method: 'POST' });
+            const data = await res.json();
+            if (data.success) {
+                showNotification(`📸 ${data.message}`, 'success');
+                loadPrixSection();
+            }
+        } catch (e) {
+            showNotification('Erreur snapshot', 'error');
+        }
+    }
+
     // LOGS D'ACTIVITÉ
     // ========================================
     let logsPage = 0;
@@ -5625,15 +6049,18 @@ async function adminLogin() {
             const entityLabel = entityLabels[log.entity_type] || log.entity_type;
 
             let detailsHtml = '-';
+            const logId = `log-details-${log.id}`;
             if (log.details) {
                 try {
                     const details = typeof log.details === 'string' ? JSON.parse(log.details) : log.details;
-                    const detailsStr = Object.entries(details)
-                        .filter(([k, v]) => v !== null && v !== undefined)
-                        .map(([k, v]) => `${k}: ${v}`)
-                        .join(', ');
-                    if (detailsStr) {
-                        detailsHtml = `<span title="${detailsStr}" style="cursor: help;">📄</span>`;
+                    const entries = Object.entries(details).filter(([k, v]) => v !== null && v !== undefined);
+                    if (entries.length > 0) {
+                        const detailsContent = entries.map(([k, v]) => {
+                            const val = typeof v === 'object' ? JSON.stringify(v) : v;
+                            return `<div style="padding: 0.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: var(--tech-blue); font-weight: 600;">${k}:</span> <span style="color: var(--text-secondary);">${String(val).substring(0, 200)}</span></div>`;
+                        }).join('');
+                        detailsHtml = `<button onclick="document.getElementById('${logId}').style.display = document.getElementById('${logId}').style.display === 'none' ? 'table-row' : 'none'" style="background: rgba(77,212,255,0.15); border: 1px solid rgba(77,212,255,0.3); color: var(--tech-blue); border-radius: 6px; padding: 0.25rem 0.6rem; cursor: pointer; font-size: 0.8rem;">📄 Voir</button>`;
+                        detailsHtml += `</td></tr><tr id="${logId}" style="display: none;"><td colspan="5" style="background: rgba(0,0,0,0.3); padding: 0.75rem 1rem; border-left: 3px solid var(--tech-blue);">${detailsContent}</td>`;
                     }
                 } catch (e) {}
             }
@@ -5698,6 +6125,484 @@ async function adminLogin() {
     document.getElementById('modal-overlay').addEventListener('click', (e) => {
         if (e.target.id === 'modal-overlay') closeModal();
     });
+
+    // ========================================
+    // À PROPOS - CRUD
+    // ========================================
+    async function loadAbout() {
+        try {
+            const response = await fetch('/api/about');
+            const data = await response.json();
+            const sections = data.data || [];
+            renderAbout(sections);
+        } catch (error) {
+            console.error('Erreur chargement about:', error);
+            document.getElementById('table-about').innerHTML = '<tr><td colspan="5" class="empty-state">Erreur de chargement</td></tr>';
+        }
+    }
+
+    function renderAbout(sections) {
+        const tbody = document.getElementById('table-about');
+        if (sections.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucune section</td></tr>';
+            return;
+        }
+        tbody.innerHTML = sections.map(s => `
+            <tr>
+                <td style="font-size: 1.5rem;">${s.icone || '📄'}</td>
+                <td><strong>${s.titre || '-'}</strong></td>
+                <td><span class="data-table-badge badge-info">${s.type || 'text'}</span></td>
+                <td>${s.ordre || 0}</td>
+                <td>
+                    <button class="action-btn edit" title="Modifier" onclick="editAbout(${s.id})">✏️</button>
+                    <button class="action-btn delete" title="Supprimer" onclick="deleteAbout(${s.id}, '${(s.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function getAboutFormHtml() {
+        return `
+            <input type="hidden" id="form-about-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Icône (emoji)</label>
+                    <input type="text" class="form-input" id="form-about-icone" placeholder="📄" value="📄" maxlength="4" style="font-size: 1.5rem; text-align: center;">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" class="form-input" id="form-about-titre" placeholder="Ex: Notre Mission" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Type</label>
+                    <select class="form-select" id="form-about-type">
+                        <option value="text">Texte</option>
+                        <option value="list">Liste</option>
+                        <option value="tech-stack">Stack Technique</option>
+                        <option value="features">Fonctionnalités</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ordre</label>
+                    <input type="number" class="form-input" id="form-about-ordre" placeholder="0" min="0">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Contenu</label>
+                <textarea class="form-textarea" id="form-about-contenu" rows="10" placeholder="Texte: paragraphes séparés par ligne vide&#10;Liste: un item par ligne&#10;Tech-stack: une techno par ligne&#10;Features: titre + description séparés par des blocs (ligne vide)"></textarea>
+            </div>
+        `;
+    }
+
+    async function saveAbout() {
+        const id = document.getElementById('form-about-id')?.value;
+        const titre = document.getElementById('form-about-titre').value.trim();
+        const contenu = document.getElementById('form-about-contenu').value;
+        const icone = document.getElementById('form-about-icone').value.trim() || '📄';
+        const type = document.getElementById('form-about-type').value;
+        const ordre = parseInt(document.getElementById('form-about-ordre').value) || 0;
+
+        if (!titre) { showNotification('Le titre est obligatoire', 'error'); return; }
+
+        try {
+            const url = id ? `/api/about/${id}` : '/api/about';
+            const method = id ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ titre, contenu, icone, type, ordre })
+            });
+            const result = await response.json();
+            if (result.success) {
+                loadAbout();
+                showNotification(id ? 'Section modifiée!' : 'Section créée!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde about:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editAbout(id) {
+        try {
+            const response = await fetch(`/api/about/${id}`);
+            const data = await response.json();
+            const section = data.data;
+            if (!section) { showNotification('Section non trouvée', 'error'); return; }
+
+            const overlay = document.getElementById('modal-overlay');
+            document.getElementById('modal-title').textContent = 'Modifier la Section';
+            document.getElementById('modal-body').innerHTML = getAboutFormHtml();
+
+            document.getElementById('form-about-id').value = id;
+            document.getElementById('form-about-titre').value = section.titre || '';
+            document.getElementById('form-about-contenu').value = section.contenu || '';
+            document.getElementById('form-about-icone').value = section.icone || '📄';
+            document.getElementById('form-about-type').value = section.type || 'text';
+            document.getElementById('form-about-ordre').value = section.ordre || 0;
+
+            document.getElementById('modal-submit').onclick = saveAbout;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement about:', error);
+            showNotification('Erreur lors du chargement', 'error');
+        }
+    }
+
+    async function deleteAbout(id, titre) {
+        if (!confirm(`Supprimer la section "${titre}" ?`)) return;
+        try {
+            const response = await fetch(`/api/about/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+            if (result.success) {
+                loadAbout();
+                showNotification('Section supprimée', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression about:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // TIMELINE TECH - CRUD
+    // ========================================
+    async function loadTimeline() {
+        try {
+            const response = await fetch('/api/timeline');
+            const data = await response.json();
+            const events = data.data || [];
+            renderTimeline(events);
+        } catch (error) {
+            console.error('Erreur chargement timeline:', error);
+            document.getElementById('table-timeline').innerHTML = '<tr><td colspan="5" class="empty-state">Erreur de chargement</td></tr>';
+        }
+    }
+
+    function renderTimeline(events) {
+        const tbody = document.getElementById('table-timeline');
+        if (events.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucun événement</td></tr>';
+            return;
+        }
+        tbody.innerHTML = events.map(e => `
+            <tr>
+                <td style="font-size: 1.5rem;">${e.icone || '📅'}</td>
+                <td><strong>${e.titre || '-'}</strong></td>
+                <td>${e.annee}${e.mois ? '/' + String(e.mois).padStart(2, '0') : ''}</td>
+                <td><span class="data-table-badge badge-info">${e.categorie_nom || '-'}</span></td>
+                <td>
+                    <button class="action-btn edit" title="Modifier" onclick="editTimeline(${e.id})">✏️</button>
+                    <button class="action-btn delete" title="Supprimer" onclick="deleteTimeline(${e.id}, '${(e.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function getTimelineFormHtml() {
+        return `
+            <input type="hidden" id="form-timeline-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Icône (emoji)</label>
+                    <input type="text" class="form-input" id="form-timeline-icone" placeholder="📅" value="📅" maxlength="4" style="font-size: 1.5rem; text-align: center;">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" class="form-input" id="form-timeline-titre" placeholder="Ex: Lancement de l'iPhone" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Année *</label>
+                    <input type="number" class="form-input" id="form-timeline-annee" placeholder="2026" min="1970" max="2030" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mois (optionnel)</label>
+                    <select class="form-select" id="form-timeline-mois">
+                        <option value="">-- Aucun --</option>
+                        <option value="1">Janvier</option>
+                        <option value="2">Février</option>
+                        <option value="3">Mars</option>
+                        <option value="4">Avril</option>
+                        <option value="5">Mai</option>
+                        <option value="6">Juin</option>
+                        <option value="7">Juillet</option>
+                        <option value="8">Août</option>
+                        <option value="9">Septembre</option>
+                        <option value="10">Octobre</option>
+                        <option value="11">Novembre</option>
+                        <option value="12">Décembre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Catégorie</label>
+                    <select class="form-select" id="form-timeline-categorie"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="form-timeline-description" rows="5" placeholder="Description de l'événement"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Image URL (optionnel)</label>
+                <input type="text" class="form-input" id="form-timeline-image" placeholder="https://...">
+            </div>
+        `;
+    }
+
+    async function saveTimeline() {
+        const id = document.getElementById('form-timeline-id')?.value;
+        const titre = document.getElementById('form-timeline-titre').value.trim();
+        const annee = parseInt(document.getElementById('form-timeline-annee').value);
+        const moisVal = document.getElementById('form-timeline-mois').value;
+        const mois = moisVal ? parseInt(moisVal) : null;
+        const description = document.getElementById('form-timeline-description').value;
+        const icone = document.getElementById('form-timeline-icone').value.trim() || '📅';
+        const image = document.getElementById('form-timeline-image').value.trim() || null;
+        const categorie = document.getElementById('form-timeline-categorie').value || null;
+
+        if (!titre || !annee) { showNotification('Le titre et l\'année sont obligatoires', 'error'); return; }
+
+        try {
+            const url = id ? `/api/timeline/${id}` : '/api/timeline';
+            const method = id ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ titre, annee, mois, description, icone, image, categorie })
+            });
+            const result = await response.json();
+            if (result.success) {
+                loadTimeline();
+                showNotification(id ? 'Événement modifié!' : 'Événement créé!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde timeline:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editTimeline(id) {
+        try {
+            const response = await fetch(`/api/timeline/${id}`);
+            const data = await response.json();
+            const event = data.data;
+            if (!event) { showNotification('Événement non trouvé', 'error'); return; }
+
+            const overlay = document.getElementById('modal-overlay');
+            document.getElementById('modal-title').textContent = 'Modifier l\'Événement';
+            document.getElementById('modal-body').innerHTML = getTimelineFormHtml();
+            await populateFormCategories('form-timeline-categorie');
+
+            document.getElementById('form-timeline-id').value = id;
+            document.getElementById('form-timeline-titre').value = event.titre || '';
+            document.getElementById('form-timeline-annee').value = event.annee || '';
+            document.getElementById('form-timeline-mois').value = event.mois || '';
+            document.getElementById('form-timeline-description').value = event.description || '';
+            document.getElementById('form-timeline-icone').value = event.icone || '📅';
+            document.getElementById('form-timeline-image').value = event.image || '';
+            document.getElementById('form-timeline-categorie').value = event.categorie || '';
+
+            document.getElementById('modal-submit').onclick = saveTimeline;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement timeline:', error);
+            showNotification('Erreur lors du chargement', 'error');
+        }
+    }
+
+    async function deleteTimeline(id, titre) {
+        if (!confirm(`Supprimer l'événement "${titre}" ?`)) return;
+        try {
+            const response = await fetch(`/api/timeline/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+            if (result.success) {
+                loadTimeline();
+                showNotification('Événement supprimé', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression timeline:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // GUIDES D'ACHAT - CRUD
+    // ========================================
+    async function loadGuides() {
+        try {
+            const response = await fetch('/api/guides');
+            const data = await response.json();
+            const guides = data.data || [];
+            renderGuides(guides);
+        } catch (error) {
+            console.error('Erreur chargement guides:', error);
+            document.getElementById('table-guides').innerHTML = '<tr><td colspan="5" class="empty-state">Erreur de chargement</td></tr>';
+        }
+    }
+
+    function renderGuides(guides) {
+        const tbody = document.getElementById('table-guides');
+        if (guides.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucun guide</td></tr>';
+            return;
+        }
+        tbody.innerHTML = guides.map(g => `
+            <tr>
+                <td><strong>${g.titre || '-'}</strong></td>
+                <td><span class="data-table-badge badge-info">${g.categorie_nom || '-'}</span></td>
+                <td>${g.budget_min && g.budget_max ? g.budget_min + '€ - ' + g.budget_max + '€' : '-'}</td>
+                <td>${g.nb_produits || 0}</td>
+                <td>
+                    <button class="action-btn" title="Voir" onclick="window.open('/2026/guide.html?slug=${g.slug}', '_blank')">👁️</button>
+                    <button class="action-btn edit" title="Modifier" onclick="editGuide(${g.id})">✏️</button>
+                    <button class="action-btn delete" title="Supprimer" onclick="deleteGuide(${g.id}, '${(g.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function getGuideFormHtml() {
+        return `
+            <input type="hidden" id="form-guide-id">
+            <div class="form-row">
+                <div class="form-group" style="flex: 2;">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" class="form-input" id="form-guide-titre" placeholder="Ex: Guide PC Gaming 2026" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Catégorie</label>
+                    <select class="form-select" id="form-guide-categorie"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="form-guide-description" rows="3" placeholder="Description courte du guide"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Image URL (optionnel)</label>
+                <input type="text" class="form-input" id="form-guide-image" placeholder="https://...">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Budget Min (€)</label>
+                    <input type="number" class="form-input" id="form-guide-budget-min" placeholder="0" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Budget Max (€)</label>
+                    <input type="number" class="form-input" id="form-guide-budget-max" placeholder="5000" min="0" step="0.01">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Critères d'achat (un par ligne)</label>
+                <textarea class="form-textarea" id="form-guide-criteres" rows="5" placeholder="Performance du processeur&#10;Qualité de l'écran&#10;Autonomie de la batterie"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Conseils (un par ligne)</label>
+                <textarea class="form-textarea" id="form-guide-conseils" rows="5" placeholder="Comparez toujours les prix&#10;Vérifiez la garantie"></textarea>
+            </div>
+        `;
+    }
+
+    async function saveGuide() {
+        const id = document.getElementById('form-guide-id')?.value;
+        const titre = document.getElementById('form-guide-titre').value.trim();
+        const description = document.getElementById('form-guide-description').value;
+        const image = document.getElementById('form-guide-image').value.trim() || null;
+        const categorie = document.getElementById('form-guide-categorie').value || null;
+        const budget_min = parseFloat(document.getElementById('form-guide-budget-min').value) || null;
+        const budget_max = parseFloat(document.getElementById('form-guide-budget-max').value) || null;
+        const criteresText = document.getElementById('form-guide-criteres').value;
+        const conseilsText = document.getElementById('form-guide-conseils').value;
+        const criteres = criteresText.split('\n').filter(l => l.trim()).map(l => l.trim());
+        const conseils = conseilsText.split('\n').filter(l => l.trim()).map(l => l.trim());
+
+        if (!titre) { showNotification('Le titre est obligatoire', 'error'); return; }
+
+        try {
+            const url = id ? `/api/guides/${id}` : '/api/guides';
+            const method = id ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ titre, description, image, categorie, budget_min, budget_max, criteres, conseils })
+            });
+            const result = await response.json();
+            if (result.success) {
+                loadGuides();
+                showNotification(id ? 'Guide modifié!' : 'Guide créé!', 'success');
+                closeModal();
+            } else {
+                showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
+            }
+        } catch (error) {
+            console.error('Erreur sauvegarde guide:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
+    }
+
+    async function editGuide(id) {
+        try {
+            const response = await fetch(`/api/guides/${id}`);
+            const data = await response.json();
+            const guide = data.data;
+            if (!guide) { showNotification('Guide non trouvé', 'error'); return; }
+
+            const overlay = document.getElementById('modal-overlay');
+            document.getElementById('modal-title').textContent = 'Modifier le Guide';
+            document.getElementById('modal-body').innerHTML = getGuideFormHtml();
+            await populateFormCategories('form-guide-categorie');
+
+            document.getElementById('form-guide-id').value = id;
+            document.getElementById('form-guide-titre').value = guide.titre || '';
+            document.getElementById('form-guide-description').value = guide.description || '';
+            document.getElementById('form-guide-image').value = guide.image || '';
+            document.getElementById('form-guide-categorie').value = guide.categorie || '';
+            document.getElementById('form-guide-budget-min').value = guide.budget_min || '';
+            document.getElementById('form-guide-budget-max').value = guide.budget_max || '';
+
+            const criteres = Array.isArray(guide.criteres) ? guide.criteres : [];
+            const conseils = Array.isArray(guide.conseils) ? guide.conseils : [];
+            document.getElementById('form-guide-criteres').value = criteres.join('\n');
+            document.getElementById('form-guide-conseils').value = conseils.join('\n');
+
+            document.getElementById('modal-submit').onclick = saveGuide;
+            overlay.classList.add('active');
+        } catch (error) {
+            console.error('Erreur chargement guide:', error);
+            showNotification('Erreur lors du chargement', 'error');
+        }
+    }
+
+    async function deleteGuide(id, titre) {
+        if (!confirm(`Supprimer le guide "${titre}" ?`)) return;
+        try {
+            const response = await fetch(`/api/guides/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+            if (result.success) {
+                loadGuides();
+                showNotification('Guide supprimé', 'success');
+            } else {
+                showNotification('Erreur: ' + result.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur suppression guide:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
 </script>
 
 </body>

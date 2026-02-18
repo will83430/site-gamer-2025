@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - HIGH-TECH 2026</title>
+    <meta name="description" content="Découvrez HIGH-TECH 2026 : le comparateur gaming et high-tech. Technologies utilisées, fonctionnalités et vision du projet.">
+    <meta name="keywords" content="high-tech 2026, à propos, comparateur gaming, projet tech">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://high-tech-2026.com/2026/apropos.html">
+    <meta property="og:title" content="À propos - HIGH-TECH 2026">
+    <meta property="og:description" content="Découvrez HIGH-TECH 2026 : le comparateur gaming et high-tech.">
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/theme.css">
+
+    <style>
+        main { padding-top: 100px; }
+
+        /* Hero */
+        .about-hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(212,255,0,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(212,255,0,0.1);
+            border: 1px solid rgba(212,255,0,0.3);
+            border-radius: 50px;
+            color: var(--tech-yellow);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--tech-yellow), var(--tech-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Stats */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212,255,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--tech-yellow), var(--tech-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Sections dynamiques */
+        .about-sections {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+        .about-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .about-card:hover {
+            border-color: rgba(212,255,0,0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        .about-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .about-card-icon {
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212,255,0,0.08);
+            border-radius: 14px;
+            flex-shrink: 0;
+        }
+        .about-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .about-card-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        .about-card-content p { margin-bottom: 1rem; }
+        .about-card-content p:last-child { margin-bottom: 0; }
+
+        /* Type: list */
+        .about-list {
+            list-style: none;
+            padding: 0;
+        }
+        .about-list li {
+            padding: 0.6rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .about-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--tech-yellow);
+        }
+
+        /* Type: tech-stack */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        .tech-badge {
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: 0.3s ease;
+        }
+        .tech-badge:hover {
+            border-color: rgba(212,255,0,0.3);
+            transform: translateY(-2px);
+        }
+        .tech-badge-name {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Type: features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.2rem;
+        }
+        .feature-item {
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 1.5rem;
+            transition: 0.3s ease;
+        }
+        .feature-item:hover {
+            border-color: rgba(212,255,0,0.2);
+            transform: translateY(-3px);
+        }
+        .feature-item-title {
+            color: var(--tech-yellow);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .feature-item-desc {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(212,255,0,0.1);
+            border-top: 3px solid var(--tech-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main { padding-top: 80px; }
+            .about-hero { padding: 2rem 1rem; }
+            .hero-title { font-size: 1.8rem !important; }
+            .hero-subtitle { font-size: 1rem; }
+            .stats-section { grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 1rem; }
+            .stat-number { font-size: 1.8rem; }
+            .about-sections { padding: 0 1rem 3rem; }
+            .about-card { padding: 1.5rem; }
+            .about-card-title { font-size: 1.1rem; }
+            .tech-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+            .features-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .stats-section { grid-template-columns: 1fr; }
+            .about-card-header { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/2026/" class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg)" stroke-width="2.5" opacity="0.9"/>
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg)" opacity="0.95"/>
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </a>
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link">Accueil</a>
+                <a href="/2026/#categories" class="nav-link">Catégories</a>
+                <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/timeline.html" class="nav-link">Timeline</a>
+                <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="about-hero">
+            <div class="hero-badge">LE PROJET</div>
+            <h1 class="hero-title">HIGH-TECH 2026</h1>
+            <p class="hero-subtitle">
+                Votre plateforme de référence pour comparer, analyser et suivre l'évolution
+                des produits gaming et high-tech. Découvrez les technologies derrière ce projet.
+            </p>
+        </section>
+
+        <!-- Stats Live -->
+        <section class="stats-section" id="stats-section">
+            <div class="stat-card">
+                <div class="stat-number" id="stat-produits">0</div>
+                <div class="stat-label">Produits</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-categories">0</div>
+                <div class="stat-label">Catégories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-articles">0</div>
+                <div class="stat-label">Articles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-visites">0</div>
+                <div class="stat-label">Visites</div>
+            </div>
+        </section>
+
+        <!-- Sections dynamiques -->
+        <div class="about-sections" id="about-sections">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p style="color: var(--text-muted);">Chargement...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/guides.html">Guides</a></li>
+                    <li><a href="/2026/configurateur.html">Configurateur</a></li>
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                    <li><a href="/2026/versus.html">Versus</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/admin.html">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop">^</button>
+
+    <script src="/assets/js/theme-toggle.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            loadAboutSections();
+            initScrollTop();
+        });
+
+        // ===== STATS =====
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/stats/homepage');
+                const data = await res.json();
+                if (data.success && data.stats) {
+                    animateCounter('stat-produits', data.stats.produits || 0);
+                    animateCounter('stat-categories', data.stats.categories || 0);
+                    animateCounter('stat-articles', data.stats.tendances || 0);
+                    animateCounter('stat-visites', data.stats.visites || 0);
+                }
+            } catch (e) {
+                console.error('Erreur stats:', e);
+            }
+        }
+
+        function animateCounter(id, target) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const duration = 1500;
+            const start = performance.now();
+            function update(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(target * eased);
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        // ===== SECTIONS DYNAMIQUES =====
+        async function loadAboutSections() {
+            const container = document.getElementById('about-sections');
+            try {
+                const res = await fetch('/api/about');
+                const data = await res.json();
+                if (data.success && data.data && data.data.length > 0) {
+                    container.innerHTML = data.data.map(section => renderSection(section)).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">ℹ️</div>
+                            <p>Les sections "À propos" seront bientôt disponibles.</p>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem;">Ajoutez du contenu depuis le panel Admin.</p>
+                        </div>
+                    `;
+                }
+            } catch (e) {
+                console.error('Erreur about:', e);
+                container.innerHTML = '<div class="empty-state"><p>Erreur de chargement.</p></div>';
+            }
+        }
+
+        function renderSection(section) {
+            let contentHtml = '';
+
+            switch (section.type) {
+                case 'list':
+                    const items = section.contenu.split('\n').filter(l => l.trim());
+                    contentHtml = `<ul class="about-list">${items.map(i => `<li>${i.trim()}</li>`).join('')}</ul>`;
+                    break;
+
+                case 'tech-stack':
+                    const techs = section.contenu.split('\n').filter(l => l.trim());
+                    contentHtml = `<div class="tech-grid">${techs.map(t => `
+                        <div class="tech-badge">
+                            <div class="tech-badge-name">${t.trim()}</div>
+                        </div>
+                    `).join('')}</div>`;
+                    break;
+
+                case 'features':
+                    const features = section.contenu.split('\n\n').filter(f => f.trim());
+                    contentHtml = `<div class="features-grid">${features.map(f => {
+                        const lines = f.trim().split('\n');
+                        const title = lines[0] || '';
+                        const desc = lines.slice(1).join(' ') || '';
+                        return `<div class="feature-item">
+                            <div class="feature-item-title">${title}</div>
+                            <div class="feature-item-desc">${desc}</div>
+                        </div>`;
+                    }).join('')}</div>`;
+                    break;
+
+                default: // text
+                    const paragraphs = section.contenu.split('\n\n').filter(p => p.trim());
+                    contentHtml = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+                    break;
+            }
+
+            return `
+                <div class="about-card">
+                    <div class="about-card-header">
+                        <div class="about-card-icon">${section.icone || '📄'}</div>
+                        <h2 class="about-card-title">${section.titre}</h2>
+                    </div>
+                    <div class="about-card-content">
+                        ${contentHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===== SCROLL TOP =====
+        function initScrollTop() {
+            const btn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+            });
+            btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>

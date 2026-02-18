@@ -409,16 +409,20 @@ router.put('/:id', validateProductUpdate, async (req, res) => {
       titre_affiche
     } = req.body;
 
+    // Récupérer l'ancien prix pour le tracking
+    const ancienResult = await pool.query('SELECT prix FROM produits WHERE id = $1', [id]);
+    const ancienPrix = ancienResult.rows[0]?.prix;
+
     const query = `
-      UPDATE produits 
-      SET nom = $1, 
-          categorie = $2, 
-          description = $3, 
+      UPDATE produits
+      SET nom = $1,
+          categorie = $2,
+          description = $3,
           image = $4,
-          lien = $5, 
-          top_du_mois = $6, 
-          prix = $7, 
-          fonctionnalites_avancees = $8, 
+          lien = $5,
+          top_du_mois = $6,
+          prix = $7,
+          fonctionnalites_avancees = $8,
           donnees_fiche = $9,
           titre_affiche = $10
       WHERE id = $11
@@ -426,20 +430,36 @@ router.put('/:id', validateProductUpdate, async (req, res) => {
     `;
 
     const params = [
-      nom, 
-      categorie || null, 
+      nom,
+      categorie || null,
       description || null,
       image || null,
       lien || null,
-      top_du_mois || false, 
+      top_du_mois || false,
       prix || null,
-      fonctionnalites_avancees || [], 
+      fonctionnalites_avancees || [],
       donnees_fiche || [],
       titre_affiche || null,
       id
     ];
 
     const result = await pool.query(query, params);
+
+    // Tracker le changement de prix si différent
+    if (prix && ancienPrix && prix !== ancienPrix) {
+      try {
+        const parseP = (s) => {
+          if (!s) return null;
+          const c = s.replace(/[^0-9,.\s]/g, '').replace(',', '.').replace(/\s/g, '');
+          const n = parseFloat(c);
+          return isNaN(n) ? null : n;
+        };
+        await pool.query(
+          'INSERT INTO price_history (produit_id, prix, prix_numerique) VALUES ($1, $2, $3)',
+          [id, prix, parseP(prix)]
+        );
+      } catch (e) { /* table might not exist yet */ }
+    }
 
     // Log de l'activité
     getLogActivity()('update', 'produit', id, nom, { categorie, prix }, req.ip);
