@@ -10,9 +10,10 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" id="og-title" content="Tendances & Actualités Tech">
-    <meta property="og:description" content="Découvrez les dernières tendances du monde gaming et high-tech.">
-    <meta property="og:url" id="og-url" content="https://high-tech-2026.com/2026/tendances.html">
+    <meta property="og:title" content="Tendances &amp; Actualités High-Tech 2026 | HIGH-TECH 2026">
+    <meta property="og:description" content="Les dernières actualités, tendances et guides sur les produits gaming et high-tech. Restez informé des sorties et innovations.">
+    <meta property="og:image" content="/assets/images/og-default.jpg">
+    <meta property="og:site_name" content="HIGH-TECH 2026">
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -1289,7 +1290,7 @@
                                </div>`
                             : `<div class="card-image">
                                     <img src="/assets/images/${item.image || 'placeholder.png'}" alt="${item.titre}"
-                                         onerror="this.src='/assets/images/placeholder.png'">
+                                         loading="lazy" onerror="this.src='/assets/images/placeholder.png'">
                                     ${item.hot ? '<span class="badge-hot">HOT</span>' : ''}
                                </div>`
                         }

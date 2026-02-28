@@ -172,6 +172,9 @@ app.get('/configurateur', (req, res) => res.redirect('/2026/configurateur.html')
 app.get('/evolution-prix', (req, res) => res.redirect('/2026/evolution-prix.html'));
 app.get('/versus', (req, res) => res.redirect('/2026/versus.html'));
 
+// Sitemap SEO dynamique (AVANT express.static pour avoir la priorité)
+app.use('/sitemap.xml', sitemapRoutes);
+
 // Autres fichiers statiques (APRÈS les routes explicites)
 app.use(express.static(path.join(__dirname, 'frontend', 'public')));
 
@@ -271,9 +274,6 @@ app.use('/api/about', aboutRoutes);
 app.use('/api/timeline', timelineRoutes);
 app.use('/api/guides', guidesRoutes);
 app.use('/api/price-evolution', priceEvolutionRoutes);
-
-// Sitemap SEO (accessible à /sitemap.xml)
-app.use('/sitemap.xml', sitemapRoutes);
 
 // Servir les fiches HTML
 app.get('/fiches/:category/:fiche', (req, res) => {
