@@ -689,6 +689,7 @@
         .badge-info { background: rgba(77, 212, 255, 0.15); color: var(--tech-blue); }
         .badge-danger { background: rgba(255, 107, 107, 0.15); color: var(--tech-red); }
         .badge-secondary { background: rgba(160, 160, 176, 0.15); color: var(--text-secondary); }
+        .row-expired { opacity: 0.55; }
 
         .action-btn {
             background: none;
@@ -1501,6 +1502,7 @@ async function adminLogin() {
                     </button>
                     <input type="file" id="csv-import-input" accept=".csv" style="display: none;" onchange="importCSV(this)">
                     <button class="btn btn-primary" onclick="openModal('produit')">+ Nouveau Produit</button>
+                    <button class="btn btn-secondary" onclick="scrapeAllPrices()" id="btn-scrape-all" title="Récupère les prix Amazon via RapidAPI (20 produits)">🤖 Scraper les prix</button>
                 </div>
             </div>
 
@@ -1524,11 +1526,12 @@ async function adminLogin() {
                                 <th>Prix</th>
                                 <th style="width: 60px;" title="Badge vedette sur le produit">⭐</th>
                                 <th style="width: 60px;" title="Afficher sur l'accueil (max 4)">🏠</th>
+                                <th style="width: 70px;" title="Actif / Inactif sur le site">Actif</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="table-produits">
-                            <tr><td colspan="7"><div class="loading-spinner"></div></td></tr>
+                            <tr><td colspan="8"><div class="loading-spinner"></div></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -2093,6 +2096,41 @@ async function adminLogin() {
     </main>
 </div>
 
+<!-- Modal Prix -->
+<div class="modal-overlay" id="price-modal-overlay" onclick="closePriceModal()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center;">
+    <div onclick="event.stopPropagation()" style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-lg); padding:2rem; width:420px; max-width:95vw;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+            <h3 style="margin:0;">💰 Mettre à jour le prix</h3>
+            <button onclick="closePriceModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.5rem; cursor:pointer;">&times;</button>
+        </div>
+        <p id="price-modal-product-name" style="color:var(--text-secondary); margin-bottom:1rem;"></p>
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; margin-bottom:0.5rem; font-size:0.85rem; color:var(--text-muted);">Prix actuel</label>
+            <div id="price-modal-current" style="color:var(--tech-blue); font-weight:600;"></div>
+        </div>
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; margin-bottom:0.5rem; font-size:0.85rem; color:var(--text-muted);">Nouveau prix (€)</label>
+            <input type="number" id="price-modal-input" step="0.01" min="0" placeholder="ex: 1299.99" style="width:100%; padding:0.75rem; background:var(--bg-card); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:var(--text-primary); font-size:1rem;">
+        </div>
+        <div style="margin-bottom:1.5rem;">
+            <label style="display:block; margin-bottom:0.5rem; font-size:0.85rem; color:var(--text-muted);">Source</label>
+            <select id="price-modal-source" style="width:100%; padding:0.75rem; background:var(--bg-card); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:var(--text-primary);">
+                <option value="Amazon FR">Amazon FR</option>
+                <option value="Fnac">Fnac</option>
+                <option value="Cdiscount">Cdiscount</option>
+                <option value="Darty">Darty</option>
+                <option value="Boulanger">Boulanger</option>
+                <option value="Manuel">Autre / Manuel</option>
+            </select>
+        </div>
+        <div style="display:flex; gap:1rem;">
+            <button onclick="closePriceModal()" class="btn btn-secondary" style="flex:1;">Annuler</button>
+            <button onclick="submitPriceUpdate()" class="btn btn-primary" style="flex:1;" id="price-modal-submit">💾 Enregistrer</button>
+        </div>
+        <div id="price-modal-msg" style="margin-top:1rem; font-size:0.85rem; min-height:1.2em;"></div>
+    </div>
+</div>
+
 <!-- Modal -->
 <div class="modal-overlay" id="modal-overlay">
     <div class="modal">
@@ -2400,7 +2438,7 @@ async function adminLogin() {
 
     async function loadProduits() {
         try {
-            const response = await fetch('/api/produits');
+            const response = await fetch('/api/produits?admin=true');
             const data = await response.json();
             allProduits = extractData(data);
             renderProduits(allProduits);
@@ -2414,7 +2452,7 @@ async function adminLogin() {
     function renderProduits(produits) {
         const tbody = document.getElementById('table-produits');
         if (produits.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Aucun produit trouvé</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state">Aucun produit trouvé</td></tr>';
             return;
         }
 
@@ -2422,6 +2460,7 @@ async function adminLogin() {
         const maxHomepageReached = homepageCount >= MAX_HOMEPAGE_PRODUCTS;
 
         tbody.innerHTML = produits.slice(0, 100).map(p => {
+            const isActif = p.actif !== false;
             const imgSrc = p.image ? `/assets/images/${p.image}` : '';
             const imgHtml = imgSrc
                 ? `<img src="${imgSrc}" class="data-table-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="data-table-img" style="display:none;background:var(--bg-elevated);align-items:center;justify-content:center;">📦</div>`
@@ -2441,7 +2480,7 @@ async function adminLogin() {
             const homeStyle = isOnHomepage ? 'color: #6bff6b;' : (cannotAddHomepage ? 'opacity: 0.3; cursor: not-allowed;' : '');
 
             return `
-                <tr>
+                <tr style="${!isActif ? 'opacity: 0.45;' : ''}">
                     <td>${imgHtml}</td>
                     <td><strong>${p.nom || p.name || 'Sans nom'}</strong></td>
                     <td><span class="data-table-badge badge-info">${p.categorie || p.category || '-'}</span></td>
@@ -2453,7 +2492,11 @@ async function adminLogin() {
                         <button class="action-btn" title="${homeTitle}" onclick="toggleHomepage('${p.id}', ${!isOnHomepage})" style="${homeStyle}">${homeIcon}</button>
                     </td>
                     <td>
+                        <button class="action-btn" title="${isActif ? 'Désactiver (masquer du site)' : 'Activer (afficher sur le site)'}" onclick="toggleActifProduit('${p.id}', ${!isActif})" style="${isActif ? 'color: #6bff6b;' : 'color: var(--tech-red);'}">${isActif ? '✅' : '⏸️'}</button>
+                    </td>
+                    <td>
                         <button class="action-btn edit" title="Modifier" onclick="editProduit('${p.id}')">✏️</button>
+                        <button class="action-btn" title="Mettre à jour le prix" onclick="openPriceModal('${p.id}', '${(p.nom || '').replace(/'/g, "\\'")}', '${(p.prix || '').replace(/'/g, "\\'")}')">💰</button>
                         <button class="action-btn" title="Voir la fiche" onclick="window.open('/2026/fiche.html?produit=${encodeURIComponent(p.nom || '')}', '_blank')">👁️</button>
                         <button class="action-btn delete" title="Supprimer" onclick="deleteProduit('${p.id}', '${(p.nom || '').replace(/'/g, "\\'")}')">🗑️</button>
                     </td>
@@ -2481,7 +2524,7 @@ async function adminLogin() {
                 // Mettre à jour localement
                 const product = allProduits.find(p => p.id == id);
                 if (product) product.top_du_mois = featured;
-                renderProduits(allProduits);
+                filterProduits();
                 showNotification(data.message, 'success');
             } else {
                 showNotification('Erreur: ' + data.error, 'error');
@@ -2514,7 +2557,7 @@ async function adminLogin() {
                 // Mettre à jour localement
                 const product = allProduits.find(p => p.id == id);
                 if (product) product.affiche_accueil = display;
-                renderProduits(allProduits);
+                filterProduits();
                 updateHomepageCounter();
                 showNotification(data.message, 'success');
             } else {
@@ -2522,6 +2565,52 @@ async function adminLogin() {
             }
         } catch (error) {
             console.error('Erreur toggle homepage:', error);
+            showNotification('Erreur de connexion', 'error');
+        }
+    }
+
+    // Toggle actif/inactif pour un produit
+    async function toggleActifProduit(id, actif) {
+        try {
+            const response = await fetch(`/api/produits/${id}/toggle-actif`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ actif })
+            });
+            const data = await response.json();
+            if (data.success) {
+                const product = allProduits.find(p => p.id == id);
+                if (product) product.actif = actif;
+                filterProduits();
+                showNotification(data.message, actif ? 'success' : 'info');
+            } else {
+                showNotification('Erreur: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur toggle actif produit:', error);
+            showNotification('Erreur de connexion', 'error');
+        }
+    }
+
+    // Toggle actif/inactif pour un article
+    async function toggleActifArticle(id, actif) {
+        try {
+            const response = await fetch(`/api/actualites/${id}/toggle-actif`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ actif })
+            });
+            const data = await response.json();
+            if (data.success) {
+                const article = allArticles.find(a => a.id == id);
+                if (article) article.actif = actif;
+                filterArticles();
+                showNotification(data.message, actif ? 'success' : 'info');
+            } else {
+                showNotification('Erreur: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur toggle actif article:', error);
             showNotification('Erreur de connexion', 'error');
         }
     }
@@ -2598,7 +2687,7 @@ async function adminLogin() {
 
     async function loadArticles() {
         try {
-            const response = await fetch('/api/actualites');
+            const response = await fetch('/api/actualites?admin=true');
             const data = await response.json();
             allArticles = extractData(data);
             renderArticles(allArticles);
@@ -2635,6 +2724,7 @@ async function adminLogin() {
         const sorted = [...articles].sort((a, b) => (a.ordre || 999) - (b.ordre || 999));
 
         tbody.innerHTML = sorted.slice(0, 100).map((a, index) => {
+            const isActif = a.actif !== false;
             const imgSrc = a.image ? `/assets/images/${a.image}` : '';
             const hasVideo = a.video_url || a.video;
             const imgHtml = imgSrc
@@ -2655,13 +2745,15 @@ async function adminLogin() {
                 : '';
 
             return `
-                <tr data-id="${a.id}">
+                <tr data-id="${a.id}" style="${!isActif ? 'opacity: 0.45;' : ''}">
                     ${orderCell}
                     <td>${imgHtml}</td>
                     <td><strong>${a.titre || 'Sans titre'}</strong>${a.hot ? ' <span style="color:var(--tech-red);">🔥</span>' : ''}</td>
                     <td><span class="data-table-badge badge-info">${catFormatted}</span></td>
                     <td>${a.date_publication ? new Date(a.date_publication).toLocaleDateString('fr-FR') : '-'}</td>
-                    <td><span class="data-table-badge badge-success">Publié</span></td>
+                    <td>
+                        <button class="action-btn" title="${isActif ? 'Dépublier (masquer du site)' : 'Publier (afficher sur le site)'}" onclick="toggleActifArticle(${a.id}, ${!isActif})" style="${isActif ? 'color: #6bff6b;' : 'color: var(--tech-red);'}">${isActif ? '✅ Publié' : '⏸️ Masqué'}</button>
+                    </td>
                     <td>
                         <button class="action-btn edit" title="Modifier" onclick="editArticle(${a.id})">✏️</button>
                         <button class="action-btn" title="Voir" onclick="window.open('/2026/article.html?id=${a.id}', '_blank')">👁️</button>
@@ -2782,6 +2874,64 @@ async function adminLogin() {
 
     // Event listeners initialisés dans DOMContentLoaded
 
+    // Recherche live article/produit pour le champ lien d'une annonce
+    function searchLienItems(q) {
+        const resultsDiv = document.getElementById('lien-search-results');
+        if (!resultsDiv) return;
+        if (!q || q.trim().length < 2) { resultsDiv.style.display = 'none'; return; }
+
+        const ql = q.toLowerCase();
+        const articles = allArticles.filter(a => a.titre && a.titre.toLowerCase().includes(ql)).slice(0, 6);
+        const produits = allProduits.filter(p => p.nom && p.nom.toLowerCase().includes(ql)).slice(0, 6);
+
+        let html = '';
+        if (articles.length > 0) {
+            html += `<div style="padding:4px 12px;font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;background:var(--bg-elevated);">Articles</div>`;
+            articles.forEach(a => {
+                const url = `/2026/article.html?id=${a.id}`;
+                html += `<div onclick="selectLienItem('${url}','${(a.titre||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}')"
+                    style="padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:.875rem;"
+                    onmouseover="this.style.background='var(--bg-elevated)'" onmouseout="this.style.background=''">
+                    <span style="opacity:.6;">📰</span> <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${a.titre}</span>
+                    <span style="font-size:.72rem;color:var(--text-muted);flex-shrink:0;">id:${a.id}</span>
+                </div>`;
+            });
+        }
+        if (produits.length > 0) {
+            html += `<div style="padding:4px 12px;font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;background:var(--bg-elevated);border-top:1px solid var(--border-color);">Produits</div>`;
+            produits.forEach(p => {
+                const url = `/2026/fiche.html?produit=${encodeURIComponent(p.nom||'')}`;
+                html += `<div onclick="selectLienItem('${url}','${(p.nom||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}')"
+                    style="padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:.875rem;"
+                    onmouseover="this.style.background='var(--bg-elevated)'" onmouseout="this.style.background=''">
+                    <span style="opacity:.6;">📦</span> <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nom}</span>
+                    <span style="font-size:.72rem;color:var(--text-muted);flex-shrink:0;">${p.categorie||''}</span>
+                </div>`;
+            });
+        }
+        if (!html) html = `<div style="padding:10px 14px;color:var(--text-muted);font-size:.875rem;">Aucun résultat</div>`;
+
+        resultsDiv.innerHTML = html;
+        resultsDiv.style.display = 'block';
+    }
+
+    function selectLienItem(url, name) {
+        const lienInput = document.getElementById('form-annonce-lien');
+        const searchInput = document.getElementById('lien-search');
+        const resultsDiv = document.getElementById('lien-search-results');
+        if (lienInput) lienInput.value = url;
+        if (searchInput) searchInput.value = name;
+        if (resultsDiv) resultsDiv.style.display = 'none';
+    }
+
+    // Fermer le dropdown lien si clic ailleurs
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#lien-search') && !e.target.closest('#lien-search-results')) {
+            const r = document.getElementById('lien-search-results');
+            if (r) r.style.display = 'none';
+        }
+    });
+
     async function loadAnnonces() {
         try {
             const response = await fetch('/api/announcements/admin/all');
@@ -2794,15 +2944,29 @@ async function adminLogin() {
                 return;
             }
 
+            const now = new Date();
             tbody.innerHTML = annonces.map((a, index) => {
                 const iconDisplay = convertIconToEmoji(a.icone) || a.icone || '📢';
+                const isExpired = a.date_fin && new Date(a.date_fin) < now;
+                const notStarted = a.date_debut && new Date(a.date_debut) > now;
+                const isVisible = a.actif !== false && !isExpired && !notStarted;
+                const statusBadge = isExpired
+                    ? '<span class="data-table-badge badge-danger" title="Date de fin dépassée">⏰ Expirée</span>'
+                    : notStarted
+                        ? '<span class="data-table-badge badge-warning" title="Pas encore démarrée">🕐 En attente</span>'
+                        : isVisible
+                            ? '<span class="data-table-badge badge-success">✅ En ligne</span>'
+                            : '<span class="data-table-badge badge-secondary">⏸ Inactive</span>';
                 return `
-                <tr data-id="${a.id}" data-ordre="${a.ordre || index}" class="draggable-row" draggable="true">
+                <tr data-id="${a.id}" data-ordre="${a.ordre || index}" class="draggable-row${isExpired ? ' row-expired' : ''}" draggable="true">
                     <td><input type="checkbox" class="annonce-checkbox" data-id="${a.id}" onchange="updateBulkSelection()"></td>
                     <td><span class="drag-handle" title="Glisser pour réordonner">⠿</span></td>
                     <td style="font-size: 1.5rem;">${iconDisplay}</td>
                     <td><strong>${a.titre}</strong><br><small style="color: var(--text-muted);">${a.description || ''}</small></td>
-                    <td><span class="data-table-badge badge-${a.type === 'urgent' ? 'danger' : a.type === 'promo' ? 'warning' : 'info'}">${a.type || 'info'}</span></td>
+                    <td>
+                        <span class="data-table-badge badge-${a.type === 'urgent' ? 'danger' : a.type === 'promo' ? 'warning' : 'info'}">${a.type || 'info'}</span>
+                        ${statusBadge}
+                    </td>
                     <td>
                         <label class="toggle-switch" title="Activer/Désactiver">
                             <input type="checkbox" ${a.actif !== false ? 'checked' : ''} onchange="toggleAnnonceActive(${a.id}, this.checked)">
@@ -4279,6 +4443,10 @@ async function adminLogin() {
                 <div class="form-group">
                     <label class="form-label">Lien</label>
                     <input type="text" class="form-input" id="form-annonce-lien" placeholder="/2026/article.html?id=...">
+                    <div style="position:relative; margin-top:6px;">
+                        <input type="text" class="form-input" id="lien-search" placeholder="🔍 Chercher un article ou un produit..." autocomplete="off" oninput="searchLienItems(this.value)" style="font-size:0.85rem;">
+                        <div id="lien-search-results" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;max-height:220px;overflow-y:auto;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.4);"></div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Texte du bouton</label>
@@ -4503,6 +4671,9 @@ async function adminLogin() {
             document.getElementById('form-annonce-type').value = annonce.type || 'info';
             document.getElementById('form-annonce-actif').value = annonce.actif ? 'true' : 'false';
             document.getElementById('form-annonce-lien').value = annonce.lien || '';
+            // Pré-remplir la recherche lien avec le lien actuel pour affichage
+            const searchInput = document.getElementById('lien-search');
+            if (searchInput) searchInput.value = '';
             document.getElementById('form-annonce-bouton').value = annonce.bouton_texte || 'En savoir plus →';
             document.getElementById('form-annonce-ordre').value = annonce.ordre || 0;
 
@@ -4545,18 +4716,19 @@ async function adminLogin() {
         }
     }
 
-    // Toggle rapide actif/inactif
+    // Toggle rapide actif/inactif (PATCH dédié, ne touche pas aux dates)
     async function toggleAnnonceActive(id, actif) {
         try {
-            const response = await fetch(`/api/announcements/${id}`, {
-                method: 'PUT',
+            const response = await fetch(`/api/announcements/${id}/actif`, {
+                method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ actif })
             });
             const result = await response.json();
 
             if (result.success || result.announcement) {
-                showNotification(actif ? 'Annonce activée' : 'Annonce désactivée', 'success');
+                showNotification(actif ? 'Annonce activée' : 'Annonce désactivée', actif ? 'success' : 'info');
+                loadAnnonces(); // Recharger pour mettre à jour le badge de statut
             } else {
                 showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
                 loadAnnonces(); // Recharger pour rétablir l'état
@@ -6601,6 +6773,126 @@ async function adminLogin() {
         } catch (error) {
             console.error('Erreur suppression guide:', error);
             showNotification('Erreur lors de la suppression', 'error');
+        }
+    }
+
+    // ========================================
+    // GESTION PRIX
+    // ========================================
+    let _priceModalId = null;
+
+    function openPriceModal(produitId, nom, prixActuel) {
+        _priceModalId = produitId;
+        document.getElementById('price-modal-product-name').textContent = nom;
+        document.getElementById('price-modal-current').textContent = prixActuel || 'Non défini';
+        document.getElementById('price-modal-input').value = '';
+        document.getElementById('price-modal-msg').textContent = '';
+        const overlay = document.getElementById('price-modal-overlay');
+        overlay.style.display = 'flex';
+        setTimeout(() => document.getElementById('price-modal-input').focus(), 100);
+    }
+
+    function closePriceModal() {
+        document.getElementById('price-modal-overlay').style.display = 'none';
+        _priceModalId = null;
+    }
+
+    async function submitPriceUpdate() {
+        const num = parseFloat(document.getElementById('price-modal-input').value);
+        const source = document.getElementById('price-modal-source').value;
+        const msg = document.getElementById('price-modal-msg');
+
+        if (!num || num <= 0) {
+            msg.style.color = 'var(--tech-red)';
+            msg.textContent = 'Entrez un prix valide.';
+            return;
+        }
+
+        const btn = document.getElementById('price-modal-submit');
+        btn.disabled = true;
+        btn.textContent = 'Enregistrement...';
+
+        try {
+            const resp = await fetch('/api/price-scraper/update-one', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ produit_id: _priceModalId, prix_numerique: num, source })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                msg.style.color = 'var(--tech-green)';
+                msg.textContent = `✅ ${data.ancien_prix} → ${data.nouveau_prix}`;
+                showNotification(`Prix mis à jour : ${data.nouveau_prix}`, 'success');
+                setTimeout(() => { closePriceModal(); loadProduits(); }, 1500);
+            } else {
+                msg.style.color = 'var(--tech-red)';
+                msg.textContent = 'Erreur : ' + data.error;
+            }
+        } catch (e) {
+            msg.style.color = 'var(--tech-red)';
+            msg.textContent = 'Erreur réseau.';
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '💾 Enregistrer';
+        }
+    }
+
+    async function scrapeAllPrices() {
+        const btn = document.getElementById('btn-scrape-all');
+
+        // Vérifier si l'API est configurée
+        const statusResp = await fetch('/api/price-scraper/status');
+        const status = await statusResp.json();
+        if (!status.api_configuree) {
+            showNotification('❌ RAPIDAPI_KEY non configurée dans .env — seule la mise à jour manuelle (💰) est disponible.', 'error');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '⏳ Scraping... (~5 min)';
+
+        try {
+            const resp = await fetch('/api/price-scraper/scrape-all', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ limit: 50 })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                // Construire un rapport détaillé
+                let rapport = `🤖 Scraping terminé\n\n`;
+                if (data.details.success.length > 0) {
+                    rapport += `✅ Mis à jour (${data.details.success.length}) :\n`;
+                    data.details.success.forEach(p => rapport += `  • ${p.nom} → ${p.prix}\n`);
+                    rapport += '\n';
+                }
+                if (data.details.suspicious && data.details.suspicious.length > 0) {
+                    rapport += `⚠️ Prix suspects ignorés (${data.details.suspicious.length}) :\n`;
+                    data.details.suspicious.forEach(p => rapport += `  • ${p.nom} : ${p.ancien}€ → ${p.nouveau}€\n`);
+                    rapport += '\n';
+                }
+                if (data.details.failed.length > 0) {
+                    rapport += `❌ Échecs (${data.details.failed.length}) : ${data.details.failed.join(', ')}\n`;
+                }
+                rapport += `⏭ Déjà à jour aujourd'hui : ${data.deja_a_jour}`;
+
+                // Afficher dans une modale simple
+                const overlay = document.createElement('div');
+                overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
+                overlay.innerHTML = `<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:2rem;max-width:500px;width:90%;white-space:pre-wrap;font-family:monospace;font-size:0.85rem;line-height:1.6;max-height:80vh;overflow-y:auto;">
+                    ${rapport}
+                    <br><br><button onclick="this.closest('div').parentElement.remove()" style="background:var(--tech-blue);color:#000;border:none;padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:bold;">Fermer</button>
+                </div>`;
+                document.body.appendChild(overlay);
+                loadProduits();
+            } else {
+                showNotification('Erreur scraper : ' + data.error, 'error');
+            }
+        } catch (e) {
+            showNotification('Erreur réseau lors du scraping.', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '🤖 Scraper les prix';
         }
     }
 </script>

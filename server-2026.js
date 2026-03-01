@@ -35,6 +35,7 @@ const aboutRoutes = require('./backend/routes/about');
 const timelineRoutes = require('./backend/routes/timeline');
 const guidesRoutes = require('./backend/routes/guides');
 const priceEvolutionRoutes = require('./backend/routes/price-evolution');
+const priceScraperRoutes = require('./backend/routes/price-scraper');
 
 // ========== CONFIGURATION ==========
 const app = express();
@@ -274,6 +275,7 @@ app.use('/api/about', aboutRoutes);
 app.use('/api/timeline', timelineRoutes);
 app.use('/api/guides', guidesRoutes);
 app.use('/api/price-evolution', priceEvolutionRoutes);
+app.use('/api/price-scraper', priceScraperRoutes);
 
 // Servir les fiches HTML
 app.get('/fiches/:category/:fiche', (req, res) => {
@@ -314,6 +316,21 @@ app.post('/api/save-report', (req, res) => {
 // ========== GESTION DES ERREURS ==========
 app.use(notFoundHandler);
 app.use(errorHandler);
+
+// ========== CRON PRIX HEBDOMADAIRE ==========
+const cron = require('node-cron');
+// Tous les lundis à 3h du matin : scrape les 20 produits les plus importants
+cron.schedule('0 3 * * 1', async () => {
+  if (!process.env.RAPIDAPI_KEY) return;
+  logger.info('⏰ Cron prix : lancement du scrape hebdomadaire...');
+  try {
+    const axios = require('axios');
+    await axios.post(`http://localhost:${port}/api/price-scraper/scrape-all`, { limit: 20 });
+    logger.info('✅ Cron prix : terminé');
+  } catch (err) {
+    logger.error('❌ Cron prix erreur:', err.message);
+  }
+});
 
 // ========== DÉMARRAGE ==========
 app.listen(port, '0.0.0.0', async () => {

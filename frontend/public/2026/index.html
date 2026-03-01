@@ -785,10 +785,16 @@
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
 
+        .product-card picture {
+            display: block;
+            width: 100%;
+        }
+
         .product-image {
             width: 100%;
             height: 280px;
             object-fit: cover;
+            object-position: center;
             background: linear-gradient(135deg, #1a1a28 0%, #222235 100%);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -2705,9 +2711,11 @@
                         const badge = product.est_prevu
                             ? '<span class="product-badge" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">📅 Prévu</span>'
                             : (product.top_du_mois ? '<span class="product-badge">⭐ TOP</span>' : '');
+                        const rawPrix = product.prix || 'Prix N/C';
+                        const cleanPrix = product.est_prevu ? rawPrix.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim() : rawPrix;
                         const priceDisplay = product.est_prevu
-                            ? `~${product.prix || 'Prix N/C'} <small style="font-size:0.75em;opacity:0.8">(estimé)</small>`
-                            : (product.prix || 'Prix N/C');
+                            ? `~${cleanPrix} <small style="font-size:0.75em;opacity:0.8">(estimé)</small>`
+                            : rawPrix;
 
                         return `
                             <div class="product-card">

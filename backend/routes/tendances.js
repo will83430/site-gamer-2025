@@ -8,10 +8,13 @@ const logger = require('../config/logger');
 // GET toutes les tendances (tous types confondus)
 router.get('/', async (req, res) => {
   try {
+    const isAdmin = req.query.admin === 'true';
+    const whereClause = isAdmin ? '' : 'WHERE a.actif = true';
     const { rows } = await pool.query(`
       SELECT a.*, c.nom as categorie
       FROM actualites a
       LEFT JOIN categories c ON a.categorie_id = c.id
+      ${whereClause}
       ORDER BY a.date_publication DESC, a.id DESC
     `);
     
@@ -26,6 +29,32 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error('❌ Erreur GET toutes tendances:', err);
     res.status(500).json({ error: 'Erreur BDD' });
+  }
+});
+
+// PATCH - Toggle actif pour un article
+router.patch('/:id/toggle-actif', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { actif } = req.body;
+
+    const result = await pool.query(
+      'UPDATE actualites SET actif = $1 WHERE id = $2 RETURNING id, titre, actif',
+      [actif === true, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Article non trouvé' });
+    }
+
+    res.json({
+      success: true,
+      data: result.rows[0],
+      message: actif ? 'Article publié' : 'Article dépublié'
+    });
+  } catch (err) {
+    console.error('❌ Erreur toggle actif article:', err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 

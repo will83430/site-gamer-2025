@@ -628,6 +628,10 @@ h1, h2, h3, h4 {
     }
 
     /* Images produits petites */
+    .product-card picture, .compare-card picture {
+        display: block !important;
+        width: 100% !important;
+    }
     .product-card img, .compare-card img, .product-image img {
         max-height: 50px !important;
         max-width: 50px !important;

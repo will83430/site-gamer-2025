@@ -933,7 +933,7 @@
                     : `<div class="preview-placeholder">📦</div>`}
                 <div class="preview-info">
                     <div class="preview-name">${escHtml(displayName(product))}${product.est_prevu ? ' <span style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:0.65em;padding:1px 6px;border-radius:20px;font-weight:700">📅 Prévu</span>' : ''}</div>
-                    ${product.prix ? `<div class="preview-price">${product.est_prevu ? '~' : ''}${escHtml(product.prix)}${product.est_prevu ? ' (estimé)' : ''}</div>` : ''}
+                    ${product.prix ? `<div class="preview-price">${product.est_prevu ? '~' + escHtml(product.prix.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim()) + ' (estimé)' : escHtml(product.prix)}</div>` : ''}
                     ${product.categorie ? `<div class="preview-cat">${escHtml(formatCatName(product.categorie))}</div>` : ''}
                 </div>
             `;
@@ -1099,7 +1099,7 @@
                 ${imgSrc ? webpImg(imgSrc, escHtml(displayName(product)), 'duel-product-img', "onerror=\"this.style.display='none'\"") : ''}
                 <div class="duel-product-name">${escHtml(displayName(product))}${product.est_prevu ? ' <span style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:0.65em;padding:2px 8px;border-radius:20px;font-weight:700;vertical-align:middle">📅 Prévu</span>' : ''}</div>
                 ${product.categorie ? `<div class="duel-product-cat">${escHtml(formatCatName(product.categorie))}</div>` : ''}
-                ${product.prix ? `<div class="duel-product-price">${product.est_prevu ? '~' : ''}${escHtml(product.prix)}${product.est_prevu ? ' <small style="font-size:0.75em;opacity:0.8">(estimé)</small>' : ''}</div>` : ''}
+                ${product.prix ? `<div class="duel-product-price">${product.est_prevu ? '~' + escHtml(product.prix.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim()) + ' <small style="font-size:0.75em;opacity:0.8">(estimé)</small>' : escHtml(product.prix)}</div>` : ''}
                 ${priceBadge}
                 <div class="duel-score-badge">${myScore} pt${myScore !== 1 ? 's' : ''}</div>
                 <br>

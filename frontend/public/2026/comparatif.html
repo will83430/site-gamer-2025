@@ -1104,7 +1104,7 @@
 
                     <div class="price-highlight">
                         <div class="price-label">Prix${product.est_prevu ? ' <small style="opacity:0.7">(estimé)</small>' : ''}</div>
-                        <div class="price-value">${product.est_prevu ? '~' : ''}${product.prix || 'N/C'}</div>
+                        <div class="price-value">${product.est_prevu ? '~' + (product.prix || 'N/C').replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim() : (product.prix || 'N/C')}</div>
                     </div>
 
                     <p class="compare-card-description">${description}</p>

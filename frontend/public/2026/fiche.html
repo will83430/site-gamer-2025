@@ -996,7 +996,8 @@
             // Price badge
             if (product.prix) {
                 if (product.est_prevu) {
-                    metaContainer.innerHTML += `<span class="meta-badge price price-estime">~${product.prix} <em style="font-size:0.8em">(estimé)</em></span>`;
+                    const prixClean = product.prix.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim();
+                    metaContainer.innerHTML += `<span class="meta-badge price price-estime">~${prixClean} <small style="font-size:0.8em;opacity:0.85">(estimé)</small></span>`;
                 } else {
                     metaContainer.innerHTML += `<span class="meta-badge price">${product.prix}</span>`;
                 }

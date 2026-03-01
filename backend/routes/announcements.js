@@ -32,6 +32,31 @@ router.get('/', async (req, res) => {
 });
 
 /**
+ * GET /api/announcements/admin/all
+ * Récupère TOUTES les annonces (admin)
+ */
+router.get('/admin/all', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT *
+      FROM announcements
+      ORDER BY ordre ASC, created_at DESC
+    `);
+
+    res.json({
+      success: true,
+      announcements: result.rows
+    });
+  } catch (error) {
+    logger.error('Erreur récupération all announcements:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
  * GET /api/announcements/:id
  * Récupère une annonce par ID
  */
@@ -141,12 +166,12 @@ router.put('/:id', async (req, res) => {
           type = COALESCE($6, type),
           actif = COALESCE($7, actif),
           ordre = COALESCE($8, ordre),
-          date_debut = COALESCE($9, date_debut),
-          date_fin = COALESCE($10, date_fin),
+          date_debut = $9,
+          date_fin = $10,
           updated_at = CURRENT_TIMESTAMP
       WHERE id = $11
       RETURNING *
-    `, [titre, description, icone, lien, bouton_texte, type, actif, ordre, date_debut, date_fin, id]);
+    `, [titre, description, icone, lien, bouton_texte, type, actif, ordre, date_debut || null, date_fin || null, id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -167,6 +192,31 @@ router.put('/:id', async (req, res) => {
       success: false,
       error: error.message
     });
+  }
+});
+
+/**
+ * PATCH /api/announcements/:id/actif
+ * Toggle actif uniquement (sans toucher aux dates)
+ */
+router.patch('/:id/actif', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { actif } = req.body;
+
+    const result = await pool.query(
+      'UPDATE announcements SET actif = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, titre, actif',
+      [actif === true, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Annonce non trouvée' });
+    }
+
+    res.json({ success: true, announcement: result.rows[0] });
+  } catch (error) {
+    logger.error('Erreur toggle actif annonce:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
@@ -198,31 +248,6 @@ router.delete('/:id', async (req, res) => {
     });
   } catch (error) {
     logger.error('Erreur suppression announcement:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
-/**
- * GET /api/announcements/admin/all
- * Récupère TOUTES les annonces (admin)
- */
-router.get('/admin/all', async (req, res) => {
-  try {
-    const result = await pool.query(`
-      SELECT *
-      FROM announcements
-      ORDER BY ordre ASC, created_at DESC
-    `);
-
-    res.json({
-      success: true,
-      announcements: result.rows
-    });
-  } catch (error) {
-    logger.error('Erreur récupération all announcements:', error);
     res.status(500).json({
       success: false,
       error: error.message

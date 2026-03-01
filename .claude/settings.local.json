@@ -4,7 +4,8 @@
       "Bash(curl:*)",
       "Bash(ls:*)",
       "Bash(node -e:*)",
-      "Bash(ssh:*)"
+      "Bash(ssh:*)",
+      "Bash(PGPASSWORD='MBsrtfgpg!30' psql -h localhost -U postgres -d gamer_2025 -c \":*)"
     ]
   }
 }
