@@ -189,9 +189,16 @@
 
         /* Actualites Grid */
         .actualites-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
+            columns: 3;
+            column-gap: 1.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .actualites-grid { columns: 2; }
+        }
+
+        @media (max-width: 576px) {
+            .actualites-grid { columns: 1; }
         }
 
         .actualite-card {
@@ -201,22 +208,14 @@
             overflow: hidden;
             transition: var(--transition-smooth);
             cursor: pointer;
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
         }
 
         .actualite-card:hover {
             transform: translateY(-5px);
             border-color: rgba(212, 255, 0, 0.3);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(212, 255, 0, 0.1);
-        }
-
-        .actualite-card.featured {
-            grid-column: span 2;
-        }
-
-        @media (max-width: 768px) {
-            .actualite-card.featured {
-                grid-column: span 1;
-            }
         }
 
         .card-image {
@@ -685,6 +684,7 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/timeline.html" class="nav-link">Timeline</a>
                 <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
@@ -1263,6 +1263,12 @@
         // ========================================
         function renderActualites(data) {
             const grid = document.getElementById('actualites-grid');
+
+            data = [...data].sort((a, b) => {
+                const da = new Date(a.date_publication || a.date || 0);
+                const db = new Date(b.date_publication || b.date || 0);
+                return db - da;
+            });
 
             if (data.length === 0) {
                 grid.innerHTML = '<p class="empty-state">Aucune actualite disponible pour cette categorie.</p>';

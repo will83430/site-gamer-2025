@@ -90,6 +90,284 @@
     </nav>
 
     <div class="container">
+
+        <div class="section">
+    <h2>⚡ Tests interactifs — cliquer pour exécuter</h2>
+    <p>Chaque test appelle l'API en direct et affiche le résultat immédiatement.</p>
+
+    <div class="info-box warning">
+        <strong>⚠️ Prérequis</strong> : le serveur doit tourner (<code>npm run dev</code>) et PostgreSQL doit être actif.
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <button onclick="runAllTests()" style="background:linear-gradient(135deg,#d4ff00,#6bff6b);color:#0a0a14;border:none;padding:0.75rem 1.5rem;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;">▶ Tout tester</button>
+        <button onclick="resetTests()" style="background:rgba(255,255,255,0.1);color:#f0f0f5;border:1px solid rgba(255,255,255,0.2);padding:0.75rem 1.5rem;border-radius:8px;cursor:pointer;">🔄 Réinitialiser</button>
+    </div>
+
+    <div id="tests-summary" style="display:none;background:rgba(255,255,255,0.05);border-radius:10px;padding:1rem;margin-bottom:1.5rem;display:flex;gap:2rem;flex-wrap:wrap;">
+        <span>Total : <strong id="t-total">0</strong></span>
+        <span style="color:#6bff6b;">✅ Réussis : <strong id="t-pass">0</strong></span>
+        <span style="color:#ff4757;">❌ Échoués : <strong id="t-fail">0</strong></span>
+    </div>
+
+    <h3>📦 Produits</h3>
+    <div class="tests-grid">
+        <div class="test-btn-row" id="test-produits-list">
+            <button class="run-btn" onclick="runTest('produits-list')">▶</button>
+            <span class="test-label">GET /api/produits</span>
+            <span class="test-result" id="res-produits-list"></span>
+        </div>
+        <div class="test-btn-row" id="test-produits-search">
+            <button class="run-btn" onclick="runTest('produits-search')">▶</button>
+            <span class="test-label">GET /api/produits/search?q=samsung</span>
+            <span class="test-result" id="res-produits-search"></span>
+        </div>
+        <div class="test-btn-row" id="test-produits-top">
+            <button class="run-btn" onclick="runTest('produits-top')">▶</button>
+            <span class="test-label">GET /api/produits/featured/list</span>
+            <span class="test-result" id="res-produits-top"></span>
+        </div>
+        <div class="test-btn-row" id="test-produits-404">
+            <button class="run-btn" onclick="runTest('produits-404')">▶</button>
+            <span class="test-label">GET /api/produits/prod_9999 → doit retourner 404</span>
+            <span class="test-result" id="res-produits-404"></span>
+        </div>
+        <div class="test-btn-row" id="test-produits-validation">
+            <button class="run-btn" onclick="runTest('produits-validation')">▶</button>
+            <span class="test-label">POST /api/produits sans nom → doit retourner 400</span>
+            <span class="test-result" id="res-produits-validation"></span>
+        </div>
+    </div>
+
+    <h3>📰 Articles</h3>
+    <div class="tests-grid">
+        <div class="test-btn-row" id="test-articles-public">
+            <button class="run-btn" onclick="runTest('articles-public')">▶</button>
+            <span class="test-label">GET /api/actualites (articles actifs)</span>
+            <span class="test-result" id="res-articles-public"></span>
+        </div>
+        <div class="test-btn-row" id="test-articles-admin">
+            <button class="run-btn" onclick="runTest('articles-admin')">▶</button>
+            <span class="test-label">GET /api/actualites?admin=true (inclut masqués)</span>
+            <span class="test-result" id="res-articles-admin"></span>
+        </div>
+    </div>
+
+    <h3>📢 Annonces &amp; Bons Plans</h3>
+    <div class="tests-grid">
+        <div class="test-btn-row" id="test-annonces">
+            <button class="run-btn" onclick="runTest('annonces')">▶</button>
+            <span class="test-label">GET /api/announcements</span>
+            <span class="test-result" id="res-annonces"></span>
+        </div>
+        <div class="test-btn-row" id="test-bons-plans">
+            <button class="run-btn" onclick="runTest('bons-plans')">▶</button>
+            <span class="test-label">GET /api/bons-plans?days=0</span>
+            <span class="test-result" id="res-bons-plans"></span>
+        </div>
+    </div>
+
+    <h3>📊 Stats &amp; SEO</h3>
+    <div class="tests-grid">
+        <div class="test-btn-row" id="test-stats">
+            <button class="run-btn" onclick="runTest('stats')">▶</button>
+            <span class="test-label">GET /api/stats/homepage</span>
+            <span class="test-result" id="res-stats"></span>
+        </div>
+        <div class="test-btn-row" id="test-sitemap">
+            <button class="run-btn" onclick="runTest('sitemap')">▶</button>
+            <span class="test-label">GET /sitemap.xml</span>
+            <span class="test-result" id="res-sitemap"></span>
+        </div>
+        <div class="test-btn-row" id="test-categories">
+            <button class="run-btn" onclick="runTest('categories')">▶</button>
+            <span class="test-label">GET /api/categories</span>
+            <span class="test-result" id="res-categories"></span>
+        </div>
+    </div>
+
+    <h3>🌐 Pages Frontend</h3>
+    <div class="tests-grid">
+        <div class="test-btn-row" id="test-page-accueil">
+            <button class="run-btn" onclick="runTest('page-accueil')">▶</button>
+            <span class="test-label">Page d'accueil /2026/</span>
+            <span class="test-result" id="res-page-accueil"></span>
+        </div>
+        <div class="test-btn-row" id="test-page-produits">
+            <button class="run-btn" onclick="runTest('page-produits')">▶</button>
+            <span class="test-label">Page /2026/produits.html</span>
+            <span class="test-result" id="res-page-produits"></span>
+        </div>
+        <div class="test-btn-row" id="test-page-admin">
+            <button class="run-btn" onclick="runTest('page-admin')">▶</button>
+            <span class="test-label">Page /2026/admin.html</span>
+            <span class="test-result" id="res-page-admin"></span>
+        </div>
+    </div>
+
+    <h3>4. Prochaine étape — Tests automatisés (Jest + Supertest)</h3>
+    <div class="info-box">
+        <strong>📦 Installation (à faire une fois) :</strong>
+        <div class="code-block" style="margin-top:0.5rem;">
+            <div class="code-header"><span>Terminal</span></div>
+            <pre><code>npm install --save-dev jest supertest
+
+# Puis ajouter dans package.json :
+# "test": "jest",
+# "test:watch": "jest --watch",
+# "test:coverage": "jest --coverage"</code></pre>
+        </div>
+        <p>Les fichiers de test iront dans <code>tests/api.test.js</code>, <code>tests/validation.test.js</code>, etc.</p>
+    </div>
+
+    <style>
+        .tests-grid { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .test-btn-row { display: flex; align-items: center; gap: 0.75rem; background: rgba(255,255,255,0.04); border-radius: 8px; padding: 0.6rem 1rem; border: 1px solid rgba(255,255,255,0.07); transition: background 0.2s; }
+        .test-btn-row:hover { background: rgba(255,255,255,0.07); }
+        .run-btn { background: rgba(107,255,107,0.15); color: #6bff6b; border: 1px solid rgba(107,255,107,0.3); border-radius: 6px; padding: 0.3rem 0.7rem; cursor: pointer; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; transition: all 0.2s; }
+        .run-btn:hover { background: rgba(107,255,107,0.3); }
+        .run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .test-label { flex: 1; font-family: monospace; font-size: 0.9rem; color: #c0c0d0; }
+        .test-result { font-size: 0.85rem; font-weight: 600; min-width: 180px; text-align: right; }
+        .test-result.pass { color: #6bff6b; }
+        .test-result.fail { color: #ff4757; }
+        .test-result.running { color: #d4ff00; }
+    </style>
+
+    <script>
+        const BASE = window.location.origin;
+        let testResults = {};
+
+        const TESTS = {
+            'produits-list': async () => {
+                const r = await fetch(`${BASE}/api/produits`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `${(d.data||[]).length} produits`;
+            },
+            'produits-search': async () => {
+                const r = await fetch(`${BASE}/api/produits/search?q=samsung&limit=5`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `${(d.data||d.results||[]).length} résultats`;
+            },
+            'produits-top': async () => {
+                const r = await fetch(`${BASE}/api/produits/featured/list`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `${(d.data||[]).length} vedettes`;
+            },
+            'produits-404': async () => {
+                const r = await fetch(`${BASE}/api/produits/prod_9999`);
+                if (r.status !== 404) throw new Error(`Attendu 404, reçu ${r.status}`);
+                return `404 correct ✓`;
+            },
+            'produits-validation': async () => {
+                const r = await fetch(`${BASE}/api/produits`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({categorie:'DRONE'}) });
+                if (r.status !== 400 && r.status !== 422) throw new Error(`Attendu 400, reçu ${r.status}`);
+                return `Validation OK (${r.status})`;
+            },
+            'articles-public': async () => {
+                const r = await fetch(`${BASE}/api/actualites`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `${(Array.isArray(d)?d:d.data||[]).length} articles`;
+            },
+            'articles-admin': async () => {
+                const r = await fetch(`${BASE}/api/actualites?admin=true`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `${(Array.isArray(d)?d:d.data||[]).length} articles (admin)`;
+            },
+            'annonces': async () => {
+                const r = await fetch(`${BASE}/api/announcements`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `${(d.announcements||[]).length} annonces`;
+            },
+            'bons-plans': async () => {
+                const r = await fetch(`${BASE}/api/bons-plans?days=0`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `${(d.data||[]).length} bons plans`;
+            },
+            'stats': async () => {
+                const r = await fetch(`${BASE}/api/stats/homepage`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `Produits: ${d.produits}, Articles: ${d.articles}`;
+            },
+            'sitemap': async () => {
+                const r = await fetch(`${BASE}/sitemap.xml`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const t = await r.text();
+                return `${(t.match(/<url>/g)||[]).length} URLs`;
+            },
+            'categories': async () => {
+                const r = await fetch(`${BASE}/api/categories`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const d = await r.json();
+                return `${(d.data||d||[]).length} catégories`;
+            },
+            'page-accueil': async () => {
+                const r = await fetch(`${BASE}/2026/`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return `HTTP ${r.status} OK`;
+            },
+            'page-produits': async () => {
+                const r = await fetch(`${BASE}/2026/produits.html`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return `HTTP ${r.status} OK`;
+            },
+            'page-admin': async () => {
+                const r = await fetch(`${BASE}/2026/admin.html`);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return `HTTP ${r.status} OK`;
+            },
+        };
+
+        async function runTest(id) {
+            const btn = document.querySelector(`#test-${id} .run-btn`);
+            const res = document.getElementById(`res-${id}`);
+            if (btn) btn.disabled = true;
+            if (res) { res.textContent = '⏳ En cours…'; res.className = 'test-result running'; }
+            try {
+                const msg = await TESTS[id]();
+                if (res) { res.textContent = '✅ ' + msg; res.className = 'test-result pass'; }
+                testResults[id] = true;
+            } catch(e) {
+                if (res) { res.textContent = '❌ ' + e.message; res.className = 'test-result fail'; }
+                testResults[id] = false;
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+            updateSummary();
+        }
+
+        async function runAllTests() {
+            testResults = {};
+            for (const id of Object.keys(TESTS)) await runTest(id);
+        }
+
+        function resetTests() {
+            testResults = {};
+            document.querySelectorAll('.test-result').forEach(el => { el.textContent = ''; el.className = 'test-result'; });
+            document.getElementById('tests-summary').style.display = 'none';
+        }
+
+        function updateSummary() {
+            const vals = Object.values(testResults);
+            const pass = vals.filter(v=>v).length;
+            const fail = vals.filter(v=>!v).length;
+            const s = document.getElementById('tests-summary');
+            s.style.display = 'flex';
+            document.getElementById('t-total').textContent = vals.length;
+            document.getElementById('t-pass').textContent = pass;
+            document.getElementById('t-fail').textContent = fail;
+        }
+    </script>
+</div>
+
         <div class="section">
             <h2>🎯 Suite de Tests Interactive</h2>
             <p>Interface web complète pour tester automatiquement tous les aspects du site.</p>

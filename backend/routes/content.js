@@ -28,7 +28,7 @@ router.get('/:categorie/actualites', async (req, res) => {
     }
     
     const { rows } = await pool.query(
-      'SELECT * FROM actualites WHERE categorie_id = $1 ORDER BY ordre ASC, date_publication DESC, id DESC', 
+      'SELECT * FROM actualites WHERE categorie_id = $1 AND actif = true ORDER BY ordre ASC, date_publication DESC, id DESC',
       [catId]
     );
     

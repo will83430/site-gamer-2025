@@ -55,10 +55,19 @@ site-gamer-2025/
 │   ├── produits.html            # Catalogue
 │   ├── fiche.html               # Fiche produit
 │   ├── recherche.html           # Recherche globale
-│   ├── comparatif.html          # Comparateur
+│   ├── comparatif.html          # Comparateur (jusqu'à 4 produits)
+│   ├── versus.html              # Duel 2 produits avec verdict
+│   ├── bons-plans.html          # Baisses de prix récentes
+│   ├── evolution-prix.html      # Historique des prix (Chart.js)
+│   ├── configurateur.html       # Budget builder par profil
 │   ├── tendances.html           # Articles
 │   ├── article.html             # Article détaillé
+│   ├── guides.html              # Guides d'achat
+│   ├── guide.html               # Guide détaillé
+│   ├── timeline.html            # Frise chronologique
 │   ├── wiki.html                # Wiki technique
+│   ├── apropos.html             # À propos du site
+│   ├── nouveautes.html          # Veille RSS (admin uniquement)
 │   └── admin.html               # Administration
 │
 ├── ⚙️ backend/
@@ -81,12 +90,19 @@ site-gamer-2025/
 | ------ | ----- | ------------- |
 | 🏠 **Accueil** | `/2026/` | Hero, annonces, produits vedettes |
 | 📦 **Produits** | `/2026/produits.html` | Catalogue avec filtres |
-| 📄 **Fiche** | `/2026/fiche.html?produit=xxx` | Détails produit |
-| 🔍 **Recherche** | `/2026/recherche.html` | Recherche globale |
+| 📄 **Fiche** | `/2026/fiche.html?id=xxx` | Détails produit, specs, fonctionnalités |
+| 🔍 **Recherche** | `/2026/recherche.html` | Recherche full-text (PostgreSQL) |
 | ⚖️ **Comparatif** | `/2026/comparatif.html` | Compare jusqu'à 4 produits |
+| ⚔️ **Versus** | `/2026/versus.html?id1=X&id2=Y` | Duel 2 produits avec verdict automatique |
+| 💰 **Bons Plans** | `/2026/bons-plans.html` | Produits avec baisse de prix récente |
+| 📈 **Évolution Prix** | `/2026/evolution-prix.html?id=X` | Historique des prix (Chart.js) |
+| 🛠️ **Configurateur** | `/2026/configurateur.html` | Budget builder par profil usage |
 | 📰 **Tendances** | `/2026/tendances.html` | Articles par catégorie |
 | 📝 **Article** | `/2026/article.html?id=X` | Article complet |
-| 📚 **Wiki** | `/2026/wiki.html` | Documentation technique |
+| 📚 **Guides** | `/2026/guides.html` | Guides d'achat par catégorie |
+| 🕐 **Timeline** | `/2026/timeline.html` | Frise chronologique des sorties |
+| 📖 **Wiki** | `/2026/wiki.html` | Documentation technique |
+| ℹ️ **À propos** | `/2026/apropos.html` | Présentation du site |
 
 ---
 
@@ -127,6 +143,13 @@ site-gamer-2025/
 - ✅ CRUD complet depuis le panneau admin
 - ✅ Slug auto-généré
 - ✅ Icône et description personnalisables
+
+### 🆕 Veille Tech (Nouveautés RSS)
+
+- ✅ Agrégation RSS depuis 5 sources (Les Numériques, 01net, Numerama, GSMArena, The Verge)
+- ✅ Détection automatique de catégorie et de produits annoncés
+- ✅ Cache 30 minutes, rafraîchissement manuel
+- ✅ Import en 1 clic → Nouveau Produit ou Nouvel Article (avec traduction FR auto)
 
 ---
 
@@ -187,15 +210,33 @@ PUT    /api/announcements/:id           # Modifier
 DELETE /api/announcements/:id           # Supprimer
 ```
 
+### Prix & Bons Plans
+
+```http
+GET    /api/bons-plans?days=N           # Produits avec baisse de prix (7, 30 jours ou tout)
+GET    /api/price-history/:id           # Historique des prix d'un produit
+```
+
+### Nouveautés RSS
+
+```http
+GET    /api/nouveautes?categorie=&days=&prevu=&limit=  # Flux RSS agrégé (5 sources)
+POST   /api/nouveautes/refresh                         # Vider le cache RSS
+```
+
 ### Autres
 
 ```http
+GET    /api/produits/search?q=&limit=   # Recherche full-text PostgreSQL
 GET    /api/stats/homepage              # Statistiques accueil
 GET    /api/wiki                        # Pages wiki
 GET    /api/activity-logs               # Logs d'activité
 GET    /api/technologies                # Technologies
 GET    /api/insights                    # Insights marché
 GET    /api/predictions                 # Prédictions
+GET    /api/guides                      # Guides d'achat
+GET    /api/timeline                    # Événements timeline
+GET    /sitemap.xml                     # Sitemap dynamique SEO
 ```
 
 ---
@@ -216,7 +257,23 @@ CREATE TABLE produits (
     affiche_accueil BOOLEAN DEFAULT FALSE,  -- 🏠 Accueil
     titre_affiche VARCHAR(255),
     fonctionnalites_avancees TEXT[],
-    donnees_fiche JSONB
+    donnees_fiche JSONB,
+    est_prevu BOOLEAN DEFAULT FALSE,        -- Produit fictif/annoncé
+    slug VARCHAR(255),
+    actif BOOLEAN DEFAULT TRUE,
+    search_vector tsvector                  -- Full-text search (GIN index)
+);
+```
+
+### Table `price_history`
+
+```sql
+CREATE TABLE price_history (
+    id SERIAL PRIMARY KEY,
+    produit_id VARCHAR(20) REFERENCES produits(id),
+    prix VARCHAR(50),
+    prix_numerique NUMERIC(10,2),
+    date_enregistrement TIMESTAMP DEFAULT NOW()
 );
 ```
 
@@ -284,12 +341,18 @@ CREATE TABLE announcements (
 
 - 🎨 **Design futuriste** - Thème sombre avec accents néon
 - 📱 **Responsive** - Adapté mobile/tablette/desktop
-- ⚡ **Performance** - Chargement dynamique depuis API
-- 🔍 **Recherche globale** - Produits et articles en temps réel
+- ⚡ **Performance** - WebP, lazy loading, chargement dynamique API
+- 🔍 **Recherche full-text** - PostgreSQL tsvector + index GIN
 - ⚖️ **Comparateur** - Jusqu'à 4 produits + export PDF
+- ⚔️ **Versus / Duel** - Comparaison 2 produits spec par spec avec verdict
+- 💰 **Bons Plans** - Détection automatique des baisses de prix
+- 📈 **Suivi des Prix** - Historique visuel avec Chart.js
+- 🛠️ **Configurateur Budget** - Sélection automatique par profil et budget
 - 📊 **Admin complet** - Gestion intuitive des contenus
 - 📅 **Calendrier annonces** - Programmation et prévisualisation
 - 📚 **Wiki technique** - Documentation intégrée
+- 🆕 **Veille RSS** - Agrégation 5 sources tech, import direct vers produit/article
+- 🗺️ **SEO** - Sitemap dynamique, JSON-LD, Open Graph
 - 🐳 **Docker ready** - Installation en une commande
 - 🔒 **Sécurité** - Helmet, rate limiting, validation des entrées
 
@@ -331,11 +394,12 @@ site-gamer-install/
 
 | Métrique | Valeur |
 | ---------- | -------- |
-| Produits | ~107 |
-| Articles | ~118 |
+| Produits | 117 (dont 11 fictifs/annoncés) |
+| Articles | 117 |
 | Catégories | 16 |
-| Pages frontend | 9 |
-| Endpoints API | 30+ |
+| Pages frontend | 20 (16 publiques + admin + nouveautes + 404 + offline) |
+| Endpoints API | 146 (22 server + 124 routes backend) |
+| Images WebP | 266 |
 
 ---
 

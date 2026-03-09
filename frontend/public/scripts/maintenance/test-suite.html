@@ -547,6 +547,133 @@
                 ]
             },
             {
+    id: 'api-complet',
+    name: 'API Complète',
+    icon: '🔌',
+    tests: [
+        {
+            id: 'api-articles-public',
+            name: 'GET /api/actualites (public)',
+            description: 'Articles actifs uniquement',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/actualites`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                if (!Array.isArray(data)) throw new Error('Réponse non tableau');
+                return { message: `${data.length} articles publics` };
+            }
+        },
+        {
+            id: 'api-articles-admin',
+            name: 'GET /api/actualites?admin=true',
+            description: 'Articles incluant masqués (admin)',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/actualites?admin=true`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                if (!Array.isArray(data)) throw new Error('Réponse non tableau');
+                return { message: `${data.length} articles (admin)` };
+            }
+        },
+        {
+            id: 'api-annonces',
+            name: 'GET /api/announcements',
+            description: 'Annonces actives',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/announcements`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                const count = data.announcements?.length ?? (Array.isArray(data) ? data.length : 0);
+                return { message: `${count} annonces actives` };
+            }
+        },
+        {
+            id: 'api-bons-plans',
+            name: 'GET /api/bons-plans',
+            description: 'Produits avec baisses de prix',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/bons-plans?days=0`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                const count = data.data?.length ?? (Array.isArray(data) ? data.length : 0);
+                return { message: `${count} bons plans` };
+            }
+        },
+        {
+            id: 'api-recherche',
+            name: 'GET /api/produits/search',
+            description: 'Recherche full-text PostgreSQL',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/produits/search?q=samsung&limit=5`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                const results = data.data || data.results || (Array.isArray(data) ? data : []);
+                return { message: `${results.length} résultat(s) pour "samsung"` };
+            }
+        },
+        {
+            id: 'api-top-produits',
+            name: 'GET /api/produits/featured/list',
+            description: 'Produits Top du mois',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/produits/featured/list`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                const count = data.data?.length ?? 0;
+                return { message: `${count} produits vedettes` };
+            }
+        },
+        {
+            id: 'api-stats-homepage',
+            name: 'GET /api/stats/homepage',
+            description: 'Statistiques page d\'accueil',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/stats/homepage`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                return { message: `Produits: ${data.produits}, Articles: ${data.articles}` };
+            }
+        },
+        {
+            id: 'api-sitemap',
+            name: 'GET /sitemap.xml',
+            description: 'Sitemap SEO dynamique',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/sitemap.xml`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const xml = await res.text();
+                if (!xml.includes('<urlset')) throw new Error('Format sitemap invalide');
+                const count = (xml.match(/<url>/g) || []).length;
+                return { message: `${count} URLs dans le sitemap` };
+            }
+        },
+        {
+            id: 'api-validation-erreur',
+            name: 'POST /api/produits sans nom → 400',
+            description: 'La validation doit rejeter une requête invalide',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/produits`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ categorie: 'DRONE' })
+                });
+                if (res.status !== 400 && res.status !== 422) throw new Error(`Attendu 400, reçu ${res.status}`);
+                return { message: `Validation OK (HTTP ${res.status})` };
+            }
+        },
+        {
+            id: 'api-404',
+            name: 'GET /api/produits/prod_9999 → 404',
+            description: 'Un ID inexistant doit retourner 404',
+            run: async () => {
+                const res = await fetch(`${API_BASE}/api/produits/prod_9999`);
+                if (res.status !== 404) throw new Error(`Attendu 404, reçu ${res.status}`);
+                return { message: 'Gestion 404 OK' };
+            }
+        }
+    ]
+},
+            {
                 id: 'data-integrity',
                 name: 'Integrite des donnees',
                 icon: '🔍',
