@@ -2,10 +2,12 @@
 
 > Site comparateur gaming & high-tech avec design futuriste et interface d'administration complète.
 
-![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)
+![Node.js](https://img.shields.io/badge/Node.js-20+-green?logo=node.js)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue?logo=postgresql)
 ![Express](https://img.shields.io/badge/Express-4.x-lightgrey?logo=express)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
+
+🌐 **Site en ligne : [guidehightech.org](https://guidehightech.org)**
 
 ---
 
@@ -20,7 +22,7 @@ docker compose up
 
 # 3. Accéder au site
 # 🌐 http://localhost:3000
-# 🔧 http://localhost:3000/2026/admin.html (mot de passe : Admin2026!)
+# 🔧 http://localhost:3000/2026/admin.html (mot de passe dans .env)
 ```
 
 ### Option 2 : Installation manuelle
@@ -78,6 +80,7 @@ site-gamer-2025/
 ├── 🐳 docker-compose.yml        # Installation Docker
 ├── 🐳 Dockerfile                # Build de l'app
 ├── 📦 init.sql                  # Données initiales BDD
+├── 🚀 deploy.sh                 # Script déploiement production
 │
 └── 🖥️ server-2026.js            # Serveur Express
 ```
@@ -112,14 +115,15 @@ site-gamer-2025/
 
 | Colonne | Description |
 | --------- | ------------- |
-| ⭐ **Vedette** | Badge TOP affiché sur le produit (illimité) |
+| ⭐ **Vedette** | Badge TOP affiché sur le produit |
 | 🏠 **Accueil** | Affichage sur la page d'accueil (max 4) |
+| 📅 **Prévu** | Badge violet pour produits fictifs/annoncés |
 
 **Fonctionnalités :**
 
 - ✅ CRUD complet (créer, modifier, supprimer)
 - ✅ Upload image drag & drop
-- ✅ Champs spécifiques par catégorie
+- ✅ Toggle actif/inactif
 - ✅ Aperçu fiche en temps réel
 
 ### 📰 Gestion des Articles
@@ -127,29 +131,20 @@ site-gamer-2025/
 - ✅ Articles avec sections modulaires
 - ✅ Réorganisation par drag (⬆️⬇️)
 - ✅ Tags, statut Hot 🔥
-- ✅ Filtres par catégorie
+- ✅ Toggle actif/inactif
 
 ### 📢 Annonces
 
-- ✅ Bannières d'annonce avec icône, titre, lien personnalisables
+- ✅ Bannières avec icône, titre, lien personnalisables
 - ✅ Vue calendrier avec programmation par dates
 - ✅ Templates rapides (nouveau produit, promo, alerte stock, info)
-- ✅ Prévisualisation en temps réel
 - ✅ Actions groupées (activer, désactiver, supprimer en masse)
-- ✅ Réorganisation par drag & drop
-
-### 🗂️ Gestion des Catégories
-
-- ✅ CRUD complet depuis le panneau admin
-- ✅ Slug auto-généré
-- ✅ Icône et description personnalisables
 
 ### 🆕 Veille Tech (Nouveautés RSS)
 
 - ✅ Agrégation RSS depuis 5 sources (Les Numériques, 01net, Numerama, GSMArena, The Verge)
-- ✅ Détection automatique de catégorie et de produits annoncés
 - ✅ Cache 30 minutes, rafraîchissement manuel
-- ✅ Import en 1 clic → Nouveau Produit ou Nouvel Article (avec traduction FR auto)
+- ✅ Import en 1 clic → Nouveau Produit ou Nouvel Article
 
 ---
 
@@ -163,9 +158,9 @@ GET    /api/produits/:id                # Un produit
 POST   /api/produits                    # Créer
 PUT    /api/produits/:id                # Modifier
 DELETE /api/produits/:id                # Supprimer
-PATCH  /api/produits/:id/featured       # Toggle ⭐ vedette
-GET    /api/produits/homepage/list      # Produits 🏠 accueil
-PATCH  /api/produits/:id/homepage       # Toggle 🏠 accueil
+PATCH  /api/produits/:id/featured       # Toggle vedette
+PATCH  /api/produits/:id/homepage       # Toggle accueil
+GET    /api/produits/search?q=&limit=   # Recherche full-text
 ```
 
 ### Articles
@@ -176,66 +171,27 @@ GET    /api/actualites/:id              # Un article
 POST   /api/actualites                  # Créer
 PUT    /api/actualites/:id              # Modifier
 DELETE /api/actualites/:id              # Supprimer
-POST   /api/actualites/reorder          # Réorganiser
-```
-
-### Sections d'Articles
-
-```http
-GET    /api/fiche-tendance/data/:id     # Article + sections
-POST   /api/fiche-tendance/sections     # Créer section
-PUT    /api/fiche-tendance/sections/:id # Modifier section
-DELETE /api/fiche-tendance/sections/:id # Supprimer section
-```
-
-### Catégories
-
-```http
-GET    /api/categories                  # Liste toutes
-GET    /api/categories/:id              # Une catégorie
-POST   /api/categories                  # Créer
-PUT    /api/categories/:id              # Modifier
-DELETE /api/categories/:id              # Supprimer
-GET    /api/categories/:slug/produits   # Produits d'une catégorie
-```
-
-### Annonces
-
-```http
-GET    /api/announcements               # Annonces actives
-GET    /api/announcements/admin/all     # Toutes (admin)
-GET    /api/announcements/:id           # Une annonce
-POST   /api/announcements               # Créer
-PUT    /api/announcements/:id           # Modifier
-DELETE /api/announcements/:id           # Supprimer
 ```
 
 ### Prix & Bons Plans
 
 ```http
-GET    /api/bons-plans?days=N           # Produits avec baisse de prix (7, 30 jours ou tout)
-GET    /api/price-history/:id           # Historique des prix d'un produit
-```
-
-### Nouveautés RSS
-
-```http
-GET    /api/nouveautes?categorie=&days=&prevu=&limit=  # Flux RSS agrégé (5 sources)
-POST   /api/nouveautes/refresh                         # Vider le cache RSS
+GET    /api/bons-plans?days=N                  # Produits avec baisse de prix
+GET    /api/price-evolution/produit/:id        # Historique des prix
+POST   /api/price-evolution/scrape             # Scraper les prix
+POST   /api/price-evolution/snapshot           # Snapshot manuel
 ```
 
 ### Autres
 
 ```http
-GET    /api/produits/search?q=&limit=   # Recherche full-text PostgreSQL
+GET    /api/categories                  # Catégories
+GET    /api/announcements               # Annonces actives
+GET    /api/nouveautes                  # Flux RSS agrégé
 GET    /api/stats/homepage              # Statistiques accueil
-GET    /api/wiki                        # Pages wiki
-GET    /api/activity-logs               # Logs d'activité
-GET    /api/technologies                # Technologies
-GET    /api/insights                    # Insights marché
-GET    /api/predictions                 # Prédictions
 GET    /api/guides                      # Guides d'achat
 GET    /api/timeline                    # Événements timeline
+GET    /api/wiki                        # Pages wiki
 GET    /sitemap.xml                     # Sitemap dynamique SEO
 ```
 
@@ -243,97 +199,20 @@ GET    /sitemap.xml                     # Sitemap dynamique SEO
 
 ## 🗄️ Base de Données
 
-### Table `produits`
+### Tables principales
 
 ```sql
-CREATE TABLE produits (
-    id VARCHAR(20) PRIMARY KEY,
-    nom VARCHAR(255) NOT NULL,
-    prix VARCHAR(50),
-    categorie VARCHAR(100),
-    description TEXT,
-    image VARCHAR(255),
-    top_du_mois BOOLEAN DEFAULT FALSE,      -- ⭐ Vedette
-    affiche_accueil BOOLEAN DEFAULT FALSE,  -- 🏠 Accueil
-    titre_affiche VARCHAR(255),
-    fonctionnalites_avancees TEXT[],
-    donnees_fiche JSONB,
-    est_prevu BOOLEAN DEFAULT FALSE,        -- Produit fictif/annoncé
-    slug VARCHAR(255),
-    actif BOOLEAN DEFAULT TRUE,
-    search_vector tsvector                  -- Full-text search (GIN index)
-);
+produits        -- Catalogue produits (id VARCHAR, nom, prix, categorie...)
+actualites      -- Articles (titre, description, sections, tags, hot...)
+categories      -- Catégories (nom, slug, icone, description)
+price_history   -- Historique des prix (produit_id, prix, prix_numerique, date)
+announcements   -- Annonces/bannières (titre, type, dates, actif...)
+actualites_sections -- Sections modulaires des articles
+guides          -- Guides d'achat
+wiki_pages      -- Documentation wiki
+timeline_events -- Frise chronologique
+site_stats      -- Compteurs (visites...)
 ```
-
-### Table `price_history`
-
-```sql
-CREATE TABLE price_history (
-    id SERIAL PRIMARY KEY,
-    produit_id VARCHAR(20) REFERENCES produits(id),
-    prix VARCHAR(50),
-    prix_numerique NUMERIC(10,2),
-    date_enregistrement TIMESTAMP DEFAULT NOW()
-);
-```
-
-### Table `actualites`
-
-```sql
-CREATE TABLE actualites (
-    id SERIAL PRIMARY KEY,
-    titre TEXT,
-    description TEXT,
-    image VARCHAR(255),
-    video_url TEXT,
-    date_publication DATE,
-    tags TEXT[],
-    hot BOOLEAN DEFAULT FALSE,
-    categorie_id INT REFERENCES categories(id),
-    ordre INT
-);
-```
-
-### Table `announcements`
-
-```sql
-CREATE TABLE announcements (
-    id SERIAL PRIMARY KEY,
-    titre VARCHAR(255),
-    description TEXT,
-    icone VARCHAR(50),
-    type VARCHAR(50) DEFAULT 'info',
-    actif BOOLEAN DEFAULT TRUE,
-    lien TEXT,
-    bouton_texte VARCHAR(100),
-    date_debut TIMESTAMP,
-    date_fin TIMESTAMP,
-    ordre INT DEFAULT 0
-);
-```
-
----
-
-## 🏷️ Catégories Disponibles
-
-| Catégorie | Icône |
-| ----------- | ------- |
-| Smartphones | 📱 |
-| PC Gaming | 🖥️ |
-| Consoles | 🎮 |
-| Casques VR | 🥽 |
-| Drones | 🚁 |
-| Montres Connectées | ⌚ |
-| Caméras | 📷 |
-| Casques Audio | 🎧 |
-| Écrans & TV | 📺 |
-| Tablettes | 📱 |
-| Périphériques | ⌨️ |
-| Imprimantes 3D | 🖨️ |
-| Box Internet | 📡 |
-| Serveurs | 🖲️ |
-| Vidéoprojecteurs | 🎬 |
-| Tableaux Interactifs | 📊 |
 
 ---
 
@@ -343,38 +222,44 @@ CREATE TABLE announcements (
 - 📱 **Responsive** - Adapté mobile/tablette/desktop
 - ⚡ **Performance** - WebP, lazy loading, chargement dynamique API
 - 🔍 **Recherche full-text** - PostgreSQL tsvector + index GIN
-- ⚖️ **Comparateur** - Jusqu'à 4 produits + export PDF
-- ⚔️ **Versus / Duel** - Comparaison 2 produits spec par spec avec verdict
+- ⚖️ **Comparateur** - Jusqu'à 4 produits
+- ⚔️ **Versus / Duel** - Comparaison 2 produits avec verdict
 - 💰 **Bons Plans** - Détection automatique des baisses de prix
 - 📈 **Suivi des Prix** - Historique visuel avec Chart.js
-- 🛠️ **Configurateur Budget** - Sélection automatique par profil et budget
-- 📊 **Admin complet** - Gestion intuitive des contenus
-- 📅 **Calendrier annonces** - Programmation et prévisualisation
-- 📚 **Wiki technique** - Documentation intégrée
-- 🆕 **Veille RSS** - Agrégation 5 sources tech, import direct vers produit/article
+- 🛠️ **Configurateur Budget** - Sélection par profil et budget
+- 🆕 **Veille RSS** - Agrégation 5 sources tech
 - 🗺️ **SEO** - Sitemap dynamique, JSON-LD, Open Graph
+- 📊 **Google Analytics** - Suivi des visiteurs
 - 🐳 **Docker ready** - Installation en une commande
 - 🔒 **Sécurité** - Helmet, rate limiting, validation des entrées
 
 ---
 
-## 🐳 Déploiement Docker
+## 🌐 Production
 
-Le projet inclut un package d'installation autonome (`site-gamer-install/`) qui contient tout le nécessaire :
+| Infra | Détail |
+| ------- | ------- |
+| Hébergeur | OVH VPS (Ubuntu 22.04) |
+| IP | 162.19.230.51 |
+| Domaine | guidehightech.org |
+| Process manager | PM2 |
+| Reverse proxy | Nginx |
+| HTTPS | Let's Encrypt (renouvellement auto) |
+| Analytics | Google Analytics G-ZYF9PK31GR |
 
-```text
-site-gamer-install/
-├── app/                  # Code source complet
-│   ├── Dockerfile        # Build Node.js
-│   └── .dockerignore
-├── init.sql              # Dump complet de la BDD
-├── docker-compose.yml    # Orchestre app + PostgreSQL
-├── lancer.sh             # Script de lancement Linux/Mac
-├── lancer.bat            # Script de lancement Windows
-└── README.txt            # Instructions
+### Déployer en production
+
+```bash
+./deploy.sh
+# N  → sync fichiers uniquement + restart app
+# o  → sync fichiers + sync BDD (préserve le compteur de visites)
 ```
 
-**Compatible :** Linux, macOS, Windows (via Docker Desktop)
+Connexion VPS :
+
+```bash
+ssh ubuntu@162.19.230.51
+```
 
 ---
 
@@ -382,10 +267,11 @@ site-gamer-install/
 
 | Stack | Version |
 | ------- | --------- |
-| Node.js | 18+ |
+| Node.js | 20+ |
 | Express.js | 4.x |
 | PostgreSQL | 14+ |
 | HTML/CSS/JS | ES6+ |
+| Chart.js | 4.4.7 |
 | Docker | 20+ |
 
 ---
@@ -394,12 +280,11 @@ site-gamer-install/
 
 | Métrique | Valeur |
 | ---------- | -------- |
-| Produits | 117 (dont 11 fictifs/annoncés) |
-| Articles | 117 |
+| Produits | 113 (dont 5 fictifs/annoncés) |
+| Articles | 119 |
 | Catégories | 16 |
-| Pages frontend | 20 (16 publiques + admin + nouveautes + 404 + offline) |
-| Endpoints API | 146 (22 server + 124 routes backend) |
-| Images WebP | 266 |
+| Pages frontend | 20 |
+| Images WebP | 259 |
 
 ---
 

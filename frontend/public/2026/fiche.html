@@ -712,7 +712,31 @@
                 right: 5px !important;
             }
         }
+        @media (max-width: 480px) {
+            .specs-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .product-image-section {
+                min-height: 200px !important;
+            }
+            .share-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .share-buttons a, .share-buttons button {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
 
@@ -878,9 +902,7 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/2026/wiki.html">Wiki</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>                    <li><a href="/2026/apropos.html">À propos</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
                     <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>

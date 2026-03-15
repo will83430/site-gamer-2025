@@ -52,9 +52,9 @@ if (process.env.NODE_ENV === 'production') {
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
         imgSrc: ["'self'", "data:", "https:"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
         scriptSrcAttr: ["'unsafe-inline'"],
-        connectSrc: ["'self'", "http://localhost:3000", "http://192.168.1.235:3000"],
+        connectSrc: ["'self'", "https:", "http://localhost:3000", "http://192.168.1.235:3000"],
         frameSrc: ["'self'", "https://www.youtube.com", "https://youtube.com", "https://www.youtube-nocookie.com", "https://www.dailymotion.com", "https://geo.dailymotion.com"],
       }
     }
@@ -407,7 +407,7 @@ if (require.main === module) app.listen(port, '0.0.0.0', async () => {
   }
 
   logger.info(`🚀 Serveur démarré sur http://localhost:${port}`);
-  logger.info(`📄 Homepage: index-smooth.html (Redesign 2026)`);
+  logger.info(`📄 Homepage: /2026/index.html`);
   logger.info('═══════════════════════════════════════════════════');
 });
 

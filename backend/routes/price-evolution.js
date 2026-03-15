@@ -194,7 +194,15 @@ router.post('/snapshot', async (req, res) => {
         );
 
         let count = 0;
+        let skipped = 0;
         for (const p of produits) {
+            // Ne pas réinsérer si un relevé existe déjà aujourd'hui pour ce produit
+            const already = await pool.query(
+                'SELECT id FROM price_history WHERE produit_id = $1 AND date_enregistrement::date = CURRENT_DATE LIMIT 1',
+                [p.id]
+            );
+            if (already.rows.length > 0) { skipped++; continue; }
+
             const num = parsePrice(p.prix);
             await pool.query(
                 'INSERT INTO price_history (produit_id, prix, prix_numerique) VALUES ($1, $2, $3)',
@@ -203,8 +211,8 @@ router.post('/snapshot', async (req, res) => {
             count++;
         }
 
-        logger.info(`Snapshot prix: ${count} produits enregistrés`);
-        res.json({ success: true, message: `${count} prix enregistrés`, count });
+        logger.info(`Snapshot prix: ${count} enregistrés, ${skipped} déjà à jour aujourd'hui`);
+        res.json({ success: true, message: `${count} prix enregistrés${skipped ? `, ${skipped} déjà à jour aujourd'hui` : ''}`, count, skipped });
     } catch (error) {
         logger.error('Erreur POST snapshot:', error);
         res.status(500).json({ success: false, error: error.message });

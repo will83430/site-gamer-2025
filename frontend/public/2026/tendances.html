@@ -200,6 +200,11 @@
         @media (max-width: 576px) {
             .actualites-grid { columns: 1; }
         }
+        @media (max-width: 480px) {
+            .tendances-container { padding: 1rem; }
+            .nav-buttons { gap: 0.4rem; }
+            .nav-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+        }
 
         .actualite-card {
             background: var(--bg-card);
@@ -658,6 +663,14 @@
             text-decoration: underline !important;
         }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
 
@@ -812,9 +825,7 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/2026/wiki.html">Wiki</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>                    <li><a href="/2026/apropos.html">À propos</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
                     <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>

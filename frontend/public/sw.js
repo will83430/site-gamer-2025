@@ -53,6 +53,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Ignorer les ressources externes (CDN, fonts) — laisser le navigateur les gérer directement
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
