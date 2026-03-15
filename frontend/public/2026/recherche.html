@@ -290,7 +290,22 @@
                 grid-template-columns: 1fr;
             }
         }
+        @media (max-width: 480px) {
+            .search-hero h1 { font-size: 1.4rem; }
+            .search-hero { padding: 1.5rem 1rem; }
+            .search-box { padding: 0 1rem; }
+            .filters-row { flex-direction: column; gap: 0.5rem; }
+            .filters-row select, .filters-row input { width: 100%; }
+        }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
     <!-- Header -->
@@ -303,6 +318,7 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/timeline.html" class="nav-link">Timeline</a>
                 <a href="/2026/recherche.html" class="nav-link active">Rechercher</a>
             </div>
@@ -347,8 +363,47 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer" style="background: var(--bg-secondary); padding: 2rem; text-align: center; margin-top: 3rem;">
-        <p style="color: var(--text-muted);">HIGH-TECH 2026</p>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/versus.html">Versus</a></li>
+                    <li><a href="/2026/guides.html">Guides</a></li>
+                    <li><a href="/2026/configurateur.html">Configurateur</a></li>
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/wiki.html">Wiki</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
     </footer>
 
     <script src="/assets/js/theme-toggle.js"></script>
@@ -401,46 +456,37 @@
             document.getElementById('resultsInfo').style.display = 'none';
 
             try {
-                // Recherche dans les produits
-                const produitsRes = await fetch(`/api/produits?t=${Date.now()}`, { cache: 'no-store' });
+                // Recherche full-text côté serveur (tsvector PostgreSQL)
+                const [produitsRes, articlesRes] = await Promise.all([
+                    fetch(`/api/produits/search?q=${encodeURIComponent(query)}&limit=50`),
+                    fetch(`/api/actualites?t=${Date.now()}`, { cache: 'no-store' })
+                ]);
                 const produitsData = await produitsRes.json();
-
-                // Recherche dans les articles
-                const articlesRes = await fetch(`/api/actualites?t=${Date.now()}`, { cache: 'no-store' });
                 const articlesData = await articlesRes.json();
 
                 const queryLower = query.toLowerCase();
-
-                // Normaliser les données (certaines APIs retournent {data:[]} d'autres [])
-                const produits = Array.isArray(produitsData) ? produitsData : (produitsData.data || []);
+                const produits = produitsData.data || [];
                 const articles = Array.isArray(articlesData) ? articlesData : (articlesData.data || []);
 
-                // Filtrer les produits (nom, description, catégorie, marque, tags)
-                allResults.produits = produits.filter(p => {
-                    const tagsStr = Array.isArray(p.tags) ? p.tags.join(' ') : (p.tags || '');
-                    return (p.nom && p.nom.toLowerCase().includes(queryLower)) ||
-                        (p.description && p.description.toLowerCase().includes(queryLower)) ||
-                        (p.categorie && p.categorie.toLowerCase().includes(queryLower)) ||
-                        (p.marque && p.marque.toLowerCase().includes(queryLower)) ||
-                        tagsStr.toLowerCase().includes(queryLower);
-                }).map(p => ({
+                // Produits : déjà filtrés et classés par pertinence côté serveur
+                allResults.produits = produits.map(p => ({
                     type: 'produit',
                     id: p.id,
                     title: p.titre_affiche || p.nom,
                     description: p.description || '',
                     category: p.categorie,
                     price: p.prix,
-                    url: `/2026/fiche.html?produit=${encodeURIComponent(p.nom.toLowerCase().replace(/\s+/g, '-'))}`
+                    est_prevu: p.est_prevu,
+                    image: p.image_url,
+                    url: `/2026/fiche.html?id=${p.id}`
                 }));
 
-                // Filtrer les articles (titre, description, résumé, catégorie, tags)
+                // Articles : filtrage client-side (pas de tsvector sur articles pour l'instant)
                 allResults.articles = articles.filter(a => {
-                    const tagsStr = Array.isArray(a.tags) ? a.tags.join(' ') : (a.tags || '');
                     return (a.titre && a.titre.toLowerCase().includes(queryLower)) ||
                         (a.description && a.description.toLowerCase().includes(queryLower)) ||
                         (a.resume && a.resume.toLowerCase().includes(queryLower)) ||
-                        (a.categorie && a.categorie.toLowerCase().includes(queryLower)) ||
-                        tagsStr.toLowerCase().includes(queryLower);
+                        (a.categorie && a.categorie.toLowerCase().includes(queryLower));
                 }).map(a => ({
                     type: 'article',
                     id: a.id,

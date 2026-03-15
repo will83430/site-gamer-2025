@@ -139,6 +139,17 @@
             animation: topPulse 2s ease-in-out infinite;
         }
 
+        .meta-badge.prevu {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            color: white;
+            border: none;
+        }
+
+        .meta-badge.price.price-estime {
+            font-style: italic;
+            opacity: 0.9;
+        }
+
         @keyframes topPulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -701,9 +712,35 @@
                 right: 5px !important;
             }
         }
+        @media (max-width: 480px) {
+            .specs-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .product-image-section {
+                min-height: 200px !important;
+            }
+            .share-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .share-buttons a, .share-buttons button {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
+
+    <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;background:#d4ff00;color:#000;padding:8px 16px;font-weight:600;" onfocus="this.style.cssText=this.style.cssText.replace('left:-9999px','left:16px')">Aller au contenu</a>
 
     <!-- Header -->
     <header class="header">
@@ -728,13 +765,14 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/timeline.html" class="nav-link">Timeline</a>
                 <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
         </nav>
     </header>
 
-    <main>
+    <main id="main-content">
         <div class="product-container">
             <!-- Loading State -->
             <div class="loading-state" id="loading-state">
@@ -774,7 +812,7 @@
                 <!-- Product Overview -->
                 <div class="product-overview">
                     <div class="product-image-section">
-                        <img id="product-image" src="/assets/images/placeholder.png" alt="Produit" loading="lazy">
+                        <img id="product-image" src="/assets/images/placeholder.png" alt="Image du produit" loading="lazy">
                     </div>
 
                     <div class="product-summary">
@@ -818,9 +856,9 @@
                     <div class="share-section">
                         <h4 class="share-title">Partager cette fiche:</h4>
                         <div class="share-buttons">
-                            <button class="share-btn" onclick="shareContent()">Partager</button>
-                            <button class="share-btn" onclick="copyLink()">Copier le lien</button>
-                            <button class="share-btn" onclick="print()">Imprimer</button>
+                            <button class="share-btn" onclick="shareContent()" aria-label="Partager cette fiche">Partager</button>
+                            <button class="share-btn" onclick="copyLink()" aria-label="Copier le lien de cette fiche">Copier le lien</button>
+                            <button class="share-btn" onclick="print()" aria-label="Imprimer cette fiche">Imprimer</button>
                         </div>
                     </div>
                 </div>
@@ -864,9 +902,7 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/2026/wiki.html">Wiki</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>                    <li><a href="/2026/apropos.html">À propos</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
                     <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>
@@ -982,12 +1018,22 @@
 
             // Price badge
             if (product.prix) {
-                metaContainer.innerHTML += `<span class="meta-badge price">${product.prix}</span>`;
+                if (product.est_prevu) {
+                    const prixClean = product.prix.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim();
+                    metaContainer.innerHTML += `<span class="meta-badge price price-estime">~${prixClean} <small style="font-size:0.8em;opacity:0.85">(estimé)</small></span>`;
+                } else {
+                    metaContainer.innerHTML += `<span class="meta-badge price">${product.prix}</span>`;
+                }
             }
 
-            // Top du mois badge
-            if (product.top_du_mois) {
-                metaContainer.innerHTML += `<span class="meta-badge top">TOP DU MOIS</span>`;
+            // Prévu badge
+            if (product.est_prevu) {
+                metaContainer.innerHTML += `<span class="meta-badge prevu">📅 Prévu</span>`;
+            }
+
+            // Top du mois badge (jamais affiché pour un produit prévu)
+            if (product.top_du_mois && !product.est_prevu) {
+                metaContainer.innerHTML += `<span class="meta-badge top">🔥 TOP DU MOIS</span>`;
             }
 
             // Image
@@ -1117,24 +1163,25 @@
         // SCHEMA.ORG STRUCTURED DATA
         // ========================================
         function injectSchemaOrg(product, title, description, imageUrl, categoryName) {
-            // Remove existing schema if any
             const existingSchema = document.getElementById('schema-product');
             if (existingSchema) existingSchema.remove();
+
+            // Extract brand from product name (first word if known brand)
+            const knownBrands = ['Apple','Samsung','Sony','Microsoft','Nintendo','Valve','ASUS','Asus','LG','Meta','Google','Lenovo','Razer','Corsair','Logitech','Bose','Sennheiser','Beyerdynamic','DJI','Canon','Fujifilm','Panasonic','HP','Dell','MSI','Bambu','Creality','Elegoo','Shokz','Garmin','Huawei','Honor','Xiaomi','OnePlus','RedMagic','Parrot','Autel','Skydio','BenQ','Optoma','ViewSonic','SteelSeries','Audio-Technica','XGIMI'];
+            const brandName = knownBrands.find(b => title.startsWith(b)) || 'HIGH-TECH 2026';
+            const absoluteImage = imageUrl.startsWith('http') ? imageUrl : window.location.origin + imageUrl;
 
             const schema = {
                 "@context": "https://schema.org",
                 "@type": "Product",
                 "name": title,
                 "description": description,
-                "image": imageUrl.startsWith('http') ? imageUrl : window.location.origin + imageUrl,
+                "image": absoluteImage,
                 "category": categoryName,
-                "brand": {
-                    "@type": "Brand",
-                    "name": "HIGH-TECH 2026"
-                }
+                "brand": { "@type": "Brand", "name": brandName },
+                "url": window.location.href
             };
 
-            // Add price if available
             if (product.prix) {
                 const priceMatch = product.prix.match(/[\d.,]+/);
                 if (priceMatch) {
@@ -1142,7 +1189,11 @@
                         "@type": "Offer",
                         "price": priceMatch[0].replace(',', '.'),
                         "priceCurrency": "EUR",
-                        "availability": "https://schema.org/InStock"
+                        "availability": product.est_prevu
+                            ? "https://schema.org/PreOrder"
+                            : "https://schema.org/InStock",
+                        "priceValidUntil": product.est_prevu ? "2027-01-01" : "2026-12-31",
+                        "url": window.location.href
                     };
                 }
             }
@@ -1150,7 +1201,7 @@
             const script = document.createElement('script');
             script.type = 'application/ld+json';
             script.id = 'schema-product';
-            script.textContent = JSON.stringify(schema);
+            script.textContent = JSON.stringify(schema, null, 0);
             document.head.appendChild(script);
         }
 

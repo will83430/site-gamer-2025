@@ -10,9 +10,10 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" id="og-title" content="Tendances & Actualités Tech">
-    <meta property="og:description" content="Découvrez les dernières tendances du monde gaming et high-tech.">
-    <meta property="og:url" id="og-url" content="https://high-tech-2026.com/2026/tendances.html">
+    <meta property="og:title" content="Tendances &amp; Actualités High-Tech 2026 | HIGH-TECH 2026">
+    <meta property="og:description" content="Les dernières actualités, tendances et guides sur les produits gaming et high-tech. Restez informé des sorties et innovations.">
+    <meta property="og:image" content="/assets/images/og-default.jpg">
+    <meta property="og:site_name" content="HIGH-TECH 2026">
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -188,9 +189,21 @@
 
         /* Actualites Grid */
         .actualites-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
+            columns: 3;
+            column-gap: 1.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .actualites-grid { columns: 2; }
+        }
+
+        @media (max-width: 576px) {
+            .actualites-grid { columns: 1; }
+        }
+        @media (max-width: 480px) {
+            .tendances-container { padding: 1rem; }
+            .nav-buttons { gap: 0.4rem; }
+            .nav-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
         }
 
         .actualite-card {
@@ -200,22 +213,14 @@
             overflow: hidden;
             transition: var(--transition-smooth);
             cursor: pointer;
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
         }
 
         .actualite-card:hover {
             transform: translateY(-5px);
             border-color: rgba(212, 255, 0, 0.3);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(212, 255, 0, 0.1);
-        }
-
-        .actualite-card.featured {
-            grid-column: span 2;
-        }
-
-        @media (max-width: 768px) {
-            .actualite-card.featured {
-                grid-column: span 1;
-            }
         }
 
         .card-image {
@@ -658,6 +663,14 @@
             text-decoration: underline !important;
         }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
 
@@ -684,6 +697,7 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/timeline.html" class="nav-link">Timeline</a>
                 <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
@@ -811,9 +825,7 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/2026/wiki.html">Wiki</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>                    <li><a href="/2026/apropos.html">À propos</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
                     <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>
@@ -1263,6 +1275,12 @@
         function renderActualites(data) {
             const grid = document.getElementById('actualites-grid');
 
+            data = [...data].sort((a, b) => {
+                const da = new Date(a.date_publication || a.date || 0);
+                const db = new Date(b.date_publication || b.date || 0);
+                return db - da;
+            });
+
             if (data.length === 0) {
                 grid.innerHTML = '<p class="empty-state">Aucune actualite disponible pour cette categorie.</p>';
                 return;
@@ -1289,7 +1307,7 @@
                                </div>`
                             : `<div class="card-image">
                                     <img src="/assets/images/${item.image || 'placeholder.png'}" alt="${item.titre}"
-                                         onerror="this.src='/assets/images/placeholder.png'">
+                                         loading="lazy" onerror="this.src='/assets/images/placeholder.png'">
                                     ${item.hot ? '<span class="badge-hot">HOT</span>' : ''}
                                </div>`
                         }

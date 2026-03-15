@@ -689,6 +689,7 @@
         .badge-info { background: rgba(77, 212, 255, 0.15); color: var(--tech-blue); }
         .badge-danger { background: rgba(255, 107, 107, 0.15); color: var(--tech-red); }
         .badge-secondary { background: rgba(160, 160, 176, 0.15); color: var(--text-secondary); }
+        .row-expired { opacity: 0.55; }
 
         .action-btn {
             background: none;
@@ -1218,6 +1219,14 @@
             }
         }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
 
@@ -1362,6 +1371,14 @@ async function adminLogin() {
                     <span class="nav-item-badge" id="count-annonces">0</span>
                 </a>
             </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Veille Tech</div>
+                <a class="nav-item" data-section="nouveautes">
+                    <span class="nav-item-icon">🆕</span>
+                    <span>Nouveautés Web</span>
+                    <span class="nav-item-badge" id="count-nouveautes">0</span>
+                </a>
+            </div>
 
             <div class="nav-section">
                 <div class="nav-section-title">Contenu</div>
@@ -1412,6 +1429,10 @@ async function adminLogin() {
                 <a class="nav-item" data-section="wiki">
                     <span class="nav-item-icon">📚</span>
                     <span>Wiki</span>
+                </a>
+                <a class="nav-item" href="/wiki/tests.html" target="_blank">
+                    <span class="nav-item-icon">🧪</span>
+                    <span>Guide des Tests</span>
                 </a>
                 <a class="nav-item" href="/2026/">
                     <span class="nav-item-icon">🌐</span>
@@ -1501,6 +1522,7 @@ async function adminLogin() {
                     </button>
                     <input type="file" id="csv-import-input" accept=".csv" style="display: none;" onchange="importCSV(this)">
                     <button class="btn btn-primary" onclick="openModal('produit')">+ Nouveau Produit</button>
+                    <button class="btn btn-secondary" onclick="scrapeAllPrices()" id="btn-scrape-all" title="Récupère les prix Amazon via RapidAPI (20 produits)">🤖 Scraper les prix</button>
                 </div>
             </div>
 
@@ -1510,6 +1532,21 @@ async function adminLogin() {
                 </div>
                 <select class="form-select filter-select" id="filter-categorie-produits">
                     <option value="">Toutes catégories</option>
+                </select>
+                <select class="form-select filter-select" id="filter-vedette-produits">
+                    <option value="">⭐ Vedette : tous</option>
+                    <option value="1">⭐ Vedette uniquement</option>
+                    <option value="0">Pas vedette</option>
+                </select>
+                <select class="form-select filter-select" id="filter-accueil-produits">
+                    <option value="">🏠 Accueil : tous</option>
+                    <option value="1">🏠 Sur l'accueil</option>
+                    <option value="0">Pas accueil</option>
+                </select>
+                <select class="form-select filter-select" id="filter-actif-produits">
+                    <option value="">Statut : tous</option>
+                    <option value="1">✅ Actif</option>
+                    <option value="0">⏸️ Inactif</option>
                 </select>
             </div>
 
@@ -1524,11 +1561,12 @@ async function adminLogin() {
                                 <th>Prix</th>
                                 <th style="width: 60px;" title="Badge vedette sur le produit">⭐</th>
                                 <th style="width: 60px;" title="Afficher sur l'accueil (max 4)">🏠</th>
+                                <th style="width: 70px;" title="Actif / Inactif sur le site">Actif</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="table-produits">
-                            <tr><td colspan="7"><div class="loading-spinner"></div></td></tr>
+                            <tr><td colspan="8"><div class="loading-spinner"></div></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1550,6 +1588,16 @@ async function adminLogin() {
                 </div>
                 <select class="form-select filter-select" id="filter-categorie-articles">
                     <option value="">Toutes catégories</option>
+                </select>
+                <select class="form-select filter-select" id="filter-statut-articles">
+                    <option value="">Statut : tous</option>
+                    <option value="1">✅ Publié</option>
+                    <option value="0">⏸️ Masqué</option>
+                </select>
+                <select class="form-select filter-select" id="filter-hot-articles">
+                    <option value="">🔥 Hot : tous</option>
+                    <option value="1">🔥 Hot uniquement</option>
+                    <option value="0">Normal</option>
                 </select>
             </div>
 
@@ -1582,6 +1630,24 @@ async function adminLogin() {
                 <div class="header-actions">
                     <button class="btn btn-primary" onclick="openModal('annonce')">+ Nouvelle Annonce</button>
                 </div>
+            </div>
+
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input type="text" placeholder="Rechercher une annonce..." id="search-annonces">
+                </div>
+                <select class="form-select filter-select" id="filter-type-annonces">
+                    <option value="">Tous les types</option>
+                    <option value="info">ℹ️ Info</option>
+                    <option value="nouveau">🆕 Nouveau</option>
+                    <option value="promo">🏷️ Promo</option>
+                    <option value="urgent">🚨 Urgent</option>
+                </select>
+                <select class="form-select filter-select" id="filter-actif-annonces">
+                    <option value="">Statut : tous</option>
+                    <option value="1">✅ Actif</option>
+                    <option value="0">⏸️ Inactif</option>
+                </select>
             </div>
 
             <!-- Templates rapides -->
@@ -1857,6 +1923,7 @@ async function adminLogin() {
             <div class="page-header">
                 <h1 class="page-title">Wiki</h1>
                 <div class="header-actions">
+                    <a href="/wiki/tests.html" target="_blank" class="btn btn-secondary">🧪 Guide des Tests</a>
                     <button class="btn btn-primary" onclick="openModal('wiki')">+ Nouvelle Page</button>
                 </div>
             </div>
@@ -2090,7 +2157,113 @@ async function adminLogin() {
             </div>
         </section>
 
+        <section id="section-nouveautes" class="section">
+            <div class="page-header">
+                <h1 class="page-title">🆕 Nouveautés Web</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="refreshNouveautes()" id="btn-refresh-nouveautes">🔄 Rafraîchir</button>
+                    <a href="/2026/nouveautes.html" class="btn btn-primary" target="_blank">Voir la page →</a>
+                </div>
+            </div>
+
+            <!-- Stats sources -->
+            <div class="stats-grid" id="nv-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem;">
+                <div class="stat-card"><div class="stat-value" id="nv-stat-total">--</div><div class="stat-label">Articles trouvés</div></div>
+                <div class="stat-card"><div class="stat-value" id="nv-stat-prevu">--</div><div class="stat-label">Produits prévus</div></div>
+                <div class="stat-card"><div class="stat-value" id="nv-stat-sources">5</div><div class="stat-label">Sources RSS</div></div>
+                <div class="stat-card"><div class="stat-value" id="nv-stat-cache">--</div><div class="stat-label">Cache</div></div>
+            </div>
+
+            <!-- Filtres -->
+            <div class="content-card" style="margin-bottom:1.5rem;">
+                <div class="content-card-body" style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+                    <select id="nv-filter-cat" onchange="filterNouveautes()" style="background:var(--bg-elevated);border:1px solid var(--border-color);color:var(--text-primary);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;">
+                        <option value="tout">Toutes catégories</option>
+                        <option value="smartphone">Smartphones</option>
+                        <option value="console">Consoles</option>
+                        <option value="pc-gaming">PC Gaming</option>
+                        <option value="casque-vr">Casques VR</option>
+                        <option value="drone">Drones</option>
+                        <option value="montre-connectee">Montres connectées</option>
+                        <option value="camera">Caméras</option>
+                        <option value="casque-audio">Casques audio</option>
+                        <option value="ecran-tv">Écrans & TV</option>
+                        <option value="tablette">Tablettes</option>
+                        <option value="gaming">Gaming</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                    <select id="nv-filter-days" onchange="filterNouveautes()" style="background:var(--bg-elevated);border:1px solid var(--border-color);color:var(--text-primary);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;">
+                        <option value="1">Dernières 24h</option>
+                        <option value="7" selected>7 derniers jours</option>
+                        <option value="30">30 derniers jours</option>
+                        <option value="0">Tout</option>
+                    </select>
+                    <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;color:var(--text-secondary);">
+                        <input type="checkbox" id="nv-filter-prevu" onchange="filterNouveautes()" style="accent-color:var(--accent);">
+                        Prévus / Annoncés uniquement
+                    </label>
+                    <span style="margin-left:auto;color:var(--text-muted);font-size:0.85rem;" id="nv-result-count"></span>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="content-card">
+                <div class="content-card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:60px;">Image</th>
+                                <th>Titre</th>
+                                <th>Source</th>
+                                <th>Catégorie</th>
+                                <th>Date</th>
+                                <th style="width:80px;">Lien</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-nouveautes">
+                            <tr><td colspan="6" style="text-align:center;padding:2rem;"><div class="loading-spinner" style="margin:0 auto;"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
     </main>
+</div>
+
+<!-- Modal Prix -->
+<div class="modal-overlay" id="price-modal-overlay" onclick="closePriceModal()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center;">
+    <div onclick="event.stopPropagation()" style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-lg); padding:2rem; width:420px; max-width:95vw;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+            <h3 style="margin:0;">💰 Mettre à jour le prix</h3>
+            <button onclick="closePriceModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.5rem; cursor:pointer;">&times;</button>
+        </div>
+        <p id="price-modal-product-name" style="color:var(--text-secondary); margin-bottom:1rem;"></p>
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; margin-bottom:0.5rem; font-size:0.85rem; color:var(--text-muted);">Prix actuel</label>
+            <div id="price-modal-current" style="color:var(--tech-blue); font-weight:600;"></div>
+        </div>
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; margin-bottom:0.5rem; font-size:0.85rem; color:var(--text-muted);">Nouveau prix (€)</label>
+            <input type="number" id="price-modal-input" step="0.01" min="0" placeholder="ex: 1299.99" style="width:100%; padding:0.75rem; background:var(--bg-card); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:var(--text-primary); font-size:1rem;">
+        </div>
+        <div style="margin-bottom:1.5rem;">
+            <label style="display:block; margin-bottom:0.5rem; font-size:0.85rem; color:var(--text-muted);">Source</label>
+            <select id="price-modal-source" style="width:100%; padding:0.75rem; background:var(--bg-card); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:var(--text-primary);">
+                <option value="Amazon FR">Amazon FR</option>
+                <option value="Fnac">Fnac</option>
+                <option value="Cdiscount">Cdiscount</option>
+                <option value="Darty">Darty</option>
+                <option value="Boulanger">Boulanger</option>
+                <option value="Manuel">Autre / Manuel</option>
+            </select>
+        </div>
+        <div style="display:flex; gap:1rem;">
+            <button onclick="closePriceModal()" class="btn btn-secondary" style="flex:1;">Annuler</button>
+            <button onclick="submitPriceUpdate()" class="btn btn-primary" style="flex:1;" id="price-modal-submit">💾 Enregistrer</button>
+        </div>
+        <div id="price-modal-msg" style="margin-top:1rem; font-size:0.85rem; min-height:1.2em;"></div>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -2167,6 +2340,7 @@ async function adminLogin() {
             case 'about': loadAbout(); break;
             case 'timeline': loadTimeline(); break;
             case 'guides': loadGuides(); break;
+            case 'nouveautes': loadNouveautes(); break;
             case 'stats': loadFullStats(); break;
             case 'logs': loadActivityLogs(); break;
             case 'prix': loadPrixSection(); break;
@@ -2396,11 +2570,12 @@ async function adminLogin() {
     // Données globales pour recherche/filtre
     let allProduits = [];
     let allArticles = [];
+    let allAnnonces = [];
     let allCategories = [];
 
     async function loadProduits() {
         try {
-            const response = await fetch('/api/produits');
+            const response = await fetch('/api/produits?admin=true');
             const data = await response.json();
             allProduits = extractData(data);
             renderProduits(allProduits);
@@ -2414,14 +2589,15 @@ async function adminLogin() {
     function renderProduits(produits) {
         const tbody = document.getElementById('table-produits');
         if (produits.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Aucun produit trouvé</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state">Aucun produit trouvé</td></tr>';
             return;
         }
 
         const homepageCount = countHomepageProducts();
         const maxHomepageReached = homepageCount >= MAX_HOMEPAGE_PRODUCTS;
 
-        tbody.innerHTML = produits.slice(0, 100).map(p => {
+        tbody.innerHTML = produits.map(p => {
+            const isActif = p.actif !== false;
             const imgSrc = p.image ? `/assets/images/${p.image}` : '';
             const imgHtml = imgSrc
                 ? `<img src="${imgSrc}" class="data-table-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="data-table-img" style="display:none;background:var(--bg-elevated);align-items:center;justify-content:center;">📦</div>`
@@ -2441,9 +2617,9 @@ async function adminLogin() {
             const homeStyle = isOnHomepage ? 'color: #6bff6b;' : (cannotAddHomepage ? 'opacity: 0.3; cursor: not-allowed;' : '');
 
             return `
-                <tr>
+                <tr style="${!isActif ? 'opacity: 0.45;' : ''}">
                     <td>${imgHtml}</td>
-                    <td><strong>${p.nom || p.name || 'Sans nom'}</strong></td>
+                    <td><strong>${p.nom || p.name || 'Sans nom'}</strong>${p.est_prevu ? ' <span class="data-table-badge" style="background:rgba(160,100,255,0.2);color:#b06aff;font-size:10px;">📅 Prévu</span>' : ''}</td>
                     <td><span class="data-table-badge badge-info">${p.categorie || p.category || '-'}</span></td>
                     <td>${p.prix || '-'}</td>
                     <td>
@@ -2453,7 +2629,11 @@ async function adminLogin() {
                         <button class="action-btn" title="${homeTitle}" onclick="toggleHomepage('${p.id}', ${!isOnHomepage})" style="${homeStyle}">${homeIcon}</button>
                     </td>
                     <td>
+                        <button class="action-btn" title="${isActif ? 'Désactiver (masquer du site)' : 'Activer (afficher sur le site)'}" onclick="toggleActifProduit('${p.id}', ${!isActif})" style="${isActif ? 'color: #6bff6b;' : 'color: var(--tech-red);'}">${isActif ? '✅' : '⏸️'}</button>
+                    </td>
+                    <td>
                         <button class="action-btn edit" title="Modifier" onclick="editProduit('${p.id}')">✏️</button>
+                        <button class="action-btn" title="Mettre à jour le prix" onclick="openPriceModal('${p.id}', '${(p.nom || '').replace(/'/g, "\\'")}', '${(p.prix || '').replace(/'/g, "\\'")}')">💰</button>
                         <button class="action-btn" title="Voir la fiche" onclick="window.open('/2026/fiche.html?produit=${encodeURIComponent(p.nom || '')}', '_blank')">👁️</button>
                         <button class="action-btn delete" title="Supprimer" onclick="deleteProduit('${p.id}', '${(p.nom || '').replace(/'/g, "\\'")}')">🗑️</button>
                     </td>
@@ -2481,7 +2661,7 @@ async function adminLogin() {
                 // Mettre à jour localement
                 const product = allProduits.find(p => p.id == id);
                 if (product) product.top_du_mois = featured;
-                renderProduits(allProduits);
+                filterProduits();
                 showNotification(data.message, 'success');
             } else {
                 showNotification('Erreur: ' + data.error, 'error');
@@ -2514,7 +2694,7 @@ async function adminLogin() {
                 // Mettre à jour localement
                 const product = allProduits.find(p => p.id == id);
                 if (product) product.affiche_accueil = display;
-                renderProduits(allProduits);
+                filterProduits();
                 updateHomepageCounter();
                 showNotification(data.message, 'success');
             } else {
@@ -2522,6 +2702,52 @@ async function adminLogin() {
             }
         } catch (error) {
             console.error('Erreur toggle homepage:', error);
+            showNotification('Erreur de connexion', 'error');
+        }
+    }
+
+    // Toggle actif/inactif pour un produit
+    async function toggleActifProduit(id, actif) {
+        try {
+            const response = await fetch(`/api/produits/${id}/toggle-actif`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ actif })
+            });
+            const data = await response.json();
+            if (data.success) {
+                const product = allProduits.find(p => p.id == id);
+                if (product) product.actif = actif;
+                filterProduits();
+                showNotification(data.message, actif ? 'success' : 'info');
+            } else {
+                showNotification('Erreur: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur toggle actif produit:', error);
+            showNotification('Erreur de connexion', 'error');
+        }
+    }
+
+    // Toggle actif/inactif pour un article
+    async function toggleActifArticle(id, actif) {
+        try {
+            const response = await fetch(`/api/actualites/${id}/toggle-actif`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ actif })
+            });
+            const data = await response.json();
+            if (data.success) {
+                const article = allArticles.find(a => a.id == id);
+                if (article) article.actif = actif;
+                filterArticles();
+                showNotification(data.message, actif ? 'success' : 'info');
+            } else {
+                showNotification('Erreur: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Erreur toggle actif article:', error);
             showNotification('Erreur de connexion', 'error');
         }
     }
@@ -2598,11 +2824,11 @@ async function adminLogin() {
 
     async function loadArticles() {
         try {
-            const response = await fetch('/api/actualites');
+            const response = await fetch('/api/actualites?admin=true');
             const data = await response.json();
             allArticles = extractData(data);
-            renderArticles(allArticles);
             populateFilters();
+            filterArticles();
         } catch (error) {
             console.error('Erreur chargement articles:', error);
         }
@@ -2635,6 +2861,7 @@ async function adminLogin() {
         const sorted = [...articles].sort((a, b) => (a.ordre || 999) - (b.ordre || 999));
 
         tbody.innerHTML = sorted.slice(0, 100).map((a, index) => {
+            const isActif = a.actif !== false;
             const imgSrc = a.image ? `/assets/images/${a.image}` : '';
             const hasVideo = a.video_url || a.video;
             const imgHtml = imgSrc
@@ -2655,13 +2882,15 @@ async function adminLogin() {
                 : '';
 
             return `
-                <tr data-id="${a.id}">
+                <tr data-id="${a.id}" style="${!isActif ? 'opacity: 0.45;' : ''}">
                     ${orderCell}
                     <td>${imgHtml}</td>
                     <td><strong>${a.titre || 'Sans titre'}</strong>${a.hot ? ' <span style="color:var(--tech-red);">🔥</span>' : ''}</td>
                     <td><span class="data-table-badge badge-info">${catFormatted}</span></td>
                     <td>${a.date_publication ? new Date(a.date_publication).toLocaleDateString('fr-FR') : '-'}</td>
-                    <td><span class="data-table-badge badge-success">Publié</span></td>
+                    <td>
+                        <button class="action-btn" title="${isActif ? 'Dépublier (masquer du site)' : 'Publier (afficher sur le site)'}" onclick="toggleActifArticle(${a.id}, ${!isActif})" style="${isActif ? 'color: #6bff6b;' : 'color: var(--tech-red);'}">${isActif ? '✅ Publié' : '⏸️ Masqué'}</button>
+                    </td>
                     <td>
                         <button class="action-btn edit" title="Modifier" onclick="editArticle(${a.id})">✏️</button>
                         <button class="action-btn" title="Voir" onclick="window.open('/2026/article.html?id=${a.id}', '_blank')">👁️</button>
@@ -2696,13 +2925,19 @@ async function adminLogin() {
     function filterProduits() {
         const search = document.getElementById('search-produits')?.value.toLowerCase() || '';
         const categorie = document.getElementById('filter-categorie-produits')?.value.toLowerCase() || '';
+        const vedette = document.getElementById('filter-vedette-produits')?.value || '';
+        const accueil = document.getElementById('filter-accueil-produits')?.value || '';
+        const actif = document.getElementById('filter-actif-produits')?.value || '';
 
         const filtered = allProduits.filter(p => {
             const nom = (p.nom || p.name || '').toLowerCase();
             const cat = (p.categorie || p.category || '').toLowerCase();
             const matchSearch = !search || nom.includes(search);
             const matchCat = !categorie || cat.includes(categorie);
-            return matchSearch && matchCat;
+            const matchVedette = !vedette || (vedette === '1' ? p.top_du_mois : !p.top_du_mois);
+            const matchAccueil = !accueil || (accueil === '1' ? p.affiche_accueil : !p.affiche_accueil);
+            const matchActif = !actif || (actif === '1' ? p.actif !== false : p.actif === false);
+            return matchSearch && matchCat && matchVedette && matchAccueil && matchActif;
         });
 
         renderProduits(filtered);
@@ -2711,13 +2946,17 @@ async function adminLogin() {
     function filterArticles() {
         const search = document.getElementById('search-articles')?.value.toLowerCase() || '';
         const categorie = document.getElementById('filter-categorie-articles')?.value || '';
+        const statut = document.getElementById('filter-statut-articles')?.value || '';
+        const hot = document.getElementById('filter-hot-articles')?.value || '';
 
         const filtered = allArticles.filter(a => {
             const titre = (a.titre || '').toLowerCase();
             const catFormatted = formatCategorie(a.categorie);
             const matchSearch = !search || titre.includes(search);
             const matchCat = !categorie || catFormatted === categorie;
-            return matchSearch && matchCat;
+            const matchStatut = !statut || (statut === '1' ? a.actif !== false : a.actif === false);
+            const matchHot = !hot || (hot === '1' ? a.hot : !a.hot);
+            return matchSearch && matchCat && matchStatut && matchHot;
         });
 
         renderArticles(filtered);
@@ -2782,50 +3021,141 @@ async function adminLogin() {
 
     // Event listeners initialisés dans DOMContentLoaded
 
+    // Recherche live article/produit pour le champ lien d'une annonce
+    function searchLienItems(q) {
+        const resultsDiv = document.getElementById('lien-search-results');
+        if (!resultsDiv) return;
+        if (!q || q.trim().length < 2) { resultsDiv.style.display = 'none'; return; }
+
+        const ql = q.toLowerCase();
+        const articles = allArticles.filter(a => a.titre && a.titre.toLowerCase().includes(ql)).slice(0, 6);
+        const produits = allProduits.filter(p => p.nom && p.nom.toLowerCase().includes(ql)).slice(0, 6);
+
+        let html = '';
+        if (articles.length > 0) {
+            html += `<div style="padding:4px 12px;font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;background:var(--bg-elevated);">Articles</div>`;
+            articles.forEach(a => {
+                const url = `/2026/article.html?id=${a.id}`;
+                html += `<div onclick="selectLienItem('${url}','${(a.titre||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}')"
+                    style="padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:.875rem;"
+                    onmouseover="this.style.background='var(--bg-elevated)'" onmouseout="this.style.background=''">
+                    <span style="opacity:.6;">📰</span> <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${a.titre}</span>
+                    <span style="font-size:.72rem;color:var(--text-muted);flex-shrink:0;">id:${a.id}</span>
+                </div>`;
+            });
+        }
+        if (produits.length > 0) {
+            html += `<div style="padding:4px 12px;font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;background:var(--bg-elevated);border-top:1px solid var(--border-color);">Produits</div>`;
+            produits.forEach(p => {
+                const url = `/2026/fiche.html?produit=${encodeURIComponent(p.nom||'')}`;
+                html += `<div onclick="selectLienItem('${url}','${(p.nom||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}')"
+                    style="padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:.875rem;"
+                    onmouseover="this.style.background='var(--bg-elevated)'" onmouseout="this.style.background=''">
+                    <span style="opacity:.6;">📦</span> <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nom}</span>
+                    <span style="font-size:.72rem;color:var(--text-muted);flex-shrink:0;">${p.categorie||''}</span>
+                </div>`;
+            });
+        }
+        if (!html) html = `<div style="padding:10px 14px;color:var(--text-muted);font-size:.875rem;">Aucun résultat</div>`;
+
+        resultsDiv.innerHTML = html;
+        resultsDiv.style.display = 'block';
+    }
+
+    function selectLienItem(url, name) {
+        const lienInput = document.getElementById('form-annonce-lien');
+        const searchInput = document.getElementById('lien-search');
+        const resultsDiv = document.getElementById('lien-search-results');
+        if (lienInput) lienInput.value = url;
+        if (searchInput) searchInput.value = name;
+        if (resultsDiv) resultsDiv.style.display = 'none';
+    }
+
+    // Fermer le dropdown lien si clic ailleurs
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#lien-search') && !e.target.closest('#lien-search-results')) {
+            const r = document.getElementById('lien-search-results');
+            if (r) r.style.display = 'none';
+        }
+    });
+
     async function loadAnnonces() {
         try {
             const response = await fetch('/api/announcements/admin/all');
             const data = await response.json();
-            const annonces = data.announcements || [];
-
-            const tbody = document.getElementById('table-annonces');
-            if (annonces.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Aucune annonce</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = annonces.map((a, index) => {
-                const iconDisplay = convertIconToEmoji(a.icone) || a.icone || '📢';
-                return `
-                <tr data-id="${a.id}" data-ordre="${a.ordre || index}" class="draggable-row" draggable="true">
-                    <td><input type="checkbox" class="annonce-checkbox" data-id="${a.id}" onchange="updateBulkSelection()"></td>
-                    <td><span class="drag-handle" title="Glisser pour réordonner">⠿</span></td>
-                    <td style="font-size: 1.5rem;">${iconDisplay}</td>
-                    <td><strong>${a.titre}</strong><br><small style="color: var(--text-muted);">${a.description || ''}</small></td>
-                    <td><span class="data-table-badge badge-${a.type === 'urgent' ? 'danger' : a.type === 'promo' ? 'warning' : 'info'}">${a.type || 'info'}</span></td>
-                    <td>
-                        <label class="toggle-switch" title="Activer/Désactiver">
-                            <input type="checkbox" ${a.actif !== false ? 'checked' : ''} onchange="toggleAnnonceActive(${a.id}, this.checked)">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </td>
-                    <td>
-                        <button class="action-btn edit" title="Modifier" onclick="editAnnonce(${a.id})">✏️</button>
-                        <button class="action-btn" title="Dupliquer" onclick="duplicateAnnonce(${a.id})">📋</button>
-                        <button class="action-btn delete" title="Supprimer" onclick="deleteAnnonce(${a.id}, '${(a.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
-                    </td>
-                </tr>
-            `}).join('');
-
-            // Initialiser le drag & drop
-            initAnnoncesDragDrop();
-
-            // Reset selection
-            document.getElementById('select-all-annonces').checked = false;
-            updateBulkSelection();
+            allAnnonces = data.announcements || [];
+            filterAnnonces();
         } catch (error) {
             console.error('Erreur chargement annonces:', error);
         }
+    }
+
+    function filterAnnonces() {
+        const search = document.getElementById('search-annonces')?.value.toLowerCase() || '';
+        const type = document.getElementById('filter-type-annonces')?.value || '';
+        const actif = document.getElementById('filter-actif-annonces')?.value || '';
+
+        const filtered = allAnnonces.filter(a => {
+            const titre = (a.titre || '').toLowerCase();
+            const matchSearch = !search || titre.includes(search) || (a.description || '').toLowerCase().includes(search);
+            const matchType = !type || a.type === type;
+            const matchActif = !actif || (actif === '1' ? a.actif !== false : a.actif === false);
+            return matchSearch && matchType && matchActif;
+        });
+
+        renderAnnonces(filtered);
+    }
+
+    function renderAnnonces(annonces) {
+        const tbody = document.getElementById('table-annonces');
+        if (annonces.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Aucune annonce</td></tr>';
+            // Reset drag & drop et selection
+            document.getElementById('select-all-annonces').checked = false;
+            updateBulkSelection();
+            return;
+        }
+
+        const now = new Date();
+        tbody.innerHTML = annonces.map((a, index) => {
+            const iconDisplay = convertIconToEmoji(a.icone) || a.icone || '📢';
+            const isExpired = a.date_fin && new Date(a.date_fin) < now;
+            const notStarted = a.date_debut && new Date(a.date_debut) > now;
+            const isVisible = a.actif !== false && !isExpired && !notStarted;
+            const statusBadge = isExpired
+                ? '<span class="data-table-badge badge-danger" title="Date de fin dépassée">⏰ Expirée</span>'
+                : notStarted
+                    ? '<span class="data-table-badge badge-warning" title="Pas encore démarrée">🕐 En attente</span>'
+                    : isVisible
+                        ? '<span class="data-table-badge badge-success">✅ En ligne</span>'
+                        : '<span class="data-table-badge badge-secondary">⏸ Inactive</span>';
+            return `
+        <tr data-id="${a.id}" data-ordre="${a.ordre || index}" class="draggable-row${isExpired ? ' row-expired' : ''}" draggable="true">
+            <td><input type="checkbox" class="annonce-checkbox" data-id="${a.id}" onchange="updateBulkSelection()"></td>
+            <td><span class="drag-handle" title="Glisser pour réordonner">⠿</span></td>
+            <td style="font-size: 1.5rem;">${iconDisplay}</td>
+            <td><strong>${a.titre}</strong><br><small style="color: var(--text-muted);">${a.description || ''}</small></td>
+            <td>
+                <span class="data-table-badge badge-${a.type === 'urgent' ? 'danger' : a.type === 'promo' ? 'warning' : 'info'}">${a.type || 'info'}</span>
+                ${statusBadge}
+            </td>
+            <td>
+                <label class="toggle-switch" title="Activer/Désactiver">
+                    <input type="checkbox" ${a.actif !== false ? 'checked' : ''} onchange="toggleAnnonceActive(${a.id}, this.checked)">
+                    <span class="toggle-slider"></span>
+                </label>
+            </td>
+            <td>
+                <button class="action-btn edit" title="Modifier" onclick="editAnnonce(${a.id})">✏️</button>
+                <button class="action-btn" title="Dupliquer" onclick="duplicateAnnonce(${a.id})">📋</button>
+                <button class="action-btn delete" title="Supprimer" onclick="deleteAnnonce(${a.id}, '${(a.titre || '').replace(/'/g, "\\'")}')">🗑️</button>
+            </td>
+        </tr>
+    `}).join('');
+
+        initAnnoncesDragDrop();
+        document.getElementById('select-all-annonces').checked = false;
+        updateBulkSelection();
     }
 
     async function loadCategories() {
@@ -3358,6 +3688,13 @@ async function adminLogin() {
                         <option value="true">Oui ⭐</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label class="form-label">Badge prévu</label>
+                    <select class="form-select" id="form-produit-est-prevu">
+                        <option value="false">Non — produit disponible</option>
+                        <option value="true">Oui 📅 — prévu / annoncé</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label">Description courte</label>
@@ -3757,6 +4094,7 @@ async function adminLogin() {
             document.getElementById('form-produit-image').value = produit.image || '';
             document.getElementById('form-produit-description').value = produit.description || '';
             document.getElementById('form-produit-top').value = produit.top_du_mois ? 'true' : 'false';
+            document.getElementById('form-produit-est-prevu').value = produit.est_prevu ? 'true' : 'false';
             document.getElementById('form-produit-titre-affiche').value = produit.titre_affiche || '';
 
             // Fonctionnalités avancées (array -> texte)
@@ -3806,6 +4144,7 @@ async function adminLogin() {
             image: document.getElementById('form-produit-image').value,
             description: document.getElementById('form-produit-description').value,
             top_du_mois: document.getElementById('form-produit-top').value === 'true',
+            est_prevu: document.getElementById('form-produit-est-prevu').value === 'true',
             titre_affiche: titreAffiche,
             fonctionnalites_avancees: fonctionnalites,
             donnees_fiche: collectCategoryData()
@@ -4104,6 +4443,43 @@ async function adminLogin() {
     // ========================================
     let articleSections = [];
 
+    const SECTION_ICONS = [
+        { value: '', label: '— Pas d\'icône' },
+        { value: '📝', label: '📝 Note' },
+        { value: '💡', label: '💡 Conseil' },
+        { value: '⚙️', label: '⚙️ Configuration' },
+        { value: '📊', label: '📊 Analyse' },
+        { value: '🔍', label: '🔍 Détails' },
+        { value: '✅', label: '✅ Avantages' },
+        { value: '❌', label: '❌ Inconvénients' },
+        { value: '⚠️', label: '⚠️ Attention' },
+        { value: '🚀', label: '🚀 Performances' },
+        { value: '🎯', label: '🎯 Points clés' },
+        { value: '📖', label: '📖 Description' },
+        { value: '🏆', label: '🏆 Verdict' },
+        { value: '💰', label: '💰 Prix / Rapport qualité' },
+        { value: '🔧', label: '🔧 Technique' },
+        { value: '🎮', label: '🎮 Gaming' },
+        { value: '📱', label: '📱 Usage mobile' },
+        { value: '🖥️', label: '🖥️ Écran / Interface' },
+        { value: '🔋', label: '🔋 Autonomie' },
+        { value: '📷', label: '📷 Photo / Vidéo' },
+        { value: '🔊', label: '🔊 Audio' },
+        { value: '🌐', label: '🌐 Connectivité' },
+        { value: '📦', label: '📦 Contenu boîte' },
+        { value: '🆚', label: '🆚 Comparaison' },
+        { value: '❓', label: '❓ FAQ' },
+    ];
+
+    function detectSectionIcon(titre) {
+        if (!titre) return '';
+        for (const icon of SECTION_ICONS) {
+            if (!icon.value) continue;
+            if (titre.startsWith(icon.value + ' ') || titre === icon.value) return icon.value;
+        }
+        return '';
+    }
+
     function renderSections(sections) {
         articleSections = sections;
         const container = document.getElementById('sections-list');
@@ -4114,7 +4490,19 @@ async function adminLogin() {
             return;
         }
 
-        container.innerHTML = sections.map((s, index) => `
+        const iconOptions = SECTION_ICONS.map(i =>
+            `<option value="${i.value}">${i.label}</option>`
+        ).join('');
+
+        container.innerHTML = sections.map((s, index) => {
+            const currentIcon = detectSectionIcon(s.titre || '');
+            const titreWithoutIcon = currentIcon
+                ? (s.titre || '').replace(currentIcon + ' ', '').replace(currentIcon, '').trim()
+                : (s.titre || '');
+            const optionsHtml = SECTION_ICONS.map(i =>
+                `<option value="${i.value}" ${i.value === currentIcon ? 'selected' : ''}>${i.label}</option>`
+            ).join('');
+            return `
             <div class="section-item" data-id="${s.id}" style="background: var(--bg-elevated); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.75rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                     <span style="color: var(--tech-green); font-weight: 500;">#${index + 1} - Section</span>
@@ -4124,14 +4512,19 @@ async function adminLogin() {
                         <button type="button" class="action-btn delete" onclick="deleteSection('${s.id}')" title="Supprimer">🗑️</button>
                     </div>
                 </div>
-                <input type="text" class="form-input" value="${(s.titre || '').replace(/"/g, '&quot;')}"
-                       onchange="updateSectionTitle('${s.id}', this.value)"
-                       placeholder="Titre de la section" style="margin-bottom: 0.5rem;">
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <select class="form-select" style="width: auto; flex-shrink: 0;"
+                            onchange="updateSectionIcon('${s.id}', this.value, this.closest('.section-item').querySelector('input'))"
+                            title="Icône du titre">${optionsHtml}</select>
+                    <input type="text" class="form-input" value="${titreWithoutIcon.replace(/"/g, '&quot;')}"
+                           onchange="updateSectionTitle('${s.id}', this.value, this.previousElementSibling.value)"
+                           placeholder="Titre de la section" style="flex: 1;">
+                </div>
                 <textarea class="form-textarea" rows="4"
                           onchange="updateSectionContent('${s.id}', this.value)"
                           placeholder="Contenu de la section...">${s.contenu || ''}</textarea>
             </div>
-        `).join('');
+        `}).join('');
     }
 
     function addSection() {
@@ -4152,9 +4545,18 @@ async function adminLogin() {
         showNotification('Section ajoutée', 'success');
     }
 
-    function updateSectionTitle(id, value) {
+    function updateSectionTitle(id, textValue, iconValue) {
         const section = articleSections.find(s => String(s.id) === String(id));
-        if (section) section.titre = value;
+        if (section) section.titre = iconValue ? iconValue + ' ' + textValue : textValue;
+    }
+
+    function updateSectionIcon(id, iconValue, inputEl) {
+        const section = articleSections.find(s => String(s.id) === String(id));
+        if (!section) return;
+        const textValue = inputEl ? inputEl.value : detectSectionIcon(section.titre)
+            ? section.titre.replace(detectSectionIcon(section.titre) + ' ', '').replace(detectSectionIcon(section.titre), '').trim()
+            : (section.titre || '');
+        section.titre = iconValue ? iconValue + ' ' + textValue : textValue;
     }
 
     function updateSectionContent(id, value) {
@@ -4179,7 +4581,7 @@ async function adminLogin() {
     }
 
     async function deleteSection(id) {
-        const isNew = String(id).startsWith('new_');
+        const isNew = isNaN(Number(String(id)));
 
         if (!isNew) {
             // Supprimer en base
@@ -4207,7 +4609,7 @@ async function adminLogin() {
     async function saveSections(articleId) {
         // Sauvegarder toutes les sections
         for (const section of articleSections) {
-            const isNew = String(section.id).startsWith('new_');
+            const isNew = isNaN(Number(String(section.id)));
             const data = {
                 actualite_id: articleId,
                 titre: section.titre || 'Section',
@@ -4279,6 +4681,10 @@ async function adminLogin() {
                 <div class="form-group">
                     <label class="form-label">Lien</label>
                     <input type="text" class="form-input" id="form-annonce-lien" placeholder="/2026/article.html?id=...">
+                    <div style="position:relative; margin-top:6px;">
+                        <input type="text" class="form-input" id="lien-search" placeholder="🔍 Chercher un article ou un produit..." autocomplete="off" oninput="searchLienItems(this.value)" style="font-size:0.85rem;">
+                        <div id="lien-search-results" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;max-height:220px;overflow-y:auto;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.4);"></div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Texte du bouton</label>
@@ -4503,6 +4909,9 @@ async function adminLogin() {
             document.getElementById('form-annonce-type').value = annonce.type || 'info';
             document.getElementById('form-annonce-actif').value = annonce.actif ? 'true' : 'false';
             document.getElementById('form-annonce-lien').value = annonce.lien || '';
+            // Pré-remplir la recherche lien avec le lien actuel pour affichage
+            const searchInput = document.getElementById('lien-search');
+            if (searchInput) searchInput.value = '';
             document.getElementById('form-annonce-bouton').value = annonce.bouton_texte || 'En savoir plus →';
             document.getElementById('form-annonce-ordre').value = annonce.ordre || 0;
 
@@ -4545,18 +4954,19 @@ async function adminLogin() {
         }
     }
 
-    // Toggle rapide actif/inactif
+    // Toggle rapide actif/inactif (PATCH dédié, ne touche pas aux dates)
     async function toggleAnnonceActive(id, actif) {
         try {
-            const response = await fetch(`/api/announcements/${id}`, {
-                method: 'PUT',
+            const response = await fetch(`/api/announcements/${id}/actif`, {
+                method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ actif })
             });
             const result = await response.json();
 
             if (result.success || result.announcement) {
-                showNotification(actif ? 'Annonce activée' : 'Annonce désactivée', 'success');
+                showNotification(actif ? 'Annonce activée' : 'Annonce désactivée', actif ? 'success' : 'info');
+                loadAnnonces(); // Recharger pour mettre à jour le badge de statut
             } else {
                 showNotification('Erreur: ' + (result.error || 'Erreur inconnue'), 'error');
                 loadAnnonces(); // Recharger pour rétablir l'état
@@ -6107,6 +6517,17 @@ async function adminLogin() {
         document.getElementById('filter-categorie-produits')?.addEventListener('change', filterProduits);
         document.getElementById('search-articles')?.addEventListener('input', filterArticles);
         document.getElementById('filter-categorie-articles')?.addEventListener('change', filterArticles);
+        // Nouveaux filtres produits
+        document.getElementById('filter-vedette-produits')?.addEventListener('change', filterProduits);
+        document.getElementById('filter-accueil-produits')?.addEventListener('change', filterProduits);
+        document.getElementById('filter-actif-produits')?.addEventListener('change', filterProduits);
+        // Nouveaux filtres articles
+        document.getElementById('filter-statut-articles')?.addEventListener('change', filterArticles);
+        document.getElementById('filter-hot-articles')?.addEventListener('change', filterArticles);
+        // Filtres annonces
+        document.getElementById('search-annonces')?.addEventListener('input', filterAnnonces);
+        document.getElementById('filter-type-annonces')?.addEventListener('change', filterAnnonces);
+        document.getElementById('filter-actif-annonces')?.addEventListener('change', filterAnnonces);
 
         // Event listeners - Technologies, Marché, Prédictions
         document.getElementById('search-technologies')?.addEventListener('input', filterTechnologies);
@@ -6603,7 +7024,615 @@ async function adminLogin() {
             showNotification('Erreur lors de la suppression', 'error');
         }
     }
+
+    // ========================================
+    // GESTION PRIX
+    // ========================================
+    let _priceModalId = null;
+
+    function openPriceModal(produitId, nom, prixActuel) {
+        _priceModalId = produitId;
+        document.getElementById('price-modal-product-name').textContent = nom;
+        document.getElementById('price-modal-current').textContent = prixActuel || 'Non défini';
+        document.getElementById('price-modal-input').value = '';
+        document.getElementById('price-modal-msg').textContent = '';
+        const overlay = document.getElementById('price-modal-overlay');
+        overlay.style.display = 'flex';
+        setTimeout(() => document.getElementById('price-modal-input').focus(), 100);
+    }
+
+    function closePriceModal() {
+        document.getElementById('price-modal-overlay').style.display = 'none';
+        _priceModalId = null;
+    }
+
+    async function submitPriceUpdate() {
+        const num = parseFloat(document.getElementById('price-modal-input').value);
+        const source = document.getElementById('price-modal-source').value;
+        const msg = document.getElementById('price-modal-msg');
+
+        if (!num || num <= 0) {
+            msg.style.color = 'var(--tech-red)';
+            msg.textContent = 'Entrez un prix valide.';
+            return;
+        }
+
+        const btn = document.getElementById('price-modal-submit');
+        btn.disabled = true;
+        btn.textContent = 'Enregistrement...';
+
+        try {
+            const resp = await fetch('/api/price-scraper/update-one', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ produit_id: _priceModalId, prix_numerique: num, source })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                msg.style.color = 'var(--tech-green)';
+                msg.textContent = `✅ ${data.ancien_prix} → ${data.nouveau_prix}`;
+                showNotification(`Prix mis à jour : ${data.nouveau_prix}`, 'success');
+                setTimeout(() => { closePriceModal(); loadProduits(); }, 1500);
+            } else {
+                msg.style.color = 'var(--tech-red)';
+                msg.textContent = 'Erreur : ' + data.error;
+            }
+        } catch (e) {
+            msg.style.color = 'var(--tech-red)';
+            msg.textContent = 'Erreur réseau.';
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '💾 Enregistrer';
+        }
+    }
+
+    async function scrapeAllPrices() {
+        const btn = document.getElementById('btn-scrape-all');
+
+        // Vérifier si l'API est configurée
+        const statusResp = await fetch('/api/price-scraper/status');
+        const status = await statusResp.json();
+        if (!status.api_configuree) {
+            showNotification('❌ RAPIDAPI_KEY non configurée dans .env — seule la mise à jour manuelle (💰) est disponible.', 'error');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '⏳ Scraping... (~5 min)';
+
+        try {
+            const resp = await fetch('/api/price-scraper/scrape-all', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ limit: 50 })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                // Construire un rapport détaillé
+                let rapport = `🤖 Scraping terminé\n\n`;
+                if (data.details.success.length > 0) {
+                    rapport += `✅ Mis à jour (${data.details.success.length}) :\n`;
+                    data.details.success.forEach(p => rapport += `  • ${p.nom} → ${p.prix}\n`);
+                    rapport += '\n';
+                }
+                if (data.details.suspicious && data.details.suspicious.length > 0) {
+                    rapport += `⚠️ Prix suspects ignorés (${data.details.suspicious.length}) :\n`;
+                    data.details.suspicious.forEach(p => rapport += `  • ${p.nom} : ${p.ancien}€ → ${p.nouveau}€\n`);
+                    rapport += '\n';
+                }
+                if (data.details.failed.length > 0) {
+                    rapport += `❌ Échecs (${data.details.failed.length}) : ${data.details.failed.join(', ')}\n`;
+                }
+                rapport += `⏭ Déjà à jour aujourd'hui : ${data.deja_a_jour}`;
+
+                // Afficher dans une modale simple
+                const overlay = document.createElement('div');
+                overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
+                overlay.innerHTML = `<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:2rem;max-width:500px;width:90%;white-space:pre-wrap;font-family:monospace;font-size:0.85rem;line-height:1.6;max-height:80vh;overflow-y:auto;">
+                    ${rapport}
+                    <br><br><button onclick="this.closest('div').parentElement.remove()" style="background:var(--tech-blue);color:#000;border:none;padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:bold;">Fermer</button>
+                </div>`;
+                document.body.appendChild(overlay);
+                loadProduits();
+            } else {
+                showNotification('Erreur scraper : ' + data.error, 'error');
+            }
+        } catch (e) {
+            showNotification('Erreur réseau lors du scraping.', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '🤖 Scraper les prix';
+        }
+    }
+
+    // ========== NOUVEAUTÉS WEB ==========
+    let nvAllItems = [];
+
+    async function loadNouveautes() {
+        const tbody = document.getElementById('table-nouveautes');
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;"><div class="loading-spinner" style="margin:0 auto;"></div></td></tr>';
+
+        try {
+            const params = new URLSearchParams({ limit: 200 });
+            const days = document.getElementById('nv-filter-days')?.value;
+            if (days && days !== '0') params.set('days', days);
+
+            const res = await fetch(`/api/nouveautes?${params}`);
+            const data = await res.json();
+
+            if (!data.success) throw new Error(data.error);
+
+            nvAllItems = data.items || [];
+            document.getElementById('nv-stat-total').textContent = nvAllItems.length;
+            document.getElementById('nv-stat-prevu').textContent = nvAllItems.filter(i => i.est_prevu).length;
+            document.getElementById('nv-stat-cache').textContent = data.cached ? '🟢 Actif' : '🔴 Expiré';
+            document.getElementById('count-nouveautes').textContent = nvAllItems.length;
+
+            filterNouveautes();
+        } catch (err) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--danger);">⚠️ Erreur : ${err.message}</td></tr>`;
+        }
+    }
+
+    function filterNouveautes() {
+        const cat = document.getElementById('nv-filter-cat')?.value || 'tout';
+        const prevuOnly = document.getElementById('nv-filter-prevu')?.checked || false;
+
+        let filtered = nvAllItems;
+        if (cat !== 'tout') filtered = filtered.filter(i => i.categorie === cat);
+        if (prevuOnly) filtered = filtered.filter(i => i.est_prevu);
+
+        document.getElementById('nv-result-count').textContent = `${filtered.length} résultat${filtered.length !== 1 ? 's' : ''}`;
+        renderNouveautes(filtered);
+    }
+
+    function renderNouveautes(items) {
+        const tbody = document.getElementById('table-nouveautes');
+        if (!items.length) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted);">Aucun article trouvé pour ces filtres.</td></tr>';
+            return;
+        }
+
+        const catColors = { smartphone:'badge-info', console:'badge-success', 'pc-gaming':'badge-warning', 'casque-vr':'badge-primary', drone:'badge-secondary', autre:'badge-secondary' };
+
+        tbody.innerHTML = items.slice(0, 100).map(item => {
+            const date = new Date(item.date);
+            const now = new Date();
+            const diffH = Math.floor((now - date) / 3600000);
+            const dateStr = diffH < 1 ? 'À l\'instant' : diffH < 24 ? `Il y a ${diffH}h` : diffH < 48 ? 'Hier' : date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+            const catLabel = item.categorie.replace(/-/g, ' ');
+            const catClass = catColors[item.categorie] || 'badge-secondary';
+            const prevuBadge = item.est_prevu ? '<span class="data-table-badge" style="background:rgba(167,139,250,0.2);color:#a78bfa;margin-left:4px;">📅 Prévu</span>' : '';
+            const img = item.image ? `<img src="${item.image}" style="width:50px;height:38px;object-fit:cover;border-radius:4px;" onerror="this.style.display='none'">` : '<div style="width:50px;height:38px;background:var(--bg-elevated);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">📰</div>';
+
+            return `<tr>
+                <td>${img}</td>
+                <td style="max-width:350px;">
+                    <div style="font-weight:500;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${item.titre}</div>
+                    ${prevuBadge}
+                </td>
+                <td><span style="color:var(--text-muted);font-size:0.85rem;">${item.source}</span></td>
+                <td><span class="data-table-badge ${catClass}">${catLabel}</span></td>
+                <td style="white-space:nowrap;color:var(--text-muted);font-size:0.85rem;">${dateStr}</td>
+                <td style="white-space:nowrap;"><a href="${item.lien}" target="_blank" style="color:var(--accent);text-decoration:none;font-size:0.85rem;">Ouvrir ↗</a> <button onclick='openImportModal(${JSON.stringify(item).replace(/'/g, "&apos;")})' class="btn btn-primary" style="padding:0.2rem 0.5rem;font-size:0.75rem;margin-left:4px;">+ Importer</button></td>
+            </tr>`;
+        }).join('');
+    }
+
+    async function refreshNouveautes() {
+        const btn = document.getElementById('btn-refresh-nouveautes');
+        btn.disabled = true;
+        btn.textContent = '⏳ Actualisation...';
+        try {
+            await fetch('/api/nouveautes/refresh', { method: 'POST' });
+            await loadNouveautes();
+            showNotification('Flux RSS rafraîchis avec succès.', 'success');
+        } catch (err) {
+            showNotification('Erreur lors du rafraîchissement.', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '🔄 Rafraîchir';
+        }
+    }
+
+
+    // ========== IMPORT RSS =====
+    let importCurrentItem = null;
+    let importCurrentType = 'produit';
+
+    function openImportModal(item) {
+        importCurrentItem = item;
+        importCurrentType = 'produit';
+
+        // Infos source
+        document.getElementById('import-source-name').textContent = item.source;
+        const langBadge = document.getElementById('import-lang-badge');
+        if (item.lang === 'en') {
+            langBadge.textContent = 'EN';
+            langBadge.style.cssText = 'background:rgba(77,212,255,0.2);color:#4dd4ff;padding:0.2rem 0.6rem;border-radius:12px;font-weight:600;font-size:0.75rem;';
+            document.getElementById('import-translate-wrap').style.display = 'block';
+        } else {
+            langBadge.textContent = 'FR';
+            langBadge.style.cssText = 'background:rgba(107,196,107,0.2);color:#6bc46b;padding:0.2rem 0.6rem;border-radius:12px;font-weight:600;font-size:0.75rem;';
+            document.getElementById('import-translate-wrap').style.display = 'none';
+        }
+        document.getElementById('import-source-link').href = item.lien;
+
+        // Champs pré-remplis
+        document.getElementById('import-titre').value = item.titre || '';
+        document.getElementById('import-description').value = item.description || '';
+        const catMap = { 'peripherique': 'peripheriques' };
+        const catVal = catMap[item.categorie] || item.categorie;
+        document.getElementById('import-categorie').value = catVal !== 'autre' ? catVal : '';
+        const imgUrl = item.image || '';
+        document.getElementById('import-image').value = imgUrl;
+        if (imgUrl) {
+            document.getElementById('import-img-tag').src = imgUrl;
+            document.getElementById('import-img-preview').style.display = 'block';
+        } else {
+            document.getElementById('import-img-preview').style.display = 'none';
+        }
+
+        // Produit prévu par défaut si détecté
+        document.getElementById('import-est-prevu').checked = item.est_prevu || false;
+
+        // Date aujourd'hui
+        document.getElementById('import-date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('import-hot').checked = false;
+        document.getElementById('import-tags').value = item.categorie !== 'autre' ? item.categorie : '';
+        document.getElementById('import-prix').value = '';
+
+        setImportType('produit');
+        document.getElementById('import-modal-overlay').classList.add('active');
+    }
+
+    function closeImportModal() {
+        document.getElementById('import-modal-overlay').classList.remove('active');
+        importCurrentItem = null;
+    }
+
+    function setImportType(type) {
+        importCurrentType = type;
+        document.getElementById('import-type-produit').className = type === 'produit' ? 'btn btn-primary' : 'btn btn-secondary';
+        document.getElementById('import-type-article').className = type === 'article' ? 'btn btn-primary' : 'btn btn-secondary';
+        document.getElementById('import-fields-produit').style.display = type === 'produit' ? 'block' : 'none';
+        document.getElementById('import-fields-article').style.display = type === 'article' ? 'block' : 'none';
+    }
+
+    async function translateImportFields() {
+        const btn = document.getElementById('btn-translate');
+        btn.disabled = true;
+        btn.textContent = '⏳ Traduction en cours...';
+
+        const titre = document.getElementById('import-titre').value;
+        const desc = document.getElementById('import-description').value;
+
+        try {
+            const [resTitre, resDesc] = await Promise.all([
+                titre ? fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(titre)}&langpair=en|fr`).then(r => r.json()) : Promise.resolve(null),
+                desc ? fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(desc.substring(0, 500))}&langpair=en|fr`).then(r => r.json()) : Promise.resolve(null)
+            ]);
+
+            if (resTitre?.responseData?.translatedText) {
+                document.getElementById('import-titre').value = resTitre.responseData.translatedText;
+            }
+            if (resDesc?.responseData?.translatedText) {
+                document.getElementById('import-description').value = resDesc.responseData.translatedText;
+            }
+            showNotification('Traduction effectuée.', 'success');
+        } catch (err) {
+            showNotification('Erreur de traduction : ' + err.message, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '🌐 Traduire automatiquement en français (MyMemory)';
+        }
+    }
+
+    async function submitImport() {
+        const titre = document.getElementById('import-titre').value.trim();
+        const description = document.getElementById('import-description').value.trim();
+        const categorie = document.getElementById('import-categorie').value;
+        const image = document.getElementById('import-image').value.trim();
+
+        if (!titre) { showNotification('Le titre est obligatoire.', 'error'); return; }
+
+        const btn = document.getElementById('btn-import-submit');
+        btn.disabled = true;
+        btn.textContent = '⏳ Import...';
+
+        try {
+            if (importCurrentType === 'produit') {
+                // Générer un ID unique
+                const prodsRes = await fetch('/api/produits');
+                const prodsData = await prodsRes.json();
+                const prods = Array.isArray(prodsData) ? prodsData : (prodsData.produits || prodsData.data || []);
+                const maxNum = prods.reduce((max, p) => {
+                    const n = parseInt((p.id || '').replace('prod_', ''));
+                    return isNaN(n) ? max : Math.max(max, n);
+                }, 0);
+                const newId = `prod_${maxNum + 1}`;
+
+                const body = {
+                    id: newId,
+                    nom: titre,
+                    description,
+                    categorie,
+                    image,
+                    prix: document.getElementById('import-prix').value.trim() || null,
+                    est_prevu: document.getElementById('import-est-prevu').checked,
+                    actif: true,
+                    lien: importCurrentItem?.lien || ''
+                };
+
+                const res = await fetch('/api/produits', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || data.message || 'Erreur création produit');
+                showNotification(`✅ Produit "${titre}" importé (${newId})`, 'success');
+
+            } else {
+                const tags = document.getElementById('import-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+                const body = {
+                    titre,
+                    description,
+                    image,
+                    categorie,
+                    date_publication: document.getElementById('import-date').value,
+                    hot: document.getElementById('import-hot').checked,
+                    tags
+                };
+
+                const res = await fetch('/api/tendances', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || data.message || 'Erreur création article');
+                showNotification(`✅ Article "${titre}" importé`, 'success');
+            }
+
+            closeImportModal();
+        } catch (err) {
+            showNotification('Erreur : ' + err.message, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '✅ Importer';
+        }
+    }
+
+    function openFullForm() {
+        const item = importCurrentItem;
+        const type = importCurrentType;
+        if (!item) return;
+
+        // Mapping catégorie RSS → valeur formulaire produit (UPPERCASE)
+        const catProduitMap = {
+            'smartphone': 'SMARTPHONE',
+            'console': 'CONSOLE',
+            'pc-gaming': 'PC GAMING',
+            'casque-vr': 'CASQUE VR',
+            'drone': 'DRONE',
+            'montre-connectee': 'MONTRE CONNECTEE',
+            'camera': 'CAMERA',
+            'casque-audio': 'CASQUE AUDIO',
+            'ecran-tv': 'ECRAN TV',
+            'tablette': 'TABLETTE',
+            'peripherique': 'PERIPHERIQUE',
+            'imprimante-3d': 'IMPRIMANTE 3D',
+            'box-internet': 'BOX INTERNET',
+            'gaming': 'PC GAMING'
+        };
+
+        // Récupérer les valeurs actuelles du modal (possiblement traduites)
+        const titre = document.getElementById('import-titre').value.trim();
+        const description = document.getElementById('import-description').value.trim();
+        const image = document.getElementById('import-image').value.trim();
+        const prix = document.getElementById('import-prix')?.value.trim() || '';
+        const estPrevu = document.getElementById('import-est-prevu')?.checked || false;
+        const tags = document.getElementById('import-tags')?.value.trim() || '';
+        const date = document.getElementById('import-date')?.value || new Date().toISOString().split('T')[0];
+        const hot = document.getElementById('import-hot')?.checked || false;
+        const categorieRSS = document.getElementById('import-categorie')?.value || '';
+
+        closeImportModal();
+
+        openModal(type).then(() => {
+            setTimeout(() => {
+                if (type === 'produit') {
+                    const nomEl = document.getElementById('form-produit-nom');
+                    const catEl = document.getElementById('form-produit-categorie');
+                    const prixEl = document.getElementById('form-produit-prix');
+                    const descEl = document.getElementById('form-produit-description');
+
+                    if (nomEl) nomEl.value = titre;
+                    if (prixEl) prixEl.value = prix;
+                    if (descEl) descEl.value = description;
+                    if (image) {
+                        const imgHidden = document.getElementById('form-produit-image');
+                        const preview = document.getElementById('form-produit-image-preview');
+                        const uploadZone = document.getElementById('form-produit-upload-zone');
+                        if (imgHidden) imgHidden.value = image;
+                        if (preview && uploadZone) {
+                            preview.innerHTML = `
+                                <div class="image-preview-card">
+                                    <img src="${image}" alt="Image RSS" onerror="this.src='/assets/images/placeholder.png'">
+                                    <div class="image-info">
+                                        <div class="image-name">📷 Image RSS</div>
+                                        <div class="image-size">Source externe</div>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary" onclick="removeImagePreview()">🗑️</button>
+                                </div>`;
+                            preview.style.display = 'block';
+                            uploadZone.style.display = 'none';
+                        }
+                    }
+                    if (catEl) {
+                        const catVal = catProduitMap[item.categorie] || '';
+                        catEl.value = catVal;
+                        if (catEl.value !== catVal) catEl.value = '';
+                        catEl.dispatchEvent(new Event('change'));
+                    }
+                } else {
+                    const titreEl = document.getElementById('form-article-titre');
+                    const descEl = document.getElementById('form-article-description');
+                    const imgEl = document.getElementById('form-article-image');
+                    const tagsEl = document.getElementById('form-article-tags');
+                    const dateEl = document.getElementById('form-article-date');
+                    const hotEl = document.getElementById('form-article-hot');
+
+                    if (titreEl) titreEl.value = titre;
+                    if (descEl) descEl.value = description;
+                    if (imgEl) imgEl.value = image;
+                    if (tagsEl) tagsEl.value = tags;
+                    if (dateEl) dateEl.value = date;
+                    if (hotEl) hotEl.checked = hot;
+                    const catArticleEl = document.getElementById('form-article-categorie');
+                    if (catArticleEl && categorieRSS) {
+                        // Normaliser le slug RSS : "pc-gaming" → "pc gaming"
+                        const normalized = categorieRSS.replace(/-/g, ' ').toLowerCase();
+                        const opt = Array.from(catArticleEl.options).find(o =>
+                            o.value.toLowerCase() === normalized ||
+                            o.value.replace(/-/g, ' ').toLowerCase() === normalized
+                        );
+                        if (opt) catArticleEl.value = opt.value;
+                    }
+                }
+            }, 300);
+        });
+    }
+
+    // Mettre à jour la preview image en direct
+    document.addEventListener('DOMContentLoaded', () => {
+        const imgInput = document.getElementById('import-image');
+        if (imgInput) {
+            imgInput.addEventListener('input', () => {
+                const url = imgInput.value.trim();
+                if (url) {
+                    document.getElementById('import-img-tag').src = url;
+                    document.getElementById('import-img-preview').style.display = 'block';
+                } else {
+                    document.getElementById('import-img-preview').style.display = 'none';
+                }
+            });
+        }
+    });
+
 </script>
+
+
+<!-- Modal Import RSS -->
+<div class="modal-overlay" id="import-modal-overlay" style="z-index:10002;">
+    <div class="modal" style="max-width:680px;width:95%;">
+        <div class="modal-header">
+            <h3 class="modal-title">📥 Importer depuis RSS</h3>
+            <button class="modal-close" onclick="closeImportModal()">&times;</button>
+        </div>
+
+        <!-- Bandeau source -->
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1.5rem;background:var(--bg-elevated);border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.84rem;">
+            <span id="import-lang-badge" style="padding:0.2rem 0.6rem;border-radius:20px;font-weight:700;font-size:0.75rem;"></span>
+            <span id="import-source-name" style="color:var(--text-secondary);font-weight:500;"></span>
+            <a id="import-source-link" href="#" target="_blank" style="margin-left:auto;color:var(--tech-yellow);text-decoration:none;font-size:0.82rem;white-space:nowrap;">Voir l'article ↗</a>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Type toggle -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;">
+                <button id="import-type-produit" class="btn btn-primary" onclick="setImportType('produit')">🛍️ Produit</button>
+                <button id="import-type-article" class="btn btn-secondary" onclick="setImportType('article')">📰 Article</button>
+            </div>
+
+            <!-- Bouton traduction (EN seulement) -->
+            <div id="import-translate-wrap" style="display:none;margin-bottom:1.5rem;">
+                <button onclick="translateImportFields()" id="btn-translate" class="btn btn-secondary" style="width:100%;">
+                    🌐 Traduire automatiquement en français
+                </button>
+            </div>
+
+            <!-- Titre -->
+            <div class="form-group">
+                <label class="form-label">Titre *</label>
+                <input type="text" id="import-titre" class="form-input" placeholder="Titre du produit / article">
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea id="import-description" class="form-textarea" rows="4" placeholder="Description..."></textarea>
+            </div>
+
+            <!-- Catégorie -->
+            <div class="form-group">
+                <label class="form-label">Catégorie</label>
+                <select id="import-categorie" class="form-select">
+                    <option value="">— Choisir une catégorie —</option>
+                    <option value="smartphone">📱 Smartphones</option>
+                    <option value="console">🎮 Consoles</option>
+                    <option value="pc-gaming">🖥️ PC Gaming</option>
+                    <option value="casque-vr">🥽 Casques VR</option>
+                    <option value="drone">🚁 Drones</option>
+                    <option value="montre-connectee">⌚ Montres connectées</option>
+                    <option value="camera">📷 Caméras</option>
+                    <option value="casque-audio">🎧 Casques audio</option>
+                    <option value="ecran-tv">📺 Écrans & TV</option>
+                    <option value="tablette">📱 Tablettes</option>
+                    <option value="peripheriques">⌨️ Périphériques</option>
+                    <option value="imprimante-3d">🖨️ Imprimantes 3D</option>
+                    <option value="box-internet">📡 Box Internet</option>
+                    <option value="serveur">🖲️ Serveurs</option>
+                    <option value="video-projecteur">🎬 Vidéoprojecteurs</option>
+                    <option value="tableau-interactif">📊 Tableaux Interactifs</option>
+                </select>
+            </div>
+
+            <!-- Image URL + preview -->
+            <div class="form-group">
+                <label class="form-label">Image URL</label>
+                <div style="display:flex;gap:0.75rem;align-items:center;">
+                    <input type="text" id="import-image" class="form-input" placeholder="https://..." style="flex:1;">
+                    <div id="import-img-preview" style="display:none;flex-shrink:0;">
+                        <img id="import-img-tag" src="" style="width:72px;height:54px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.1);" onerror="document.getElementById('import-img-preview').style.display='none'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Champs Produit -->
+            <div id="import-fields-produit">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Prix estimé</label>
+                        <input type="text" id="import-prix" class="form-input" placeholder="Ex: 999 €">
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:center;gap:0.75rem;padding-top:1.75rem;">
+                        <input type="checkbox" id="import-est-prevu" style="accent-color:#a78bfa;width:16px;height:16px;flex-shrink:0;cursor:pointer;">
+                        <label for="import-est-prevu" style="cursor:pointer;color:var(--text-secondary);margin:0;">📅 Prévu / Annoncé</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Champs Article -->
+            <div id="import-fields-article" style="display:none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date publication</label>
+                        <input type="date" id="import-date" class="form-input">
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:center;gap:0.75rem;padding-top:1.75rem;">
+                        <input type="checkbox" id="import-hot" style="accent-color:#ff6b6b;width:16px;height:16px;flex-shrink:0;cursor:pointer;">
+                        <label for="import-hot" style="cursor:pointer;color:var(--text-secondary);margin:0;">🔥 Article Hot</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tags (séparés par virgule)</label>
+                    <input type="text" id="import-tags" class="form-input" placeholder="nouveauté, annonce, 2026">
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer" style="flex-wrap:wrap;gap:0.5rem;">
+            <button class="btn btn-secondary" onclick="closeImportModal()">Annuler</button>
+            <button class="btn btn-secondary" id="btn-open-full-form" onclick="openFullForm()" style="background:rgba(255,213,0,0.15);color:var(--tech-yellow);border-color:var(--tech-yellow);">📝 Formulaire complet</button>
+            <button class="btn btn-primary" id="btn-import-submit" onclick="submitImport()">✅ Importer</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

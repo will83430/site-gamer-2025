@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bons Plans High-Tech - HIGH-TECH 2026</title>
+    <meta name="description" content="Les meilleures baisses de prix high-tech du moment. Économisez sur les smartphones, PC gaming, consoles et plus.">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bons Plans High-Tech | HIGH-TECH 2026">
+    <meta property="og:description" content="Les meilleures baisses de prix high-tech du moment.">
+    <meta property="og:image" content="/assets/images/og-default.jpg">
+    <meta property="og:site_name" content="HIGH-TECH 2026">
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#d4ff00">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/theme.css">
+
+    <style>
+        main { padding-top: 100px; }
+
+        .page-header {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b6b, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.8rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        /* Filtres période */
+        .filters-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0 2rem 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-secondary);
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #ff6b6b, #ffd700);
+            color: #000;
+            border-color: transparent;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0 2rem 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* Grid */
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Deal Card */
+        .deal-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 107, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 30px rgba(255,107,107,0.1);
+        }
+
+        /* Badge réduction */
+        .deal-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: linear-gradient(135deg, #ff4444, #ff8800);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius-full);
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(255,68,68,0.4);
+        }
+
+        /* Image */
+        .deal-image-container {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(26,26,40,0.8), rgba(18,18,26,0.9));
+        }
+
+        .deal-image-container picture {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .deal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .deal-card:hover .deal-image {
+            transform: scale(1.05);
+        }
+
+        /* Contenu */
+        .deal-content {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .deal-category {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--tech-yellow);
+        }
+
+        .deal-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        /* Prix */
+        .deal-prices {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.3rem;
+        }
+
+        .deal-price-new {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #4dff91;
+        }
+
+        .deal-price-old {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .deal-economy {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #ff6b6b;
+            background: rgba(255,107,107,0.12);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-full);
+        }
+
+        /* Date */
+        .deal-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        /* Footer card */
+        .deal-footer {
+            padding: 0 1.25rem 1.25rem;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-deal {
+            flex: 1;
+            background: linear-gradient(135deg, #ff6b6b, #ffd700);
+            color: #000;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.65rem;
+            border-radius: var(--radius-full);
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-deal:hover {
+            opacity: 0.85;
+            transform: scale(1.02);
+        }
+
+        .btn-fiche {
+            flex: 1;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.65rem;
+            border-radius: var(--radius-full);
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-fiche:hover {
+            border-color: var(--tech-blue);
+            color: var(--tech-blue);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
+
+        /* Loading */
+        .loading-state {
+            text-align: center;
+            padding: 4rem;
+            grid-column: 1 / -1;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .deals-grid { grid-template-columns: 1fr; padding: 0 1rem 3rem; }
+            .stats-bar { gap: 1.5rem; }
+        }
+    </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/2026/" class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4ff00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6bff6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="url(#logoBg)" stroke-width="2.5" opacity="0.9"/>
+                    <path d="M 50 25 L 58 45 L 48 45 L 54 70 L 38 48 L 50 48 Z" fill="url(#logoBg)" opacity="0.95"/>
+                    <circle cx="30" cy="40" r="2.5" fill="#4dd4ff" opacity="0.7"/>
+                    <circle cx="70" cy="60" r="2.5" fill="#a78bfa" opacity="0.7"/>
+                </svg>
+                <div class="logo-text">HIGH-TECH 2026</div>
+            </a>
+            <div class="nav-links">
+                <a href="/2026/" class="nav-link">Accueil</a>
+                <a href="/2026/#categories" class="nav-link">Catégories</a>
+                <a href="/2026/bons-plans.html" class="nav-link active">Bons Plans</a>
+                <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/timeline.html" class="nav-link">Timeline</a>
+                <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <nav style="margin-bottom: 1.5rem;">
+                <a href="/2026/" style="color: var(--text-muted); text-decoration: none;">Accueil</a>
+                <span style="color: var(--text-muted); margin: 0 0.5rem;">/</span>
+                <span style="color: #ff6b6b;">Bons Plans</span>
+            </nav>
+            <h1 class="page-title">🔥 Bons Plans</h1>
+            <p class="page-subtitle">
+                Les meilleures baisses de prix high-tech détectées automatiquement. Mis à jour à chaque scraping.
+            </p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-bar" id="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="stat-nb-deals">--</div>
+                <div class="stat-label">Bons plans</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-max-reduction">--</div>
+                <div class="stat-label">Meilleure réduction</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-max-economie">--</div>
+                <div class="stat-label">Économie max</div>
+            </div>
+        </div>
+
+        <!-- Filtres période -->
+        <div class="filters-bar">
+            <button class="filter-btn" data-days="7">7 derniers jours</button>
+            <button class="filter-btn" data-days="30">30 derniers jours</button>
+            <button class="filter-btn active" data-days="0">Tous</button>
+        </div>
+
+        <!-- Grid des deals -->
+        <div class="deals-grid" id="deals-grid">
+            <div class="loading-state">
+                <div class="loading-spinner" style="margin: 0 auto 1rem;"></div>
+                <p>Recherche des bons plans...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HIGH-TECH 2026</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">
+                    Votre source d'information de confiance pour la technologie de pointe.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/">Accueil</a></li>
+                    <li><a href="/2026/produits.html">Produits</a></li>
+                    <li><a href="/2026/tendances.html">Tendances</a></li>
+                    <li><a href="/2026/comparatif.html">Comparatif</a></li>
+                    <li><a href="/2026/bons-plans.html">Bons Plans</a></li>
+                    <li><a href="/2026/guides.html">Guides</a></li>
+                    <li><a href="/2026/versus.html">Versus</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Catégories</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/produits.html?categorie=smartphone">Smartphones</a></li>
+                    <li><a href="/2026/produits.html?categorie=pc-gaming">PC Gaming</a></li>
+                    <li><a href="/2026/produits.html?categorie=console">Consoles</a></li>
+                    <li><a href="/2026/produits.html?categorie=casque-vr">VR/AR</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="/2026/evolution-prix.html">Évolution des Prix</a></li>
+                    <li><a href="/2026/timeline.html">Timeline Tech</a></li>
+                    <li><a href="/2026/apropos.html">À propos</a></li>                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 HIGH-TECH 2026 — Créé par Genin Wilfried. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop">^</button>
+
+    <script src="/assets/js/theme-toggle.js"></script>
+    <script>
+        let allDeals = [];
+        let currentDays = 7;
+
+        function webpImg(src, alt, cls) {
+            if (!src) return `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.85rem;flex-direction:column;gap:0.5rem"><span style="font-size:2rem">📦</span>Image non disponible</div>`;
+            const stem = src.replace(/\.[^.]+$/, '');
+            return `<picture>
+                <source srcset="/assets/images/${stem}.webp" type="image/webp">
+                <img src="/assets/images/${src}" alt="${alt}" class="${cls}" loading="lazy" onerror="this.parentElement.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);flex-direction:column;gap:0.5rem\\'><span style=\\'font-size:2rem\\'>📦</span>Image non disponible</div>'">
+            </picture>`;
+        }
+
+        function formatCat(cat) {
+            return cat ? cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase().replace(/-/g, ' ') : '';
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            const now = new Date();
+            const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+            if (diff === 0) return "Aujourd'hui";
+            if (diff === 1) return 'Hier';
+            if (diff < 7) return `Il y a ${diff} jours`;
+            return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+        }
+
+        function renderDeals(deals) {
+            const grid = document.getElementById('deals-grid');
+
+            if (!deals.length) {
+                grid.innerHTML = `<div class="empty-state">
+                    <div class="icon">😕</div>
+                    <p>Aucun bon plan trouvé pour cette période.</p>
+                    <p style="margin-top:0.5rem;font-size:0.85rem">Essaie une période plus longue.</p>
+                </div>`;
+                updateStats([]);
+                return;
+            }
+
+            grid.innerHTML = deals.map(deal => {
+                const reduction = Math.round(deal.reduction_pct);
+                const economie = parseFloat(deal.economie).toFixed(0);
+                const imgSrc = deal.image ? deal.image.replace(/\.[^.]+$/, '') : null;
+
+                return `<div class="deal-card">
+                    <div class="deal-image-container">
+                        <div class="deal-badge">−${reduction}%</div>
+                        ${deal.image ? webpImg(deal.image, deal.nom, 'deal-image') : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);flex-direction:column;gap:0.5rem"><span style="font-size:2rem">📦</span>Image non disponible</div>`}
+                    </div>
+                    <div class="deal-content">
+                        <div class="deal-category">${formatCat(deal.categorie)}</div>
+                        <div class="deal-name">${deal.nom}</div>
+                        <div class="deal-prices">
+                            <span class="deal-price-new">${deal.prix_actuel_texte || deal.prix_actuel + ' €'}</span>
+                            <span class="deal-price-old">${deal.prix_precedent_texte || deal.prix_precedent + ' €'}</span>
+                            <span class="deal-economy">−${economie} €</span>
+                        </div>
+                        <div class="deal-date">📅 Détecté ${formatDate(deal.date_actuel)}</div>
+                    </div>
+                    <div class="deal-footer">
+                        <a href="/2026/fiche.html?id=${deal.id}" class="btn-deal">Voir la fiche →</a>
+                        <a href="/2026/evolution-prix.html?id=${deal.id}" class="btn-fiche">Historique prix →</a>
+                    </div>
+                </div>`;
+            }).join('');
+
+            updateStats(deals);
+        }
+
+        function updateStats(deals) {
+            document.getElementById('stat-nb-deals').textContent = deals.length;
+            if (deals.length) {
+                const maxRed = Math.max(...deals.map(d => parseFloat(d.reduction_pct)));
+                const maxEco = Math.max(...deals.map(d => parseFloat(d.economie)));
+                document.getElementById('stat-max-reduction').textContent = `−${Math.round(maxRed)}%`;
+                document.getElementById('stat-max-economie').textContent = `−${Math.round(maxEco)} €`;
+            } else {
+                document.getElementById('stat-max-reduction').textContent = '--';
+                document.getElementById('stat-max-economie').textContent = '--';
+            }
+        }
+
+        async function loadDeals(days) {
+            currentDays = days;
+            document.getElementById('deals-grid').innerHTML = `<div class="loading-state"><div class="loading-spinner" style="margin:0 auto 1rem;"></div><p>Recherche des bons plans...</p></div>`;
+
+            try {
+                const url = `/api/bons-plans${days > 0 ? `?days=${days}` : ''}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                allDeals = data.deals || [];
+                renderDeals(allDeals);
+            } catch(e) {
+                document.getElementById('deals-grid').innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Erreur lors du chargement.</p></div>`;
+            }
+        }
+
+        // Filtres
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                loadDeals(parseInt(btn.dataset.days));
+            });
+        });
+
+        // Scroll top
+        const scrollBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            scrollBtn.style.opacity = window.scrollY > 300 ? '1' : '0';
+        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        loadDeals(0);
+    </script>
+</body>
+</html>

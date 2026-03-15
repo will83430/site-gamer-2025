@@ -8,9 +8,18 @@
     "dev": "nodemon server-2026.js",
     "build:css": "cleancss -o frontend/public/assets/css/styles.min.css frontend/public/assets/css/styles.css",
     "build:js": "terser frontend/public/assets/js/fiches.js -o frontend/public/assets/js/fiches.min.js && terser frontend/public/assets/js/fiche-produit.js -o frontend/public/assets/js/fiche-produit.min.js && terser frontend/public/assets/js/tendances.js -o frontend/public/assets/js/tendances.min.js",
-    "build": "npm run build:css && npm run build:js"
+    "build": "npm run build:css && npm run build:js",
+    "test": "jest --forceExit",
+    "test:watch": "jest --watch --forceExit",
+    "test:coverage": "jest --coverage --forceExit"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/**/*.test.js"],
+    "verbose": true
   },
   "dependencies": {
+    "axios": "^1.13.6",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -20,12 +29,17 @@
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
     "pg": "^8.16.3",
+    "rss-parser": "^3.13.0",
+    "sharp": "^0.34.5",
     "winston": "^3.19.0"
   },
   "devDependencies": {
     "clean-css-cli": "^5.6.3",
+    "jest": "^30.2.0",
     "nodemon": "^3.0.2",
+    "supertest": "^7.2.2",
     "terser": "^5.44.0"
   },
   "keywords": [

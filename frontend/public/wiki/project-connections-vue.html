@@ -391,8 +391,56 @@
                     <div class="node-desc">Comparateur 4 produits</div>
                 </div>
 
-                <div class="node node-admin" id="adminPage" data-connects="serverNode,routesProduits,routesActualites,routesStats,routesWiki">
-                    <div class="connection-badge">5</div>
+                <div class="node node-frontend" id="rechercheePage" data-connects="serverNode,themeToggle">
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">recherche.html</div>
+                    <div class="node-desc">Recherche full-text PostgreSQL</div>
+                </div>
+
+                <div class="node node-frontend" id="versusPage" data-connects="serverNode,themeToggle">
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">versus.html</div>
+                    <div class="node-desc">Duel 2 produits + verdict</div>
+                </div>
+
+                <div class="node node-frontend" id="bonsPlansPage" data-connects="serverNode,routesPriceHistory,themeToggle">
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">bons-plans.html</div>
+                    <div class="node-desc">Baisses de prix détectées</div>
+                </div>
+
+                <div class="node node-frontend" id="evolutionPrixPage" data-connects="serverNode,routesPriceHistory,themeToggle">
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">evolution-prix.html</div>
+                    <div class="node-desc">Historique prix (Chart.js)</div>
+                </div>
+
+                <div class="node node-frontend" id="configurateurPage" data-connects="serverNode,themeToggle">
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">configurateur.html</div>
+                    <div class="node-desc">Budget builder par profil</div>
+                </div>
+
+                <div class="node node-frontend" id="guidesPage" data-connects="serverNode,routesGuides,themeToggle">
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">guides.html</div>
+                    <div class="node-desc">Guides d'achat</div>
+                </div>
+
+                <div class="node node-frontend" id="timelinePage" data-connects="serverNode,routesTimeline,themeToggle">
+                    <div class="connection-badge">3</div>
+                    <div class="node-title">timeline.html</div>
+                    <div class="node-desc">Frise chronologique</div>
+                </div>
+
+                <div class="node node-frontend" id="aproposPage" data-connects="serverNode,themeToggle">
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">apropos.html</div>
+                    <div class="node-desc">À propos du site</div>
+                </div>
+
+                <div class="node node-admin" id="adminPage" data-connects="serverNode,routesProduits,routesActualites,routesStats,routesWiki,routesNouveautes,routesGuides,routesTimeline">
+                    <div class="connection-badge">8</div>
                     <div class="node-title">admin.html</div>
                     <div class="node-desc">Dashboard complet</div>
                     <div class="node-badge">CRUD</div>
@@ -424,8 +472,8 @@
                     server-2026.js
                 </div>
 
-                <div class="node node-backend" id="serverNode" data-connects="configDB,routesProduits,routesActualites,routesFicheTendance,routesStats,routesWiki,routesSitemap,routesAnnouncements">
-                    <div class="connection-badge">8</div>
+                <div class="node node-backend" id="serverNode" data-connects="configDB,routesProduits,routesActualites,routesFicheTendance,routesStats,routesWiki,routesSitemap,routesAnnouncements,routesCategories,routesNouveautes,routesGuides,routesTimeline,routesPriceHistory">
+                    <div class="connection-badge">13</div>
                     <div class="node-title">Express App</div>
                     <div class="node-desc">Port 3000</div>
                     <div class="node-badge">Main</div>
@@ -480,6 +528,37 @@
                     <div class="node-desc">/sitemap.xml</div>
                     <div class="node-badge">SEO</div>
                 </div>
+
+                <div class="node node-backend" id="routesCategories" data-connects="configDB,tableCategories">
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">categories.js</div>
+                    <div class="node-desc">/api/categories CRUD</div>
+                </div>
+
+                <div class="node node-backend" id="routesNouveautes" data-connects="rssExternal">
+                    <div class="connection-badge">1</div>
+                    <div class="node-title">nouveautes.js</div>
+                    <div class="node-desc">/api/nouveautes RSS</div>
+                    <div class="node-badge">RSS</div>
+                </div>
+
+                <div class="node node-backend" id="routesGuides" data-connects="configDB,tableGuides">
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">guides (server)</div>
+                    <div class="node-desc">/api/guides</div>
+                </div>
+
+                <div class="node node-backend" id="routesTimeline" data-connects="configDB,tableTimeline">
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">timeline (server)</div>
+                    <div class="node-desc">/api/timeline</div>
+                </div>
+
+                <div class="node node-backend" id="routesPriceHistory" data-connects="configDB,tablePriceHistory">
+                    <div class="connection-badge">2</div>
+                    <div class="node-title">price-history (server)</div>
+                    <div class="node-desc">/api/price-history + bons-plans</div>
+                </div>
             </div>
 
             <!-- Config Column -->
@@ -502,6 +581,12 @@
                 <div class="node node-config" id="loggerNode">
                     <div class="node-title">logger.js</div>
                     <div class="node-desc">Winston logging</div>
+                </div>
+
+                <div class="node node-config" id="rssExternal">
+                    <div class="node-title">RSS Sources</div>
+                    <div class="node-desc">Les Numériques, 01net, Numerama, GSMArena, The Verge</div>
+                    <div class="node-badge">EXT</div>
                 </div>
             </div>
 
@@ -555,6 +640,26 @@
                     <div class="node-title">activity_logs</div>
                     <div class="node-desc">Journal activite</div>
                 </div>
+
+                <div class="node node-database" id="tablePriceHistory">
+                    <div class="node-title">price_history</div>
+                    <div class="node-desc">Historique des prix</div>
+                </div>
+
+                <div class="node node-database" id="tableGuides">
+                    <div class="node-title">guides + guides_produits</div>
+                    <div class="node-desc">Guides d'achat</div>
+                </div>
+
+                <div class="node node-database" id="tableTimeline">
+                    <div class="node-title">timeline_events</div>
+                    <div class="node-desc">Frise chronologique</div>
+                </div>
+
+                <div class="node node-database" id="tableAbout">
+                    <div class="node-title">about_sections</div>
+                    <div class="node-desc">Sections À propos</div>
+                </div>
             </div>
 
             <!-- SEO Column -->
@@ -592,7 +697,7 @@
                     <div class="legend-color" style="background: linear-gradient(135deg, #4fc3f7, #0288d1);"></div>
                     <div>
                         <div class="legend-label">Frontend Pages</div>
-                        <div class="legend-desc">7 pages HTML dynamiques</div>
+                        <div class="legend-desc">16 pages publiques + admin</div>
                     </div>
                 </div>
                 <div class="legend-item">
@@ -620,7 +725,7 @@
                     <div class="legend-color" style="background: linear-gradient(135deg, #ffd54f, #ff8f00);"></div>
                     <div>
                         <div class="legend-label">PostgreSQL</div>
-                        <div class="legend-desc">10 tables</div>
+                        <div class="legend-desc">17 tables</div>
                     </div>
                 </div>
                 <div class="legend-item">

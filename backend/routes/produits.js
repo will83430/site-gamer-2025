@@ -36,22 +36,29 @@ const getLogActivity = () => {
 // GET - Récupérer tous les produits ou filtrer par catégorie
 router.get('/', async (req, res) => {
   try {
-    const { categorie } = req.query;
+    const { categorie, admin } = req.query;
+    const isAdmin = admin === 'true';
     let query = `
-      SELECT 
+      SELECT
         p.*,
         COALESCE(p.titre_affiche, p.nom) as titre_affiche
       FROM produits p
     `;
     const params = [];
-    
+    const conditions = [];
+
     if (categorie) {
-      // Convertir tirets en espaces pour correspondre au format DB
       const categorieNormalized = categorie.replace(/-/g, ' ');
-      query += ` WHERE LOWER(categorie) = LOWER($1)`;
+      conditions.push(`LOWER(categorie) = LOWER($${params.length + 1})`);
       params.push(categorieNormalized);
     }
-    
+    if (!isAdmin) {
+      conditions.push(`actif = true`);
+    }
+    if (conditions.length > 0) {
+      query += ` WHERE ` + conditions.join(' AND ');
+    }
+
     query += ` ORDER BY categorie, nom`;
     
     const result = await pool.query(query, params);
@@ -82,6 +89,43 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET - Recherche full-text PostgreSQL
+router.get('/search', async (req, res) => {
+  try {
+    const { q, limit = 20 } = req.query;
+    if (!q || q.trim().length < 2) {
+      return res.json({ success: true, data: [], total: 0 });
+    }
+
+    const term = q.trim();
+
+    // Full-text search avec tsvector + fallback ILIKE pour les termes courts
+    const result = await pool.query(`
+      SELECT
+        p.*,
+        COALESCE(p.titre_affiche, p.nom) as titre_affiche,
+        ts_rank(p.search_vector, plainto_tsquery('french', $1)) as rank
+      FROM produits p
+      WHERE
+        p.search_vector @@ plainto_tsquery('french', $1)
+        OR LOWER(p.nom) LIKE LOWER($2)
+        OR LOWER(p.titre_affiche) LIKE LOWER($2)
+      ORDER BY rank DESC, p.nom
+      LIMIT $3
+    `, [term, `%${term}%`, parseInt(limit)]);
+
+    const products = result.rows.map(p => {
+      p.image_url = p.image ? `/assets/images/${p.image}` : '/assets/images/placeholder.png';
+      return p;
+    });
+
+    res.json({ success: true, data: products, total: products.length });
+  } catch (error) {
+    console.error('❌ Erreur search produits:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // GET - Récupérer un produit par nom (slug)
 router.get('/by-name/:nom', async (req, res) => {
   try {
@@ -91,7 +135,7 @@ router.get('/by-name/:nom', async (req, res) => {
         p.*,
         COALESCE(p.titre_affiche, p.nom) as titre_affiche
       FROM produits p
-      WHERE LOWER(p.nom) = LOWER($1)
+      WHERE LOWER(p.slug) = LOWER($1) OR LOWER(p.nom) = LOWER($1)
     `, [nom]);
 
     if (result.rows.length === 0) {
@@ -283,6 +327,32 @@ router.patch('/:id/featured', async (req, res) => {
       success: false,
       error: error.message
     });
+  }
+});
+
+// PATCH - Toggle actif pour un produit
+router.patch('/:id/toggle-actif', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { actif } = req.body;
+
+    const result = await pool.query(
+      'UPDATE produits SET actif = $1 WHERE id = $2 RETURNING id, nom, actif',
+      [actif === true, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Produit non trouvé' });
+    }
+
+    res.json({
+      success: true,
+      data: result.rows[0],
+      message: actif ? 'Produit activé' : 'Produit désactivé'
+    });
+  } catch (error) {
+    console.error('❌ Erreur toggle actif produit:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

@@ -9,9 +9,10 @@
     <meta name="robots" content="index, follow">
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Versus / Duel — HIGH-TECH 2026">
-    <meta property="og:description" content="Comparez deux produits tech en duel direct, spec par spec, avec un verdict automatique.">
-    <meta property="og:url" content="https://high-tech-2026.com/2026/versus.html">
+    <meta property="og:title" content="Versus — Duel 1 contre 1 | HIGH-TECH 2026">
+    <meta property="og:description" content="Comparez deux produits tech en duel direct : specs, fonctionnalités et prix. Lequel l&#39;emporte ?">
+    <meta property="og:image" content="/assets/images/og-default.jpg">
+    <meta property="og:site_name" content="HIGH-TECH 2026">
 
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#d4ff00">
@@ -613,9 +614,28 @@
             .score-display { gap: 1rem; }
             .score-points { font-size: 2rem; }
         }
+        @media (max-width: 480px) {
+            .page-header { padding: 1rem; }
+            .page-title { font-size: 1.5rem; }
+            .selection-grid { gap: 0.75rem; }
+            .duel-vs-text { font-size: 1rem; }
+            .score-points { font-size: 1.5rem; }
+            .score-display { flex-direction: column; gap: 0.5rem; }
+            .product-header-info { padding: 0.75rem; }
+        }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
+
+    <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;background:#d4ff00;color:#000;padding:8px 16px;font-weight:600;" onfocus="this.style.cssText=this.style.cssText.replace('left:-9999px','left:16px')">Aller au contenu</a>
 
     <header class="header">
         <nav class="nav-container">
@@ -638,13 +658,14 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/comparatif.html" class="nav-link">Comparatif</a>
                 <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
         </nav>
     </header>
 
-    <main>
+    <main id="main-content">
         <div class="page-header">
             <nav style="margin-bottom: 1rem;">
                 <a href="/2026/" style="color: var(--text-muted); text-decoration: none;">Accueil</a>
@@ -662,10 +683,10 @@
                 <!-- Produit 1 -->
                 <div class="selector-panel p1">
                     <div class="selector-label">⚡ Produit 1</div>
-                    <select class="selector-select" id="cat-select-1" onchange="loadProductsForSlot(1)">
+                    <select class="selector-select" id="cat-select-1" aria-label="Catégorie du Produit 1" onchange="loadProductsForSlot(1)">
                         <option value="">— Catégorie —</option>
                     </select>
-                    <select class="selector-select" id="prod-select-1" style="display:none" onchange="selectProduct(1, this.value)">
+                    <select class="selector-select" id="prod-select-1" aria-label="Produit 1" style="display:none" onchange="selectProduct(1, this.value)">
                         <option value="">— Produit —</option>
                     </select>
                     <div class="product-preview" id="preview-1">
@@ -677,17 +698,17 @@
                 <!-- VS -->
                 <div class="vs-separator">
                     <div class="vs-line"></div>
-                    <div class="vs-badge">VS</div>
+                    <div class="vs-badge" aria-hidden="true">VS</div>
                     <div class="vs-line"></div>
                 </div>
 
                 <!-- Produit 2 -->
                 <div class="selector-panel p2">
                     <div class="selector-label">🔥 Produit 2</div>
-                    <select class="selector-select" id="cat-select-2" onchange="loadProductsForSlot(2)">
+                    <select class="selector-select" id="cat-select-2" aria-label="Catégorie du Produit 2" onchange="loadProductsForSlot(2)">
                         <option value="">— Catégorie —</option>
                     </select>
-                    <select class="selector-select" id="prod-select-2" style="display:none" onchange="selectProduct(2, this.value)">
+                    <select class="selector-select" id="prod-select-2" aria-label="Produit 2" style="display:none" onchange="selectProduct(2, this.value)">
                         <option value="">— Produit —</option>
                     </select>
                     <div class="product-preview" id="preview-2">
@@ -698,7 +719,7 @@
             </div>
 
             <div class="launch-area">
-                <button class="launch-btn" id="launch-btn" onclick="launchDuel()">⚡ Lancer le Duel</button>
+                <button class="launch-btn" id="launch-btn" onclick="launchDuel()" aria-disabled="true">⚡ Lancer le Duel</button>
             </div>
         </div>
 
@@ -706,8 +727,8 @@
         <div class="duel-phase" id="duel-phase">
 
             <div class="duel-actions">
-                <button class="action-btn" onclick="resetDuel()">🔄 Nouveau duel</button>
-                <button class="action-btn" onclick="shareUrl()">🔗 Partager ce duel</button>
+                <button class="action-btn" onclick="resetDuel()" aria-label="Nouveau duel">🔄 Nouveau duel</button>
+                <button class="action-btn" onclick="shareUrl()" aria-label="Partager ce duel">🔗 Partager ce duel</button>
             </div>
 
             <!-- Score summary (shown first) -->
@@ -736,7 +757,7 @@
                     <div class="duel-product-name" id="duel-name-1"></div>
                 </div>
                 <div class="duel-vs">
-                    <div class="duel-vs-text">VS</div>
+                    <div class="duel-vs-text" aria-hidden="true">VS</div>
                 </div>
                 <div class="duel-product-card p2" id="duel-card-2">
                     <div class="duel-product-name" id="duel-name-2"></div>
@@ -797,9 +818,7 @@
                 <ul class="footer-links">
                     <li><a href="/2026/wiki.html">Wiki</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                </ul>
+                    <li><a href="/2026/apropos.html">À propos</a></li>                </ul>
             </div>
         </div>
         <div class="footer-bottom">
@@ -811,6 +830,13 @@
 
     <script src="/assets/js/theme-toggle.js"></script>
     <script>
+        function webpImg(src, alt, cssClass, extra) {
+            extra = extra || '';
+            if (!src || src.includes('placeholder')) return `<img src="${src || '/assets/images/placeholder.png'}" alt="${alt}" class="${cssClass}" loading="lazy" ${extra}>`;
+            const webp = src.replace(/\.(png|jpg|jpeg)(\?.*)?$/i, '.webp');
+            return `<picture><source srcset="${webp}" type="image/webp"><img src="${src}" alt="${alt}" class="${cssClass}" loading="lazy" ${extra}></picture>`;
+        }
+
         // ===== STATE =====
         let allProducts = [];
         let selectedProducts = { 1: null, 2: null };
@@ -919,11 +945,11 @@
             const imgSrc = product.image ? `/assets/images/${product.image}` : '';
             div.innerHTML = `
                 ${imgSrc
-                    ? `<img class="preview-img" src="${imgSrc}" alt="${escHtml(displayName(product))}" onerror="this.style.display='none'">`
+                    ? webpImg(imgSrc, escHtml(displayName(product)), 'preview-img', "onerror=\"this.style.display='none'\"")
                     : `<div class="preview-placeholder">📦</div>`}
                 <div class="preview-info">
-                    <div class="preview-name">${escHtml(displayName(product))}</div>
-                    ${product.prix ? `<div class="preview-price">${escHtml(product.prix)}</div>` : ''}
+                    <div class="preview-name">${escHtml(displayName(product))}${product.est_prevu ? ' <span style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:0.65em;padding:1px 6px;border-radius:20px;font-weight:700">📅 Prévu</span>' : ''}</div>
+                    ${product.prix ? `<div class="preview-price">${product.est_prevu ? '~' + escHtml(product.prix.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim()) + ' (estimé)' : escHtml(product.prix)}</div>` : ''}
                     ${product.categorie ? `<div class="preview-cat">${escHtml(formatCatName(product.categorie))}</div>` : ''}
                 </div>
             `;
@@ -933,6 +959,7 @@
             const btn = document.getElementById('launch-btn');
             const ready = selectedProducts[1] && selectedProducts[2];
             btn.classList.toggle('ready', !!ready);
+            btn.setAttribute('aria-disabled', ready ? 'false' : 'true');
         }
 
         // ===== URL PARAMS =====
@@ -1085,10 +1112,10 @@
 
             card.innerHTML = `
                 ${isWinner ? '<div class="winner-crown">👑</div>' : ''}
-                ${imgSrc ? `<img class="duel-product-img" src="${imgSrc}" alt="${escHtml(displayName(product))}" onerror="this.style.display='none'">` : ''}
-                <div class="duel-product-name">${escHtml(displayName(product))}</div>
+                ${imgSrc ? webpImg(imgSrc, escHtml(displayName(product)), 'duel-product-img', "onerror=\"this.style.display='none'\"") : ''}
+                <div class="duel-product-name">${escHtml(displayName(product))}${product.est_prevu ? ' <span style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:0.65em;padding:2px 8px;border-radius:20px;font-weight:700;vertical-align:middle">📅 Prévu</span>' : ''}</div>
                 ${product.categorie ? `<div class="duel-product-cat">${escHtml(formatCatName(product.categorie))}</div>` : ''}
-                ${product.prix ? `<div class="duel-product-price">${escHtml(product.prix)}</div>` : ''}
+                ${product.prix ? `<div class="duel-product-price">${product.est_prevu ? '~' + escHtml(product.prix.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim()) + ' <small style="font-size:0.75em;opacity:0.8">(estimé)</small>' : escHtml(product.prix)}</div>` : ''}
                 ${priceBadge}
                 <div class="duel-score-badge">${myScore} pt${myScore !== 1 ? 's' : ''}</div>
                 <br>
@@ -1279,15 +1306,9 @@
         }
 
         // ===== UTILS =====
-        // Retourne le vrai nom lisible (titre_affiche ou formatage du slug)
         function displayName(product) {
             if (!product) return '';
-            if (product.titre_affiche) return product.titre_affiche;
-            // Fallback: convertir slug en titre
-            return product.nom
-                .split('-')
-                .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-                .join(' ');
+            return product.nom || product.titre_affiche || '';
         }
 
         function escHtml(str) {

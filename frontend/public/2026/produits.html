@@ -10,9 +10,10 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Catalogue Produits Gaming & High-Tech">
-    <meta property="og:description" content="Explorez notre catalogue de produits gaming et high-tech par catégorie.">
-    <meta property="og:url" id="og-url" content="https://high-tech-2026.com/2026/produits.html">
+    <meta property="og:title" content="Produits Gaming &amp; High-Tech 2026 | HIGH-TECH 2026">
+    <meta property="og:description" content="Explorez 100+ produits gaming et high-tech : consoles, PC gaming, smartphones, casques, drones. Filtrez par catégorie et trouvez le produit parfait.">
+    <meta property="og:image" content="/assets/images/og-default.jpg">
+    <meta property="og:site_name" content="HIGH-TECH 2026">
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -302,7 +303,7 @@
         }
 
         .products-grid .product-card {
-            width: 320px;
+            width: 460px;
             flex-shrink: 0;
         }
 
@@ -356,21 +357,22 @@
 
         .product-image-container {
             position: relative;
-            height: 240px;
+            height: 460px;
             overflow: hidden;
             background: linear-gradient(135deg, rgba(26, 26, 40, 0.8) 0%, rgba(18, 18, 26, 0.9) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
+        }
+
+        .product-image-container picture {
+            display: block;
+            width: 100%;
+            height: 100%;
         }
 
         .product-image {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
             transition: transform 0.6s ease;
         }
 
@@ -402,6 +404,16 @@
             background: linear-gradient(135deg, #ff6b6b 0%, #ff9500 50%, #ffd700 100%);
             box-shadow: 0 4px 15px rgba(255, 149, 0, 0.4);
             animation: topBadgePulse 2s ease-in-out infinite;
+        }
+
+        .product-badge.badge-prevu {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35);
+        }
+
+        .product-price.price-estime {
+            font-style: normal;
+            opacity: 0.85;
         }
 
         @keyframes topBadgePulse {
@@ -886,6 +898,12 @@
                 overflow: hidden !important;
             }
 
+            .product-image-container picture {
+                display: block !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+
             .product-image {
                 width: 100% !important;
                 height: 140px !important;
@@ -1080,6 +1098,12 @@
                 height: 130px !important;
             }
 
+            .product-image-container picture {
+                display: block !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+
             .product-image {
                 height: 130px !important;
                 min-height: 130px !important;
@@ -1117,8 +1141,18 @@
             }
         }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
+
+    <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;background:#d4ff00;color:#000;padding:8px 16px;font-weight:600;" onfocus="this.style.cssText=this.style.cssText.replace('left:-9999px','left:16px')">Aller au contenu</a>
 
     <!-- Header -->
     <header class="header">
@@ -1143,13 +1177,14 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/timeline.html" class="nav-link">Timeline</a>
                 <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
         </nav>
     </header>
 
-    <main>
+    <main id="main-content">
         <!-- How It Works -->
         <section class="how-it-works">
             <div class="steps-grid">
@@ -1215,7 +1250,7 @@
             <div class="filters-container">
                 <div class="filter-group">
                     <span class="filter-label">Trier par:</span>
-                    <select class="filter-select" id="sort-select">
+                    <select class="filter-select" id="sort-select" aria-label="Trier les produits">
                         <option value="nom">Nom (A-Z)</option>
                         <option value="nom-desc">Nom (Z-A)</option>
                         <option value="prix">Prix croissant</option>
@@ -1229,7 +1264,7 @@
                 </div>
 
                 <div class="view-toggle">
-                    <button class="view-btn active" id="view-grid" title="Vue grille">
+                    <button class="view-btn active" id="view-grid" title="Vue grille" aria-label="Vue grille" aria-pressed="true">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                             <rect x="3" y="3" width="7" height="7" rx="1"/>
                             <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -1237,7 +1272,7 @@
                             <rect x="14" y="14" width="7" height="7" rx="1"/>
                         </svg>
                     </button>
-                    <button class="view-btn" id="view-list" title="Vue liste">
+                    <button class="view-btn" id="view-list" title="Vue liste" aria-label="Vue liste" aria-pressed="false">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                             <rect x="3" y="4" width="18" height="4" rx="1"/>
                             <rect x="3" y="10" width="18" height="4" rx="1"/>
@@ -1332,9 +1367,7 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/2026/wiki.html">Wiki</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>                    <li><a href="/2026/apropos.html">À propos</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
                     <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>
@@ -1350,6 +1383,13 @@
     <button class="scroll-top" id="scrollTop">↑</button>
 
     <script>
+        // Helper WebP avec fallback
+        function webpImg(src, alt, cssClass, extra = '') {
+            if (!src || src.includes('placeholder')) return `<img src="${src || '/assets/images/placeholder.png'}" alt="${alt}" class="${cssClass}" loading="lazy" ${extra}>`;
+            const webp = src.replace(/\.(png|jpg|jpeg)(\?.*)?$/i, '.webp');
+            return `<picture><source srcset="${webp}" type="image/webp"><img src="${src}" alt="${alt}" class="${cssClass}" loading="lazy" ${extra}></picture>`;
+        }
+
         // ========================================
         // STATE
         // ========================================
@@ -1492,7 +1532,7 @@
         // ========================================
         function filterProducts() {
             filteredProducts = allProducts.filter(p => {
-                if (filterTopOnly && !p.top_du_mois) return false;
+                if (filterTopOnly && (!p.top_du_mois || p.est_prevu)) return false;
                 return true;
             });
         }
@@ -1533,21 +1573,27 @@
                 
                 // Gestion du prix : afficher tel quel de la BD
                 let price = product.prix || 'Prix N/A';
-                let priceHTML = price;
-                
+                const isPrevu = product.est_prevu;
+                const cleanPrice = isPrevu ? price.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim() : price;
+                let priceHTML = isPrevu ? `~${cleanPrice} <small style="font-size:0.7em;opacity:0.8">(estimé)</small>` : price;
+
                 const description = product.description || 'Decouvrez ce produit high-tech de derniere generation.';
 
                 const topBadge = product.top_du_mois ? '<span class="product-badge badge-top">🔥 Top du Mois</span>' : '';
+                const prevuBadge = isPrevu ? '<span class="product-badge badge-prevu">📅 Prévu</span>' : '';
 
                 return `
-                    <article class="product-card ${isSelected ? 'selected' : ''}" data-id="${product.id}">
+                    <article class="product-card ${isSelected ? 'selected' : ''}" data-id="${product.id}" tabindex="0">
                         <div class="product-image-container">
-                            <img src="${imageUrl}" alt="${product.titre_affiche || product.nom}" class="product-image"
-                                 onerror="this.src='/assets/images/placeholder.png'">
+                            ${webpImg(imageUrl, product.titre_affiche || product.nom, 'product-image', "onerror=\"this.src='/assets/images/placeholder.png'\"")}
                             <div class="product-badges">
-                                ${topBadge || (product.badge ? `<span class="product-badge">${product.badge}</span>` : '<span></span>')}
+                                ${prevuBadge || topBadge || (product.badge ? `<span class="product-badge">${product.badge}</span>` : '<span></span>')}
                                 <div class="compare-checkbox ${isSelected ? 'checked' : ''}"
                                      data-id="${product.id}"
+                                     role="checkbox"
+                                     aria-checked="${isSelected ? 'true' : 'false'}"
+                                     aria-label="Comparer ${product.titre_affiche || product.nom}"
+                                     tabindex="0"
                                      title="Ajouter au comparateur"></div>
                             </div>
                         </div>
@@ -1556,7 +1602,7 @@
                             <h3 class="product-title">${product.titre_affiche || product.nom}</h3>
                             <p class="product-description">${description}</p>
                             <div class="product-footer">
-                                <span class="product-price">${priceHTML}</span>
+                                <span class="product-price ${isPrevu ? 'price-estime' : ''}">${priceHTML}</span>
                                 <a href="/2026/fiche.html?produit=${encodeURIComponent(product.nom)}" class="product-btn">
                                     Voir →
                                 </a>
@@ -1717,14 +1763,18 @@
                 currentView = 'grid';
                 productsGrid.classList.remove('view-list');
                 document.getElementById('view-grid').classList.add('active');
+                document.getElementById('view-grid').setAttribute('aria-pressed', 'true');
                 document.getElementById('view-list').classList.remove('active');
+                document.getElementById('view-list').setAttribute('aria-pressed', 'false');
             });
 
             document.getElementById('view-list').addEventListener('click', () => {
                 currentView = 'list';
                 productsGrid.classList.add('view-list');
                 document.getElementById('view-list').classList.add('active');
+                document.getElementById('view-list').setAttribute('aria-pressed', 'true');
                 document.getElementById('view-grid').classList.remove('active');
+                document.getElementById('view-grid').setAttribute('aria-pressed', 'false');
             });
 
             // Compare bar buttons

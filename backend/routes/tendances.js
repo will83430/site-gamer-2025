@@ -8,10 +8,13 @@ const logger = require('../config/logger');
 // GET toutes les tendances (tous types confondus)
 router.get('/', async (req, res) => {
   try {
+    const isAdmin = req.query.admin === 'true';
+    const whereClause = isAdmin ? '' : 'WHERE a.actif = true';
     const { rows } = await pool.query(`
       SELECT a.*, c.nom as categorie
       FROM actualites a
       LEFT JOIN categories c ON a.categorie_id = c.id
+      ${whereClause}
       ORDER BY a.date_publication DESC, a.id DESC
     `);
     
@@ -26,6 +29,32 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error('❌ Erreur GET toutes tendances:', err);
     res.status(500).json({ error: 'Erreur BDD' });
+  }
+});
+
+// PATCH - Toggle actif pour un article
+router.patch('/:id/toggle-actif', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { actif } = req.body;
+
+    const result = await pool.query(
+      'UPDATE actualites SET actif = $1 WHERE id = $2 RETURNING id, titre, actif',
+      [actif === true, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Article non trouvé' });
+    }
+
+    res.json({
+      success: true,
+      data: result.rows[0],
+      message: actif ? 'Article publié' : 'Article dépublié'
+    });
+  } catch (err) {
+    console.error('❌ Erreur toggle actif article:', err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -79,7 +108,7 @@ router.get('/:categorie', async (req, res) => {
     
     const catId = catRows[0].id;
     const { rows } = await pool.query(
-      'SELECT * FROM actualites WHERE categorie_id = $1 ORDER BY date_publication DESC', 
+      'SELECT * FROM actualites WHERE categorie_id = $1 AND actif = true ORDER BY date_publication DESC',
       [catId]
     );
     
@@ -163,15 +192,25 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { titre, description, image, video_url, date_publication, tags, hot } = req.body;
-    
+    const { titre, description, image, video_url, date_publication, tags, hot, categorie } = req.body;
+
     const tagsStr = Array.isArray(tags) ? `{${tags.join(',')}}` : tags;
-    
+
+    let catId = null;
+    if (categorie) {
+      const { rows: catRows } = await pool.query(
+        'SELECT id FROM categories WHERE LOWER(nom) = $1',
+        [categorie.toLowerCase()]
+      );
+      if (catRows.length) catId = catRows[0].id;
+    }
+
     await pool.query(
-      `UPDATE actualites 
-       SET titre=$1, description=$2, image=$3, video_url=$4, date_publication=$5, tags=$6, hot=$7 
-       WHERE id=$8`,
-      [titre, description, image, video_url || null, date_publication, tagsStr, hot || false, id]
+      `UPDATE actualites
+       SET titre=$1, description=$2, image=$3, video_url=$4, date_publication=$5, tags=$6, hot=$7,
+           categorie_id=COALESCE($8, categorie_id)
+       WHERE id=$9`,
+      [titre, description, image, video_url || null, date_publication, tagsStr, hot || false, catId, id]
     );
     
     console.log('✅ Tendance mise à jour:', id);

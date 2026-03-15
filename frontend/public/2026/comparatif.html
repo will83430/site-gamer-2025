@@ -10,9 +10,10 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Comparateur de Produits Gaming & High-Tech">
-    <meta property="og:description" content="Comparez jusqu'à 4 produits gaming et high-tech côte à côte.">
-    <meta property="og:url" content="https://high-tech-2026.com/2026/comparatif.html">
+    <meta property="og:title" content="Comparateur de Produits Gaming &amp; High-Tech | HIGH-TECH 2026">
+    <meta property="og:description" content="Comparez jusqu&#39;à 4 produits gaming et high-tech côte à côte : specs, prix, fonctionnalités. Trouvez le meilleur rapport qualité-prix.">
+    <meta property="og:image" content="/assets/images/og-default.jpg">
+    <meta property="og:site_name" content="HIGH-TECH 2026">
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -506,9 +507,24 @@
                 grid-template-columns: 1fr;
             }
         }
+        @media (max-width: 480px) {
+            .selection-area { padding: 1rem; }
+            .selection-card { width: 100%; min-width: unset; }
+            .products-selector { flex-direction: column; gap: 0.5rem; }
+            .products-selector select { width: 100%; min-width: unset; }
+            .btn-compare { width: 100%; }
+        }
     </style>
     <!-- html2pdf.js for PDF export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
 
@@ -535,6 +551,7 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/timeline.html" class="nav-link">Timeline</a>
                 <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
@@ -671,9 +688,7 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/2026/wiki.html">Wiki</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>                    <li><a href="/2026/apropos.html">À propos</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
                     <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>
@@ -689,6 +704,13 @@
     <button class="scroll-top" id="scrollTop">^</button>
 
     <script>
+        function webpImg(src, alt, cssClass, extra) {
+            extra = extra || '';
+            if (!src || src.includes('placeholder')) return `<img src="${src || '/assets/images/placeholder.png'}" alt="${alt}" class="${cssClass}" loading="lazy" ${extra}>`;
+            const webp = src.replace(/\.(png|jpg|jpeg)(\?.*)?$/i, '.webp');
+            return `<picture><source srcset="${webp}" type="image/webp"><img src="${src}" alt="${alt}" class="${cssClass}" loading="lazy" ${extra}></picture>`;
+        }
+
         // ========================================
         // CONFIGURATION
         // ========================================
@@ -854,8 +876,7 @@
                     <div class="selection-card ${isSelected ? 'selected' : ''}"
                          onclick="toggleProductSelection('${product.id}')"
                          data-id="${product.id}">
-                        <img src="${imageUrl}" alt="${title}" class="selection-card-image"
-                             onerror="this.src='/assets/images/placeholder.png'">
+                        ${webpImg(imageUrl, title, 'selection-card-image', "onerror=\"this.src='/assets/images/placeholder.png'\"")}
                         <div class="selection-card-info">
                             <div class="selection-card-title">${title}</div>
                             <div class="selection-card-price">${product.prix || 'N/C'}</div>
@@ -1018,8 +1039,7 @@
 
                 return `
                     <div class="selection-card" onclick="addProductToComparison('${product.id}')">
-                        <img src="${imageUrl}" alt="${title}" class="selection-card-image"
-                             onerror="this.src='/assets/images/placeholder.png'">
+                        ${webpImg(imageUrl, title, 'selection-card-image', "onerror=\"this.src='/assets/images/placeholder.png'\"")}
                         <div class="selection-card-info">
                             <div class="selection-card-title">${title}</div>
                             <div class="selection-card-price">${product.prix || 'N/C'}</div>
@@ -1089,17 +1109,16 @@
             return `
                 <div class="compare-card" data-id="${product.id}">
                     <div class="compare-card-header">
-                        ${product.top_du_mois ? '<span class="top-badge">TOP DU MOIS</span>' : ''}
+                        ${product.est_prevu ? '<span class="top-badge" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">📅 Prévu</span>' : (product.top_du_mois ? '<span class="top-badge">🔥 TOP DU MOIS</span>' : '')}
                         <button class="remove-btn" onclick="removeProduct('${product.id}')" title="Retirer">x</button>
-                        <img src="${imageUrl}" alt="${title}" class="compare-card-image"
-                             onerror="this.src='/assets/images/placeholder.png'">
+                        ${webpImg(imageUrl, title, 'compare-card-image', "onerror=\"this.src='/assets/images/placeholder.png'\"")}
                         <h3 class="compare-card-title">${title}</h3>
                         <div class="compare-card-category">${categoryName}</div>
                     </div>
 
                     <div class="price-highlight">
-                        <div class="price-label">Prix</div>
-                        <div class="price-value">${product.prix || 'N/C'}</div>
+                        <div class="price-label">Prix${product.est_prevu ? ' <small style="opacity:0.7">(estimé)</small>' : ''}</div>
+                        <div class="price-value">${product.est_prevu ? '~' + (product.prix || 'N/C').replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim() : (product.prix || 'N/C')}</div>
                     </div>
 
                     <p class="compare-card-description">${description}</p>

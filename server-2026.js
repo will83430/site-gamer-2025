@@ -35,6 +35,8 @@ const aboutRoutes = require('./backend/routes/about');
 const timelineRoutes = require('./backend/routes/timeline');
 const guidesRoutes = require('./backend/routes/guides');
 const priceEvolutionRoutes = require('./backend/routes/price-evolution');
+const priceScraperRoutes = require('./backend/routes/price-scraper');
+const nouveautesRoutes = require('./backend/routes/nouveautes');
 
 // ========== CONFIGURATION ==========
 const app = express();
@@ -50,9 +52,9 @@ if (process.env.NODE_ENV === 'production') {
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
         imgSrc: ["'self'", "data:", "https:"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
         scriptSrcAttr: ["'unsafe-inline'"],
-        connectSrc: ["'self'", "http://localhost:3000", "http://192.168.1.235:3000"],
+        connectSrc: ["'self'", "https:", "http://localhost:3000", "http://192.168.1.235:3000"],
         frameSrc: ["'self'", "https://www.youtube.com", "https://youtube.com", "https://www.youtube-nocookie.com", "https://www.dailymotion.com", "https://geo.dailymotion.com"],
       }
     }
@@ -171,6 +173,11 @@ app.get('/guides', (req, res) => res.redirect('/2026/guides.html'));
 app.get('/configurateur', (req, res) => res.redirect('/2026/configurateur.html'));
 app.get('/evolution-prix', (req, res) => res.redirect('/2026/evolution-prix.html'));
 app.get('/versus', (req, res) => res.redirect('/2026/versus.html'));
+app.get('/bons-plans', (req, res) => res.redirect('/2026/bons-plans.html'));
+app.get('/nouveautes', (req, res) => res.redirect('/2026/nouveautes.html'));
+
+// Sitemap SEO dynamique (AVANT express.static pour avoir la priorité)
+app.use('/sitemap.xml', sitemapRoutes);
 
 // Autres fichiers statiques (APRÈS les routes explicites)
 app.use(express.static(path.join(__dirname, 'frontend', 'public')));
@@ -271,9 +278,53 @@ app.use('/api/about', aboutRoutes);
 app.use('/api/timeline', timelineRoutes);
 app.use('/api/guides', guidesRoutes);
 app.use('/api/price-evolution', priceEvolutionRoutes);
+app.use('/api/price-scraper', priceScraperRoutes);
+app.use('/api/nouveautes', nouveautesRoutes);
 
-// Sitemap SEO (accessible à /sitemap.xml)
-app.use('/sitemap.xml', sitemapRoutes);
+// Bons plans — baisses de prix détectées via price_history
+app.get('/api/bons-plans', async (req, res) => {
+    try {
+        const days = parseInt(req.query.days) || 0;
+        const params = days > 0 ? [days] : [];
+        const dateCondition = days > 0 ? `AND date_enregistrement >= NOW() - ($1 * INTERVAL '1 day')` : '';
+
+        const result = await pool.query(`
+            SELECT
+                p.id, p.nom, p.categorie, p.image, p.lien,
+                latest.prix_numerique AS prix_actuel,
+                latest.prix AS prix_actuel_texte,
+                latest.date_enregistrement AS date_actuel,
+                prev.prix_numerique AS prix_precedent,
+                prev.prix AS prix_precedent_texte,
+                ROUND(((prev.prix_numerique - latest.prix_numerique) / prev.prix_numerique * 100)::numeric, 1) AS reduction_pct,
+                ROUND((prev.prix_numerique - latest.prix_numerique)::numeric, 2) AS economie
+            FROM produits p
+            JOIN (
+                SELECT DISTINCT ON (produit_id)
+                    produit_id, prix_numerique, prix, date_enregistrement
+                FROM price_history
+                WHERE prix_numerique > 0 ${dateCondition}
+                ORDER BY produit_id, date_enregistrement DESC
+            ) latest ON latest.produit_id = p.id
+            JOIN (
+                SELECT produit_id, prix_numerique, prix
+                FROM (
+                    SELECT produit_id, prix_numerique, prix,
+                        ROW_NUMBER() OVER (PARTITION BY produit_id ORDER BY date_enregistrement DESC) AS rn
+                    FROM price_history WHERE prix_numerique > 0
+                ) ranked WHERE rn = 2
+            ) prev ON prev.produit_id = p.id
+            WHERE latest.prix_numerique < prev.prix_numerique
+              AND p.actif = true
+            ORDER BY economie DESC
+        `, params);
+
+        res.json({ deals: result.rows });
+    } catch (err) {
+        console.error('Bons plans error:', err);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
 
 // Servir les fiches HTML
 app.get('/fiches/:category/:fiche', (req, res) => {
@@ -315,8 +366,26 @@ app.post('/api/save-report', (req, res) => {
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+// ========== CRON PRIX HEBDOMADAIRE ==========
+const cron = require('node-cron');
+// Tous les lundis à 3h du matin : scrape les 20 produits les plus importants
+cron.schedule('0 3 * * 1', async () => {
+  if (!process.env.RAPIDAPI_KEY) return;
+  logger.info('⏰ Cron prix : lancement du scrape hebdomadaire...');
+  try {
+    const axios = require('axios');
+    await axios.post(`http://localhost:${port}/api/price-scraper/scrape-all`, { limit: 20 });
+    logger.info('✅ Cron prix : terminé');
+  } catch (err) {
+    logger.error('❌ Cron prix erreur:', err.message);
+  }
+});
+
+// ========== EXPORT POUR TESTS ==========
+module.exports = app;
+
 // ========== DÉMARRAGE ==========
-app.listen(port, '0.0.0.0', async () => {
+if (require.main === module) app.listen(port, '0.0.0.0', async () => {
   logger.info('═══════════════════════════════════════════════════');
   logger.info('   ⚡ HIGH-TECH 2026 - Serveur Redesign');
   logger.info('═══════════════════════════════════════════════════');
@@ -338,7 +407,7 @@ app.listen(port, '0.0.0.0', async () => {
   }
 
   logger.info(`🚀 Serveur démarré sur http://localhost:${port}`);
-  logger.info(`📄 Homepage: index-smooth.html (Redesign 2026)`);
+  logger.info(`📄 Homepage: /2026/index.html`);
   logger.info('═══════════════════════════════════════════════════');
 });
 

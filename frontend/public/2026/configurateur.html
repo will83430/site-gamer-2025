@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Builder - Configurateur | HIGH-TECH 2026</title>
     <meta name="description" content="Composez votre setup tech idéal selon votre budget. PC Gaming, mobilité, création, smart home ou VR : trouvez les meilleurs produits.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Budget Builder — Configurez votre Setup | HIGH-TECH 2026">
+    <meta property="og:description" content="Composez votre setup tech idéal selon votre budget et votre profil : gaming, mobilité, création ou VR.">
+    <meta property="og:image" content="/assets/images/og-default.jpg">
+    <meta property="og:site_name" content="HIGH-TECH 2026">
     <meta name="robots" content="index, follow">
 
     <link rel="manifest" href="/manifest.json">
@@ -536,6 +541,14 @@
             .profiles-grid { grid-template-columns: 1fr; }
         }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
 
@@ -560,6 +573,7 @@
                 <a href="/2026/" class="nav-link">Accueil</a>
                 <a href="/2026/#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/timeline.html" class="nav-link">Timeline</a>
                 <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
@@ -696,9 +710,7 @@
                 <ul class="footer-links">
                     <li><a href="/2026/wiki.html">Wiki</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                </ul>
+                    <li><a href="/2026/apropos.html">À propos</a></li>                </ul>
             </div>
         </div>
         <div class="footer-bottom">
@@ -833,17 +845,29 @@
             if (!profile) return;
 
             currentSetup = {};
-            let totalPrice = 0;
 
-            const gridHtml = profile.categories.map(slot => {
+            profile.categories.forEach(slot => {
                 const budgetAlloc = Math.round(budget * slot.pct);
-                // Filter products in category + within budget
                 const candidates = allProducts
                     .filter(p => p.categorie === slot.cat && p.parsedPrice <= budgetAlloc)
                     .sort((a, b) => b.parsedPrice - a.parsedPrice);
-
                 const best = candidates[0] || null;
                 currentSetup[slot.cat] = { best, candidates, budgetAlloc, label: slot.label };
+            });
+
+            renderSetup();
+
+            const results = document.getElementById('resultsSection');
+            results.classList.add('visible');
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function renderSetup() {
+            const budget = parseInt(document.getElementById('budgetInput').value) || 1500;
+            let totalPrice = 0;
+
+            const gridHtml = Object.values(currentSetup).map(data => {
+                const { best, candidates, budgetAlloc, label } = data;
 
                 if (best) {
                     totalPrice += best.parsedPrice;
@@ -854,7 +878,7 @@
                     return `
                         <div class="setup-card">
                             <div class="setup-card-header">
-                                <span class="setup-card-category">${slot.label}</span>
+                                <span class="setup-card-category">${label}</span>
                                 <span class="setup-card-budget-alloc">Budget: ${budgetAlloc}€</span>
                             </div>
                             ${imgHtml}
@@ -863,7 +887,7 @@
                                 <div class="setup-card-price">${best.prix}</div>
                                 <div class="setup-card-actions">
                                     <a href="/2026/fiche.html?id=${best.id}" class="setup-card-btn btn-fiche">Voir la fiche</a>
-                                    ${candidates.length > 1 ? `<button class="setup-card-btn btn-alternatives" onclick="showAlternatives('${slot.cat}')">Alternatives (${candidates.length - 1})</button>` : ''}
+                                    ${candidates.length > 1 ? `<button class="setup-card-btn btn-alternatives" onclick="showAlternatives('${data.candidates[0].categorie}')">Alternatives (${candidates.length - 1})</button>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -872,14 +896,13 @@
                     return `
                         <div class="setup-card-empty">
                             <div class="setup-card-empty-icon">🚫</div>
-                            <div class="setup-card-empty-text">Aucun produit ${slot.label}</div>
+                            <div class="setup-card-empty-text">Aucun produit ${label}</div>
                             <div class="setup-card-empty-budget">dans le budget de ${budgetAlloc}€</div>
                         </div>
                     `;
                 }
             }).join('');
 
-            // Budget summary
             const economy = budget - totalPrice;
             const pct = Math.min(100, Math.round((totalPrice / budget) * 100));
             const barColor = pct <= 100
@@ -901,10 +924,6 @@
             `;
 
             document.getElementById('setupGrid').innerHTML = gridHtml;
-
-            const results = document.getElementById('resultsSection');
-            results.classList.add('visible');
-            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // ========================================
@@ -940,8 +959,7 @@
             if (product) {
                 data.best = product;
                 closeAlternatives();
-                // Re-render with updated selection
-                generateSetup();
+                renderSetup();
             }
         }
 

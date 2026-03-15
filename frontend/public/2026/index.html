@@ -735,6 +735,12 @@
             .discover-section {
                 padding: 1.5rem 1rem 2rem;
             }
+            .discover-card {
+                padding: 1.25rem;
+            }
+            .discover-card-desc {
+                font-size: 0.85rem;
+            }
         }
 
         .product-card {
@@ -785,10 +791,16 @@
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
 
+        .product-card picture {
+            display: block;
+            width: 100%;
+        }
+
         .product-image {
             width: 100%;
             height: 280px;
             object-fit: cover;
+            object-position: center;
             background: linear-gradient(135deg, #1a1a28 0%, #222235 100%);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -1767,6 +1779,9 @@
         }
 
         @media (max-width: 480px) {
+            .discover-grid {
+                grid-template-columns: 1fr !important;
+            }
             .hero {
                 padding: 1.6rem 0.2rem 0.2rem !important;
             }
@@ -2034,8 +2049,18 @@
             }
         }
     </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYF9PK31GR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-ZYF9PK31GR");
+</script>
 </head>
 <body>
+
+    <a href="#hero" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;background:#d4ff00;color:#000;padding:8px 16px;font-weight:600;" onfocus="this.style.cssText=this.style.cssText.replace('left:-9999px','left:16px')">Aller au contenu</a>
 
     <!-- Header -->
     <header class="header">
@@ -2066,6 +2091,7 @@
                 <a href="/2026/" class="nav-link active">Accueil</a>
                 <a href="#categories" class="nav-link">Catégories</a>
                 <a href="/2026/guides.html" class="nav-link">Guides</a>
+                <a href="/2026/bons-plans.html" class="nav-link">Bons Plans</a>
                 <a href="/2026/timeline.html" class="nav-link">Timeline</a>
                 <a href="/2026/recherche.html" class="nav-link">Rechercher</a>
             </div>
@@ -2073,9 +2099,9 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="hero">
         <div class="hero-content">
-            <div class="hero-badge">
+            <div class="hero-badge" aria-hidden="true">
                 ✨ Nouvelle collection 2026 ✨
             </div>
 
@@ -2163,7 +2189,7 @@
 
         <div class="categories-grid">
             <a href="/2026/produits.html?categorie=smartphone" class="category-card">
-                <img src="/assets/images/smartphone.png" alt="Smartphones" class="category-image">
+                <picture><source srcset="/assets/images/smartphone.webp" type="image/webp"><img src="/assets/images/smartphone.png" alt="Smartphones" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Smartphones</div>
                     <div class="category-count">5 produits</div>
@@ -2171,7 +2197,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=pc-gaming" class="category-card">
-                <img src="/assets/images/pc-gaming.png" alt="PC Gaming" class="category-image">
+                <picture><source srcset="/assets/images/pc-gaming.webp" type="image/webp"><img src="/assets/images/pc-gaming.png" alt="PC Gaming" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">PC Gaming</div>
                     <div class="category-count">6 produits</div>
@@ -2179,7 +2205,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=console" class="category-card">
-                <img src="/assets/images/console.png" alt="Consoles" class="category-image">
+                <picture><source srcset="/assets/images/console.webp" type="image/webp"><img src="/assets/images/console.png" alt="Consoles" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Consoles</div>
                     <div class="category-count">6 produits</div>
@@ -2187,7 +2213,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=casque-vr" class="category-card">
-                <img src="/assets/images/casque-vr.png" alt="VR/AR" class="category-image">
+                <picture><source srcset="/assets/images/casque-vr.webp" type="image/webp"><img src="/assets/images/casque-vr.png" alt="VR/AR" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">VR/AR</div>
                     <div class="category-count">5 produits</div>
@@ -2195,7 +2221,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=drone" class="category-card">
-                <img src="/assets/images/drone.png" alt="Drones" class="category-image">
+                <picture><source srcset="/assets/images/drone.webp" type="image/webp"><img src="/assets/images/drone.png" alt="Drones" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Drones</div>
                     <div class="category-count">9 produits</div>
@@ -2203,7 +2229,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=montre-connectee" class="category-card">
-                <img src="/assets/images/montre-connectee.png" alt="Montres" class="category-image">
+                <picture><source srcset="/assets/images/montre-connectee.webp" type="image/webp"><img src="/assets/images/montre-connectee.png" alt="Montres" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Montres Connectées</div>
                     <div class="category-count">5 produits</div>
@@ -2211,7 +2237,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=camera" class="category-card">
-                <img src="/assets/images/camera.png" alt="Caméras" class="category-image">
+                <picture><source srcset="/assets/images/camera.webp" type="image/webp"><img src="/assets/images/camera.png" alt="Caméras" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Caméras</div>
                     <div class="category-count">3 produits</div>
@@ -2219,7 +2245,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=casque-audio" class="category-card">
-                <img src="/assets/images/casque-audio.png" alt="Casques Audio" class="category-image">
+                <picture><source srcset="/assets/images/casque-audio.webp" type="image/webp"><img src="/assets/images/casque-audio.png" alt="Casques Audio" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Casques Audio</div>
                     <div class="category-count">6 produits</div>
@@ -2227,7 +2253,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=ecran-tv" class="category-card">
-                <img src="/assets/images/ecran-tv.png" alt="Écrans & TV" class="category-image">
+                <picture><source srcset="/assets/images/ecran-tv.webp" type="image/webp"><img src="/assets/images/ecran-tv.png" alt="Écrans & TV" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Écrans & TV</div>
                     <div class="category-count">4 produits</div>
@@ -2235,7 +2261,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=tablette" class="category-card">
-                <img src="/assets/images/tablette.png" alt="Tablettes" class="category-image">
+                <picture><source srcset="/assets/images/tablette.webp" type="image/webp"><img src="/assets/images/tablette.png" alt="Tablettes" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Tablettes</div>
                     <div class="category-count">6 produits</div>
@@ -2243,7 +2269,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=peripheriques" class="category-card">
-                <img src="/assets/images/peripheriques.png" alt="Périphériques" class="category-image">
+                <picture><source srcset="/assets/images/peripheriques.webp" type="image/webp"><img src="/assets/images/peripheriques.png" alt="Périphériques" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Périphériques</div>
                     <div class="category-count">4 produits</div>
@@ -2251,7 +2277,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=imprimante-3d" class="category-card">
-                <img src="/assets/images/imprimante-3d.png" alt="Imprimantes 3D" class="category-image">
+                <picture><source srcset="/assets/images/imprimante-3d.webp" type="image/webp"><img src="/assets/images/imprimante-3d.png" alt="Imprimantes 3D" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Imprimantes 3D</div>
                     <div class="category-count">5 produits</div>
@@ -2259,7 +2285,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=box-internet" class="category-card">
-                <img src="/assets/images/box-internet.png" alt="Box Internet" class="category-image">
+                <picture><source srcset="/assets/images/box-internet.webp" type="image/webp"><img src="/assets/images/box-internet.png" alt="Box Internet" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Box Internet</div>
                     <div class="category-count">1 produit</div>
@@ -2267,7 +2293,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=serveur" class="category-card">
-                <img src="/assets/images/serveur.png" alt="Serveurs" class="category-image">
+                <picture><source srcset="/assets/images/serveur.webp" type="image/webp"><img src="/assets/images/serveur.png" alt="Serveurs" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Serveurs</div>
                     <div class="category-count">2 produits</div>
@@ -2275,7 +2301,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=video-projecteur" class="category-card">
-                <img src="/assets/images/video-projecteur.png" alt="Vidéoprojecteurs" class="category-image">
+                <picture><source srcset="/assets/images/video-projecteur.webp" type="image/webp"><img src="/assets/images/video-projecteur.png" alt="Vidéoprojecteurs" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Vidéoprojecteurs</div>
                     <div class="category-count">2 produits</div>
@@ -2283,7 +2309,7 @@
             </a>
 
             <a href="/2026/produits.html?categorie=tableau-interactif" class="category-card">
-                <img src="/assets/images/tableau-interactif.png" alt="Tableaux" class="category-image">
+                <picture><source srcset="/assets/images/tableau-interactif.webp" type="image/webp"><img src="/assets/images/tableau-interactif.png" alt="Tableaux" class="category-image" loading="lazy"></picture>
                 <div class="category-info">
                     <div class="category-name">Tableaux Interactifs</div>
                     <div class="category-count">3 produits</div>
@@ -2360,21 +2386,21 @@
 
         <div class="discover-grid">
             <a href="/2026/guides.html" class="discover-card card-guides">
-                <div class="discover-icon">📖</div>
+                <div class="discover-icon" aria-hidden="true">📖</div>
                 <h3 class="discover-card-title">Guides d'achat</h3>
                 <p class="discover-card-desc">Des guides complets par catégorie avec critères d'achat, budgets et produits recommandés pour faire le bon choix.</p>
                 <span class="discover-card-link">Consulter les guides <span>→</span></span>
             </a>
 
             <a href="/2026/timeline.html" class="discover-card card-timeline">
-                <div class="discover-icon">📅</div>
+                <div class="discover-icon" aria-hidden="true">📅</div>
                 <h3 class="discover-card-title">Timeline Tech</h3>
                 <p class="discover-card-desc">Revivez 40 ans d'évolution technologique, des premiers PC aux dernières innovations en IA et réalité virtuelle.</p>
                 <span class="discover-card-link">Explorer la frise <span>→</span></span>
             </a>
 
             <a href="/2026/apropos.html" class="discover-card card-apropos">
-                <div class="discover-icon">ℹ️</div>
+                <div class="discover-icon" aria-hidden="true">ℹ️</div>
                 <h3 class="discover-card-title">À propos</h3>
                 <p class="discover-card-desc">Découvrez le projet HIGH-TECH 2026, sa stack technique, son architecture et les fonctionnalités du site.</p>
                 <span class="discover-card-link">En savoir plus <span>→</span></span>
@@ -2419,9 +2445,7 @@
             <div class="footer-section">
                 <h3>Ressources</h3>
                 <ul class="footer-links">
-                    <li><a href="/2026/wiki.html">Wiki</a></li>
-                    <li><a href="/2026/admin.html">Admin</a></li>
-                    <li><a href="/2026/apropos.html">À propos</a></li>
+                    <li><a href="/2026/wiki.html">Wiki</a></li>                    <li><a href="/2026/apropos.html">À propos</a></li>
                     <li><a href="/2026/timeline.html">Timeline Tech</a></li>
                     <li><a href="/2026/guides.html">Guides d'achat</a></li>
                 </ul>
@@ -2434,9 +2458,16 @@
     </footer>
 
     <!-- Scroll to Top -->
-    <div class="scroll-top" id="scrollTop">↑</div>
+    <button class="scroll-top" id="scrollTop" aria-label="Retour en haut de page">↑</button>
 
     <script>
+        // Helper WebP avec fallback
+        function webpImg(src, alt, cssClass, extra) {
+            extra = extra || '';
+            if (!src || src.includes('placeholder')) return '<img src="' + (src || '/assets/images/placeholder.png') + '" alt="' + alt + '" class="' + cssClass + '" loading="lazy" ' + extra + '>';
+            var webp = src.replace(/\.(png|jpg|jpeg)(\?.*)?$/i, '.webp');
+            return '<picture><source srcset="' + webp + '" type="image/webp"><img src="' + src + '" alt="' + alt + '" class="' + cssClass + '" loading="lazy" ' + extra + '></picture>';
+        }
         // ========================================
         // SCROLL TO TOP
         // ========================================
@@ -2601,8 +2632,9 @@
             }, stepDuration);
         }
 
-        // Incrémenter le compteur de visites
+        // Incrémenter le compteur de visites (ignoré si mode propriétaire actif)
         async function incrementVisit() {
+            if (localStorage.getItem('owner_mode') === 'true') return;
             try {
                 await fetch('/api/stats/visit', { method: 'POST' });
             } catch (error) {
@@ -2692,19 +2724,25 @@
                         const description = product.description
                             ? product.description.substring(0, 80) + (product.description.length > 80 ? '...' : '')
                             : 'Produit high-tech de dernière génération.';
-                        // Badge TOP uniquement si top_du_mois est vrai
-                        const badge = product.top_du_mois ? '<span class="product-badge">⭐ TOP</span>' : '';
+                        // Badge TOP ou Prévu
+                        const badge = product.est_prevu
+                            ? '<span class="product-badge" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">📅 Prévu</span>'
+                            : (product.top_du_mois ? '<span class="product-badge">⭐ TOP</span>' : '');
+                        const rawPrix = product.prix || 'Prix N/C';
+                        const cleanPrix = product.est_prevu ? rawPrix.replace(/^~+/, '').replace(/\s*\(estimé\)/gi, '').trim() : rawPrix;
+                        const priceDisplay = product.est_prevu
+                            ? `~${cleanPrix} <small style="font-size:0.75em;opacity:0.8">(estimé)</small>`
+                            : rawPrix;
 
                         return `
                             <div class="product-card">
                                 ${badge}
-                                <img src="${product.image_url}" alt="${product.nom}" class="product-image"
-                                     onerror="this.src='/assets/images/placeholder.png'">
+                                ${webpImg(product.image_url, product.titre_affiche || product.nom, 'product-image', "onerror=\"this.src='/assets/images/placeholder.png'\"")}
                                 <div class="product-content">
                                     <h3 class="product-title">${product.titre_affiche || product.nom}</h3>
                                     <p class="product-description">${description}</p>
                                     <div class="product-footer">
-                                        <div class="product-price">${product.prix || 'Prix N/C'}</div>
+                                        <div class="product-price">${priceDisplay}</div>
                                         <a href="/2026/fiche.html?produit=${slug}" class="product-btn">Voir →</a>
                                     </div>
                                 </div>
@@ -2756,7 +2794,7 @@
                     const categoriesWithFeatured = {};
                     if (data.data) {
                         data.data.forEach(product => {
-                            if (product.top_du_mois) {
+                            if (product.top_du_mois && !product.est_prevu) {
                                 const catUrl = product.categorie.toLowerCase().replace(/\s+/g, '-');
                                 categoriesWithFeatured[catUrl] = true;
                             }

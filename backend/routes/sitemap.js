@@ -15,7 +15,14 @@ const staticPages = [
     { url: '/2026/produits.html', priority: '0.9', changefreq: 'daily' },
     { url: '/2026/tendances.html', priority: '0.8', changefreq: 'daily' },
     { url: '/2026/comparatif.html', priority: '0.7', changefreq: 'weekly' },
-    { url: '/2026/recherche.html', priority: '0.6', changefreq: 'weekly' }
+    { url: '/2026/versus.html', priority: '0.7', changefreq: 'weekly' },
+    { url: '/2026/configurateur.html', priority: '0.7', changefreq: 'monthly' },
+    { url: '/2026/evolution-prix.html', priority: '0.7', changefreq: 'weekly' },
+    { url: '/2026/guides.html', priority: '0.7', changefreq: 'monthly' },
+    { url: '/2026/timeline.html', priority: '0.6', changefreq: 'monthly' },
+    { url: '/2026/recherche.html', priority: '0.6', changefreq: 'weekly' },
+    { url: '/2026/wiki.html', priority: '0.5', changefreq: 'monthly' },
+    { url: '/2026/apropos.html', priority: '0.4', changefreq: 'yearly' },
 ];
 
 // Catégories pour les pages tendances
@@ -53,26 +60,28 @@ router.get('/', async (req, res) => {
             xml += '  </url>\n';
         }
 
-        // Produits depuis la BDD
+        // Produits depuis la BDD (hors produits fictifs)
         try {
             const { rows: produits } = await pool.query(`
-                SELECT nom, updated_at
+                SELECT id, nom, slug, created_at
                 FROM produits
-                ORDER BY updated_at DESC NULLS LAST
+                WHERE est_prevu IS NOT TRUE
+                ORDER BY created_at DESC NULLS LAST
             `);
 
             for (const p of produits) {
-                const slug = p.nom.toLowerCase()
+                // Utilise la colonne slug si disponible, sinon génère depuis le nom
+                const slug = p.slug || p.nom.toLowerCase()
                     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
                     .replace(/[^a-z0-9]+/g, '-')
                     .replace(/^-|-$/g, '');
 
                 xml += '  <url>\n';
-                xml += `    <loc>${BASE_URL}/2026/fiche.html?produit=${encodeURIComponent(slug)}</loc>\n`;
-                if (p.updated_at) {
-                    xml += `    <lastmod>${new Date(p.updated_at).toISOString().split('T')[0]}</lastmod>\n`;
+                xml += `    <loc>${BASE_URL}/2026/fiche.html?id=${p.id}</loc>\n`;
+                if (p.created_at) {
+                    xml += `    <lastmod>${new Date(p.created_at).toISOString().split('T')[0]}</lastmod>\n`;
                 }
-                xml += '    <changefreq>weekly</changefreq>\n';
+                xml += '    <changefreq>monthly</changefreq>\n';
                 xml += '    <priority>0.8</priority>\n';
                 xml += '  </url>\n';
             }
